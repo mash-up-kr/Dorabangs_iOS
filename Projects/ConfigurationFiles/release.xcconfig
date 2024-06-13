@@ -1,0 +1,17 @@
+//
+//  release.xcconfig
+//  Manifests
+//
+//  Created by 김영균 on 6/13/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "./shared.xcconfig"
+
+ENABLE_NS_ASSERTIONS = NO
+
+SWIFT_COMPILATION_MODE = wholemodule
+
+BUNDLE_NAME = 링킷
