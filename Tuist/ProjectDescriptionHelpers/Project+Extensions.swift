@@ -3,10 +3,11 @@ import ProjectDescription
 extension Project {
 	public static func make(
 		name: String,
-		targets: [Target],
 		packages: [Package] = [],
-		resourceSynthesizers: [ResourceSynthesizer] = [],
-		additionalFiles: [FileElement] = []
+		targets: [Target],
+		schemes: [Scheme] = [],
+		additionalFiles: [FileElement] = [],
+		resourceSynthesizers: [ResourceSynthesizer] = []
 	) -> Project {
 		return Project(
 			name: name,
@@ -17,6 +18,7 @@ extension Project {
 			),
 			packages: packages,
 			targets: targets,
+			schemes: schemes,
 			additionalFiles: additionalFiles,
 			resourceSynthesizers: resourceSynthesizers
 		)
