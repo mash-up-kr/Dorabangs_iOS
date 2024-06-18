@@ -23,6 +23,7 @@ struct ContentView: View {
     @ViewBuilder
     var foundationPreviews: some View {
         NavigationLink("Color") { ColorPreview() }
+        NavigationLink("Typography") { TypographyPreview() }
     }
 }
 
