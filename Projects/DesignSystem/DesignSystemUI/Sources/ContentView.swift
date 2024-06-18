@@ -10,6 +10,22 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
+        NavigationStack {
+            List {
+                Section("1. Foundation") { foundationPreviews }
+            }
+            .listStyle(.plain)
+            .navigationTitle("DesignSystem")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
+    
+    @ViewBuilder
+    var foundationPreviews: some View {
+        NavigationLink("Color") { ColorPreview() }
+    }
+}
+
+#Preview {
+    ContentView()
 }
