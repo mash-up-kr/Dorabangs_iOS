@@ -19,6 +19,7 @@ let project = Project.make(
 			name: "DesignSystemKit",
 			product: .framework,
 			bundleId: "com.mashup.dorabangs.designSystemKit",
+			infoPlist: .extendingDefault(with: ["UIAppFonts": "NanumSquareNeo-Variable.ttf"]),
 			sources: ["DesignSystemKit/Sources/**"],
 			resources: ["DesignSystemKit/Resources/**"]
 		)
@@ -32,7 +33,6 @@ let project = Project.make(
 		)
 	],
 	resourceSynthesizers: [
-		.assets(),
-		.fonts()
+		.assets()
 	]
 )
