@@ -13,6 +13,7 @@ struct ContentView: View {
         NavigationStack {
             List {
                 Section("1. Foundation") { foundationPreviews }
+                Section("2. Atomic") { atomicPreviews }
             }
             .listStyle(.plain)
             .navigationTitle("DesignSystem")
@@ -24,6 +25,11 @@ struct ContentView: View {
     var foundationPreviews: some View {
         NavigationLink("Color") { ColorPreview() }
         NavigationLink("Typography") { TypographyPreview() }
+    }
+    
+    @ViewBuilder
+    var atomicPreviews: some View {
+        NavigationLink("RoundedButton") { RoundedButtonPreview() }
     }
 }
 
