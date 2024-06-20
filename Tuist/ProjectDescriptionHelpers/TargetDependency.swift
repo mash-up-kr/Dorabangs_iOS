@@ -44,7 +44,7 @@ extension Module {
 			return .project(target: coordinator.rawValue, path: .relativeToRoot("Projects/Features/Coordinator"))
 			
 		case .designSystem:
-			return .project(target: "DesignSystem", path: .relativeToRoot("Projects/DesignSystem"))
+			return .project(target: "DesignSystemKit", path: .relativeToRoot("Projects/DesignSystem"))
 			
 		case .scene(let scene):
 			return .project(target: scene.rawValue, path: .relativeToRoot("Projects/Features/Scene"))
