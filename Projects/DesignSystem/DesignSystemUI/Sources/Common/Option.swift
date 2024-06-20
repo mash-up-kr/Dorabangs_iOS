@@ -12,6 +12,8 @@ enum Option: View {
     case toggle(description: String, isOn: Binding<Bool>)
     case picker(description: String, cases: [Any], selectedIndex: Binding<Int>)
     case textField(description: String, text: Binding<String>)
+    case optionalString(description: String, text: Binding<String?>)
+    case optionalInt(description: String, value: Binding<Int?>)
     
     @ViewBuilder
     var body: some View {
@@ -22,6 +24,10 @@ enum Option: View {
             PickerOptionView(description: description, cases: cases, selectedIndex: selectedIndex)
         case let .textField(description, text):
             TextFieldOptionView(description: description, text: text)
+        case let .optionalString(description, text):
+            OptionalStringOptionView(description: description, text: text)
+        case let .optionalInt(description, value):
+            OptionalIntOptionView(description: description, value: value)
         }
     }
 }
