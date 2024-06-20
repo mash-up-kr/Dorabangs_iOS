@@ -31,6 +31,7 @@ struct ContentView: View {
     var atomicPreviews: some View {
         NavigationLink("RoundedButton") { RoundedButtonPreview() }
         NavigationLink("RoundedCornersButton") { RoundedCornersButtonPreview() }
+        NavigationLink("TextField") { TextFieldPreview() }
     }
 }
 
