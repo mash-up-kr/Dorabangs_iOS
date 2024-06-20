@@ -37,6 +37,7 @@ public extension DesignSystemKitAsset.Typography {
         case _13 = 13.0
         case _12 = 12.0
         case _11 = 11.0
+        case _10 = 10
     }
     
     enum LineHeight: CGFloat {
@@ -60,10 +61,11 @@ public extension DesignSystemKitAsset.Typography {
         case subtitle2
         case base1
         case base2
-        case caption1
-        case caption2
         case caption3
+        case caption2
+        case caption1
         case s
+        case xs
     }
 }
 
@@ -79,10 +81,11 @@ public extension DesignSystemKitAsset.Typography.Semantic {
         case .subtitle2: return ._18
         case .base1: return ._16
         case .base2: return ._15
-        case .caption1: return ._14
+        case .caption3: return ._14
         case .caption2: return ._13
-        case .caption3: return ._12
+        case .caption1: return ._12
         case .s: return ._11
+        case .xs: return ._10
         }
     }
     
@@ -94,8 +97,8 @@ public extension DesignSystemKitAsset.Typography.Semantic {
         case .title: return ._34
         case .subtitle1, .subtitle2: return ._26
         case .base1, .base2: return ._24
-        case .caption1, .caption2, .caption3: return ._22
-        case .s: return ._14
+        case .caption3, .caption2, .caption1: return ._22
+        case .s, .xs: return ._14
         }
     }
 }

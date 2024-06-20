@@ -15,8 +15,8 @@ struct TypographyPreview: View {
         ("Header", [.h3, .h4, .h5, .h6]),
         ("Title", [.title, .subtitle1, .subtitle2]),
         ("Base", [.base1, .base2]),
-        ("Caption", [.caption1, .caption2, .caption3]),
-        ("Small", [.s])
+        ("Caption", [.caption3, .caption2, .caption1]),
+        ("Small", [.s, .xs])
     ]
     @State private var weight: DesignSystemKitAsset.Typography.Weight = .regular
     
