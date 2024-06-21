@@ -14,6 +14,7 @@ struct ContentView: View {
             List {
                 Section("1. Foundation") { foundationPreviews }
                 Section("2. Atomic") { atomicPreviews }
+                Section("3. Component") { componentPreviews }
             }
             .listStyle(.plain)
             .navigationTitle("DesignSystem")
@@ -32,6 +33,11 @@ struct ContentView: View {
         NavigationLink("RoundedButton") { RoundedButtonPreview() }
         NavigationLink("RoundedCornersButton") { RoundedCornersButtonPreview() }
         NavigationLink("TextField") { TextFieldPreview() }
+    }
+    
+    @ViewBuilder
+    var componentPreviews: some View {
+        NavigationLink("Modal") { ModalPreview() }
     }
 }
 
