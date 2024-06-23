@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import DesignSystemKit
 import FolderCoordinator
 import HomeCoordinator
 import SwiftUI
@@ -19,35 +20,29 @@ public struct TabCoordinatorView: View {
     }
     
     public var body: some View {
-        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
-            HomeCoordinatorView(store: store.scope(state: \.home, action: \.home))
-                .tabItem(TabCoordinator.Tab.home)
-                .tag(TabCoordinator.Tab.home)
-            
-            FolderCoordinatorView(store: store.scope(state: \.folder, action: \.folder))
-                .tabItem(TabCoordinator.Tab.folder)
-                .tag(TabCoordinator.Tab.folder)
-        }
-    }
-}
-
-
-extension View {
-    func tabItem(_ tabItem: TabCoordinator.Tab) -> some View {
-        self.modifier(TabItemModifier(tabItem: tabItem))
-    }
-}
-
-struct TabItemModifier: ViewModifier {
-    let tabItem: TabCoordinator.Tab
-    
-    func body(content: Content) -> some View {
-        content
-            .tabItem {
-                VStack {
-                    tabItem.icon
-                    Text(tabItem.title)
-                }
-            }
+        LKTabView(
+            selection: $store.selectedTab.sending(\.tabSelected),
+            content: {
+                HomeCoordinatorView(store: store.scope(state: \.home, action: \.home))
+                    .tag(TabCoordinator.Tab.home)
+                
+                FolderCoordinatorView(store: store.scope(state: \.folder, action: \.folder))
+                    .tag(TabCoordinator.Tab.folder)
+            },
+            tabItems: [
+                LKTabBarItem(
+                    tag: .home,
+                    title: "홈",
+                    image: DesignSystemKitAsset.Icons.icHome.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icHomeFilled.swiftUIImage
+                ),
+                LKTabBarItem(
+                    tag: .folder,
+                    title: "보관함",
+                    image: DesignSystemKitAsset.Icons.icFloder.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
+                )
+            ]
+        )
     }
 }
