@@ -14,7 +14,7 @@ import ComposableArchitecture
 @DependencyClient
 public struct ApiClient: Sendable {
     public var apiRequest: @Sendable (ServerRoute.Api.Route) async throws -> (Data, URLResponse)
-    public var baseUrl: @Sendable () -> URL = { URL(string: "/")! }
+    public var baseUrl: () -> URL = { URL(string: "/")! }
     public var request: @Sendable (ServerRoute) async throws -> (Data, URLResponse)
     public var setBaseUrl: @Sendable (URL) async -> Void
     

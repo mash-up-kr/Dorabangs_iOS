@@ -18,15 +18,41 @@ extension DependencyValues {
     }
 }
 extension ApiClient: DependencyKey {
-    public static let liveValue = Self(
-//        apiRequest: { _ in
-//
-//        }, baseUrl: {
-//            
-//        }, request: {_ in 
-//            
-//        }, setBaseUrl: {_ in 
-//            
-//        }
-    )
+    public static let liveValue = Self.live()
+    
+    public static func live(
+        baseUrl: URL = URL(string: "http://localhost:9876")!
+    ) -> Self {
+        actor Session {
+            var baseUrl: URL
+            
+            init(baseUrl: URL) {
+                self.baseUrl = baseUrl
+            }
+            
+            func apiRequest(route: ServerRoute.Api.Route) async throws -> (Data, URLResponse) {
+                try await self.apiRequest(route: route)
+            }
+            
+            func request(route: ServerRoute) async throws -> (Data, URLResponse) {
+                try await self.request(route: route)
+            }
+            
+            func setBaseUrl(_ url: URL) {
+                self.baseUrl = url
+            }
+        }
+        
+        let session = Session(baseUrl: baseUrl)
+        
+        return Self(
+            apiRequest: { try await session.apiRequest(route: $0 )},
+            baseUrl: { session.baseUrl },
+            request: { try await session.request(route: $0) },
+            setBaseUrl: { await session.setBaseUrl($0) }
+        )
+    }
+    
+    
+    
 }
