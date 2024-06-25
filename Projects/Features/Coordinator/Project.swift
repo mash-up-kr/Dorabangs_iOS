@@ -23,7 +23,8 @@ let project = Project.make(
 			dependencies: [
 				.coordinator(.home),
 				.coordinator(.folder),
-				.spm(.tcaCoordinators)
+				.spm(.tcaCoordinators),
+				.designSystem
 			]
 		),
 		.make(
