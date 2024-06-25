@@ -27,8 +27,5 @@ struct TextFieldOptionView: View {
                 .background(Color(uiColor: .secondarySystemBackground))
                 .cornerRadius(8, corners: .allCorners)
         }
-        .onAppear {
-            UITextField.appearance().clearButtonMode = .whileEditing
-        }
     }
 }

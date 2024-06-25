@@ -15,11 +15,8 @@ struct ComponentPreview<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             component()
-                .frame(
-                    maxWidth: .infinity,
-                    minHeight: UIScreen.main.bounds.width * 0.6,
-                    maxHeight: UIScreen.main.bounds.width * 0.6
-                )
+                .frame(maxWidth: .infinity, minHeight: UIScreen.main.bounds.width * 0.6)
+                .padding(.vertical, 20)
                 .background(Color(uiColor: .secondarySystemBackground))
             
             Divider()

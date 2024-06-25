@@ -32,6 +32,13 @@ struct ContentView: View {
     var atomicPreviews: some View {
         NavigationLink("RoundedButton") { RoundedButtonPreview() }
         NavigationLink("RoundedCornersButton") { RoundedCornersButtonPreview() }
+        NavigationLink("TextField") { TextFieldPreview() }
+    }
+    
+    @ViewBuilder
+    var componentPreviews: some View {
+        NavigationLink("Modal") { ModalPreview() }
+        NavigationLink("TextField Popup") { TextFieldPopupPreview() }
     }
     
     @ViewBuilder
