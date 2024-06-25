@@ -44,6 +44,7 @@ struct ContentView: View {
     @ViewBuilder
     var componentPreviews: some View {
         NavigationLink("TabBar") { TabBarPreview() }
+        NavigationLink("Toast") { ToastPreview() }
     }
 }
 
