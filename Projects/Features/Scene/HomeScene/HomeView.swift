@@ -17,7 +17,13 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-        Text("Home View")
-            .onAppear { store.send(.onAppear) }
+        VStack {
+            Text("Home View11111")
+                .onAppear { store.send(.onAppear) }
+            Button("Test ~") {
+                store.send(.buttonTap)
+            }
+        }
+        
     }
 }
