@@ -41,6 +41,7 @@ struct ContentView: View {
         NavigationLink("TextField Popup") { TextFieldPopupPreview() }
         NavigationLink("TabBar") { TabBarPreview() }
         NavigationLink("Toast") { ToastPreview() }
+        NavigationLink("ClipboardToast") { ClipboardToastPreview() }
     }
 }
 
