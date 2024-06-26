@@ -42,6 +42,7 @@ struct ContentView: View {
         NavigationLink("TabBar") { TabBarPreview() }
         NavigationLink("Toast") { ToastPreview() }
         NavigationLink("ClipboardToast") { ClipboardToastPreview() }
+        NavigationLink("ActionSheet") { ActionSheetPreview() }
     }
 }
 
