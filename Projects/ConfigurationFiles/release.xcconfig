@@ -15,3 +15,7 @@ ENABLE_NS_ASSERTIONS = NO
 SWIFT_COMPILATION_MODE = wholemodule
 
 BUNDLE_NAME = 링킷
+
+PROVISIONING_PROFILE_SPECIFIER = Distribution com.mashup.dorabangs
+
+CODE_SIGN_IDENTITY = Apple Distribution: YoungGyun Kim (8ATYCP492F)
