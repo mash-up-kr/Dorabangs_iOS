@@ -11,7 +11,7 @@ import SwiftUI
 struct LKTabBar<SelectionValue: Hashable>: View {
     @Binding var selection: SelectionValue
     let tabItems: [LKTabBarItem<SelectionValue>]
-    
+
     var body: some View {
         HStack(spacing: 0) {
             ForEach(tabItems) { item in
@@ -20,13 +20,13 @@ struct LKTabBar<SelectionValue: Hashable>: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
-                    
+
                     Text(item.title)
                         .font(weight: .medium, semantic: .xs)
                         .foregroundStyle(
                             selection == item.tag
-                            ? DesignSystemKitAsset.Colors.g9.swiftUIColor
-                            : DesignSystemKitAsset.Colors.g4.swiftUIColor
+                                ? DesignSystemKitAsset.Colors.g9.swiftUIColor
+                                : DesignSystemKitAsset.Colors.g4.swiftUIColor
                         )
                 }
                 .onTapGesture {
@@ -40,7 +40,7 @@ struct LKTabBar<SelectionValue: Hashable>: View {
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .overlay {
             RoundedTopCornersBorder(radius: 20)
-                .stroke(DesignSystemKitAsset.Colors.g2.swiftUIColor, lineWidth:1)
+                .stroke(DesignSystemKitAsset.Colors.g2.swiftUIColor, lineWidth: 1)
         }
     }
 }
@@ -48,10 +48,10 @@ struct LKTabBar<SelectionValue: Hashable>: View {
 // 바텀 탭 뷰의 상단을 둥글게 하는 Shape
 private struct RoundedTopCornersBorder: Shape {
     let radius: CGFloat
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
+
         path.move(to: CGPoint(x: 0, y: radius * 2))
         path.addLine(to: CGPoint(x: 0, y: radius))
         path.addArc(

@@ -14,18 +14,18 @@ import SwiftUI
 
 public struct TabCoordinatorView: View {
     @Bindable private var store: StoreOf<TabCoordinator>
-    
+
     public init(store: StoreOf<TabCoordinator>) {
         self.store = store
     }
-    
+
     public var body: some View {
         LKTabView(
             selection: $store.selectedTab.sending(\.tabSelected),
             content: {
                 HomeCoordinatorView(store: store.scope(state: \.home, action: \.home))
                     .tag(TabCoordinator.Tab.home)
-                
+
                 FolderCoordinatorView(store: store.scope(state: \.folder, action: \.folder))
                     .tag(TabCoordinator.Tab.folder)
             },

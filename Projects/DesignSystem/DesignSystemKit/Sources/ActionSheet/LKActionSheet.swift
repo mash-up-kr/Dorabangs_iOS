@@ -13,20 +13,20 @@ public struct LKActionSheet: View {
     @Binding private var isPresented: Bool
     private let items: [LKActionItem]
     private let actionSheetHeight: CGFloat = 320
-    
+
     public init(
         isPresented: Binding<Bool>,
         items: [LKActionItem]
     ) {
-        self._isPresented = isPresented
+        _isPresented = isPresented
         self.items = items
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             DragIndicator()
                 .padding(.top, 6)
-            
+
             ActionList(items: items)
                 .padding(.top, 19)
                 .padding(.horizontal, 16)
@@ -43,7 +43,7 @@ public struct LKActionSheet: View {
         .offset(y: yOffset)
         .gesture(dragGesture)
     }
-    
+
     private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { value in
@@ -66,11 +66,11 @@ private struct DragIndicator: View {
     var body: some View {
         HStack {
             Spacer()
-            
+
             DesignSystemKitAsset.Icons.icPin.swiftUIImage
                 .resizable()
                 .frame(width: 36, height: 5)
-            
+
             Spacer()
         }
     }
@@ -78,7 +78,7 @@ private struct DragIndicator: View {
 
 private struct ActionList: View {
     let items: [LKActionItem]
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ForEach(items.indices, id: \.self) { index in
@@ -88,7 +88,7 @@ private struct ActionList: View {
                         .background(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                         .padding(.horizontal, 16)
                 }
-                
+
                 ActionItem(item: items[index])
                     .padding(16)
             }
@@ -100,7 +100,7 @@ private struct ActionList: View {
 
 private struct ActionItem: View {
     let item: LKActionItem
-    
+
     var body: some View {
         HStack(spacing: 12) {
             if let image = item.image {
@@ -108,15 +108,15 @@ private struct ActionItem: View {
                     .resizable()
                     .frame(width: 24, height: 24)
             }
-            
+
             Text(item.title)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(
                     item.style == .default
-                    ? DesignSystemKitAsset.Colors.g9.swiftUIColor
-                    : DesignSystemKitAsset.Colors.alert.swiftUIColor
+                        ? DesignSystemKitAsset.Colors.g9.swiftUIColor
+                        : DesignSystemKitAsset.Colors.alert.swiftUIColor
                 )
-            
+
             Spacer()
         }
         .frame(height: 24)

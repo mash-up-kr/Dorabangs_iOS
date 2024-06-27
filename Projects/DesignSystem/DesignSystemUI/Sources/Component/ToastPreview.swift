@@ -13,7 +13,7 @@ struct ToastPreview: View {
     @State private var isPresented: Bool = false
     @State private var selectedIndex: Int = 0
     @State private var message: String = "toast"
-    
+
     var body: some View {
         ComponentPreview(
             component: {
@@ -40,7 +40,7 @@ struct ToastPreview: View {
 
 private extension LKToast.ToastType {
     static var allCases: [LKToast.ToastType] {
-        return [.info, .warning]
+        [.info, .warning]
     }
 }
 

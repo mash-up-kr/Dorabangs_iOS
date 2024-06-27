@@ -12,11 +12,11 @@ import TCACoordinators
 
 public struct FolderCoordinatorView: View {
     private let store: StoreOf<FolderCoordinator>
-    
+
     public init(store: StoreOf<FolderCoordinator>) {
         self.store = store
     }
-    
+
     public var body: some View {
         TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
             switch screen.case {

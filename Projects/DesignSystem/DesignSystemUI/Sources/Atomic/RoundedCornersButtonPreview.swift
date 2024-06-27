@@ -13,7 +13,7 @@ struct RoundedCornersButtonPreview: View {
     @State private var title: String = "버튼"
     @State private var selectedIndex: Int = 0
     private let styles = RoundedCornersButton.Style.allCases
-    
+
     var body: some View {
         ComponentPreview(
             component: {

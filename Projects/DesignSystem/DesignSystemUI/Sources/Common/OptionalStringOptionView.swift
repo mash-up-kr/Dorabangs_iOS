@@ -12,26 +12,26 @@ struct OptionalStringOptionView: View {
     let description: String
     @Binding var text: String?
     @State private var placeholder: String
-    
+
     init(description: String, text: Binding<String?>) {
         self.description = description
-        self._text = text
-        self._placeholder = State(initialValue: text.wrappedValue ?? "")
+        _text = text
+        _placeholder = State(initialValue: text.wrappedValue ?? "")
     }
-    
+
     var body: some View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
                     Text(description)
                         .font(.system(size: 15, weight: .bold))
-                    
+
                     Text("Optional<String>")
                         .font(.system(size: 13, weight: .regular))
                 }
-                
+
                 Spacer()
-                
+
                 Toggle(
                     "",
                     isOn: Binding(
@@ -47,7 +47,7 @@ struct OptionalStringOptionView: View {
                 .tint(.secondary)
                 .labelsHidden()
             }
-            
+
             TextField(
                 "",
                 text: Binding(
@@ -66,7 +66,7 @@ struct OptionalStringOptionView: View {
             .disabled(text == nil)
         }
     }
-    
+
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }

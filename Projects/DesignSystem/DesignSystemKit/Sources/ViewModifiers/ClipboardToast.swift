@@ -27,15 +27,15 @@ private struct ClipboardToastModifier: ViewModifier {
     var urlString: String
     var saveAction: () -> Void
     let duration: CGFloat = 2
-    
+
     func body(content: Content) -> some View {
         ZStack {
             content
-            
+
             if isPresented {
                 VStack {
                     Spacer()
-                    
+
                     LKClipboardToast(
                         urlString: urlString,
                         saveAction: saveAction,
@@ -49,7 +49,7 @@ private struct ClipboardToastModifier: ViewModifier {
             }
         }
     }
-    
+
     private func showToast() {
         guard isPresented else { return }
         workItem?.cancel()
@@ -57,7 +57,7 @@ private struct ClipboardToastModifier: ViewModifier {
         workItem = task
         DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: task)
     }
-    
+
     private func hideToast() {
         withAnimation { isPresented = false }
         workItem?.cancel()

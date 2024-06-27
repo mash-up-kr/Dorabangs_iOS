@@ -14,17 +14,17 @@ import TCACoordinators
 
 public struct AppCoordinatorView: View {
     private let store: StoreOf<AppCoordinator>
-    
+
     public init(store: StoreOf<AppCoordinator>) {
         self.store = store
     }
-    
+
     public var body: some View {
         TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
             switch screen.case {
             case let .splash(store):
                 SplashView(store: store)
-                
+
             case let .tabCoordinator(store):
                 TabCoordinatorView(store: store)
             }

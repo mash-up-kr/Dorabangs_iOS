@@ -13,26 +13,26 @@ struct OptionalIntOptionView: View {
     private let description: String
     @Binding private var value: Int?
     @State private var placeholder: Int?
-    
+
     init(description: String, value: Binding<Int?>) {
         self.description = description
-        self._value = value
-        self._placeholder = State(initialValue: value.wrappedValue)
+        _value = value
+        _placeholder = State(initialValue: value.wrappedValue)
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(description)
                         .font(.system(size: 15, weight: .bold))
-                    
+
                     Text("Optional<Int>")
                         .font(.system(size: 13, weight: .regular))
                 }
-                
+
                 Spacer()
-                
+
                 Toggle(
                     "",
                     isOn: Binding(
@@ -45,9 +45,9 @@ struct OptionalIntOptionView: View {
                 .tint(.secondary)
                 .labelsHidden()
             }
-            
+
             Spacer()
-            
+
             TextField(
                 "",
                 value: Binding(

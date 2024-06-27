@@ -1,5 +1,5 @@
 //
-//  popup.swift
+//  Popup.swift
 //  DesignSystemKit
 //
 //  Created by 김영균 on 6/21/24.
@@ -9,14 +9,14 @@
 import SwiftUI
 
 public extension View {
-    func popup<Content: View>(
+    func popup(
         isPresented: Binding<Bool>,
         isDimmed: Bool = true,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: @escaping () -> some View
     ) -> some View {
         ZStack {
             self
-            
+
             if isDimmed {
                 DesignSystemKitAsset.Colors.dimmed.swiftUIColor
                     .ignoresSafeArea(.container)
@@ -24,7 +24,7 @@ public extension View {
                         content.opacity(isPresented.wrappedValue ? 1 : 0)
                     }
             }
-            
+
             if isPresented.wrappedValue {
                 content()
             }

@@ -9,19 +9,19 @@
 import SwiftUI
 
 public extension View {
-    func modal<Content: View>(
+    func modal(
         isPresented: Binding<Bool>,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: @escaping () -> some View
     ) -> some View {
         ZStack {
             self
-            
+
             GeometryReader { geometry in
                 if isPresented.wrappedValue {
                     Group {
                         DesignSystemKitAsset.Colors.dimmed.swiftUIColor
                             .transition(.opacity)
-                        
+
                         content()
                             .position(
                                 x: geometry.size.width / 2,

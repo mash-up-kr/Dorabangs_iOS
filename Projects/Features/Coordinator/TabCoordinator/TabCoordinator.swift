@@ -17,7 +17,7 @@ public struct TabCoordinator {
         case home
         case folder
     }
-    
+
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State(
@@ -28,7 +28,7 @@ public struct TabCoordinator {
         var home: HomeCoordinator.State
         var folder: FolderCoordinator.State
         var selectedTab: Tab
-        
+
         public init(
             home: HomeCoordinator.State,
             folder: FolderCoordinator.State,
@@ -39,15 +39,15 @@ public struct TabCoordinator {
             self.selectedTab = selectedTab
         }
     }
-    
+
     public enum Action {
         case home(HomeCoordinator.Action)
         case folder(FolderCoordinator.Action)
         case tabSelected(Tab)
     }
-    
+
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
         Scope(state: \.home, action: \.home) {
             HomeCoordinator()
@@ -59,10 +59,10 @@ public struct TabCoordinator {
             switch action {
             case .home:
                 return .none
-                
+
             case .folder:
                 return .none
-                
+
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 return .none

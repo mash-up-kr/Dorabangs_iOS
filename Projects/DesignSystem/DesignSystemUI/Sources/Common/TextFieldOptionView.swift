@@ -12,15 +12,15 @@ import SwiftUI
 struct TextFieldOptionView: View {
     let description: String
     @Binding var text: String
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text(description)
                 .font(.system(size: 15, weight: .bold))
-            
+
             Text("String")
                 .font(.system(size: 13, weight: .regular))
-            
+
             TextField("", text: $text)
                 .font(.system(size: 15, weight: .regular))
                 .padding(16)

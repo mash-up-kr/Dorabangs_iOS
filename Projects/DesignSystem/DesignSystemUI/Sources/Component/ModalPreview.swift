@@ -15,7 +15,7 @@ struct ModalPreview: View {
     @State private var content: String = "한 번 삭제한 링크는 다시 복구할 수 없어요.\n그래도 삭제하시겠어요?"
     @State private var leftButtonTitle: String = "취소"
     @State private var rightButtonTitle: String = "삭제"
-    
+
     var body: some View {
         ComponentPreview(
             component: modal,
@@ -30,7 +30,7 @@ struct ModalPreview: View {
         .toolbar { Button("Preview") { isPresented.toggle() }}
         .modal(isPresented: $isPresented, content: modal)
     }
-    
+
     @ViewBuilder
     func modal() -> some View {
         LKModal(

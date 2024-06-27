@@ -14,7 +14,7 @@ public struct LKTabBarItem<SelectionValue: Hashable>: Identifiable {
     public let title: String
     public let image: Image
     public let selectedImage: Image
-    
+
     public init(tag: SelectionValue, title: String, image: Image, selectedImage: Image) {
         self.tag = tag
         self.title = title
