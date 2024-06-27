@@ -39,10 +39,6 @@ struct ContentView: View {
     var componentPreviews: some View {
         NavigationLink("Modal") { ModalPreview() }
         NavigationLink("TextField Popup") { TextFieldPopupPreview() }
-    }
-    
-    @ViewBuilder
-    var componentPreviews: some View {
         NavigationLink("TabBar") { TabBarPreview() }
         NavigationLink("Toast") { ToastPreview() }
     }
