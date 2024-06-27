@@ -27,7 +27,18 @@ extension Target {
 		mergeable: Bool = false
 	) -> Target {
 		let dependencies = dependencies.map { $0.asTargetDependency() }
-		
+		let scripts = scripts + [
+			.pre(
+				path: .relativeToRoot("ci_scripts/swiftlint.sh"),
+				name: "SwiftLint",
+				basedOnDependencyAnalysis: false
+			),
+			.pre(
+				path: .relativeToRoot("ci_scripts/swiftformat.sh"),
+				name: "SwiftFormat",
+				basedOnDependencyAnalysis: false
+			)
+		]
 		return .target(
 			name: name,
 			destinations: destinations,
