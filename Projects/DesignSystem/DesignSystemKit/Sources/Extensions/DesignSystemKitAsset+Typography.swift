@@ -96,8 +96,8 @@ public extension DesignSystemKitAsset.Typography.Semantic {
         case .h5, .h6: return ._38
         case .title: return ._34
         case .subtitle1, .subtitle2: return ._26
-        case .base1, .base2: return ._24
-        case .caption3, .caption2, .caption1: return ._22
+        case .base1, .base2, .caption3: return ._24
+        case .caption2, .caption1: return ._22
         case .s, .xs: return ._14
         }
     }
