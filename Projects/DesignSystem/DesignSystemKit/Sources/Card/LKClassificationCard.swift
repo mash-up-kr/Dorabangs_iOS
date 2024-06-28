@@ -14,6 +14,7 @@ public struct LKClassificationCard: View {
     private let tags: [String]
     private let category: String?
     private let timeSince: String?
+    private let buttonTitle: String
     private let deleteAction: () -> Void
     private let moveToFolderAction: () -> Void
     
@@ -23,6 +24,7 @@ public struct LKClassificationCard: View {
         tags: [String],
         category: String?,
         timeSince: String?,
+        buttonTitle: String,
         deleteAction: @escaping () -> Void,
         moveToFolderAction: @escaping () -> Void
     ) {
@@ -31,6 +33,7 @@ public struct LKClassificationCard: View {
         self.tags = tags
         self.category = category
         self.timeSince = timeSince
+        self.buttonTitle = buttonTitle
         self.deleteAction = deleteAction
         self.moveToFolderAction = moveToFolderAction
     }
@@ -40,9 +43,8 @@ public struct LKClassificationCard: View {
             HStack(spacing: 0) {
                 Spacer()
                 
-                // TODO: 닫기 버튼으로 변경~
                 Button(action: deleteAction) {
-                    Text("x")
+                    Image(.icCloseCircle)
                         .font(weight: .medium, semantic: .caption1)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
                 }
@@ -56,7 +58,6 @@ public struct LKClassificationCard: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(title ?? "")
                         .font(weight: .bold, semantic: .caption3)
-                        .background(Color.green)
                         .lineLimit(2)
                     
                     HStack(spacing: 4) {
@@ -79,7 +80,7 @@ public struct LKClassificationCard: View {
                 }
                 
                 VStack(spacing: 0) {
-                    Color.pink
+                    DesignSystemKitAsset.Colors.g2.swiftUIColor
                         .frame(width: 65, height: 65)
                     
                     Spacer()
@@ -101,15 +102,14 @@ public struct LKClassificationCard: View {
                 .frame(height: 16)
             
             HStack(spacing: 8) {
-                // TODO: 카테고리, 몇 일 전인지 표시
-                Text("Category")
+                Text(category ?? "")
                     .font(weight: .regular, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
                 
-                Color.pink
+                Image(.icEclipse)
                     .frame(width: 2, height: 2)
                 
-                Text("몇 일 전~")
+                Text(timeSince ?? "")
                     .font(weight: .regular, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
                 
@@ -120,12 +120,13 @@ public struct LKClassificationCard: View {
                 .frame(height: 20)
             
             Button(action: moveToFolderAction) {
-                Text("디자인으로 옮기기~")
+                Text(buttonTitle)
                     .font(weight: .medium, semantic: .caption1)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
             }
             .frame(height: 36)
         }
         .padding(20)
+        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
 }

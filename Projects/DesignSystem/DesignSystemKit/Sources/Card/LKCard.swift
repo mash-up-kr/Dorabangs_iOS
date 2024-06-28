@@ -12,8 +12,8 @@ public struct LKCard: View {
     private let title: String?
     private let description: String?
     private let tags: [String]
-    private let category: String?
-    private let timeSince: String?
+    private let category: String
+    private let timeSince: String
     private let bookMarkAction: () -> Void
     private let showModalAction: () -> Void
     
@@ -21,8 +21,8 @@ public struct LKCard: View {
         title: String?,
         description: String?,
         tags: [String],
-        category: String?,
-        timeSince: String?,
+        category: String,
+        timeSince: String,
         bookMarkAction: @escaping () -> Void,
         showModalAction: @escaping () -> Void
     ) {
@@ -37,7 +37,7 @@ public struct LKCard: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 13) {
+            HStack(alignment: .top, spacing: 13) {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(title ?? "")
                         .font(weight: .bold, semantic: .caption3)
@@ -62,10 +62,8 @@ public struct LKCard: View {
                 }
                 
                 VStack(spacing: 0) {
-                    Color.pink
+                    DesignSystemKitAsset.Colors.g2.swiftUIColor
                         .frame(width: 65, height: 65)
-                    
-                    Spacer()
                 }
             }
             
@@ -85,15 +83,14 @@ public struct LKCard: View {
             
             HStack {
                 HStack(spacing: 8) {
-                    // TODO: 카테고리, 몇 일 전인지 표시
-                    Text("Category")
+                    Text(category)
                         .font(weight: .regular, semantic: .xs)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
                     
                     Image(.icEclipse)
                         .frame(width: 2, height: 2)
                     
-                    Text("몇 일 전~")
+                    Text(timeSince)
                         .font(weight: .regular, semantic: .xs)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
                     
@@ -116,5 +113,6 @@ public struct LKCard: View {
             }
         }
         .padding(20)
+        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
 }
