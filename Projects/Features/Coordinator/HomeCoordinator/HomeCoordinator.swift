@@ -19,7 +19,7 @@ public enum HomeScreen {
 public struct HomeCoordinator {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(routes: [.root(.home(.initialState), embedInNavigationView: true)])
+        public static let initialState = State(routes: [.root(.home(.initialState), embedInNavigationView: false)])
         var routes: [Route<HomeScreen.State>]
         
         public init(routes: [Route<HomeScreen.State>]) {
