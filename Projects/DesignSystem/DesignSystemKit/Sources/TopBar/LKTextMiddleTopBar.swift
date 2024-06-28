@@ -25,8 +25,7 @@ public struct LKTextMiddleTopBar: View {
     
     public var body: some View {
         HStack(spacing: 16) {
-            // TODO: 뒤로 가기 이미지로 수정
-            Color.pink
+            Image(.icChevron)
                 .frame(width: 24, height: 24)
             
             Spacer()

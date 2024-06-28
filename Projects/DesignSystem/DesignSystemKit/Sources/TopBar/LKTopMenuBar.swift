@@ -24,8 +24,7 @@ public struct LKTopMenuBar: View {
             Spacer()
             
             Button(action: action) {
-                // TODO: + 버튼으로 변경 필요
-                Text("+")
+                Image(.icAdd)
             }
             .frame(width: 24, height: 24)
         }

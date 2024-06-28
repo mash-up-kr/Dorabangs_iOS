@@ -60,8 +60,7 @@ public struct LKClassificationCard: View {
                         .lineLimit(2)
                     
                     HStack(spacing: 4) {
-                        // TODO: 반짝 이미지로 변경
-                        Color.pink
+                        Image(.icEclipse)
                             .frame(width: 12, height: 16)
                         
                         // TODO: Constants로 변경~
