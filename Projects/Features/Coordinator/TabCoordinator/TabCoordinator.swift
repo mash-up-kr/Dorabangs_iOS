@@ -7,7 +7,7 @@
 //
 
 import ComposableArchitecture
-import FolderCoordinator
+import StorageBoxCoordinator
 import HomeCoordinator
 import TCACoordinators
 
@@ -15,34 +15,34 @@ import TCACoordinators
 public struct TabCoordinator {
     public enum Tab: Hashable {
         case home
-        case folder
+        case storageBox
     }
 
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State(
             home: .initialState,
-            folder: .initialState,
+            storageBox: .initialState,
             selectedTab: .home
         )
         var home: HomeCoordinator.State
-        var folder: FolderCoordinator.State
+        var storageBox: StorageBoxCoordinator.State
         var selectedTab: Tab
 
         public init(
             home: HomeCoordinator.State,
-            folder: FolderCoordinator.State,
+            storageBox: StorageBoxCoordinator.State,
             selectedTab: Tab
         ) {
             self.home = home
-            self.folder = folder
+            self.storageBox = storageBox
             self.selectedTab = selectedTab
         }
     }
 
     public enum Action {
         case home(HomeCoordinator.Action)
-        case folder(FolderCoordinator.Action)
+        case storageBox(StorageBoxCoordinator.Action)
         case tabSelected(Tab)
     }
 
@@ -52,15 +52,15 @@ public struct TabCoordinator {
         Scope(state: \.home, action: \.home) {
             HomeCoordinator()
         }
-        Scope(state: \.folder, action: \.folder) {
-            FolderCoordinator()
+        Scope(state: \.storageBox, action: \.storageBox) {
+            StorageBoxCoordinator()
         }
         Reduce { state, action in
             switch action {
             case .home:
                 return .none
 
-            case .folder:
+            case .storageBox:
                 return .none
 
             case let .tabSelected(tab):

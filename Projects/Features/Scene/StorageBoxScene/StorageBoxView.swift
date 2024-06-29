@@ -17,7 +17,7 @@ public struct StorageBoxView: View {
     }
 
     public var body: some View {
-        Text("Folder View")
+        Text("StorageBox View")
             .onAppear { store.send(.onAppear) }
     }
 }

@@ -1,33 +1,33 @@
 //
-//  FolderCoordinator.swift
-//  FolderCoordinator
+//  StorageBoxCoordinator.swift
+//  StorageBoxCoordinator
 //
 //  Created by 김영균 on 6/14/24.
 //
 
 import ComposableArchitecture
-import Folder
+import StorageBox
 import TCACoordinators
 
 @Reducer(state: .equatable)
-public enum FolderScreen {
-    case folder(Folder)
+public enum StorageBoxScreen {
+    case storageBox(StorageBox)
 }
 
 @Reducer
-public struct FolderCoordinator {
+public struct StorageBoxCoordinator {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(routes: [.root(.folder(.initialState), embedInNavigationView: true)])
-        var routes: [Route<FolderScreen.State>]
+        public static let initialState = State(routes: [.root(.storageBox(.initialState), embedInNavigationView: true)])
+        var routes: [Route<StorageBoxScreen.State>]
 
-        public init(routes: [Route<FolderScreen.State>]) {
+        public init(routes: [Route<StorageBoxScreen.State>]) {
             self.routes = routes
         }
     }
 
     public enum Action {
-        case router(IndexedRouterActionOf<FolderScreen>)
+        case router(IndexedRouterActionOf<StorageBoxScreen>)
     }
 
     public init() {}

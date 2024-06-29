@@ -18,11 +18,11 @@ public enum Coordinator: String {
 	case app = "AppCoordinator"
 	case tab = "TabCoordinator"
 	case home = "HomeCoordinator"
-	case folder = "FolderCoordinator"
+	case storageBox = "StorageBoxCoordinator"
 }
 
 public enum Scene: String {
-	case folder = "Folder"
+	case storageBox = "StorageBox"
 	case home = "Home"
 	case splash = "Splash"
 	case web = "Web"

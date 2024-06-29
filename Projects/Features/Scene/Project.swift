@@ -24,10 +24,10 @@ let project = Project.make(
             ]
         ),
         .make(
-            name: "Folder",
+            name: "StorageBox",
             product: .staticLibrary,
-            bundleId: "com.mashup.dorabangs.folder",
-            sources: ["FolderScene/**"],
+            bundleId: "com.mashup.dorabangs.storageBox",
+            sources: ["StorageBoxScene/**"],
             dependencies: [
                 .spm(.composableArchitecture)
             ]

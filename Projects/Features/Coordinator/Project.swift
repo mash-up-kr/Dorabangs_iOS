@@ -22,7 +22,7 @@ let project = Project.make(
             sources: ["TabCoordinator/**"],
             dependencies: [
                 .coordinator(.home),
-                .coordinator(.folder),
+                .coordinator(.storageBox),
                 .spm(.tcaCoordinators),
                 .designSystem
             ]
@@ -38,12 +38,12 @@ let project = Project.make(
             ]
         ),
         .make(
-            name: "FolderCoordinator",
+            name: "StorageBoxCoordinator",
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.homeCoordinator",
-            sources: ["FolderCoordinator/**"],
+            sources: ["StorageBoxCoordinator/**"],
             dependencies: [
-                .scene(.folder),
+                .scene(.storageBox),
                 .spm(.tcaCoordinators)
             ]
         )

@@ -8,7 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
-import FolderCoordinator
+import StorageBoxCoordinator
 import HomeCoordinator
 import SwiftUI
 
@@ -26,8 +26,8 @@ public struct TabCoordinatorView: View {
                 HomeCoordinatorView(store: store.scope(state: \.home, action: \.home))
                     .tag(TabCoordinator.Tab.home)
 
-                FolderCoordinatorView(store: store.scope(state: \.folder, action: \.folder))
-                    .tag(TabCoordinator.Tab.folder)
+                StorageBoxCoordinatorView(store: store.scope(state: \.storageBox, action: \.storageBox))
+                    .tag(TabCoordinator.Tab.storageBox)
             },
             tabItems: [
                 LKTabBarItem(
@@ -37,7 +37,7 @@ public struct TabCoordinatorView: View {
                     selectedImage: DesignSystemKitAsset.Icons.icHomeFilled.swiftUIImage
                 ),
                 LKTabBarItem(
-                    tag: .folder,
+                    tag: .storageBox,
                     title: "보관함",
                     image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
                     selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
