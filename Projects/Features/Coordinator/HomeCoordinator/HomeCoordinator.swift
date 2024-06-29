@@ -8,11 +8,13 @@
 
 import ComposableArchitecture
 import Home
+import SaveURLCoordinator
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum HomeScreen {
     case home(Home)
+    case saveURLCoordinator(SaveURLCoordinator)
 }
 
 @Reducer
@@ -34,10 +36,18 @@ public struct HomeCoordinator {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _, action: .home(.addLinkButtonTapped))):
+                state.routes.push(.saveURLCoordinator(.initialState))
+                return .none
+
+            case .router(.routeAction(id: _, action: .saveURLCoordinator(.goBackToHome))):
+                state.routes.goBack()
+                return .none
+
             default:
-                .none
+                return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)
