@@ -29,7 +29,8 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.storageBox",
             sources: ["StorageBoxScene/**"],
             dependencies: [
-                .spm(.composableArchitecture)
+                .spm(.composableArchitecture),
+                .designSystem
             ]
         ),
         .make(
