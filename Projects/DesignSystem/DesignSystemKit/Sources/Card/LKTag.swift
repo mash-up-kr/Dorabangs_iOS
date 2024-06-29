@@ -10,11 +10,11 @@ import SwiftUI
 
 public struct LKTag: View {
     private let tag: String
-    
+
     public init(_ tag: String) {
         self.tag = tag
     }
-    
+
     public var body: some View {
         Text(tag)
             .font(weight: .bold, semantic: .xs)

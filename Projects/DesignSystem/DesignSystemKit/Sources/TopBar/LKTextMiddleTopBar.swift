@@ -12,7 +12,7 @@ public struct LKTextMiddleTopBar: View {
     private let title: String?
     private let rightButtonEnabled: Bool?
     private let action: () -> Void
-    
+
     public init(
         title: String? = nil,
         rightButtonEnabled: Bool? = false,
@@ -22,22 +22,22 @@ public struct LKTextMiddleTopBar: View {
         self.rightButtonEnabled = rightButtonEnabled
         self.action = action
     }
-    
+
     public var body: some View {
         HStack(spacing: 16) {
             Image(.icChevron)
                 .frame(width: 24, height: 24)
-            
+
             Spacer()
-            
-            if let title = title {
+
+            if let title {
                 Text(title)
                     .font(weight: .bold, semantic: .base1)
             }
-            
+
             Spacer()
-            
-            if let rightButtonEnabled = rightButtonEnabled, rightButtonEnabled {
+
+            if let rightButtonEnabled, rightButtonEnabled {
                 Button(action: action) {
                     // TODO: ... 버튼으로 변경
                     Text("..")

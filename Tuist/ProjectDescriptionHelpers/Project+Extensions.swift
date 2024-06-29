@@ -17,6 +17,7 @@ extension Project {
 				textSettings: .textSettings(usesTabs: false, indentWidth: 4, tabWidth: 4)
 			),
 			packages: packages,
+			settings: .settings(base: ["IPHONEOS_DEPLOYMENT_TARGET": "15.0"]),
 			targets: targets,
 			schemes: schemes,
 			additionalFiles: additionalFiles,

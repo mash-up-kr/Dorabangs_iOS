@@ -43,11 +43,11 @@ private struct ColorRowView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(color.name)
-                    .font(.system(.title3, weight: .bold))
+                    .font(.system(.title3).bold())
                     .foregroundStyle(.primary)
 
                 Text(color.color.toHex() ?? "")
-                    .font(.system(.caption, weight: .regular))
+                    .font(.system(.caption))
                     .foregroundStyle(.secondary)
             }
         }

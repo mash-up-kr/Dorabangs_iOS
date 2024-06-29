@@ -17,7 +17,9 @@ public struct StorageBoxView: View {
     }
 
     public var body: some View {
-        Text("StorageBox View")
-            .onAppear { store.send(.onAppear) }
+        WithPerceptionTracking {
+            Text("StorageBox View")
+                .onAppear { store.send(.onAppear) }
+        }
     }
 }

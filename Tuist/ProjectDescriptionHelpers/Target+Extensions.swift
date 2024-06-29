@@ -8,7 +8,7 @@ extension Target {
 		product: Product,
 		productName: String? = nil,
 		bundleId: String,
-		deploymentTargets: DeploymentTargets? = .iOS("17.0"),
+		deploymentTargets: DeploymentTargets? = .iOS("15.0"),
 		infoPlist: InfoPlist? = .default,
 		sources: SourceFilesList,
 		resources: ResourceFileElements? = nil,

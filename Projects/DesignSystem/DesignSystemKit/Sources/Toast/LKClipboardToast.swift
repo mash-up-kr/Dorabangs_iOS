@@ -77,5 +77,5 @@ public struct LKClipboardToast: View {
         saveAction: {},
         closeAction: {}
     )
-    .safeAreaPadding(.horizontal, 20)
+    .padding(.horizontal, 20)
 }

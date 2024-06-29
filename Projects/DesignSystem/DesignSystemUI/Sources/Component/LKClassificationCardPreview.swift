@@ -16,7 +16,7 @@ struct LKClassificationCardPreview: View {
     @State private var category: String = "Category"
     @State private var timeSince: String = "1일 전"
     @State private var buttonTitle: String = "디자인(으)로 옮기기"
-    
+
     var body: some View {
         ComponentPreview(
             component: {
@@ -25,7 +25,7 @@ struct LKClassificationCardPreview: View {
                     description: description,
                     tags: tags,
                     category: category,
-                    timeSince: timeSince, 
+                    timeSince: timeSince,
                     buttonTitle: buttonTitle,
                     deleteAction: {},
                     moveToFolderAction: {}

@@ -20,13 +20,15 @@ public struct AppCoordinatorView: View {
     }
 
     public var body: some View {
-        TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-            switch screen.case {
-            case let .splash(store):
-                SplashView(store: store)
+        WithPerceptionTracking {
+            TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
+                switch screen.case {
+                case let .splash(store):
+                    SplashView(store: store)
 
-            case let .tabCoordinator(store):
-                TabCoordinatorView(store: store)
+                case let .tabCoordinator(store):
+                    TabCoordinatorView(store: store)
+                }
             }
         }
     }

@@ -18,10 +18,12 @@ public struct StorageBoxCoordinatorView: View {
     }
 
     public var body: some View {
-        TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-            switch screen.case {
-            case let .storageBox(store):
-                StorageBoxView(store: store)
+        WithPerceptionTracking {
+            TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
+                switch screen.case {
+                case let .storageBox(store):
+                    StorageBoxView(store: store)
+                }
             }
         }
     }

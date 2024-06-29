@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 public extension View {
     func font(
@@ -22,9 +23,12 @@ private struct FontStyle: ViewModifier {
     var semantic: DesignSystemKitAsset.Typography.Semantic
 
     func body(content: Content) -> some View {
+        let font = nanumSqureNeo().with(weight: weight.uikitFontWeight)
+
         content
-            .lineHeight(semantic.lineHeight.rawValue, for: nanumSqureNeo())
-            .fontWeight(weight.swiftUIFontWeight)
+            .font(Font(font))
+            .lineSpacing(semantic.lineHeight.rawValue - font.lineHeight)
+            .padding(.vertical, (semantic.lineHeight.rawValue - font.lineHeight) / 2)
     }
 
     func nanumSqureNeo() -> UIFont {
@@ -33,5 +37,19 @@ private struct FontStyle: ViewModifier {
             fatalError("Call DesignSystemKitAsset.Typography.registerFont() at App init")
         }
         return font
+    }
+}
+
+extension UIFont {
+    /// Returns a font object that is the same as the receiver but which has the specified weight and symbolic traits
+    func with(weight: Weight) -> UIFont {
+        var traits = fontDescriptor.fontAttributes[.traits] as? [String: Any] ?? [:]
+        traits[kCTFontWeightTrait as String] = weight
+
+        var fontAttributes: [UIFontDescriptor.AttributeName: Any] = [:]
+        fontAttributes[.family] = familyName
+        fontAttributes[.traits] = traits
+
+        return UIFont(descriptor: UIFontDescriptor(fontAttributes: fontAttributes), size: pointSize)
     }
 }

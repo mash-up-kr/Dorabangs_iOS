@@ -15,7 +15,7 @@ struct LKCardPreview: View {
     @State private var tags: [String] = ["# 에스파", "# SM", "# 오에이옹에이옹"]
     @State private var category: String = "Category"
     @State private var timeSince: String = "1일 전"
-    
+
     var body: some View {
         ComponentPreview(
             component: {

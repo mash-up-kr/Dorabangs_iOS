@@ -51,13 +51,37 @@ private struct OptionPicker: View {
         }
         .tint(.primary)
         .sheet(isPresented: $isPresented) {
-            Picker("", selection: $selectedIndex) {
-                ForEach(0 ..< cases.count, id: \.self) { index in
-                    Text(cases[index]).tag(index)
+            HalfSheet {
+                Picker("", selection: $selectedIndex) {
+                    ForEach(0 ..< cases.count, id: \.self) { index in
+                        Text(cases[index]).tag(index)
+                    }
                 }
+                .pickerStyle(.wheel)
             }
-            .pickerStyle(.wheel)
-            .presentationDetents([.height(200)])
+        }
+    }
+}
+
+private struct HalfSheet<Content: View>: UIViewControllerRepresentable {
+    private let content: Content
+
+    @inlinable init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    func makeUIViewController(context _: Context) -> HalfSheetController<Content> {
+        HalfSheetController(rootView: content)
+    }
+
+    func updateUIViewController(_: HalfSheetController<Content>, context _: Context) {}
+}
+
+private final class HalfSheetController<Content>: UIHostingController<Content> where Content: View {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let presentation = sheetPresentationController {
+            presentation.detents = [.medium()]
         }
     }
 }

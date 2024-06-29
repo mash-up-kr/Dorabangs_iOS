@@ -119,6 +119,14 @@ public extension DesignSystemKitAsset.Typography.Weight {
         case .bold: .bold
         }
     }
+
+    var value: CGFloat {
+        switch self {
+        case .regular: 400
+        case .medium: 500
+        case .bold: 700
+        }
+    }
 }
 
 public extension DesignSystemKitAsset.Typography {
