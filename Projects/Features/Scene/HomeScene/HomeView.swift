@@ -41,7 +41,7 @@ public struct HomeView: View {
                                     showModalAction: { store.send(.showModalButtonTapped(index)) }
                                 )
                                 .onAppear {
-                                    if (index % 9 == 0) {
+                                    if index % 9 == 0 {
                                         store.send(.fetchData)
                                     }
                                 }
