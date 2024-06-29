@@ -1,15 +1,15 @@
 //
-//  StorageBox.swift
-//  StorageBox
+//  File.swift
+//  Home
 //
-//  Created by 김영균 on 6/13/24.
+//  Created by 박소현 on 6/29/24.
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
 import ComposableArchitecture
 
 @Reducer
-public struct StorageBox {
+public struct Feed {
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State()
@@ -18,19 +18,17 @@ public struct StorageBox {
 
     public enum Action {
         case onAppear
-        case storageBoxTapped
     }
 
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { state, action in
+        Reduce { _, action in
             switch action {
-            case .storageBoxTapped:
-                return .none
             case .onAppear:
                 return .none
             }
         }
     }
 }
+

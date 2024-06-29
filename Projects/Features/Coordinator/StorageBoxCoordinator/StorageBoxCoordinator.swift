@@ -8,10 +8,12 @@
 import ComposableArchitecture
 import StorageBox
 import TCACoordinators
+import FeedCoordinator
 
 @Reducer(state: .equatable)
 public enum StorageBoxScreen {
     case storageBox(StorageBox)
+    case feed(FeedCoordinator)
 }
 
 @Reducer
@@ -33,10 +35,13 @@ public struct StorageBoxCoordinator {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _, action: .storageBox(.storageBoxTapped))):
+                state.routes.push(.feed(.initialState))
+                return .none
             default:
-                .none
+                return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)

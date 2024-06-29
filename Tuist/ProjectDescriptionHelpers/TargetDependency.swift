@@ -19,6 +19,7 @@ public enum Coordinator: String {
 	case tab = "TabCoordinator"
 	case home = "HomeCoordinator"
 	case storageBox = "StorageBoxCoordinator"
+    case feed = "FeedCoordinator"
 }
 
 public enum Scene: String {
@@ -26,6 +27,7 @@ public enum Scene: String {
 	case home = "Home"
 	case splash = "Splash"
 	case web = "Web"
+    case feed = "Feed"
 }
 
 public enum SPM: String {

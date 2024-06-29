@@ -9,6 +9,7 @@ import ComposableArchitecture
 import StorageBox
 import SwiftUI
 import TCACoordinators
+import FeedCoordinator
 
 public struct StorageBoxCoordinatorView: View {
     private let store: StoreOf<StorageBoxCoordinator>
@@ -23,6 +24,8 @@ public struct StorageBoxCoordinatorView: View {
                 switch screen.case {
                 case let .storageBox(store):
                     StorageBoxView(store: store)
+                case let .feed(store):
+                    FeedCoordinatorView(store: store)
                 }
             }
         }

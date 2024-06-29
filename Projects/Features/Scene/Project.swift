@@ -34,6 +34,16 @@ let project = Project.make(
             ]
         ),
         .make(
+            name: "Feed",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.feed",
+            sources: ["FeedScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
+        ),
+        .make(
             name: "Web",
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.web",

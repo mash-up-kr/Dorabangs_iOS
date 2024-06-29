@@ -58,6 +58,7 @@ public struct StorageBoxView: View {
                             storageBoxList: defaultFolders,
                             onSelect: { index in
                                 print("tap defaultFolders \(index) ")
+                                store.send(.storageBoxTapped)
                             })
                         StorageBoxSection(
                             storageBoxList: customFolders,
