@@ -10,18 +10,18 @@ import SwiftUI
 
 public struct LKTextFieldPopup: View {
     private let headerText: String?
-    
+
     @Binding private var text: String
     private let fieldText: String?
     private let placeholder: String?
     private let helperText: String?
     private let textLimit: Int?
     private let isWarning: Bool
-    
-    private let onCancel : () -> Void
+
+    private let onCancel: () -> Void
     private let confirmText: String
     private let onConfirm: () -> Void
-    
+
     public init(
         headerText: String?,
         text: Binding<String>,
@@ -35,7 +35,7 @@ public struct LKTextFieldPopup: View {
         onConfirm: @escaping () -> Void
     ) {
         self.headerText = headerText
-        self._text = text
+        _text = text
         self.fieldText = fieldText
         self.placeholder = placeholder
         self.helperText = helperText
@@ -45,16 +45,16 @@ public struct LKTextFieldPopup: View {
         self.confirmText = confirmText
         self.onConfirm = onConfirm
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             if let headerText {
                 HeaderLabel(headerText: headerText)
             }
-            
+
             Spacer()
                 .frame(height: 22)
-            
+
             LKTextField(
                 text: $text,
                 fieldText: fieldText,
@@ -65,10 +65,10 @@ public struct LKTextFieldPopup: View {
             )
             .submitLabel(.done)
             .onSubmit(onConfirm)
-            
+
             Spacer()
                 .frame(height: 14)
-            
+
             HStack(spacing: 8) {
                 RoundedCornersButton(
                     title: "닫기",
@@ -91,13 +91,13 @@ public struct LKTextFieldPopup: View {
 
 private struct HeaderLabel: View {
     let headerText: String
-    
+
     private enum Layout {
         static let headerLabelHeight: CGFloat = 24
         static let horizontalPadding: CGFloat = 20
         static let verticalPadding: CGFloat = 12
     }
-    
+
     var body: some View {
         Text(headerText)
             .font(weight: .bold, semantic: .base1)
@@ -122,4 +122,3 @@ private struct HeaderLabel: View {
         onConfirm: {}
     )
 }
-

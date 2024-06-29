@@ -14,22 +14,22 @@ struct PickerOptionView: View {
     private let cases: [Any]
     private let typeName: String
     @Binding private var selectedIndex: Int
-    
+
     init(description: String, cases: [Any], selectedIndex: Binding<Int>) {
         self.description = description
         self.cases = cases
-        self.typeName = cases.isEmpty ? "" : "\(Mirror(reflecting: cases[0]).subjectType)"
-        self._selectedIndex = selectedIndex
+        typeName = cases.isEmpty ? "" : "\(Mirror(reflecting: cases[0]).subjectType)"
+        _selectedIndex = selectedIndex
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text(description)
                 .font(.system(size: 15, weight: .bold))
-            
+
             Text("Picker")
                 .font(.system(size: 13, weight: .regular))
-            
+
             OptionPicker(cases: cases.map(String.init(describing:)), selectedIndex: $selectedIndex)
         }
     }
@@ -39,7 +39,7 @@ private struct OptionPicker: View {
     let cases: [String]
     @State private var isPresented = false
     @Binding var selectedIndex: Int
-    
+
     var body: some View {
         Button(action: { isPresented.toggle() }) {
             Text(cases[selectedIndex])
@@ -52,7 +52,7 @@ private struct OptionPicker: View {
         .tint(.primary)
         .sheet(isPresented: $isPresented) {
             Picker("", selection: $selectedIndex) {
-                ForEach(0..<cases.count, id:\.self) { index in
+                ForEach(0 ..< cases.count, id: \.self) { index in
                     Text(cases[index]).tag(index)
                 }
             }
@@ -61,4 +61,3 @@ private struct OptionPicker: View {
         }
     }
 }
-

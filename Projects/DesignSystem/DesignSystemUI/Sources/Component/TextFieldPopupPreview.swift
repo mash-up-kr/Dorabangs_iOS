@@ -20,7 +20,7 @@ struct TextFieldPopupPreview: View {
     @State private var isWarning: Bool = false
     @State private var confirmText: String = "만들기"
     @FocusState private var isFocused: Bool
-    
+
     var body: some View {
         ComponentPreview(
             component: popup,
@@ -31,15 +31,15 @@ struct TextFieldPopupPreview: View {
                 .optionalString(description: "helperText", text: $helperText),
                 .optionalInt(description: "textLimit", value: $textLimit),
                 .toggle(description: "isWarning", isOn: $isWarning),
-                .textField(description: "confirmText", text: $confirmText),
+                .textField(description: "confirmText", text: $confirmText)
             ]
         )
         .navigationTitle("TextFieldPopup")
         .toolbar { Button("Preview") { isPresented.toggle() }}
         .popup(isPresented: $isPresented, content: popup)
     }
-    
-    func popup() ->  some View {
+
+    func popup() -> some View {
         LKTextFieldPopup(
             headerText: headerText,
             text: $text,

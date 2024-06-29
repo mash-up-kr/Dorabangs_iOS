@@ -16,7 +16,7 @@ struct ActionSheetPreview: View {
     private var image: Image? {
         isImagePresented ? DesignSystemKitAsset.Icons.icCircleAlert.swiftUIImage : nil
     }
-    
+
     var body: some View {
         ComponentPreview(
             component: {
@@ -31,7 +31,6 @@ struct ActionSheetPreview: View {
             options: [
                 .textField(description: "title", text: $title),
                 .toggle(description: "image", isOn: $isImagePresented)
-                
             ]
         )
         .navigationTitle("ActionSheet")

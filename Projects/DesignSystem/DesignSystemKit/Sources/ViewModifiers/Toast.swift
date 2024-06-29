@@ -31,15 +31,15 @@ struct ToastModifier: ViewModifier {
     var type: LKToast.ToastType
     var message: String
     var duration: TimeInterval
-    
+
     func body(content: Content) -> some View {
         ZStack {
             content
-            
+
             if isPresented {
                 VStack {
                     Spacer()
-                    
+
                     LKToast(type: type, message: message)
                         .padding(.bottom, 20)
                 }

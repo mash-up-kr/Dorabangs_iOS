@@ -1,5 +1,5 @@
 //
-//  PreviewOption.swift
+//  Option.swift
 //  DesignSystemUI
 //
 //  Created by 김영균 on 6/19/24.
@@ -14,7 +14,7 @@ enum Option: View {
     case textField(description: String, text: Binding<String>)
     case optionalString(description: String, text: Binding<String?>)
     case optionalInt(description: String, value: Binding<Int?>)
-    
+
     @ViewBuilder
     var body: some View {
         switch self {
@@ -34,7 +34,7 @@ enum Option: View {
 
 struct OptionItem: View {
     let option: Option
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             option.body

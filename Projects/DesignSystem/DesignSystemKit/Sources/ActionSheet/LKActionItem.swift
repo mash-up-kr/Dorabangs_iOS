@@ -12,11 +12,12 @@ public struct LKActionItem {
     public enum Style {
         case `default`, destructive
     }
+
     let title: String
     let image: Image?
     let style: Style
     let action: (() -> Void)?
-    
+
     public init(
         title: String,
         image: Image? = nil,

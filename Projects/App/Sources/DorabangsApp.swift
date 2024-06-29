@@ -8,15 +8,15 @@
 
 import AppCoordinator
 import ComposableArchitecture
-import SwiftUI
 import DesignSystemKit
+import SwiftUI
 
 @main
 struct DorabangsApp: App {
     init() {
         try? DesignSystemKitAsset.Typography.registerFont()
     }
-    
+
     var body: some Scene {
         WindowGroup {
             AppCoordinatorView(

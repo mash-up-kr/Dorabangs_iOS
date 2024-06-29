@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-extension View {
-    public func shadow(
+public extension View {
+    func shadow(
         color: Color,
         blur: CGFloat,
         x: CGFloat,

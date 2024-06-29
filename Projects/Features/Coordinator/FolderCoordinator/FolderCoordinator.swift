@@ -20,23 +20,23 @@ public struct FolderCoordinator {
     public struct State: Equatable {
         public static let initialState = State(routes: [.root(.folder(.initialState), embedInNavigationView: true)])
         var routes: [Route<FolderScreen.State>]
-        
+
         public init(routes: [Route<FolderScreen.State>]) {
             self.routes = routes
         }
     }
-    
+
     public enum Action {
         case router(IndexedRouterActionOf<FolderScreen>)
     }
-    
+
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
-        Reduce { state, action in
+        Reduce { _, action in
             switch action {
             default:
-                return .none
+                .none
             }
         }
         .forEachRoute(\.routes, action: \.router)

@@ -17,7 +17,7 @@ struct ColorPreview: View {
         ("Opacity", DesignSystemKitAsset.Colors.opacity),
         ("Various", DesignSystemKitAsset.Colors.various)
     ]
-    
+
     var body: some View {
         PreviewList(title: "Color") {
             ForEach(sections, id: \.title) { section in
@@ -34,18 +34,18 @@ struct ColorPreview: View {
 
 private struct ColorRowView: View {
     let color: DesignSystemKitColors
-    
+
     var body: some View {
         HStack {
             Circle()
                 .fill(color.swiftUIColor)
                 .frame(width: 48, height: 48)
-            
+
             VStack(alignment: .leading, spacing: 8) {
                 Text(color.name)
                     .font(.system(.title3, weight: .bold))
                     .foregroundStyle(.primary)
-                
+
                 Text(color.color.toHex() ?? "")
                     .font(.system(.caption, weight: .regular))
                     .foregroundStyle(.secondary)
@@ -61,19 +61,19 @@ private extension UIColor {
         var green: CGFloat = 0
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
-        
-        guard self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
+
+        guard getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
             return nil
         }
-        
+
         if alpha == 1.0 {
-            let rgb: Int = (Int)(red * 255) << 16 | (Int)(green * 255) << 8 | (Int)(blue * 255) << 0
+            let rgb = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255) << 0
             return String(format: "#%06X", rgb)
         } else {
-            let rgba: Int = (Int)(red * 255) << 24 |
-            (Int)(green * 255) << 16 |
-            (Int)(blue * 255) << 8 |
-            (Int)(alpha * 255) << 0
+            let rgba = Int(red * 255) << 24 |
+                Int(green * 255) << 16 |
+                Int(blue * 255) << 8 |
+                Int(alpha * 255) << 0
             return String(format: "#%08X", rgba)
         }
     }

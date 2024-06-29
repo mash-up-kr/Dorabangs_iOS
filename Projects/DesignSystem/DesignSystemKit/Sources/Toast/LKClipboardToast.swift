@@ -20,6 +20,7 @@ public struct LKClipboardToast: View {
             .flatMap(\.windows)
             .first(where: \.isKeyWindow)
     }
+
     public init(
         urlString: String,
         saveAction: @escaping () -> Void,
@@ -29,7 +30,7 @@ public struct LKClipboardToast: View {
         self.saveAction = saveAction
         self.closeAction = closeAction
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 0) {
@@ -37,21 +38,21 @@ public struct LKClipboardToast: View {
                     .font(weight: .medium, semantic: .caption1)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                     .onTapGesture(perform: saveAction)
-                
+
                 DesignSystemKitAsset.Icons.icChevronRightS.swiftUIImage
                     .resizable()
                     .frame(width: 20, height: 20)
             }
-            
+
             HStack(alignment: .top, spacing: 0) {
                 Text(urlString)
                     .font(weight: .bold, semantic: .caption3)
                     .foregroundStyle(DesignSystemKitAsset.Colors.white.swiftUIColor)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
-                
+
                 Spacer()
-                
+
                 DesignSystemKitAsset.Icons.icCloseCircle.swiftUIImage
                     .resizable()
                     .frame(width: 24, height: 24)

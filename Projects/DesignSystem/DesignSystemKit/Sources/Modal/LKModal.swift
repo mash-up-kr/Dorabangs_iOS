@@ -15,7 +15,7 @@ public struct LKModal: View {
     private let leftButtonAction: () -> Void
     private let rightButtonTitle: String
     private let rightButtonAction: () -> Void
-    
+
     public init(
         title: String,
         content: String,
@@ -31,26 +31,26 @@ public struct LKModal: View {
         self.rightButtonTitle = rightButtonTitle
         self.rightButtonAction = rightButtonAction
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             Spacer().frame(height: 30)
-            
+
             Text(title)
                 .font(weight: .bold, semantic: .base1)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
                 .padding(.horizontal, 16)
-            
+
             Spacer().frame(height: 8)
-            
+
             Text(content)
                 .multilineTextAlignment(.center)
                 .frame(alignment: .center)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-            
+
             Spacer().frame(height: 30)
-            
+
             HStack(spacing: 8) {
                 RoundedCornersButton(title: leftButtonTitle, style: .solidGray, action: leftButtonAction)
                 RoundedCornersButton(title: rightButtonTitle, style: .solidBlack, action: rightButtonAction)
@@ -63,4 +63,3 @@ public struct LKModal: View {
         .cornerRadius(16, corners: .allCorners)
     }
 }
-

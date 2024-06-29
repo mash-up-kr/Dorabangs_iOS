@@ -17,7 +17,7 @@ public extension View {
 private struct LineHeightViewModifier: ViewModifier {
     let font: UIFont
     let lineHeight: CGFloat
-    
+
     func body(content: Content) -> some View {
         content
             .font(Font(font))

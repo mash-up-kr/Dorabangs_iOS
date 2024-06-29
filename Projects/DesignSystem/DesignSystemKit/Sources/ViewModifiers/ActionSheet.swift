@@ -8,14 +8,14 @@
 
 import SwiftUI
 
-extension View {
-    public func actionSheet(
+public extension View {
+    func actionSheet(
         isPresented: Binding<Bool>,
         items: [LKActionItem]
     ) -> some View {
         ZStack {
             self
-            
+
             ZStack(alignment: .bottom) {
                 if isPresented.wrappedValue {
                     DesignSystemKitAsset.Colors.dimmed.swiftUIColor
@@ -25,7 +25,7 @@ extension View {
                                 isPresented.wrappedValue = false
                             }
                         }
-                    
+
                     LKActionSheet(isPresented: isPresented, items: items)
                         .zIndex(2)
                         .transition(.move(edge: .bottom))

@@ -12,30 +12,30 @@ public struct LKToast: View {
     public enum ToastType {
         case info, warning
     }
-    
+
     private let type: ToastType
     private let message: String
-    
+
     private var image: Image {
         switch type {
         case .info:
-            return DesignSystemKitAsset.Icons.icCheckmark.swiftUIImage
+            DesignSystemKitAsset.Icons.icCheckmark.swiftUIImage
         case .warning:
-            return DesignSystemKitAsset.Icons.icCircleAlert.swiftUIImage
+            DesignSystemKitAsset.Icons.icCircleAlert.swiftUIImage
         }
     }
-    
+
     public init(type: ToastType, message: String) {
         self.type = type
         self.message = message
     }
-    
+
     public var body: some View {
         HStack(spacing: 8) {
             image
                 .resizable()
                 .frame(width: 24, height: 24)
-            
+
             Text(message)
                 .lineLimit(1)
                 .font(weight: .medium, semantic: .caption3)

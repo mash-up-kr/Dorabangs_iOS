@@ -19,10 +19,10 @@ public extension DesignSystemKitAsset.Colors {
 
 extension DesignSystemKitColors: Hashable {
     public static func == (lhs: DesignSystemKitColors, rhs: DesignSystemKitColors) -> Bool {
-        return lhs.name == rhs.name
+        lhs.name == rhs.name
     }
-    
+
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.name)
+        hasher.combine(name)
     }
 }
