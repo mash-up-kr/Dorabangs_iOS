@@ -10,7 +10,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.home",
             sources: ["HomeScene/**"],
             dependencies: [
-                .spm(.composableArchitecture)
+                .spm(.composableArchitecture),
                 .designSystem
             ]
         ),
