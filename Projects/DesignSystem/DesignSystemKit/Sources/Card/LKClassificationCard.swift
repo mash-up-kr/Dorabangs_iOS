@@ -17,7 +17,7 @@ public struct LKClassificationCard: View {
     private let buttonTitle: String
     private let deleteAction: () -> Void
     private let moveToFolderAction: () -> Void
-    
+
     public init(
         title: String?,
         description: String?,
@@ -37,12 +37,12 @@ public struct LKClassificationCard: View {
         self.deleteAction = deleteAction
         self.moveToFolderAction = moveToFolderAction
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 Spacer()
-                
+
                 Button(action: deleteAction) {
                     Image(.icCloseCircle)
                         .font(weight: .medium, semantic: .caption1)
@@ -50,75 +50,74 @@ public struct LKClassificationCard: View {
                 }
                 .frame(width: 24, height: 24)
             }
-            
+
             Spacer()
                 .frame(height: 20)
-            
+
             HStack(spacing: 13) {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(title ?? "")
                         .font(weight: .bold, semantic: .caption3)
                         .lineLimit(2)
-                    
+
                     HStack(spacing: 4) {
                         Image(.icEclipse)
                             .frame(width: 12, height: 16)
-                        
+
                         // TODO: Constants로 변경~
                         Text("주요 내용")
                             .font(weight: .medium, semantic: .s)
                             .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
-                        
+
                         Spacer()
                     }
-                    
+
                     Text(description ?? "")
                         .font(weight: .regular, semantic: .caption1)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
                         .lineLimit(3)
-                    
                 }
-                
+
                 VStack(spacing: 0) {
                     DesignSystemKitAsset.Colors.g2.swiftUIColor
                         .frame(width: 65, height: 65)
-                    
+
                     Spacer()
                 }
             }
-            
+
             Spacer()
                 .frame(height: 12)
-            
+
             HStack(spacing: 12) {
                 ForEach(tags, id: \.self) { tag in
                     LKTag(tag)
                 }
-                
+
                 Spacer()
             }
-            
+
             Spacer()
                 .frame(height: 16)
-            
+
             HStack(spacing: 8) {
                 Text(category ?? "")
                     .font(weight: .regular, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-                
+
                 Image(.icEclipse)
                     .frame(width: 2, height: 2)
-                
+
                 Text(timeSince ?? "")
                     .font(weight: .regular, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-                
+
                 Spacer()
             }
-            
+
             Spacer()
                 .frame(height: 20)
-            
+
             Button(action: moveToFolderAction) {
                 Text(buttonTitle)
                     .font(weight: .medium, semantic: .caption1)

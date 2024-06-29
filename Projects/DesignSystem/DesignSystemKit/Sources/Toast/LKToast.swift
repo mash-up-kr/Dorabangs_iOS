@@ -44,7 +44,7 @@ public struct LKToast: View {
         .padding(20)
         .background(DesignSystemKitAsset.Colors.dimmed80.swiftUIColor)
         .cornerRadius(999, corners: .allCorners)
-        .safeAreaPadding(.horizontal, 30)
+        .padding(.horizontal, 30)
     }
 }
 

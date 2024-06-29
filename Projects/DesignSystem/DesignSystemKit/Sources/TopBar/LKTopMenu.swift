@@ -11,7 +11,7 @@ import SwiftUI
 public struct LKTopMenu: View {
     private let title: String
     private let action: () -> Void
-    
+
     public init(
         title: String,
         action: @escaping () -> Void
@@ -19,13 +19,13 @@ public struct LKTopMenu: View {
         self.title = title
         self.action = action
     }
-    
+
     public var body: some View {
         VStack(spacing: 4) {
             Text(title)
                 .font(weight: .medium, semantic: .caption2)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
-            
+
             Text(".")
                 .frame(width: 3, height: 3)
         }

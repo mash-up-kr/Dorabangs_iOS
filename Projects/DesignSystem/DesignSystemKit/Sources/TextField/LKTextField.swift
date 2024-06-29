@@ -76,7 +76,7 @@ public struct LKTextField: View {
             }
         }
         .padding(.horizontal, 20)
-        .onChange(of: text) { _, newValue in
+        .onChange(of: text) { newValue in
             if let textLimit, newValue.count > textLimit {
                 text = String(text.prefix(textLimit))
             }

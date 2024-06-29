@@ -21,7 +21,7 @@ struct RoundedButtonPreview: View {
                     isDisabled: isDisabled,
                     action: {}
                 )
-                .safeAreaPadding(.horizontal, 20)
+                .padding(.horizontal, 20)
             },
             options: [
                 .textField(description: "title", text: $title),

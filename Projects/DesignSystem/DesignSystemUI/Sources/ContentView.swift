@@ -10,14 +10,14 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationStack {
+        NavigationView {
             List {
                 Section("1. Foundation") { foundationPreviews }
                 Section("2. Atomic") { atomicPreviews }
                 Section("3. Component") { componentPreviews }
             }
             .listStyle(.plain)
-            .navigationTitle("DesignSystem")
+            .navigationTitle("디자인시스템")
             .navigationBarTitleDisplayMode(.inline)
         }
     }

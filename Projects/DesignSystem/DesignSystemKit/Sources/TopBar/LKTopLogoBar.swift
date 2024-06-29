@@ -10,19 +10,19 @@ import SwiftUI
 
 public struct LKTopLogoBar: View {
     private let action: () -> Void
-    
+
     public init(action: @escaping () -> Void) {
         self.action = action
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             // TODO: 로고로 변경 필요
             Color.pink
                 .frame(width: 51, height: 26)
-            
+
             Spacer()
-            
+
             Button(action: action) {
                 Image(.icAdd)
                     .frame(width: 24, height: 24)

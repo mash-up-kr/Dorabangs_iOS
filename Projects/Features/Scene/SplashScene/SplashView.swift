@@ -17,7 +17,9 @@ public struct SplashView: View {
     }
 
     public var body: some View {
-        Text("Splash View")
-            .onAppear { store.send(.onAppear) }
+        WithPerceptionTracking {
+            Text("Splash View")
+                .onAppear { store.send(.onAppear) }
+        }
     }
 }

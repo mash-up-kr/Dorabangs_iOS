@@ -16,7 +16,7 @@ public struct LKCard: View {
     private let timeSince: String
     private let bookMarkAction: () -> Void
     private let showModalAction: () -> Void
-    
+
     public init(
         title: String?,
         description: String?,
@@ -34,7 +34,7 @@ public struct LKCard: View {
         self.bookMarkAction = bookMarkAction
         self.showModalAction = showModalAction
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .top, spacing: 13) {
@@ -42,69 +42,69 @@ public struct LKCard: View {
                     Text(title ?? "")
                         .font(weight: .bold, semantic: .caption3)
                         .lineLimit(2)
-                    
+
                     HStack(spacing: 4) {
                         Image(.icStar)
                             .frame(width: 12, height: 16)
-                        
+
                         // TODO: Constants로 변경~
                         Text("주요 내용")
                             .font(weight: .medium, semantic: .s)
                             .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
-                        
+
                         Spacer()
                     }
-                    
+
                     Text(description ?? "")
                         .font(weight: .regular, semantic: .caption1)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
                         .lineLimit(3)
                 }
-                
+
                 VStack(spacing: 0) {
                     DesignSystemKitAsset.Colors.g2.swiftUIColor
                         .frame(width: 65, height: 65)
                 }
             }
-            
+
             Spacer()
                 .frame(height: 12)
-            
+
             HStack(spacing: 12) {
                 ForEach(tags, id: \.self) { tag in
                     LKTag(tag)
                 }
-                
+
                 Spacer()
             }
-            
+
             Spacer()
                 .frame(height: 16)
-            
+
             HStack {
                 HStack(spacing: 8) {
                     Text(category)
                         .font(weight: .regular, semantic: .xs)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-                    
+
                     Image(.icEclipse)
                         .frame(width: 2, height: 2)
-                    
+
                     Text(timeSince)
                         .font(weight: .regular, semantic: .xs)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-                    
+
                     Spacer()
                 }
-                
+
                 Spacer()
-                
+
                 HStack(spacing: 12) {
                     Button(action: bookMarkAction) {
                         Image(.icBookmark)
                             .frame(width: 24, height: 24)
                     }
-                    
+
                     Button(action: showModalAction) {
                         Image(.icMore)
                             .frame(width: 24, height: 24)

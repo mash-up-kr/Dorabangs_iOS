@@ -19,11 +19,13 @@ public struct Home {
 
     public enum Action {
         case onAppear
-        
+
         // MARK: Inner Business
+
         case fetchData
-        
+
         // MARK: User Action
+
         case addLinkButtonTapped
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
@@ -36,22 +38,22 @@ public struct Home {
             switch action {
             case .onAppear:
                 return .none
-                
+
             case .fetchData:
-                for i in 0..<10 {
+                for i in 0 ..< 10 {
                     state.cards.append("카드 0\(i)")
                 }
                 return .none
-                
+
             case .addLinkButtonTapped:
                 // TODO: 링크 추가 버튼 탭 동작 구현
                 return .none
-                
-            case .bookMarkButtonTapped(let index):
+
+            case let .bookMarkButtonTapped(index):
                 // TODO: 카드 > 북마크 버튼 탭 동작 구현
                 return .none
-                
-            case .showModalButtonTapped(let index):
+
+            case let .showModalButtonTapped(index):
                 // TODO: 카드 > 모달 버튼 탭 동작 구현
                 return .none
             }

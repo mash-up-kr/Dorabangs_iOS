@@ -22,7 +22,7 @@ struct RoundedCornersButtonPreview: View {
                     style: styles[selectedIndex],
                     action: {}
                 )
-                .safeAreaPadding(.horizontal, 20)
+                .padding(.horizontal, 20)
             },
             options: [
                 .textField(description: "title", text: $title),

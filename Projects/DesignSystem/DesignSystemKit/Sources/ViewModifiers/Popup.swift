@@ -20,9 +20,8 @@ public extension View {
             if isDimmed {
                 DesignSystemKitAsset.Colors.dimmed.swiftUIColor
                     .ignoresSafeArea(.container)
-                    .animation(.easeInOut) { content in
-                        content.opacity(isPresented.wrappedValue ? 1 : 0)
-                    }
+                    .opacity(isPresented.wrappedValue ? 1 : 0)
+                    .animation(.easeInOut, value: isPresented.wrappedValue)
             }
 
             if isPresented.wrappedValue {
