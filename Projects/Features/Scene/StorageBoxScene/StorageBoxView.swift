@@ -1,6 +1,6 @@
 //
-//  FolderView.swift
-//  Folder
+//  StorageBoxView.swift
+//  StorageBox
 //
 //  Created by 김영균 on 6/13/24.
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
@@ -9,10 +9,10 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct FolderView: View {
-    private let store: StoreOf<Folder>
+public struct StorageBoxView: View {
+    private let store: StoreOf<StorageBox>
 
-    public init(store: StoreOf<Folder>) {
+    public init(store: StoreOf<StorageBox>) {
         self.store = store
     }
 
