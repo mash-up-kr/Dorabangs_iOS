@@ -32,7 +32,7 @@ public struct Home {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
             case .onAppear:
                 return .none
