@@ -62,8 +62,8 @@ public struct LKActionSheet: View {
     }
 }
 
-private struct DragIndicator: View {
-    var body: some View {
+public struct DragIndicator: View {
+    public var body: some View {
         HStack {
             Spacer()
             
