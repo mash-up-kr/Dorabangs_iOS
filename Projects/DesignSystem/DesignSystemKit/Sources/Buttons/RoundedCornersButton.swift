@@ -12,25 +12,25 @@ public struct RoundedCornersButton: View {
     private let title: String
     private let style: Style
     private let action: () -> Void
-    
+
     public enum Style {
         case solidBlack
         case solidGray
     }
-    
+
     public init(title: String, style: Style, action: @escaping () -> Void) {
         self.title = title
         self.style = style
         self.action = action
     }
-    
+
     private enum Constant {
         static let horizontalPadding: CGFloat = 4
         static let verticalPadding: CGFloat = 14
         static let height: CGFloat = 48
         static let cornerRadius: CGFloat = 12
     }
-    
+
     public var body: some View {
         Button(action: action) {
             Text(title)
@@ -44,14 +44,14 @@ public struct RoundedCornersButton: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private var foregroundColor: Color {
         switch style {
         case .solidBlack: DesignSystemKitAsset.Colors.g1.swiftUIColor
         case .solidGray: DesignSystemKitAsset.Colors.g9.swiftUIColor
         }
     }
-    
+
     private var backgroundColor: Color {
         switch style {
         case .solidBlack: DesignSystemKitAsset.Colors.g9.swiftUIColor

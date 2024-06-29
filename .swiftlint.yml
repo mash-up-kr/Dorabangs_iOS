@@ -1,0 +1,30 @@
+excluded:
+- "./Projects/App/Derived/**"
+- "./Projects/DesignSystem/Derived/**"
+- "Tuist/**"
+- DesignSystemKitAsset+Typography.swift
+
+disabled_rules:
+- identifier_name
+- trailing_whitespace
+- nesting
+- redundant_optional_initialization
+- unused_optional_binding
+- function_parameter_count
+- function_body_length
+- large_tuple
+- unused_control_flow_label
+- private_over_fileprivate
+
+opt_in_rules:
+- indentation_width
+- closure_end_indentation
+- empty_count
+- empty_string
+- sorted_imports
+
+analyzer_rules:
+- unused_declaration
+- unused_import
+
+reporter: "xcode"

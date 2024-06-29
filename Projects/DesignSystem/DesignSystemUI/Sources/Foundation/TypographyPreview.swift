@@ -19,7 +19,7 @@ struct TypographyPreview: View {
         ("Small", [.s, .xs])
     ]
     @State private var weight: DesignSystemKitAsset.Typography.Weight = .regular
-    
+
     var body: some View {
         PreviewList(title: "Typography") {
             ForEach(sections, id: \.title) { section in
@@ -28,7 +28,7 @@ struct TypographyPreview: View {
         }
         .toolbar(content: weightMenu)
     }
-    
+
     private func typographySection(title: String, semantics: [DesignSystemKitAsset.Typography.Semantic]) -> some View {
         PreviewSection(title: title) {
             ForEach(semantics, id: \.self) { semantic in
@@ -36,7 +36,7 @@ struct TypographyPreview: View {
             }
         }
     }
-    
+
     private func weightMenu() -> some View {
         Menu("Weight") {
             Picker("Select Weight", selection: $weight) {
@@ -58,12 +58,12 @@ private struct TypoListItem: View {
     질문은 계속돼, ah-oh, ayy
     우린 어디서 왔나, oh, ayy
     """
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(sampleText)
                 .font(weight: weight, semantic: semantic)
-            
+
             HStack(spacing: 16) {
                 typographyKey
                 typographyValue
@@ -75,7 +75,7 @@ private struct TypoListItem: View {
         }
         .padding(.horizontal, 8)
     }
-    
+
     var typographyKey: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("font-type")
@@ -86,7 +86,7 @@ private struct TypoListItem: View {
         .font(.system(size: 14, weight: .bold))
         .foregroundStyle(.primary)
     }
-    
+
     var typographyValue: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(semantic.rawValue)

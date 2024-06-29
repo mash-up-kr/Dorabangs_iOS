@@ -12,17 +12,17 @@ public struct LKTabView<SelectionValue, Content>: View where SelectionValue: Has
     @Binding private var selection: SelectionValue
     private let content: () -> Content
     private let tabItems: [LKTabBarItem<SelectionValue>]
-    
+
     public init(
         selection: Binding<SelectionValue>,
         @ViewBuilder content: @escaping () -> Content,
         tabItems: [LKTabBarItem<SelectionValue>]
     ) {
-        self._selection = selection
+        _selection = selection
         self.content = content
         self.tabItems = tabItems
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $selection, content: content)

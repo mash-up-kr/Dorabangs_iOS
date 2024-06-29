@@ -16,7 +16,7 @@ public struct Home {
         public static let initialState = State()
         public init() {}
     }
-    
+
     public enum Action {
         case onAppear
         
@@ -28,11 +28,11 @@ public struct Home {
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
     }
-    
+
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
-        Reduce { state, action in
+        Reduce { _, action in
             switch action {
             case .onAppear:
                 return .none

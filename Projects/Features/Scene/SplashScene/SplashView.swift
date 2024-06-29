@@ -11,11 +11,11 @@ import SwiftUI
 
 public struct SplashView: View {
     private let store: StoreOf<Splash>
-    
+
     public init(store: StoreOf<Splash>) {
         self.store = store
     }
-    
+
     public var body: some View {
         Text("Splash View")
             .onAppear { store.send(.onAppear) }

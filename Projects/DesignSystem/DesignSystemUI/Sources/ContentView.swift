@@ -21,20 +21,20 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
+
     @ViewBuilder
     var foundationPreviews: some View {
         NavigationLink("Color") { ColorPreview() }
         NavigationLink("Typography") { TypographyPreview() }
     }
-    
+
     @ViewBuilder
     var atomicPreviews: some View {
         NavigationLink("RoundedButton") { RoundedButtonPreview() }
         NavigationLink("RoundedCornersButton") { RoundedCornersButtonPreview() }
         NavigationLink("TextField") { TextFieldPreview() }
     }
-    
+
     @ViewBuilder
     var componentPreviews: some View {
         NavigationLink("LKCard") { LKCardPreview() }
@@ -44,6 +44,7 @@ struct ContentView: View {
         NavigationLink("TabBar") { TabBarPreview() }
         NavigationLink("Toast") { ToastPreview() }
         NavigationLink("ClipboardToast") { ClipboardToastPreview() }
+        NavigationLink("ActionSheet") { ActionSheetPreview() }
     }
 }
 

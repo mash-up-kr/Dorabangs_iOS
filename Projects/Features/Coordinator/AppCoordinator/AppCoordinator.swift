@@ -25,23 +25,23 @@ public struct AppCoordinator {
             routes: [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
         )
         var routes: [Route<AppScreen.State>]
-        
+
         public init(routes: [Route<AppScreen.State>]) {
             self.routes = routes
         }
     }
-    
+
     public enum Action {
         case router(IndexedRouterActionOf<AppScreen>)
     }
-    
+
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
-        Reduce { state, action in
+        Reduce { _, action in
             switch action {
             default:
-                return .none
+                .none
             }
         }
         .forEachRoute(\.routes, action: \.router)

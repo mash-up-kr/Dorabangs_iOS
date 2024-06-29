@@ -13,20 +13,20 @@ public extension View {
         weight: DesignSystemKitAsset.Typography.Weight,
         semantic: DesignSystemKitAsset.Typography.Semantic
     ) -> some View {
-        return modifier(FontStyle(weight: weight, semantic: semantic))
+        modifier(FontStyle(weight: weight, semantic: semantic))
     }
 }
 
 private struct FontStyle: ViewModifier {
     var weight: DesignSystemKitAsset.Typography.Weight
     var semantic: DesignSystemKitAsset.Typography.Semantic
-    
+
     func body(content: Content) -> some View {
         content
             .lineHeight(semantic.lineHeight.rawValue, for: nanumSqureNeo())
             .fontWeight(weight.swiftUIFontWeight)
     }
-    
+
     func nanumSqureNeo() -> UIFont {
         let fontName = DesignSystemKitAsset.Typography.Font.nanumSquareNeo.rawValue
         guard let font = UIFont(name: fontName, size: semantic.size.rawValue) else {

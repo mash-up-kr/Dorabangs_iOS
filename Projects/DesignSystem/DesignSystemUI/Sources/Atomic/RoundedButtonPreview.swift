@@ -12,7 +12,7 @@ import SwiftUI
 struct RoundedButtonPreview: View {
     @State private var title: String = "버튼"
     @State private var isDisabled: Bool = false
-    
+
     var body: some View {
         ComponentPreview(
             component: {

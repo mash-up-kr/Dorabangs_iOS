@@ -12,7 +12,7 @@ import SwiftUI
 struct ClipboardToastPreview: View {
     @State private var isPresented: Bool = false
     @State private var urlString: String = "https://www.apple.com"
-    
+
     var body: some View {
         ComponentPreview(
             component: {
@@ -24,7 +24,7 @@ struct ClipboardToastPreview: View {
                 .padding(.horizontal, 20)
             },
             options: [
-                .textField(description: "urlString", text: $urlString),
+                .textField(description: "urlString", text: $urlString)
             ]
         )
         .navigationTitle("ClipboardToast")

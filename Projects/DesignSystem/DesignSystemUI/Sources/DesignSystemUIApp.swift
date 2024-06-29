@@ -14,7 +14,7 @@ struct DorabangsApp: App {
     init() {
         try? DesignSystemKitAsset.Typography.registerFont()
     }
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()

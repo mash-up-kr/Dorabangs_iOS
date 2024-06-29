@@ -11,14 +11,14 @@ import SwiftUI
 
 struct TabBarPreview: View {
     @State private var selectedIndex: Int = 0
-    
+
     var body: some View {
         LKTabView(
             selection: $selectedIndex,
             content: {
                 Text("홈")
                     .tag(0)
-                
+
                 Text("보관함")
                     .tag(1)
             },

@@ -16,7 +16,7 @@ struct TextFieldPreview: View {
     @State private var helperText: String? = "같은 이름의 폴더가 있어요"
     @State private var textLimit: Int? = 10
     @State private var isWarning: Bool = false
-    
+
     var body: some View {
         ComponentPreview(
             component: {

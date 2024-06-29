@@ -11,7 +11,7 @@ import SwiftUI
 struct PreviewList<Content: View>: View {
     let title: String
     @ViewBuilder let content: () -> Content
-    
+
     var body: some View {
         List(content: content)
             .listStyle(.plain)
@@ -23,11 +23,9 @@ struct PreviewList<Content: View>: View {
 struct PreviewSection<Content: View>: View {
     let title: String
     @ViewBuilder let content: () -> Content
-    
+
     var body: some View {
         Section(title, content: content)
             .listSectionSeparator(.hidden)
     }
 }
-
-

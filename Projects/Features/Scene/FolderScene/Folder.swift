@@ -15,18 +15,18 @@ public struct Folder {
         public static let initialState = State()
         public init() {}
     }
-    
+
     public enum Action {
         case onAppear
     }
-    
+
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
-        Reduce { state, action in
+        Reduce { _, action in
             switch action {
             case .onAppear:
-                return .none
+                .none
             }
         }
     }
