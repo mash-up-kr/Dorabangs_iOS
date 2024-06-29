@@ -1,0 +1,12 @@
+--exclude **/Derived/**.swift
+--exclude **/build/**.swift
+--exclude **/.build/**.swift
+
+# swift version
+--swiftversion 5.9
+
+# format options
+--indent 4
+--trimwhitespace always
+--allman false
+--commas inline

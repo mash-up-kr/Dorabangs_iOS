@@ -15,3 +15,7 @@ ENABLE_NS_ASSERTIONS = YES
 SWIFT_COMPILATION_MODE = singlefile
 
 BUNDLE_NAME = [DEV]링킷
+
+PROVISIONING_PROFILE_SPECIFIER = Development com.mashup.dorabangs-dev
+
+CODE_SIGN_IDENTITY = Apple Development: YoungGyun Kim (8ATYCP492F)
