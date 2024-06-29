@@ -39,7 +39,7 @@ public struct TabCoordinatorView: View {
                 LKTabBarItem(
                     tag: .folder,
                     title: "보관함",
-                    image: DesignSystemKitAsset.Icons.icFloder.swiftUIImage,
+                    image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
                     selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
                 )
             ]

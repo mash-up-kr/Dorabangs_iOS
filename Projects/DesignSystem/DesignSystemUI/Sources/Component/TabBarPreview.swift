@@ -32,7 +32,7 @@ struct TabBarPreview: View {
                 LKTabBarItem(
                     tag: 1,
                     title: "보관함",
-                    image: DesignSystemKitAsset.Icons.icFloder.swiftUIImage,
+                    image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
                     selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
                 )
             ]
