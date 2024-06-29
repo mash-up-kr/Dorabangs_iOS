@@ -39,6 +39,7 @@ struct ContentView: View {
     var componentPreviews: some View {
         NavigationLink("LKCard") { LKCardPreview() }
         NavigationLink("LKClassificationCard") { LKClassificationCardPreview() }
+        NavigationLink("LKTopTab") { LKTopTabViewPreview() }
         NavigationLink("Modal") { ModalPreview() }
         NavigationLink("TextField Popup") { TextFieldPopupPreview() }
         NavigationLink("TabBar") { TabBarPreview() }
