@@ -30,7 +30,8 @@ let project = Project.make(
             sources: ["StorageBoxScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .core(.model)
             ]
         ),
         .make(
@@ -40,7 +41,8 @@ let project = Project.make(
             sources: ["FeedScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .core(.model)
             ]
         ),
         .make(

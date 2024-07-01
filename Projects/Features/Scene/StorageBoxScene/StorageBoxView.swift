@@ -9,6 +9,7 @@
 import ComposableArchitecture
 import DesignSystemKit
 import SwiftUI
+import Models
 
 public struct StorageBoxView: View {
     @State var newFolderPopupIsPresented: Bool = false
@@ -123,16 +124,6 @@ struct NewFolderPopupModifier: ViewModifier {
         return duplicatedCheckList.contains(where: {$0.title.lowercased() == newFolderName.lowercased()})
     }
     
-}
-// TODO: - 서버에서 모델 받으면 수정
-struct StorageBoxModel {
-    let title: String
-    let count: Int
-    
-    init(title: String, count: Int) {
-        self.title = title
-        self.count = count
-    }
 }
 struct StorageBoxSection: View {
     
