@@ -68,8 +68,9 @@ public struct FolderBottomSheet: View {
             })
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
+   
+            Spacer().frame(height: keywindow?.safeAreaInsets.bottom)
         }
-        .safeAreaPadding(.bottom)
         
         .frame(height: self.getMaxHeight(), alignment: .top)
         .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
