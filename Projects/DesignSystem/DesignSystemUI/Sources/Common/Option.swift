@@ -14,6 +14,7 @@ enum Option: View {
     case textField(description: String, text: Binding<String>)
     case optionalString(description: String, text: Binding<String?>)
     case optionalInt(description: String, value: Binding<Int?>)
+    case int(description: String, value: Binding<Int>)
 
     @ViewBuilder
     var body: some View {
@@ -28,6 +29,8 @@ enum Option: View {
             OptionalStringOptionView(description: description, text: text)
         case let .optionalInt(description, value):
             OptionalIntOptionView(description: description, value: value)
+        case let .int(description: description, value: value):
+            IntOptionView(description: description, value: value)
         }
     }
 }

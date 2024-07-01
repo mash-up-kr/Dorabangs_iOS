@@ -28,7 +28,7 @@ public struct HomeView: View {
                     Color.pink
                         .frame(height: 306)
 
-                    LazyVStack(pinnedViews: .sectionHeaders) {
+                    LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
                         Section {
                             LazyVStack(spacing: 0) {
                                 ForEach(store.cards.indices, id: \.self) { index in
@@ -49,7 +49,11 @@ public struct HomeView: View {
                                 }
                             }
                         } header: {
-                            HorizontalScrollView()
+                            LKTopScrollBar(
+                                titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
+                                selectedIndex: 0,
+                                action: {}
+                            )
                         }
                     }
                 }
