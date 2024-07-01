@@ -73,7 +73,7 @@ public struct FolderBottomSheet: View {
         }
         
         .frame(height: self.getMaxHeight(), alignment: .top)
-        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
+        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .cornerRadius(16, corners: .allCorners)
         .shadow(
             color: DesignSystemKitAsset.Colors.topShadow.swiftUIColor,
@@ -111,7 +111,7 @@ public struct FolderBottomSheet: View {
         let DEFAULT_HEIGHT = 180
         let CELL_HEIGHT = 52
         let realHeight = CGFloat((DEFAULT_HEIGHT + (folders.count + 1) * CELL_HEIGHT))
-        let safeAreaSize = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.last { $0.isKeyWindow }?.safeAreaInsets
+        let safeAreaSize = keywindow?.safeAreaInsets
         
         let screenHeight = UIScreen.main.bounds.size.height - (safeAreaSize?.bottom ?? 0) - (safeAreaSize?.top ?? 0) - 57
         return (realHeight > screenHeight ) ? screenHeight : realHeight
@@ -120,83 +120,4 @@ public struct FolderBottomSheet: View {
 
 #Preview {
     FolderBottomSheet(isPresented: .constant(true), folders: ["새폴더", "개폴더", "말폴더"], onComplete: { _ in })
-}
-
-private struct NewFolderView: View {
-    var body: some View {
-        HStack {
-            DesignSystemKitAsset.Icons.icCheckmark
-                .swiftUIImage
-                .resizable()
-                .frame(width: 24, height: 24)
-            
-            Text("새 폴더 추가")
-                .font(weight: .regular, semantic: .caption3)
-            
-            Spacer()
-        }
-        .frame(height: 52)
-        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
-        
-    }
-}
-private struct FolderView: View {
-    
-    private let title: String
-    var isSelected: Bool
-    
-    public init(title: String, isSelected: Bool) {
-        self.title = title
-        self.isSelected = isSelected
-    }
-    
-    var body: some View {
-        HStack {
-            Image(.icFloderFilled)
-                .resizable()
-                .frame(width: 24, height: 24)
-            
-            Text(title)
-                .font(weight: .regular, semantic: .caption3)
-            
-            Spacer()
-            
-            Image(.icSelect)
-                .resizable()
-                .frame(width: 24, height: 24)
-                .hidden(!isSelected)
-        }
-        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
-    }
-}
-private struct FolderList: View {
-    let folders: [String]
-    @State var selectedIndex: Int?
-    var onSelect: (Int) -> Void
-    
-    public init(folders: [String], onSelect: @escaping (Int) -> Void) {
-        self.folders = folders
-        self.onSelect = onSelect
-    }
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            ForEach(folders.indices, id: \.self) {
-                index in
-                Divider()
-                    .frame(height: 0.5)
-                    .background(DesignSystemKitAsset.Colors.g3.swiftUIColor)
-                    .padding(.horizontal, 16)
-                
-                FolderView(title: folders[index], isSelected: (selectedIndex == index))
-                    .padding(.horizontal, 16)
-                    .frame(height: 52)
-                    .onTapGesture {
-                        self.selectedIndex = index
-                        self.onSelect(index)
-                    }
-            }
-            
-        }
-    }
 }
