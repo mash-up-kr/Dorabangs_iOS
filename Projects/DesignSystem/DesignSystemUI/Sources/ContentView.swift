@@ -45,6 +45,7 @@ struct ContentView: View {
         NavigationLink("Toast") { ToastPreview() }
         NavigationLink("ClipboardToast") { ClipboardToastPreview() }
         NavigationLink("ActionSheet") { ActionSheetPreview() }
+        NavigationLink("FolderBottomSheetPreview") { FolderBottomSheetPreview() }
     }
 }
 
