@@ -40,6 +40,16 @@ let project = Project.make(
             dependencies: [
                 .spm(.composableArchitecture)
             ]
+        ),
+        .make(
+            name: "SaveURL",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.saveURL",
+            sources: ["SaveURLScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )

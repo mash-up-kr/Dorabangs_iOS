@@ -34,6 +34,7 @@ let project = Project.make(
             sources: ["HomeCoordinator/**"],
             dependencies: [
                 .scene(.home),
+                .coordinator(.saveURL),
                 .spm(.tcaCoordinators)
             ]
         ),
@@ -44,6 +45,16 @@ let project = Project.make(
             sources: ["StorageBoxCoordinator/**"],
             dependencies: [
                 .scene(.storageBox),
+                .spm(.tcaCoordinators)
+            ]
+        ),
+        .make(
+            name: "SaveURLCoordinator",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.saveURLCoordinator",
+            sources: ["SaveURLCoordinator/**"],
+            dependencies: [
+                .scene(.saveURL),
                 .spm(.tcaCoordinators)
             ]
         )

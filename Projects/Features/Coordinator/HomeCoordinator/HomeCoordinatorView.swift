@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Home
+import SaveURLCoordinator
 import SwiftUI
 import TCACoordinators
 
@@ -24,6 +25,9 @@ public struct HomeCoordinatorView: View {
                 switch screen.case {
                 case let .home(store):
                     HomeView(store: store)
+
+                case let .saveURLCoordinator(store):
+                    SaveURLCoordinatorView(store: store)
                 }
             }
         }

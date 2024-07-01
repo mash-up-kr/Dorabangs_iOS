@@ -10,16 +10,19 @@ import SwiftUI
 
 public struct LKTextMiddleTopBar: View {
     private let title: String?
+    private let backButtonAction: () -> Void
     private let rightButtonEnabled: Bool?
     private let action: () -> Void
 
     public init(
         title: String? = nil,
+        backButtonAction: @escaping () -> Void = {},
         rightButtonEnabled: Bool? = false,
         action: @escaping () -> Void
     ) {
         self.title = title
         self.rightButtonEnabled = rightButtonEnabled
+        self.backButtonAction = backButtonAction
         self.action = action
     }
 
@@ -27,13 +30,7 @@ public struct LKTextMiddleTopBar: View {
         HStack(spacing: 16) {
             Image(.icChevron)
                 .frame(width: 24, height: 24)
-
-            Spacer()
-
-            if let title {
-                Text(title)
-                    .font(weight: .bold, semantic: .base1)
-            }
+                .onTapGesture(perform: backButtonAction)
 
             Spacer()
 
@@ -47,5 +44,11 @@ public struct LKTextMiddleTopBar: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+        .overlay {
+            if let title {
+                Text(title)
+                    .font(weight: .bold, semantic: .base1)
+            }
+        }
     }
 }
