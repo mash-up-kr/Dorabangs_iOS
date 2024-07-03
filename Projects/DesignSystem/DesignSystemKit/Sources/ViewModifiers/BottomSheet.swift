@@ -6,7 +6,6 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
-import DesignSystemKit
 import SwiftUI
 
 extension View {
