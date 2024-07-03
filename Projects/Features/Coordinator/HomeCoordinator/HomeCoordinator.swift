@@ -31,6 +31,7 @@ public struct HomeCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<HomeScreen>)
+        case saveURL(String)
     }
 
     public init() {}

@@ -13,17 +13,23 @@ import SwiftUI
 
 @main
 struct DorabangsApp: App {
+    private let store: StoreOf<AppCoordinator> = .init(initialState: .initialState) {
+        AppCoordinator()
+    }
+
     init() {
         try? DesignSystemKitAsset.Typography.registerFont()
     }
 
     var body: some Scene {
         WindowGroup {
-            AppCoordinatorView(
-                store: Store(initialState: .initialState) {
-                    AppCoordinator()
+            AppCoordinatorView(store: store)
+                .onOpenURL { url in
+                    let urlcomponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
+                    let queryItems = urlcomponents?.queryItems
+                    guard let saveURL = queryItems?.first(where: { $0.name == "url" })?.value else { return }
+                    store.send(.saveURL(saveURL))
                 }
-            )
         }
     }
 }

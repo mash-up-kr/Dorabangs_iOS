@@ -6,6 +6,7 @@ public enum Module {
 	case designSystem
 	case scene(Scene)
 	case spm(SPM)
+	case shareExtension(ShareExtension)
 }
 
 public enum Core: String {
@@ -36,6 +37,11 @@ public enum SPM: String {
 	case tcaCoordinators = "TCACoordinators"
 }
 
+public enum ShareExtension: String {
+	case dev = "Dev-ShareExtension"
+	case prod = "Prod-ShareExtension"
+}
+
 extension Module {
 	public func asTargetDependency() -> TargetDependency {
 		switch self {
@@ -53,7 +59,9 @@ extension Module {
 			
 		case .spm(let spm):
 			return .external(name: spm.rawValue)
-			
+		
+		case .shareExtension(let shareExtension):
+			return .target(name: shareExtension.rawValue)
 		}
 	}
 }
