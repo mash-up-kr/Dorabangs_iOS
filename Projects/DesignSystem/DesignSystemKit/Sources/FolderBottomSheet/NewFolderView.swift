@@ -9,6 +9,8 @@
 import SwiftUI
 
 public struct NewFolderView: View {
+    public init() {}
+    
     public var body: some View {
         HStack {
             RoundedRectangle(cornerSize: .init(width: 4, height: 4))
