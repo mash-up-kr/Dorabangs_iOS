@@ -50,6 +50,16 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem
             ]
+        ),
+        .make(
+            name: "CreateNewFolder",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.createNewFolder",
+            sources: ["CreateNewFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )

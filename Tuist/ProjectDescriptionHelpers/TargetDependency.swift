@@ -29,6 +29,7 @@ public enum Scene: String {
 	case splash = "Splash"
 	case web = "Web"
 	case saveURL = "SaveURL"
+	case createNewFolder = "CreateNewFolder"
 }
 
 public enum SPM: String {
