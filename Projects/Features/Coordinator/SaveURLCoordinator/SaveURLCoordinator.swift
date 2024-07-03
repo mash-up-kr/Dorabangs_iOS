@@ -7,11 +7,13 @@
 //
 
 import ComposableArchitecture
+import CreateNewFolder
 import SaveURL
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum SaveURLScreen {
+    case createNewFolder(CreateNewFolder)
     case saveURL(SaveURL)
 }
 
