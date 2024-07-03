@@ -12,18 +12,15 @@ public struct LKTopTabView: View {
     private var isSelected: Bool
     private let title: String
     private let count: String?
-    private let action: () -> Void
 
     public init(
         isSelected: Bool,
         title: String,
-        count: String?,
-        action: @escaping () -> Void
+        count: String?
     ) {
         self.isSelected = isSelected
         self.title = title
         self.count = count
-        self.action = action
     }
 
     public var body: some View {
@@ -64,7 +61,6 @@ public struct LKTopTabView: View {
     LKTopTabView(
         isSelected: true,
         title: "나중에 읽을 링크",
-        count: "99+",
-        action: {}
+        count: "99+"
     )
 }

@@ -10,17 +10,14 @@ import SwiftUI
 
 public struct LKTopScrollBar: View {
     private let titleList: [String]
-    private let selectedIndex: Int
-    private let action: () -> Void
+    @State var selectedIndex: Int
 
     public init(
         titleList: [String],
-        selectedIndex: Int,
-        action: @escaping () -> Void
+        selectedIndex: Int
     ) {
         self.titleList = titleList
         self.selectedIndex = selectedIndex
-        self.action = action
     }
 
     public var body: some View {
@@ -30,10 +27,12 @@ public struct LKTopScrollBar: View {
                     LKTopTabView(
                         isSelected: selectedIndex == index,
                         title: titleList[index],
-                        count: "",
-                        action: {}
+                        count: ""
                     )
                     .frame(height: 50)
+                    .onTapGesture {
+                        self.selectedIndex = index
+                    }
                 }
             }
             .padding(.horizontal, 20)
@@ -46,7 +45,6 @@ public struct LKTopScrollBar: View {
 #Preview {
     LKTopScrollBar(
         titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
-        selectedIndex: 0,
-        action: {}
+        selectedIndex: 0
     )
 }

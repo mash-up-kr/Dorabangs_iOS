@@ -20,8 +20,7 @@ struct LKTopTabViewPreview: View {
                 LKTopTabView(
                     isSelected: isSelected,
                     title: title,
-                    count: count,
-                    action: {}
+                    count: count
                 )
             },
             options: [

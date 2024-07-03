@@ -18,10 +18,7 @@ struct LKTopScrollBarPreview: View {
             component: {
                 LKTopScrollBar(
                     titleList: titleList,
-                    selectedIndex: selectedIndex,
-                    action: {
-
-                    }
+                    selectedIndex: selectedIndex
                 )
             },
             options: [

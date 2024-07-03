@@ -51,8 +51,7 @@ public struct HomeView: View {
                         } header: {
                             LKTopScrollBar(
                                 titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
-                                selectedIndex: 0,
-                                action: {}
+                                selectedIndex: 0
                             )
                         }
                     }
