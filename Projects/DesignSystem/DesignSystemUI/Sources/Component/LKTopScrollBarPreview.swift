@@ -10,8 +10,9 @@ import DesignSystemKit
 import SwiftUI
 
 struct LKTopScrollBarPreview: View {
-    @State private var titleList: [String] = ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"]
     @State private var selectedIndex: Int = 0
+    @State private var titleList: [String] = ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"]
+    @State private var title: String = "제목이어용"
 
     var body: some View {
         ComponentPreview(
@@ -22,7 +23,7 @@ struct LKTopScrollBarPreview: View {
                 )
             },
             options: [
-                .int(description: "선택된 인덱스", value: $selectedIndex)
+                .addText(description: "입력해서 리스트 추가하기", textList: $titleList, text: $title)
             ]
         )
         .navigationBarTitle("LKTopScrollBar")
