@@ -48,7 +48,21 @@ let project = Project.make(
             sources: ["SaveURLScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .core(.service),
+                .core(.model)
+            ]
+        ),
+        .make(
+            name: "SelectFolder",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.selectFolder",
+            sources: ["SelectFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.service),
+                .core(.model)
             ]
         )
     ]

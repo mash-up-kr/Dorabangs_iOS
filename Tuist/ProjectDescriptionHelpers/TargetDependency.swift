@@ -28,6 +28,7 @@ public enum Scene: String {
 	case splash = "Splash"
 	case web = "Web"
 	case saveURL = "SaveURL"
+	case selectFolder = "SelectFolder"
 }
 
 public enum SPM: String {
@@ -40,7 +41,7 @@ extension Module {
 	public func asTargetDependency() -> TargetDependency {
 		switch self {
 		case .core(let core):
-			return .project(target: core.rawValue, path: .relativeToRoot("Projects/Core/\(core.rawValue)"))
+			return .project(target: core.rawValue, path: .relativeToRoot("Projects/Core"))
 			
 		case .coordinator(let coordinator):
 			return .project(target: coordinator.rawValue, path: .relativeToRoot("Projects/Features/Coordinator"))

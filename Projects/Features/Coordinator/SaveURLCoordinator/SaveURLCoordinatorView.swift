@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import SaveURL
+import SelectFolder
 import SwiftUI
 import TCACoordinators
 
@@ -24,6 +25,11 @@ public struct SaveURLCoordinatorView: View {
                 switch screen.case {
                 case let .saveURL(store):
                     SaveURLView(store: store)
+                        .navigationBarHidden(true)
+
+                case let .selectFolder(store):
+                    SelectFolderView(store: store)
+                        .navigationBarHidden(true)
                 }
             }
         }

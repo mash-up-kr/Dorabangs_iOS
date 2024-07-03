@@ -8,11 +8,13 @@
 
 import ComposableArchitecture
 import SaveURL
+import SelectFolder
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum SaveURLScreen {
     case saveURL(SaveURL)
+    case selectFolder(SelectFolder)
 }
 
 @Reducer
