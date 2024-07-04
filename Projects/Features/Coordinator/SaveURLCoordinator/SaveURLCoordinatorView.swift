@@ -21,21 +21,19 @@ public struct SaveURLCoordinatorView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-                switch screen.case {
-                case let .createNewFolder(store):
-                    CreateNewFolderView(store: store)
-                        .navigationBarHidden(true)
+        TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
+            switch screen.case {
+            case let .createNewFolder(store):
+                CreateNewFolderView(store: store)
+                    .navigationBarHidden(true)
 
-                case let .saveURL(store):
-                    SaveURLView(store: store)
-                        .navigationBarHidden(true)
+            case let .saveURL(store):
+                SaveURLView(store: store)
+                    .navigationBarHidden(true)
 
-                case let .selectFolder(store):
-                    SelectFolderView(store: store)
-                        .navigationBarHidden(true)
-                }
+            case let .selectFolder(store):
+                SelectFolderView(store: store)
+                    .navigationBarHidden(true)
             }
         }
     }

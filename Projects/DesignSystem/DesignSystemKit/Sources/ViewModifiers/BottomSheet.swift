@@ -8,15 +8,15 @@
 
 import SwiftUI
 
-extension View {
-    public func bottomSheet(
+public extension View {
+    func bottomSheet(
         isPresented: Binding<Bool>,
         folders: [String],
         onComplete: @escaping (String?) -> Void
     ) -> some View {
         ZStack {
             self
-            
+
             ZStack(alignment: .bottom) {
                 if isPresented.wrappedValue {
                     DesignSystemKitAsset.Colors.dimmed.swiftUIColor
@@ -26,7 +26,7 @@ extension View {
                                 isPresented.wrappedValue = false
                             }
                         }
-                    
+
                     FolderBottomSheet(
                         isPresented: isPresented,
                         folders: folders,

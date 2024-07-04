@@ -8,9 +8,19 @@
 
 import UIKit
 
-extension UINavigationController {
+extension UINavigationController: UIGestureRecognizerDelegate {
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     override open func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.isHidden = true
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_: UIGestureRecognizer) -> Bool {
+        viewControllers.count > 1
     }
 }

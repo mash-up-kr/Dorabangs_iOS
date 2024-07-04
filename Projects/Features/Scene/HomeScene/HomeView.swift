@@ -58,6 +58,7 @@ public struct HomeView: View {
                 }
             }
             .padding(.vertical, 12)
+            .navigationBarHidden(true)
         }
     }
 }

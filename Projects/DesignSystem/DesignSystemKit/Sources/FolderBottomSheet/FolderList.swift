@@ -12,12 +12,12 @@ public struct FolderList: View {
     let folders: [String]
     @State var selectedIndex: Int?
     var onSelect: (Int) -> Void
-    
+
     public init(folders: [String], onSelect: @escaping (Int) -> Void) {
         self.folders = folders
         self.onSelect = onSelect
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             ForEach(folders.indices, id: \.self) {
@@ -26,16 +26,15 @@ public struct FolderList: View {
                     .frame(height: 0.5)
                     .background(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                     .padding(.horizontal, 16)
-                
-                FolderView(title: folders[index], isSelected: (selectedIndex == index))
+
+                FolderView(title: folders[index], isSelected: selectedIndex == index)
                     .padding(.horizontal, 16)
                     .frame(height: 52)
                     .onTapGesture {
-                        self.selectedIndex = index
-                        self.onSelect(index)
+                        selectedIndex = index
+                        onSelect(index)
                     }
             }
-            
         }
     }
 }

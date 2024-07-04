@@ -21,30 +21,38 @@ public struct TabCoordinatorView: View {
 
     public var body: some View {
         WithPerceptionTracking {
-            LKTabView(
-                selection: $store.selectedTab.sending(\.tabSelected),
-                content: {
-                    HomeCoordinatorView(store: store.scope(state: \.home, action: \.home))
-                        .tag(TabCoordinator.Tab.home)
+            TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
+                HomeCoordinatorView(store: store.scope(state: \.home, action: \.home), tabbar: tabbar)
+                    .tag(TabCoordinator.Tab.home)
+                    .navigationBarHidden(true)
 
-                    StorageBoxCoordinatorView(store: store.scope(state: \.storageBox, action: \.storageBox))
-                        .tag(TabCoordinator.Tab.storageBox)
-                },
-                tabItems: [
-                    LKTabBarItem(
-                        tag: .home,
-                        title: "홈",
-                        image: DesignSystemKitAsset.Icons.icHome.swiftUIImage,
-                        selectedImage: DesignSystemKitAsset.Icons.icHomeFilled.swiftUIImage
-                    ),
-                    LKTabBarItem(
-                        tag: .storageBox,
-                        title: "보관함",
-                        image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
-                        selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
-                    )
-                ]
-            )
+                StorageBoxCoordinatorView(store: store.scope(state: \.storageBox, action: \.storageBox), tabbar: tabbar)
+                    .tag(TabCoordinator.Tab.storageBox)
+                    .navigationBarHidden(true)
+            }
+            .onAppear {
+                UITabBar.appearance().isHidden = true
+            }
         }
+    }
+
+    private var tabbar: some View {
+        LKTabBar(
+            selection: $store.selectedTab.sending(\.tabSelected),
+            tabItems: [
+                LKTabBarItem(
+                    tag: TabCoordinator.Tab.home,
+                    title: "홈",
+                    image: DesignSystemKitAsset.Icons.icHome.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icHomeFilled.swiftUIImage
+                ),
+                LKTabBarItem(
+                    tag: TabCoordinator.Tab.storageBox,
+                    title: "보관함",
+                    image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
+                )
+            ]
+        )
     }
 }

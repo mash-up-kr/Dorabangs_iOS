@@ -13,11 +13,11 @@ struct AddTextOptionView: View {
     let description: String
     @Binding var textList: [String]
     @Binding private var text: String
-    
+
     init(description: String, textList: Binding<[String]>, text: Binding<String>) {
         self.description = description
-        self._textList = textList
-        self._text = text
+        _textList = textList
+        _text = text
     }
 
     var body: some View {
@@ -26,13 +26,13 @@ struct AddTextOptionView: View {
                 VStack(alignment: .leading) {
                     Text(description)
                         .font(.system(size: 15, weight: .bold))
-                    
+
                     Text("String")
                         .font(.system(size: 13, weight: .regular))
                 }
-                
+
                 Spacer()
-                
+
                 Button {
                     if !text.isEmpty {
                         textList.append(text)

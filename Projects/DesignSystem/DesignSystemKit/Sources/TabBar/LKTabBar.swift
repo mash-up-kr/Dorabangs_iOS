@@ -8,11 +8,16 @@
 
 import SwiftUI
 
-struct LKTabBar<SelectionValue: Hashable>: View {
+public struct LKTabBar<SelectionValue: Hashable>: View {
     @Binding var selection: SelectionValue
     let tabItems: [LKTabBarItem<SelectionValue>]
 
-    var body: some View {
+    public init(selection: Binding<SelectionValue>, tabItems: [LKTabBarItem<SelectionValue>]) {
+        _selection = selection
+        self.tabItems = tabItems
+    }
+
+    public var body: some View {
         HStack(spacing: 0) {
             ForEach(tabItems) { item in
                 VStack(spacing: 4) {

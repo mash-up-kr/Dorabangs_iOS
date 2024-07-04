@@ -18,8 +18,13 @@ public struct StorageBoxView: View {
 
     public var body: some View {
         WithPerceptionTracking {
-            Text("StorageBox View")
-                .onAppear { store.send(.onAppear) }
+            VStack {
+                Spacer()
+                Text("StorageBox View")
+                Spacer()
+            }
+            .onAppear { store.send(.onAppear) }
+            .navigationBarHidden(true)
         }
     }
 }
