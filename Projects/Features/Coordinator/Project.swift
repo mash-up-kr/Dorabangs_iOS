@@ -55,6 +55,7 @@ let project = Project.make(
             sources: ["SaveURLCoordinator/**"],
             dependencies: [
                 .scene(.saveURL),
+                .scene(.selectFolder),
                 .scene(.createNewFolder),
                 .spm(.tcaCoordinators)
             ]

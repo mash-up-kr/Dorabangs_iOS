@@ -7,6 +7,9 @@
 //
 
 import ComposableArchitecture
+import Foundation
+import Models
+import Services
 
 @Reducer
 public struct SaveURL {
@@ -27,9 +30,13 @@ public struct SaveURL {
         case backButtonTapped
         case urlStringChanged(String)
         case saveButtonTapped
+        case setIsTextFieldWarned(Bool)
+        case navigateToSelectFolder(saveURL: URL)
     }
 
     public init() {}
+
+    @Dependency(\.urlValidatorClient) var urlValidatorClient
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -39,6 +46,22 @@ public struct SaveURL {
 
             case let .urlStringChanged(urlString):
                 state.urlString = urlString
+                state.isTextFieldWarned = false
+                state.isSaveButtonDisabled = urlString.isEmpty
+                return .none
+
+            case .saveButtonTapped:
+                return .run { [urlString = state.urlString] send in
+                    if let url = URL(string: urlString), let validURL = await urlValidatorClient.validateURL(url) {
+                        await send(.navigateToSelectFolder(saveURL: validURL))
+                    } else {
+                        await send(.setIsTextFieldWarned(true))
+                    }
+                }
+
+            case let .setIsTextFieldWarned(isWarned):
+                state.isTextFieldWarned = isWarned
+                state.isSaveButtonDisabled = true
                 return .none
 
             default:
