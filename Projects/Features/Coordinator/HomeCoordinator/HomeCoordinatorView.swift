@@ -12,23 +12,29 @@ import SaveURLCoordinator
 import SwiftUI
 import TCACoordinators
 
-public struct HomeCoordinatorView: View {
+public struct HomeCoordinatorView<Content: View>: View {
     private let store: StoreOf<HomeCoordinator>
+    private let tabbar: () -> Content
 
-    public init(store: StoreOf<HomeCoordinator>) {
+    public init(
+        store: StoreOf<HomeCoordinator>,
+        tabbar: @autoclosure @escaping () -> Content
+    ) {
         self.store = store
+        self.tabbar = tabbar
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-                switch screen.case {
-                case let .home(store):
+        TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
+            switch screen.case {
+            case let .home(store):
+                VStack(spacing: 0) {
                     HomeView(store: store)
-
-                case let .saveURLCoordinator(store):
-                    SaveURLCoordinatorView(store: store)
+                    tabbar()
                 }
+
+            case let .saveURLCoordinator(store):
+                SaveURLCoordinatorView(store: store)
             }
         }
     }
