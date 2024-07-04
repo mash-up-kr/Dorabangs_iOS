@@ -32,9 +32,11 @@ public struct HomeCoordinatorView<Content: View>: View {
                     HomeView(store: store)
                     tabbar()
                 }
+                .navigationBarHidden(true)
 
             case let .saveURLCoordinator(store):
                 SaveURLCoordinatorView(store: store)
+                    .navigationBarHidden(true)
             }
         }
     }

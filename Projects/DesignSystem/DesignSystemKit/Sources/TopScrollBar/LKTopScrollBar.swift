@@ -31,7 +31,7 @@ public struct LKTopScrollBar: View {
                     )
                     .frame(height: 50)
                     .onTapGesture {
-                        self.selectedIndex = index
+                        selectedIndex = index
                     }
                 }
             }

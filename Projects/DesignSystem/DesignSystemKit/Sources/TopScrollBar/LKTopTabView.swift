@@ -37,7 +37,7 @@ public struct LKTopTabView: View {
                     isSelected ? DesignSystemKitAsset.Colors.white.swiftUIColor : DesignSystemKitAsset.Colors.g6.swiftUIColor
                 )
 
-            if let count = count {
+            if let count {
                 Text(count)
                     .font(weight: .medium, semantic: .caption1)
                     .foregroundStyle(
