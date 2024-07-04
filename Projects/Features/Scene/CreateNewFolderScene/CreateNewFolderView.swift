@@ -44,6 +44,7 @@ public struct CreateNewFolderView: View {
 
                 Spacer()
             }
+            .navigationBarHidden(true)
         }
     }
 }

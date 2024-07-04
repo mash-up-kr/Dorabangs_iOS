@@ -43,6 +43,7 @@ public struct SaveURLView: View {
 
                 Spacer()
             }
+            .navigationBarHidden(true)
         }
     }
 }
