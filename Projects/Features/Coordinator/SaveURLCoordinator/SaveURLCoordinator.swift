@@ -9,12 +9,14 @@
 import ComposableArchitecture
 import CreateNewFolder
 import SaveURL
+import SelectFolder
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum SaveURLScreen {
     case createNewFolder(CreateNewFolder)
     case saveURL(SaveURL)
+    case selectFolder(SelectFolder)
 }
 
 @Reducer
@@ -37,13 +39,21 @@ public struct SaveURLCoordinator {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
             case .router(.routeAction(id: _, action: .saveURL(.backButtonTapped))):
-                .send(.goBackToHome)
+                return .send(.goBackToHome)
+
+            case let .router(.routeAction(id: _, action: .saveURL(.navigateToSelectFolder(saveURL)))):
+                state.routes.push(.selectFolder(.init(saveURL: saveURL)))
+                return .none
+
+            case .router(.routeAction(id: _, action: .selectFolder(.backButtonTapped))):
+                state.routes.goBack()
+                return .none
 
             default:
-                .none
+                return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)
