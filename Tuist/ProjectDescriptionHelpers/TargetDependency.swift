@@ -6,6 +6,7 @@ public enum Module {
 	case designSystem
 	case scene(Scene)
 	case spm(SPM)
+	case shareExtension(ShareExtension)
 }
 
 public enum Core: String {
@@ -29,12 +30,18 @@ public enum Scene: String {
 	case web = "Web"
 	case saveURL = "SaveURL"
 	case selectFolder = "SelectFolder"
+	case createNewFolder = "CreateNewFolder"
 }
 
 public enum SPM: String {
 	case alamofire = "Alamofire"
 	case composableArchitecture = "ComposableArchitecture"
 	case tcaCoordinators = "TCACoordinators"
+}
+
+public enum ShareExtension: String {
+	case dev = "Dev-ShareExtension"
+	case prod = "Prod-ShareExtension"
 }
 
 extension Module {
@@ -54,7 +61,9 @@ extension Module {
 			
 		case .spm(let spm):
 			return .external(name: spm.rawValue)
-			
+		
+		case .shareExtension(let shareExtension):
+			return .target(name: shareExtension.rawValue)
 		}
 	}
 }

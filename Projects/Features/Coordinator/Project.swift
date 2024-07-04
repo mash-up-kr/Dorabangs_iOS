@@ -56,6 +56,7 @@ let project = Project.make(
             dependencies: [
                 .scene(.saveURL),
                 .scene(.selectFolder),
+                .scene(.createNewFolder),
                 .spm(.tcaCoordinators)
             ]
         )

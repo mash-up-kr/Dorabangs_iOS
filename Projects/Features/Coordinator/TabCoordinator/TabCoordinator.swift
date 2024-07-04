@@ -44,6 +44,7 @@ public struct TabCoordinator {
         case home(HomeCoordinator.Action)
         case storageBox(StorageBoxCoordinator.Action)
         case tabSelected(Tab)
+        case saveURL(String)
     }
 
     public init() {}
@@ -57,6 +58,9 @@ public struct TabCoordinator {
         }
         Reduce { state, action in
             switch action {
+            case let .saveURL(url):
+                return .send(.home(.saveURL(url)))
+
             case .home:
                 return .none
 

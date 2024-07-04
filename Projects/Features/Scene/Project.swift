@@ -64,6 +64,16 @@ let project = Project.make(
                 .core(.service),
                 .core(.model)
             ]
+        ),
+        .make(
+            name: "CreateNewFolder",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.createNewFolder",
+            sources: ["CreateNewFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )

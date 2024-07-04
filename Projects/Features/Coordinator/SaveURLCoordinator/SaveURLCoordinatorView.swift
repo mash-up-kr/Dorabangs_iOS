@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import CreateNewFolder
 import SaveURL
 import SelectFolder
 import SwiftUI
@@ -23,6 +24,10 @@ public struct SaveURLCoordinatorView: View {
         WithPerceptionTracking {
             TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
                 switch screen.case {
+                case let .createNewFolder(store):
+                    CreateNewFolderView(store: store)
+                        .navigationBarHidden(true)
+
                 case let .saveURL(store):
                     SaveURLView(store: store)
                         .navigationBarHidden(true)

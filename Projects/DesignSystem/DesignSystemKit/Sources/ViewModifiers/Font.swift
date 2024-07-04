@@ -23,33 +23,25 @@ private struct FontStyle: ViewModifier {
     var semantic: DesignSystemKitAsset.Typography.Semantic
 
     func body(content: Content) -> some View {
-        let font = nanumSqureNeo().with(weight: weight.uikitFontWeight)
+        let font = UIFont.nanumSquareNeo(size: semantic.size.rawValue, weight: weight.value)
 
         content
             .font(Font(font))
             .lineSpacing(semantic.lineHeight.rawValue - font.lineHeight)
             .padding(.vertical, (semantic.lineHeight.rawValue - font.lineHeight) / 2)
     }
-
-    func nanumSqureNeo() -> UIFont {
-        let fontName = DesignSystemKitAsset.Typography.Font.nanumSquareNeo.rawValue
-        guard let font = UIFont(name: fontName, size: semantic.size.rawValue) else {
-            fatalError("Call DesignSystemKitAsset.Typography.registerFont() at App init")
-        }
-        return font
-    }
 }
 
-extension UIFont {
-    /// Returns a font object that is the same as the receiver but which has the specified weight and symbolic traits
-    func with(weight: Weight) -> UIFont {
-        var traits = fontDescriptor.fontAttributes[.traits] as? [String: Any] ?? [:]
-        traits[kCTFontWeightTrait as String] = weight
-
-        var fontAttributes: [UIFontDescriptor.AttributeName: Any] = [:]
-        fontAttributes[.family] = familyName
-        fontAttributes[.traits] = traits
-
-        return UIFont(descriptor: UIFontDescriptor(fontAttributes: fontAttributes), size: pointSize)
+public extension UIFont {
+    // 출처: https://github.com/dufflink/vfont
+    static func nanumSquareNeo(size: CGFloat, weight: CGFloat) -> UIFont {
+        let fontName = DesignSystemKitAsset.Typography.Font.nanumSquareNeo.rawValue
+        guard let uiFont = UIFont(name: fontName, size: size) else {
+            fatalError("Call DesignSystemKitAsset.Typography.registerFont() at App init")
+        }
+        let key = kCTFontVariationAttribute as UIFontDescriptor.AttributeName
+        let weightVariationKey = 2_003_265_652
+        let uiFontDescriptor = UIFontDescriptor(fontAttributes: [.name: uiFont.fontName, key: [weightVariationKey: weight]])
+        return UIFont(descriptor: uiFontDescriptor, size: uiFont.pointSize)
     }
 }

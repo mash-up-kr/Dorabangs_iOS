@@ -33,6 +33,7 @@ public struct AppCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<AppScreen>)
+        case saveURL(String)
     }
 
     public init() {}
@@ -40,6 +41,8 @@ public struct AppCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { _, action in
             switch action {
+            case let .saveURL(url):
+                .send(.router(.routeAction(id: 0, action: .tabCoordinator(.saveURL(url)))))
             default:
                 .none
             }
