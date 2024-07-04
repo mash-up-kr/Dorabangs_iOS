@@ -21,6 +21,7 @@ public extension DesignSystemKitAsset.Typography {
         case regular
         case medium
         case bold
+        case heavy
     }
 
     enum Size: CGFloat {
@@ -109,6 +110,7 @@ public extension DesignSystemKitAsset.Typography.Weight {
         case .regular: .regular
         case .medium: .medium
         case .bold: .bold
+        case .heavy: .heavy
         }
     }
 
@@ -117,6 +119,7 @@ public extension DesignSystemKitAsset.Typography.Weight {
         case .regular: .regular
         case .medium: .medium
         case .bold: .bold
+        case .heavy: .heavy
         }
     }
 
@@ -125,6 +128,7 @@ public extension DesignSystemKitAsset.Typography.Weight {
         case .regular: 400
         case .medium: 500
         case .bold: 700
+        case .heavy: 900
         }
     }
 }
