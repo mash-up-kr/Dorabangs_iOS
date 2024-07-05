@@ -15,10 +15,15 @@ import Services
 public struct SelectFolder {
     @ObservableState
     public struct State: Equatable {
+        /// 저장할 URL
         var saveURL: URL
+        /// 저장할 URL의 메타데이터
         var saveURLMetadata: URLMetadata?
+        /// 폴더 목록
         var folders: [String] = []
+        /// 선택된 폴더 인덱스
         var selectedFolderIndex: Int?
+        /// 저장 버튼 비활성화 여부
         var isSaveButtonDisabled: Bool = true
 
         public init(saveURL: URL) {
@@ -27,13 +32,18 @@ public struct SelectFolder {
     }
 
     public enum Action {
+        // MARK: View Action
         case onAppear
         case backButtonTapped
         case folderSelected(Int)
         case saveButtonTapped
         case createFolderButtonTapped(folders: [String])
+        
+        // MARK: Inner Business
         case fetchURLMetadata
         case fetchURLMetadataResult(Result<URLMetadata, Error>)
+        
+        // MARK: Navigation Action
         case routeToPreviousScreen
     }
 
