@@ -28,7 +28,8 @@ public struct CreateNewFolder {
         case backButtonTapped
         case folderNameChanged(String)
         case saveButtonTapped
-        case navigateToHome
+        case routeToPreviousScreen
+        case routeToHomeScreen
     }
 
     public init() {}
@@ -36,6 +37,9 @@ public struct CreateNewFolder {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .backButtonTapped:
+                return .send(.routeToPreviousScreen)
+
             case let .folderNameChanged(newFolderName):
                 state.newFolderName = newFolderName
                 state.isTextFieldWarned = false
@@ -48,7 +52,7 @@ public struct CreateNewFolder {
                     state.isSaveButtonDisabled = true
                     return .none
                 } else {
-                    return .send(.navigateToHome)
+                    return .send(.routeToHomeScreen)
                 }
 
             default:

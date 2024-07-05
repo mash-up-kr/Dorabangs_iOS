@@ -37,14 +37,16 @@ public struct SelectFolder {
         case backButtonTapped
         case folderSelected(Int)
         case saveButtonTapped
-        case createFolderButtonTapped(folders: [String])
-        
+        case createFolderButtonTapped
+
         // MARK: Inner Business
         case fetchURLMetadata
         case fetchURLMetadataResult(Result<URLMetadata, Error>)
-        
+
         // MARK: Navigation Action
         case routeToPreviousScreen
+        case routeToHomeScreen
+        case routeToCreateNewFolderScreen(folders: [String])
     }
 
     public init() {}
@@ -64,6 +66,12 @@ public struct SelectFolder {
                 state.selectedFolderIndex = index
                 state.isSaveButtonDisabled = false
                 return .none
+
+            case .saveButtonTapped:
+                return .send(.routeToHomeScreen)
+
+            case .createFolderButtonTapped:
+                return .send(.routeToCreateNewFolderScreen(folders: state.folders))
 
             case .fetchURLMetadata:
                 return .run { [url = state.saveURL] send in

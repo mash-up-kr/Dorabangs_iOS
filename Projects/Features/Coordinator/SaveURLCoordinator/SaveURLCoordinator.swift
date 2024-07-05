@@ -38,7 +38,7 @@ public struct SaveURLCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<SaveURLScreen>)
-        case goBackToHome
+        case routeToHomeScreen
     }
 
     public init() {}
@@ -47,9 +47,9 @@ public struct SaveURLCoordinator {
         Reduce { state, action in
             switch action {
             case .router(.routeAction(id: _, action: .saveURL(.routeToPreviousScreen))):
-                return .send(.goBackToHome)
+                return .send(.routeToHomeScreen)
 
-            case let .router(.routeAction(id: _, action: .saveURL(.routeToSelectFolderScreen(saveURL)))):
+            case .router(.routeAction(id: _, action: .saveURL(.routeToSelectFolderScreen(let saveURL)))):
                 state.routes.push(.selectFolder(.init(saveURL: saveURL)))
                 return .none
 
@@ -58,8 +58,24 @@ public struct SaveURLCoordinator {
                     state.routes.goBack()
                     return .none
                 } else {
-                    return .send(.goBackToHome)
+                    return .send(.routeToHomeScreen)
                 }
+
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToHomeScreen))):
+                state.routes.goBackToRoot()
+                return .send(.routeToHomeScreen)
+
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToCreateNewFolderScreen(let folders)))):
+                state.routes.push(.createNewFolder(.init(folders: folders)))
+                return .none
+
+            case .router(.routeAction(id: _, action: .createNewFolder(.routeToPreviousScreen))):
+                state.routes.goBack()
+                return .none
+
+            case .router(.routeAction(id: _, action: .createNewFolder(.routeToHomeScreen))):
+                state.routes.goBackToRoot()
+                return .send(.routeToHomeScreen)
 
             default:
                 return .none

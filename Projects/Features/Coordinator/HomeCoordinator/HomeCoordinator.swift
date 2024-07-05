@@ -50,7 +50,7 @@ public struct HomeCoordinator {
                 state.routes.push(.saveURLCoordinator(saveURLCoordinator))
                 return .none
 
-            case .router(.routeAction(id: _, action: .saveURLCoordinator(.goBackToHome))):
+            case .router(.routeAction(id: _, action: .saveURLCoordinator(.routeToHomeScreen))):
                 state.routes.goBack()
                 return .none
 
