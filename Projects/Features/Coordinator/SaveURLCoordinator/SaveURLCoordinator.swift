@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import CreateNewFolder
+import Foundation
 import SaveURL
 import SelectFolder
 import TCACoordinators
@@ -23,11 +24,15 @@ public enum SaveURLScreen {
 public struct SaveURLCoordinator {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(routes: [.root(.saveURL(.initialState), embedInNavigationView: false)])
         var routes: [Route<SaveURLScreen.State>]
 
         public init(routes: [Route<SaveURLScreen.State>]) {
             self.routes = routes
+        }
+
+        /// 홈에서 클립보드 토스트를 통해 폴더 선택 화면으로 이동할 때 사용
+        public init(routeToSelectFolder saveURL: URL) {
+            routes = [.root(.selectFolder(.init(saveURL: saveURL)), embedInNavigationView: true)]
         }
     }
 
@@ -41,16 +46,20 @@ public struct SaveURLCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .router(.routeAction(id: _, action: .saveURL(.backButtonTapped))):
+            case .router(.routeAction(id: _, action: .saveURL(.routeToPreviousScreen))):
                 return .send(.goBackToHome)
 
-            case let .router(.routeAction(id: _, action: .saveURL(.navigateToSelectFolder(saveURL)))):
+            case let .router(.routeAction(id: _, action: .saveURL(.routeToSelectFolderScreen(saveURL)))):
                 state.routes.push(.selectFolder(.init(saveURL: saveURL)))
                 return .none
 
-            case .router(.routeAction(id: _, action: .selectFolder(.backButtonTapped))):
-                state.routes.goBack()
-                return .none
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToPreviousScreen))):
+                if state.routes.count > 1 {
+                    state.routes.goBack()
+                    return .none
+                } else {
+                    return .send(.goBackToHome)
+                }
 
             default:
                 return .none
