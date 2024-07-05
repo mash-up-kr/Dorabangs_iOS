@@ -34,6 +34,7 @@ public struct SelectFolder {
         case createFolderButtonTapped(folders: [String])
         case fetchURLMetadata
         case fetchURLMetadataResult(Result<URLMetadata, Error>)
+        case routeToPreviousScreen
     }
 
     public init() {}
@@ -45,6 +46,9 @@ public struct SelectFolder {
             switch action {
             case .onAppear:
                 return .send(.fetchURLMetadata)
+
+            case .backButtonTapped:
+                return .send(.routeToPreviousScreen)
 
             case let .folderSelected(index):
                 state.selectedFolderIndex = index

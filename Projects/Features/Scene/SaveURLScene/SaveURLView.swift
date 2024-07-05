@@ -12,6 +12,7 @@ import SwiftUI
 
 public struct SaveURLView: View {
     @Perception.Bindable private var store: StoreOf<SaveURL>
+    @FocusState private var isFocused: Bool
 
     public init(store: StoreOf<SaveURL>) {
         self.store = store
@@ -27,12 +28,14 @@ public struct SaveURLView: View {
                 )
 
                 LKTextField(
-                    text: $store.urlString.sending(\.urlStringChanged),
+                    text: $store.urlString.sending(\.textFieldChanged),
                     fieldText: "링크",
                     placeholder: "URL을 입력해주세요",
                     helperText: "유효한 링크를 입력해주세요.",
                     isWarning: store.isTextFieldWarned
                 )
+                .focused($isFocused)
+                .keyboardType(.URL)
 
                 RoundedButton(
                     title: "저장",
@@ -43,7 +46,25 @@ public struct SaveURLView: View {
 
                 Spacer()
             }
+            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
             .navigationBarHidden(true)
+            .onAppear {
+                isFocused = true
+                store.send(.onAppear)
+            }
         }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
+        @Perception.Bindable var store = store
+        clipboardToast(
+            isPresented: $store.isPresented.sending(\.isPresentedChanged),
+            urlString: store.shared.urlString,
+            saveAction: { store.send(.saveButtonTapped) },
+            closeAction: { store.send(.closeButtonTapped) }
+        )
     }
 }

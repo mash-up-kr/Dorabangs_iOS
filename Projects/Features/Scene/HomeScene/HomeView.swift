@@ -12,6 +12,7 @@ import SwiftUI
 
 public struct HomeView: View {
     private let store: StoreOf<Home>
+    @Environment(\.scenePhase) var scenePhase
 
     public init(store: StoreOf<Home>) {
         self.store = store
@@ -59,6 +60,32 @@ public struct HomeView: View {
             }
             .padding(.vertical, 12)
             .navigationBarHidden(true)
+            .onAppear(perform: checkClipboardURL)
+            .onChange(of: scenePhase) { newValue in
+                guard newValue == .active else { return }
+                checkClipboardURL()
+            }
+            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
         }
+    }
+
+    private func checkClipboardURL() {
+        if let url = UIPasteboard.general.url {
+            store.send(.clipboardURLChanged(url))
+            UIPasteboard.general.url = nil
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
+        @Perception.Bindable var store = store
+        clipboardToast(
+            isPresented: $store.isPresented.sending(\.isPresentedChanged),
+            urlString: store.shared.urlString,
+            saveAction: { store.send(.saveButtonTapped) },
+            closeAction: { store.send(.closeButtonTapped) }
+        )
     }
 }
