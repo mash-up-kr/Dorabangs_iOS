@@ -20,13 +20,30 @@ struct ColorPreview: View {
 
     var body: some View {
         PreviewList(title: "Color") {
-            ForEach(sections, id: \.title) { section in
-                PreviewSection(title: section.title) {
-                    ForEach(section.colors, id: \.self) {
-                        ColorRowView(color: $0)
-                            .listRowSeparator(.hidden)
-                    }
+            colorsPreview()
+            gradientPreview()
+        }
+    }
+
+    @ViewBuilder
+    func colorsPreview() -> some View {
+        ForEach(sections, id: \.title) { section in
+            PreviewSection(title: section.title) {
+                ForEach(section.colors, id: \.self) {
+                    ColorRowView(color: $0)
+                        .listRowSeparator(.hidden)
                 }
+            }
+        }
+    }
+
+    @ViewBuilder
+    func gradientPreview() -> some View {
+        let colors = DesignSystemKitAsset.Colors.gradient
+        PreviewSection(title: "Gradient") {
+            ForEach(colors.indices, id: \.self) { index in
+                GradientRowView(name: "Gradient\(index + 1)", gradient: colors[index])
+                    .listRowSeparator(.hidden)
             }
         }
     }
@@ -50,6 +67,23 @@ private struct ColorRowView: View {
                     .font(.system(.caption))
                     .foregroundStyle(.secondary)
             }
+        }
+    }
+}
+
+private struct GradientRowView: View {
+    let name: String
+    let gradient: LinearGradient
+
+    var body: some View {
+        HStack {
+            Circle()
+                .fill(gradient)
+                .frame(width: 48, height: 48)
+
+            Text(name)
+                .font(.system(.title3).bold())
+                .foregroundStyle(.primary)
         }
     }
 }
