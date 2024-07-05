@@ -13,27 +13,20 @@ struct TabBarPreview: View {
     @State private var selectedIndex: Int = 0
 
     var body: some View {
-        LKTabView(
+        LKTabBar(
             selection: $selectedIndex,
-            content: {
-                Text("홈")
-                    .tag(0)
-
-                Text("보관함")
-                    .tag(1)
-            },
             tabItems: [
                 LKTabBarItem(
                     tag: 0,
                     title: "홈",
-                    image: DesignSystemKitAsset.Icons.icHome.swiftUIImage,
-                    selectedImage: DesignSystemKitAsset.Icons.icHomeFilled.swiftUIImage
+                    image: DesignSystemKitAsset.Icons.icNavigationHome.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icNavigationHomeFilled.swiftUIImage
                 ),
                 LKTabBarItem(
                     tag: 1,
                     title: "보관함",
-                    image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
-                    selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
+                    image: DesignSystemKitAsset.Icons.icNavigationFolder.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icNavigationFolderFilled.swiftUIImage
                 )
             ]
         )
