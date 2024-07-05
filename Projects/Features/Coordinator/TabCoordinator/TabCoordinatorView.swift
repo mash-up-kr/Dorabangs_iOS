@@ -25,10 +25,14 @@ public struct TabCoordinatorView: View {
                 HomeCoordinatorView(store: store.scope(state: \.home, action: \.home), tabbar: tabbar)
                     .tag(TabCoordinator.Tab.home)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
 
                 StorageBoxCoordinatorView(store: store.scope(state: \.storageBox, action: \.storageBox), tabbar: tabbar)
                     .tag(TabCoordinator.Tab.storageBox)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
             .onAppear {
                 UITabBar.appearance().isHidden = true

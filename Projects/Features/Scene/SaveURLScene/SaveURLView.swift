@@ -48,6 +48,8 @@ public struct SaveURLView: View {
             }
             .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
             .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 isFocused = true
                 store.send(.onAppear)

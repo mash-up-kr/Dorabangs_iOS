@@ -60,6 +60,8 @@ public struct HomeView: View {
             }
             .padding(.vertical, 12)
             .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear(perform: checkClipboardURL)
             .onChange(of: scenePhase) { newValue in
                 guard newValue == .active else { return }

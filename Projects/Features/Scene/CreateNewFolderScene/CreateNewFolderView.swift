@@ -47,6 +47,8 @@ public struct CreateNewFolderView: View {
                 Spacer()
             }
             .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 isFocused = true
             }

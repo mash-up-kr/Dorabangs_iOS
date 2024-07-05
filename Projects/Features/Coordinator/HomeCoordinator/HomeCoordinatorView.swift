@@ -33,10 +33,14 @@ public struct HomeCoordinatorView<Content: View>: View {
                     tabbar()
                 }
                 .navigationBarHidden(true)
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.inline)
 
             case let .saveURLCoordinator(store):
                 SaveURLCoordinatorView(store: store)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
