@@ -84,6 +84,9 @@ public struct StorageBoxView: View {
                     store.send(.removeFolder)
                 })
             })
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

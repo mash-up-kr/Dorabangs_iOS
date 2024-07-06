@@ -10,6 +10,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.home",
             sources: ["HomeScene/**"],
             dependencies: [
+                .core(.model),
                 .spm(.composableArchitecture),
                 .designSystem
             ]
@@ -52,6 +53,40 @@ let project = Project.make(
             sources: ["WebScene/**"],
             dependencies: [
                 .spm(.composableArchitecture)
+            ]
+        ),
+        .make(
+            name: "SaveURL",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.saveURL",
+            sources: ["SaveURLScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.service),
+                .core(.model)
+            ]
+        ),
+        .make(
+            name: "SelectFolder",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.selectFolder",
+            sources: ["SelectFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.service),
+                .core(.model)
+            ]
+        ),
+        .make(
+            name: "CreateNewFolder",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.createNewFolder",
+            sources: ["CreateNewFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
             ]
         )
     ]

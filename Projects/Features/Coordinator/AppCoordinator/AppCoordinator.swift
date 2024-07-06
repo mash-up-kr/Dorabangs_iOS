@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import Splash
 import TabCoordinator
 import TCACoordinators
@@ -33,6 +34,7 @@ public struct AppCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<AppScreen>)
+        case saveURL(URL)
     }
 
     public init() {}
@@ -40,8 +42,12 @@ public struct AppCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { _, action in
             switch action {
+            case let .saveURL(url):
+                let deeplink = TabCoordinator.Deeplink.homeCoodinator(.saveURL(url))
+                return .send(.router(.routeAction(id: 0, action: .tabCoordinator(.deeplink(deeplink)))))
+
             default:
-                .none
+                return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)

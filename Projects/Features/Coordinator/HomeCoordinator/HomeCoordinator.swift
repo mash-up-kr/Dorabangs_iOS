@@ -7,19 +7,22 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import Home
+import SaveURLCoordinator
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum HomeScreen {
     case home(Home)
+    case saveURLCoordinator(SaveURLCoordinator)
 }
 
 @Reducer
 public struct HomeCoordinator {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(routes: [.root(.home(.initialState), embedInNavigationView: false)])
+        public static let initialState = State(routes: [.root(.home(.initialState), embedInNavigationView: true)])
         var routes: [Route<HomeScreen.State>]
 
         public init(routes: [Route<HomeScreen.State>]) {
@@ -27,17 +30,43 @@ public struct HomeCoordinator {
         }
     }
 
+    public enum Deeplink {
+        case saveURL(URL)
+    }
+
     public enum Action {
         case router(IndexedRouterActionOf<HomeScreen>)
+        case deeplink(Deeplink)
     }
 
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _, action: .home(.addLinkButtonTapped))):
+                let routes: [Route<SaveURLScreen.State>] = [.root(.saveURL(.initialState), embedInNavigationView: true)]
+                let saveURLCoordinator = SaveURLCoordinator.State(routes: routes)
+                state.routes.push(.saveURLCoordinator(saveURLCoordinator))
+                return .none
+
+            case .router(.routeAction(id: _, action: .saveURLCoordinator(.routeToHomeScreen))):
+                state.routes.goBack()
+                return .none
+
+            case let .router(.routeAction(id: _, action: .home(.routeToSelectFolder(saveURL)))):
+                state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: saveURL)))
+                return .none
+
+            case let .deeplink(.saveURL(saveURL)):
+                state.routes = [
+                    .root(.home(.initialState), embedInNavigationView: true),
+                    .push(.saveURLCoordinator(.init(routeToSelectFolder: saveURL)))
+                ]
+                return .none
+
             default:
-                .none
+                return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)

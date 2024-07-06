@@ -11,21 +11,27 @@ import StorageBox
 import SwiftUI
 import TCACoordinators
 
-public struct StorageBoxCoordinatorView: View {
+public struct StorageBoxCoordinatorView<Content: View>: View {
     private let store: StoreOf<StorageBoxCoordinator>
+    private let tabbar: () -> Content
 
-    public init(store: StoreOf<StorageBoxCoordinator>) {
+    public init(
+        store: StoreOf<StorageBoxCoordinator>,
+        tabbar: @autoclosure @escaping () -> Content
+    ) {
         self.store = store
+        self.tabbar = tabbar
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-                switch screen.case {
-                case let .storageBox(store):
+        TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
+            switch screen.case {
+            case let .storageBox(store):
+                VStack(spacing: 0) {
                     StorageBoxView(store: store)
                 case let .feed(store):
                     FeedCoordinatorView(store: store)
+                    // tabbar()
                 }
             }
         }

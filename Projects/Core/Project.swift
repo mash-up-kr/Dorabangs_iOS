@@ -23,7 +23,10 @@ let project = Project.make(
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.services",
             sources: ["Services/**"],
-            dependencies: []
+            dependencies: [
+                .spm(.composableArchitecture),
+                .core(.model)
+            ]
         )
     ]
 )

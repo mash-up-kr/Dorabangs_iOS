@@ -40,10 +40,15 @@ public struct TabCoordinator {
         }
     }
 
+    public enum Deeplink {
+        case homeCoodinator(HomeCoordinator.Deeplink)
+    }
+
     public enum Action {
         case home(HomeCoordinator.Action)
         case storageBox(StorageBoxCoordinator.Action)
         case tabSelected(Tab)
+        case deeplink(Deeplink)
     }
 
     public init() {}
@@ -66,6 +71,12 @@ public struct TabCoordinator {
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 return .none
+
+            case let .deeplink(.homeCoodinator(deeplink)):
+                state.selectedTab = .home
+                return HomeCoordinator()
+                    .reduce(into: &state.home, action: .deeplink(deeplink))
+                    .map(Action.home)
             }
         }
     }

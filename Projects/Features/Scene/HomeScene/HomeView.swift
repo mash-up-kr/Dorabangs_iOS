@@ -12,6 +12,7 @@ import SwiftUI
 
 public struct HomeView: View {
     private let store: StoreOf<Home>
+    @Environment(\.scenePhase) var scenePhase
 
     public init(store: StoreOf<Home>) {
         self.store = store
@@ -28,7 +29,7 @@ public struct HomeView: View {
                     Color.pink
                         .frame(height: 306)
 
-                    LazyVStack(pinnedViews: .sectionHeaders) {
+                    LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
                         Section {
                             LazyVStack(spacing: 0) {
                                 ForEach(store.cards.indices, id: \.self) { index in
@@ -49,12 +50,44 @@ public struct HomeView: View {
                                 }
                             }
                         } header: {
-                            HorizontalScrollView()
+                            LKTopScrollBar(
+                                titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
+                                selectedIndex: 0
+                            )
                         }
                     }
                 }
             }
             .padding(.vertical, 12)
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear(perform: checkClipboardURL)
+            .onChange(of: scenePhase) { newValue in
+                guard newValue == .active else { return }
+                checkClipboardURL()
+            }
+            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
         }
+    }
+
+    private func checkClipboardURL() {
+        if let url = UIPasteboard.general.url {
+            store.send(.clipboardURLChanged(url))
+            UIPasteboard.general.url = nil
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
+        @Perception.Bindable var store = store
+        clipboardToast(
+            isPresented: $store.isPresented.sending(\.isPresentedChanged),
+            urlString: store.shared.urlString,
+            saveAction: { store.send(.saveButtonTapped) },
+            closeAction: { store.send(.closeButtonTapped) }
+        )
     }
 }
