@@ -24,7 +24,9 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.services",
             sources: ["Services/**"],
             dependencies: [
+                .spm(.alamofire),
                 .spm(.composableArchitecture),
+                .spm(.keychainAccess),
                 .core(.model)
             ]
         )
