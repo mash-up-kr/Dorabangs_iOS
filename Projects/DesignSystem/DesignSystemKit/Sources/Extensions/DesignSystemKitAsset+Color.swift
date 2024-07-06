@@ -7,6 +7,58 @@
 //
 
 import Foundation
+import SwiftUI
+
+public extension DesignSystemKitAsset.Colors {
+    static let gradient1 = LinearGradient(
+        stops: [
+            Gradient.Stop(color: Color(red: 1, green: 0.98, blue: 0.98), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.98, green: 0.98, blue: 1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.98, green: 0.97, blue: 1), location: 1.00)
+        ],
+        startPoint: UnitPoint(x: 1, y: 1),
+        endPoint: UnitPoint(x: -0.03, y: -0.07)
+    )
+
+    static let gradient2 = LinearGradient(
+        stops: [
+            Gradient.Stop(color: Color(red: 1, green: 0.96, blue: 0.98), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.96, green: 0.96, blue: 1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.95, green: 0.98, blue: 1), location: 1.00)
+        ],
+        startPoint: UnitPoint(x: 1, y: 1),
+        endPoint: UnitPoint(x: -0.03, y: -0.07)
+    )
+
+    static let gradient3 = LinearGradient(
+        stops: [
+            Gradient.Stop(color: Color(red: 1, green: 0.92, blue: 0.96), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.97, green: 0.97, blue: 1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.89, green: 0.93, blue: 1), location: 1.00)
+        ],
+        startPoint: UnitPoint(x: 1, y: 1),
+        endPoint: UnitPoint(x: -0.03, y: -0.07)
+    )
+
+    static let gradient4 = LinearGradient(
+        stops: [
+            Gradient.Stop(color: Color(red: 0.47, green: 0.56, blue: 1), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.46, green: 0.32, blue: 1), location: 1.00)
+        ],
+        startPoint: UnitPoint(x: 1, y: 1),
+        endPoint: UnitPoint(x: -0.03, y: -0.07)
+    )
+
+    static let gradient5 = LinearGradient(
+        stops: [
+            Gradient.Stop(color: Color(red: 1, green: 0.91, blue: 0.95), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.91, green: 0.91, blue: 1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.47, green: 0.39, blue: 1), location: 1.00)
+        ],
+        startPoint: UnitPoint(x: 1, y: 1),
+        endPoint: UnitPoint(x: -0.03, y: -0.07)
+    )
+}
 
 public extension DesignSystemKitAsset.Colors {
     static let allCases: [DesignSystemKitColors] = extendGray + opacity + various
@@ -14,7 +66,8 @@ public extension DesignSystemKitAsset.Colors {
         Self.g1, Self.g2, Self.g3, Self.g4, Self.g5, Self.g6, Self.g7, Self.g8, Self.g9
     ]
     static let opacity: [DesignSystemKitColors] = [Self.dimmed]
-    static let various: [DesignSystemKitColors] = [Self.alert]
+    static let various: [DesignSystemKitColors] = [Self.alert, Self.primary]
+    static let gradient: [LinearGradient] = [Self.gradient1, Self.gradient2, Self.gradient3, Self.gradient4, Self.gradient5]
 }
 
 extension DesignSystemKitColors: Hashable {
