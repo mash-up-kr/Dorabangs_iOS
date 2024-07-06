@@ -6,10 +6,10 @@
 //
 
 import ComposableArchitecture
+import FeedCoordinator
 import StorageBox
 import SwiftUI
 import TCACoordinators
-import FeedCoordinator
 
 public struct StorageBoxCoordinatorView: View {
     private let store: StoreOf<StorageBoxCoordinator>

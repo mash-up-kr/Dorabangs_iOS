@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  FeedCoordinator.swift
 //  AppCoordinator
 //
 //  Created by 박소현 on 6/29/24.
@@ -19,14 +19,17 @@ public enum FeedScreen {
 public struct FeedCoordinator {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(routes: [.root(.feed(.initialState), embedInNavigationView: true)])
         var routes: [Route<FeedScreen.State>]
 
         public init(routes: [Route<FeedScreen.State>]) {
             self.routes = routes
         }
+
+        public init(title: String) {
+            routes = [.root(.feed(.init(title: title)), embedInNavigationView: true)]
+        }
     }
-    
+
     public enum Action {
         case router(IndexedRouterActionOf<FeedScreen>)
     }
@@ -42,6 +45,4 @@ public struct FeedCoordinator {
         }
         .forEachRoute(\.routes, action: \.router)
     }
-    
-    
 }

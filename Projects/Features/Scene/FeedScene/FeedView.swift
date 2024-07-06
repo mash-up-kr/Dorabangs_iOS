@@ -11,20 +11,17 @@ import DesignSystemKit
 import SwiftUI
 
 public struct FeedView: View {
-    
     private let store: StoreOf<Feed>
-    
-    
+
     public init(store: StoreOf<Feed>) {
         self.store = store
     }
-    
+
     public var body: some View {
         WithPerceptionTracking {
-            Text("Hello, World!")
+            Text(store.title)
         }
         .background(Color.red)
         .onAppear { store.send(.onAppear) }
     }
 }
-

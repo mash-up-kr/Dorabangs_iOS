@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Feed.swift
 //  Home
 //
 //  Created by 박소현 on 6/29/24.
@@ -12,8 +12,12 @@ import ComposableArchitecture
 public struct Feed {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State()
-        public init() {}
+        public let title: String
+
+        // TODO: - 나중에 폴더 id값으로 바꿔야함
+        public init(title: String) {
+            self.title = title
+        }
     }
 
     public enum Action {
@@ -26,9 +30,8 @@ public struct Feed {
         Reduce { _, action in
             switch action {
             case .onAppear:
-                return .none
+                .none
             }
         }
     }
 }
-
