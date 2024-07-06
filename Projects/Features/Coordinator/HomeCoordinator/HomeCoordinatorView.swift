@@ -28,13 +28,10 @@ public struct HomeCoordinatorView<Content: View>: View {
         TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
             switch screen.case {
             case let .home(store):
-                VStack(spacing: 0) {
-                    HomeView(store: store)
-                    tabbar()
-                }
-                .navigationBarHidden(true)
-                .navigationTitle("")
-                .navigationBarTitleDisplayMode(.inline)
+                HomeContainerView(store: store, tabbar: tabbar())
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
 
             case let .saveURLCoordinator(store):
                 SaveURLCoordinatorView(store: store)
