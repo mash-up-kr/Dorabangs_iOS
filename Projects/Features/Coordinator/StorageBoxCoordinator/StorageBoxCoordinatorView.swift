@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FeedCoordinator
 import StorageBox
 import SwiftUI
 import TCACoordinators
@@ -30,6 +31,9 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
+              
+            case let .feed(store):
+                FeedCoordinatorView(store: store)
             }
         }
     }

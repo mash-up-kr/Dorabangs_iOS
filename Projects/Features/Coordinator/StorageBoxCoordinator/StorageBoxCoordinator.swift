@@ -6,12 +6,14 @@
 //
 
 import ComposableArchitecture
+import FeedCoordinator
 import StorageBox
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum StorageBoxScreen {
     case storageBox(StorageBox)
+    case feed(FeedCoordinator)
 }
 
 @Reducer
@@ -33,10 +35,14 @@ public struct StorageBoxCoordinator {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _,
+                                      action: .storageBox(.routeToFeed(let title)))):
+                state.routes.push(.feed(.init(routes: [.root(.feed(.init(title: title)), embedInNavigationView: true)])))
+                return .none
             default:
-                .none
+                return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)
