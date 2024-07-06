@@ -33,6 +33,7 @@ public enum Scene: String {
 	case saveURL = "SaveURL"
 	case selectFolder = "SelectFolder"
 	case createNewFolder = "CreateNewFolder"
+	case onboarding = "Onboarding"
 }
 
 public enum SPM: String {
