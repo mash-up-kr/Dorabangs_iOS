@@ -12,6 +12,7 @@ import SwiftUI
 
 public struct CreateNewFolderView: View {
     @Perception.Bindable private var store: StoreOf<CreateNewFolder>
+    @FocusState private var isFocused: Bool
 
     public init(store: StoreOf<CreateNewFolder>) {
         self.store = store
@@ -34,6 +35,7 @@ public struct CreateNewFolderView: View {
                     textLimit: 15,
                     isWarning: store.isTextFieldWarned
                 )
+                .focused($isFocused)
 
                 RoundedButton(
                     title: "저장",
@@ -45,6 +47,11 @@ public struct CreateNewFolderView: View {
                 Spacer()
             }
             .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                isFocused = true
+            }
         }
     }
 }

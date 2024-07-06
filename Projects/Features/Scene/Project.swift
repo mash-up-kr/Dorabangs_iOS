@@ -10,6 +10,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.home",
             sources: ["HomeScene/**"],
             dependencies: [
+                .core(.model),
                 .spm(.composableArchitecture),
                 .designSystem
             ]
@@ -29,7 +30,20 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.storageBox",
             sources: ["StorageBoxScene/**"],
             dependencies: [
-                .spm(.composableArchitecture)
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.model)
+            ]
+        ),
+        .make(
+            name: "Feed",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.feed",
+            sources: ["FeedScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.model)
             ]
         ),
         .make(

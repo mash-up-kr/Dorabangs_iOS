@@ -26,14 +26,20 @@ public struct SaveURLCoordinatorView: View {
             case let .createNewFolder(store):
                 CreateNewFolderView(store: store)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
 
             case let .saveURL(store):
                 SaveURLView(store: store)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
 
             case let .selectFolder(store):
                 SelectFolderView(store: store)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

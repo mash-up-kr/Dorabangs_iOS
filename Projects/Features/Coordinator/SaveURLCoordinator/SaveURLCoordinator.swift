@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import CreateNewFolder
+import Foundation
 import SaveURL
 import SelectFolder
 import TCACoordinators
@@ -23,17 +24,21 @@ public enum SaveURLScreen {
 public struct SaveURLCoordinator {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(routes: [.root(.saveURL(.initialState), embedInNavigationView: false)])
         var routes: [Route<SaveURLScreen.State>]
 
         public init(routes: [Route<SaveURLScreen.State>]) {
             self.routes = routes
         }
+
+        /// 홈에서 클립보드 토스트를 통해 폴더 선택 화면으로 이동할 때 사용
+        public init(routeToSelectFolder saveURL: URL) {
+            routes = [.root(.selectFolder(.init(saveURL: saveURL)), embedInNavigationView: true)]
+        }
     }
 
     public enum Action {
         case router(IndexedRouterActionOf<SaveURLScreen>)
-        case goBackToHome
+        case routeToHomeScreen
     }
 
     public init() {}
@@ -41,16 +46,36 @@ public struct SaveURLCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .router(.routeAction(id: _, action: .saveURL(.backButtonTapped))):
-                return .send(.goBackToHome)
+            case .router(.routeAction(id: _, action: .saveURL(.routeToPreviousScreen))):
+                return .send(.routeToHomeScreen)
 
-            case let .router(.routeAction(id: _, action: .saveURL(.navigateToSelectFolder(saveURL)))):
+            case .router(.routeAction(id: _, action: .saveURL(.routeToSelectFolderScreen(let saveURL)))):
                 state.routes.push(.selectFolder(.init(saveURL: saveURL)))
                 return .none
 
-            case .router(.routeAction(id: _, action: .selectFolder(.backButtonTapped))):
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToPreviousScreen))):
+                if state.routes.count > 1 {
+                    state.routes.goBack()
+                    return .none
+                } else {
+                    return .send(.routeToHomeScreen)
+                }
+
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToHomeScreen))):
+                state.routes.goBackToRoot()
+                return .send(.routeToHomeScreen)
+
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToCreateNewFolderScreen(let folders)))):
+                state.routes.push(.createNewFolder(.init(folders: folders)))
+                return .none
+
+            case .router(.routeAction(id: _, action: .createNewFolder(.routeToPreviousScreen))):
                 state.routes.goBack()
                 return .none
+
+            case .router(.routeAction(id: _, action: .createNewFolder(.routeToHomeScreen))):
+                state.routes.goBackToRoot()
+                return .send(.routeToHomeScreen)
 
             default:
                 return .none
