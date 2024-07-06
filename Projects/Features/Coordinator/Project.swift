@@ -45,6 +45,17 @@ let project = Project.make(
             sources: ["StorageBoxCoordinator/**"],
             dependencies: [
                 .scene(.storageBox),
+                .spm(.tcaCoordinators),
+                .coordinator(.feed)
+            ]
+        ),
+        .make(
+            name: "FeedCoordinator",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.feedCoordinator",
+            sources: ["FeedCoordinator/**"],
+            dependencies: [
+                .scene(.feed),
                 .spm(.tcaCoordinators)
             ]
         ),

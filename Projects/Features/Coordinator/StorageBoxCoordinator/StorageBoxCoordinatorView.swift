@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FeedCoordinator
 import StorageBox
 import SwiftUI
 import TCACoordinators
@@ -28,7 +29,9 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
             case let .storageBox(store):
                 VStack(spacing: 0) {
                     StorageBoxView(store: store)
-                    tabbar()
+                case let .feed(store):
+                    FeedCoordinatorView(store: store)
+                    // tabbar()
                 }
             }
         }
