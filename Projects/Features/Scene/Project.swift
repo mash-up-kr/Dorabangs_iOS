@@ -75,6 +75,16 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem
             ]
+        ),
+        .make(
+            name: "Onboarding",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.Onboarding",
+            sources: ["OnboardingScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )

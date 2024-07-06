@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Onboarding
 import Splash
 import SwiftUI
 import TabCoordinator
@@ -22,6 +23,12 @@ public struct AppCoordinatorView: View {
     public var body: some View {
         TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
             switch screen.case {
+            case let .onboarding(store):
+                OnboardingView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
             case let .splash(store):
                 SplashView(store: store)
 
