@@ -15,7 +15,7 @@ public struct StorageBoxItem: View {
     let onMove: () -> Void
     let onEdit: () -> Void
     let moreIcon: Image
-    
+
     public init(model: StorageBoxModel,
                 onMove: @escaping () -> Void,
                 onEdit: @escaping () -> Void,
@@ -26,27 +26,27 @@ public struct StorageBoxItem: View {
         self.onEdit = onEdit
         self.moreIcon = moreIcon
     }
-    
+
     public var body: some View {
         HStack {
             DesignSystemKitAsset.Icons.icFolder.swiftUIImage
                 .resizable()
                 .frame(width: 24, height: 24)
                 .padding(.leading, 12)
-            
+
             Text(model.title)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                 .onTapGesture {
                     onMove()
                 }
-            
+
             Spacer()
-            
+
             Text("\(model.count)")
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
-            
+
             moreIcon
                 .resizable()
                 .renderingMode(.template)

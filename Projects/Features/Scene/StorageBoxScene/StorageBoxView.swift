@@ -13,20 +13,20 @@ import SwiftUI
 
 public struct StorageBoxView: View {
     @Perception.Bindable private var store: StoreOf<StorageBox>
-    
+
     public init(store: StoreOf<StorageBox>) {
         self.store = store
     }
-    
+
     public var body: some View {
         WithPerceptionTracking {
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     Text("보관함")
                         .font(weight: .bold, semantic: .base1)
-                    
+
                     Spacer()
-                    
+
                     DesignSystemKitAsset.Icons.icAdd
                         .swiftUIImage
                         .resizable()
@@ -37,7 +37,7 @@ public struct StorageBoxView: View {
                 }
                 .padding(.horizontal, 20)
                 .frame(height: 48)
-                
+
                 ScrollView {
                     VStack(spacing: 20) {
                         StorageBoxSection(
@@ -68,8 +68,8 @@ public struct StorageBoxView: View {
             .onAppear { store.send(.onAppear) }
             .newFolderPopup(isPresented: $store.newFolderPopupIsPresented.projectedValue,
                             list: store.defaultFolders + store.customFolders, onComplete: { folderName in
-                store.send(.addNewFolder(folderName))
-            })
+                                store.send(.addNewFolder(folderName))
+                            })
             .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
                 if index == 0 {
                     store.send(.showRemoveFolderPopup, animation: .default)
@@ -90,17 +90,18 @@ public struct StorageBoxView: View {
         }
     }
 }
+
 extension View {
     func newFolderPopup(isPresented: Binding<Bool>, list: [StorageBoxModel]?, onComplete: @escaping (String) -> Void) -> some View {
         modifier(NewFolderPopupModifier(isPresented: isPresented, list: list, onComplete: onComplete))
     }
-    
+
     func editFolderPopup(isPresented: Binding<Bool>, onSelect: @escaping (Int) -> Void) -> some View {
         modifier(EditFolderPopupModifier(isPresented: isPresented, onSelect: { index in
             onSelect(index)
         }))
     }
-    
+
     func removeFolderPopup(onCancel: @escaping () -> Void, onRemove: @escaping () -> Void) -> some View {
         LKModal(title: "폴더 삭제", content: "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?", leftButtonTitle: "취소", leftButtonAction: {
             onCancel()

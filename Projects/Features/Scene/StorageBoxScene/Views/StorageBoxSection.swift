@@ -15,7 +15,7 @@ public struct StorageBoxSection: View {
     let onSelect: (Int) -> Void
     let onEdit: (Int) -> Void
     let moreIcon: Image
-    
+
     public init(
         storageBoxList: [StorageBoxModel],
         onSelect: @escaping (Int) -> Void,
@@ -27,7 +27,7 @@ public struct StorageBoxSection: View {
         self.onEdit = onEdit
         self.moreIcon = moreIcon
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             ForEach(storageBoxList.indices, id: \.self) { index in

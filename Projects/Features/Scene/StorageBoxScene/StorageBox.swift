@@ -14,32 +14,32 @@ public struct StorageBox {
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State()
-        
+
         public var newFolderPopupIsPresented: Bool = false
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
-        
+
         public var editingIndex: Int?
-        
+
         public var defaultFolders: [StorageBoxModel] = [
             .init(title: "모든 링크", count: 3),
             .init(title: "즐겨찾기", count: 3),
             .init(title: "나중에 읽을 링크", count: 3)
         ]
-        
+
         public var customFolders: [StorageBoxModel] = [
             .init(title: "에스파", count: 3),
             .init(title: "아이브", count: 3),
             .init(title: "카리나", count: 300),
             .init(title: "A", count: 3)
         ]
-        
+
         public init() {}
     }
-    
+
     public enum Action: BindableAction {
         case onAppear
-        
+
         case storageBoxTapped(section: Int, index: Int)
         case onEdit(index: Int)
         case routeToFeed(title: String)
@@ -47,15 +47,15 @@ public struct StorageBox {
         case addNewFolder(String)
         case removeFolder
         case cancelRemoveFolder
-        
+
         case showRemoveFolderPopup
         case routeToChangeFolderName
-        
+
         case binding(BindingAction<State>)
     }
-    
+
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
