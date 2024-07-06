@@ -28,6 +28,8 @@ public struct AppCoordinatorView: View {
             case let .tabCoordinator(store):
                 TabCoordinatorView(store: store)
                     .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

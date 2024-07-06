@@ -33,9 +33,13 @@ public struct SelectFolderView: View {
 
                 Spacer().frame(height: 20)
 
-                FolderListView(folders: store.folders) { selectedIndex in
-                    store.send(.folderSelected(selectedIndex))
-                }
+                FolderListView(
+                    folders: store.folders,
+                    onSelectNewFolder: { store.send(.createFolderButtonTapped) },
+                    onSelect: { selectedIndex in
+                        store.send(.folderSelected(selectedIndex))
+                    }
+                )
 
                 Spacer()
 
@@ -110,12 +114,14 @@ private struct URLMetadataView: View {
 
 private struct FolderListView: View {
     let folders: [String]
+    let onSelectNewFolder: () -> Void
     let onSelect: (Int) -> Void
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 NewFolderView()
+                    .onTapGesture(perform: onSelectNewFolder)
                     .padding(.horizontal, 16)
 
                 FolderList(folders: folders, onSelect: onSelect)

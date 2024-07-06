@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import Home
 import SaveURLCoordinator
 import TCACoordinators
@@ -29,9 +30,13 @@ public struct HomeCoordinator {
         }
     }
 
+    public enum Deeplink {
+        case saveURL(URL)
+    }
+
     public enum Action {
         case router(IndexedRouterActionOf<HomeScreen>)
-        case saveURL(String)
+        case deeplink(Deeplink)
     }
 
     public init() {}
@@ -40,11 +45,24 @@ public struct HomeCoordinator {
         Reduce { state, action in
             switch action {
             case .router(.routeAction(id: _, action: .home(.addLinkButtonTapped))):
-                state.routes.push(.saveURLCoordinator(.initialState))
+                let routes: [Route<SaveURLScreen.State>] = [.root(.saveURL(.initialState), embedInNavigationView: true)]
+                let saveURLCoordinator = SaveURLCoordinator.State(routes: routes)
+                state.routes.push(.saveURLCoordinator(saveURLCoordinator))
                 return .none
 
-            case .router(.routeAction(id: _, action: .saveURLCoordinator(.goBackToHome))):
+            case .router(.routeAction(id: _, action: .saveURLCoordinator(.routeToHomeScreen))):
                 state.routes.goBack()
+                return .none
+
+            case let .router(.routeAction(id: _, action: .home(.routeToSelectFolder(saveURL)))):
+                state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: saveURL)))
+                return .none
+
+            case let .deeplink(.saveURL(saveURL)):
+                state.routes = [
+                    .root(.home(.initialState), embedInNavigationView: true),
+                    .push(.saveURLCoordinator(.init(routeToSelectFolder: saveURL)))
+                ]
                 return .none
 
             default:

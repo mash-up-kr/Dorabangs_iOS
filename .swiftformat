@@ -10,3 +10,4 @@
 --trimwhitespace always
 --allman false
 --commas inline
+--lineaftermarks false

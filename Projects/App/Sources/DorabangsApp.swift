@@ -27,8 +27,9 @@ struct DorabangsApp: App {
                 .onOpenURL { url in
                     let urlcomponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
                     let queryItems = urlcomponents?.queryItems
-                    guard let saveURL = queryItems?.first(where: { $0.name == "url" })?.value else { return }
-                    store.send(.saveURL(saveURL))
+                    if let urlString = queryItems?.first(where: { $0.name == "url" })?.value, let url = URL(string: urlString) {
+                        store.send(.saveURL(url))
+                    }
                 }
         }
     }

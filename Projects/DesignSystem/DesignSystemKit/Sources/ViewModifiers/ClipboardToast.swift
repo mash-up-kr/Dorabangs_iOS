@@ -13,10 +13,16 @@ public extension View {
     func clipboardToast(
         isPresented: Binding<Bool>,
         urlString: String,
-        saveAction: @escaping () -> Void
+        saveAction: @escaping () -> Void,
+        closeAction: (() -> Void)? = nil
     ) -> some View {
         modifier(
-            ClipboardToastModifier(isPresented: isPresented, urlString: urlString, saveAction: saveAction)
+            ClipboardToastModifier(
+                isPresented: isPresented,
+                urlString: urlString,
+                saveAction: saveAction,
+                closeAction: closeAction
+            )
         )
     }
 }
@@ -26,7 +32,7 @@ private struct ClipboardToastModifier: ViewModifier {
     @Binding var isPresented: Bool
     var urlString: String
     var saveAction: () -> Void
-    let duration: CGFloat = 2
+    var closeAction: (() -> Void)?
 
     func body(content: Content) -> some View {
         ZStack {
@@ -38,8 +44,14 @@ private struct ClipboardToastModifier: ViewModifier {
 
                     LKClipboardToast(
                         urlString: urlString,
-                        saveAction: saveAction,
-                        closeAction: hideToast
+                        saveAction: {
+                            hideToast()
+                            saveAction()
+                        },
+                        closeAction: {
+                            hideToast()
+                            closeAction?()
+                        }
                     )
                     .padding(.bottom, 20)
                     .padding(.horizontal, 20)
@@ -55,7 +67,6 @@ private struct ClipboardToastModifier: ViewModifier {
         workItem?.cancel()
         let task = DispatchWorkItem(block: hideToast)
         workItem = task
-        DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: task)
     }
 
     private func hideToast() {

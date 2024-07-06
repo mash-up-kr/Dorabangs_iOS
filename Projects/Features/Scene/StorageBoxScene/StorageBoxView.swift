@@ -25,6 +25,8 @@ public struct StorageBoxView: View {
             }
             .onAppear { store.send(.onAppear) }
             .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
