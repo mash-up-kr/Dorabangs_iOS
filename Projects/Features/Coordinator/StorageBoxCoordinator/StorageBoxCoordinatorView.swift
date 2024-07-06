@@ -29,10 +29,10 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
             case let .storageBox(store):
                 VStack(spacing: 0) {
                     StorageBoxView(store: store)
-                case let .feed(store):
-                    FeedCoordinatorView(store: store)
-                    // tabbar()
+                    tabbar()
                 }
+            case let .feed(store):
+                FeedCoordinatorView(store: store)
             }
         }
     }
