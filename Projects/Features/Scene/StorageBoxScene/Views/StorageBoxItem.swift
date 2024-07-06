@@ -19,8 +19,7 @@ public struct StorageBoxItem: View {
     public init(model: StorageBoxModel,
                 onMove: @escaping () -> Void,
                 onEdit: @escaping () -> Void,
-                moreIcon: Image)
-    {
+                moreIcon: Image) {
         self.model = model
         self.onMove = onMove
         self.onEdit = onEdit
