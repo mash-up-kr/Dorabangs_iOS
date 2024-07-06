@@ -97,7 +97,6 @@ public struct StorageBox {
                 state.editFolderPopupIsPresented = false
                 return .none
             case .routeToChangeFolderName:
-                // TODO: - 폴더이름 변경 뷰로 이동
                 return .none
             case .binding:
                 return .none

@@ -5,6 +5,7 @@
 //  Created by 김영균 on 6/14/24.
 //
 
+import ChangeFolderName
 import ComposableArchitecture
 import FeedCoordinator
 import StorageBox
@@ -31,9 +32,12 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
-              
+
             case let .feed(store):
                 FeedCoordinatorView(store: store)
+
+            case let .changeFolderName(store):
+                ChangeFolderNameView(store: store)
             }
         }
     }

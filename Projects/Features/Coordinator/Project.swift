@@ -47,7 +47,8 @@ let project = Project.make(
             dependencies: [
                 .scene(.storageBox),
                 .spm(.tcaCoordinators),
-                .coordinator(.feed)
+                .coordinator(.feed),
+                .scene(.changeFolderName)
             ]
         ),
         .make(

@@ -5,6 +5,7 @@
 //  Created by 김영균 on 6/14/24.
 //
 
+import ChangeFolderName
 import ComposableArchitecture
 import FeedCoordinator
 import StorageBox
@@ -14,6 +15,7 @@ import TCACoordinators
 public enum StorageBoxScreen {
     case storageBox(StorageBox)
     case feed(FeedCoordinator)
+    case changeFolderName(ChangeFolderName)
 }
 
 @Reducer
@@ -40,6 +42,9 @@ public struct StorageBoxCoordinator {
             case .router(.routeAction(id: _,
                                       action: .storageBox(.routeToFeed(let title)))):
                 state.routes.push(.feed(.init(routes: [.root(.feed(.init(title: title)), embedInNavigationView: true)])))
+                return .none
+            case .router(.routeAction(id: _, action: .storageBox(.routeToChangeFolderName))):
+                state.routes.push(.changeFolderName(.init(folders: [])))
                 return .none
             default:
                 return .none
