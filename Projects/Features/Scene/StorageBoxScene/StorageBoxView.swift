@@ -43,20 +43,20 @@ public struct StorageBoxView: View {
                         StorageBoxSection(
                             storageBoxList: store.defaultFolders,
                             onSelect: { index in
-                                store.send(.storageBoxTapped(section: 0, index: index))
+                                store.send(.storageBoxTapped(section: 0, index: index), animation: .default)
                             },
                             onEdit: { index in
-                                store.send(.storageBoxTapped(section: 0, index: index))
+                                store.send(.storageBoxTapped(section: 0, index: index), animation: .default)
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icChevronRightM.swiftUIImage
                         )
                         StorageBoxSection(
                             storageBoxList: store.customFolders,
                             onSelect: { index in
-                                store.send(.storageBoxTapped(section: 0, index: index))
+                                store.send(.storageBoxTapped(section: 0, index: index), animation: .default)
                             },
                             onEdit: { index in
-                                store.send(.onEdit(index: index))
+                                store.send(.onEdit(index: index), animation: .default)
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icMore.swiftUIImage
                         )
@@ -66,27 +66,6 @@ public struct StorageBoxView: View {
             }
             .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
             .onAppear { store.send(.onAppear) }
-            .newFolderPopup(isPresented: $store.newFolderPopupIsPresented.projectedValue,
-                            list: store.defaultFolders + store.customFolders, onComplete: { folderName in
-                                store.send(.addNewFolder(folderName))
-                            })
-            .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
-                if index == 0 {
-                    store.send(.showRemoveFolderPopup, animation: .default)
-                } else {
-                    store.send(.routeToChangeFolderName)
-                }
-            })
-            .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
-                removeFolderPopup(onCancel: {
-                    store.send(.cancelRemoveFolder, animation: .default)
-                }, onRemove: {
-                    store.send(.removeFolder)
-                })
-            })
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

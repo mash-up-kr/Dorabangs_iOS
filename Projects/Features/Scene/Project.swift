@@ -99,6 +99,16 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem
             ]
+        ),
+        .make(
+            name: "ChangeFolderName",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.changeFolderName",
+            sources: ["ChangeFolderNameScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )
