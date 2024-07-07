@@ -10,7 +10,7 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct StorageBoxContainerView<Content: View>: View {
-    private let store: StoreOf<StorageBox>
+    @Perception.Bindable private var store: StoreOf<StorageBox>
     private let tabbar: () -> Content
 
     public init(
@@ -22,12 +22,33 @@ public struct StorageBoxContainerView<Content: View>: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            StorageBoxView(store: store)
-            tabbar()
+        WithPerceptionTracking {
+            ZStack(alignment: .bottom) {
+                StorageBoxView(store: store)
+                tabbar()
+            }
+            .newFolderPopup(isPresented: $store.newFolderPopupIsPresented.projectedValue,
+                            list: store.defaultFolders + store.customFolders, onComplete: { folderName in
+                                store.send(.addNewFolder(folderName))
+                            })
+            .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
+                if index == 0 {
+                    store.send(.showRemoveFolderPopup, animation: .default)
+                } else {
+                    store.send(.tapChangeFolderName)
+                }
+            })
+            .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+                removeFolderPopup(onCancel: {
+                    store.send(.cancelRemoveFolder, animation: .default)
+                }, onRemove: {
+                    store.send(.removeFolder)
+                })
+            })
+            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: true)
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationBarHidden(true)
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

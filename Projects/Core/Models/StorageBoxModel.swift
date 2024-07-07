@@ -10,8 +10,8 @@ import Foundation
 
 // TODO: - 서버에서 모델 받으면 수정
 public struct StorageBoxModel: Equatable {
-    public let title: String
-    public let count: Int
+    public var title: String
+    public var count: Int
 
     public init(title: String, count: Int) {
         self.title = title

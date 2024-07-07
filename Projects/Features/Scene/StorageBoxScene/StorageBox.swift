@@ -18,6 +18,7 @@ public struct StorageBox {
         public var newFolderPopupIsPresented: Bool = false
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
+        public var toastPopupIsPresented: Bool = false
 
         public var editingIndex: Int?
 
@@ -49,7 +50,10 @@ public struct StorageBox {
         case cancelRemoveFolder
 
         case showRemoveFolderPopup
-        case routeToChangeFolderName
+        case tapChangeFolderName
+        case changedFolderName(String)
+
+        case routeToChangeFolderName([String])
 
         case binding(BindingAction<State>)
     }
@@ -95,6 +99,15 @@ public struct StorageBox {
                 print("show remove folder popup")
                 state.removeFolderPopupIsPresented = true
                 state.editFolderPopupIsPresented = false
+                return .none
+            case .tapChangeFolderName:
+                return .send(.routeToChangeFolderName(state.defaultFolders.map(\.title) + state.customFolders.map(\.title)))
+            case let .changedFolderName(newName):
+                if let editingIndex = state.editingIndex {
+                    state.customFolders[editingIndex].title = newName
+                }
+                state.editFolderPopupIsPresented = false
+                state.toastPopupIsPresented = true
                 return .none
             case .routeToChangeFolderName:
                 return .none

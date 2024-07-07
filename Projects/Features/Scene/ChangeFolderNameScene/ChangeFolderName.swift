@@ -29,7 +29,7 @@ public struct ChangeFolderName {
         case folderNameChanged(String)
         case saveButtonTapped
         case routeToPreviousScreen
-        case routeToHomeScreen
+        case routeToStorageBox(String)
     }
 
     public init() {}
@@ -52,7 +52,7 @@ public struct ChangeFolderName {
                     state.isSaveButtonDisabled = true
                     return .none
                 } else {
-                    return .send(.routeToHomeScreen)
+                    return .send(.routeToStorageBox(state.newFolderName))
                 }
 
             default:
