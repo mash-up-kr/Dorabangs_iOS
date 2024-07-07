@@ -17,6 +17,7 @@ public struct Splash {
 
     public enum Action {
         case onAppear
+        case routeToTabCoordinatorScreen
     }
 
     public init() {}
@@ -25,6 +26,9 @@ public struct Splash {
         Reduce { _, action in
             switch action {
             case .onAppear:
+                .send(.routeToTabCoordinatorScreen)
+
+            case .routeToTabCoordinatorScreen:
                 .none
             }
         }
