@@ -38,7 +38,7 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
-                    
+
             case let .changeFolderName(store):
                 ChangeFolderNameView(store: store)
                     .navigationBarHidden(true)
