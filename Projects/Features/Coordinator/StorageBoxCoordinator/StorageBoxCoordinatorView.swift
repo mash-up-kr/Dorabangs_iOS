@@ -35,9 +35,15 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
 
             case let .feed(store):
                 FeedCoordinatorView(store: store)
-
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+                    
             case let .changeFolderName(store):
                 ChangeFolderNameView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
