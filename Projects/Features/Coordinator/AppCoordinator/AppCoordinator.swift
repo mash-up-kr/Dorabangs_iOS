@@ -25,7 +25,7 @@ public struct AppCoordinator {
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State(
-            routes: [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
+            routes: [.root(.splash(.init()), embedInNavigationView: false)]
         )
         var routes: [Route<AppScreen.State>]
 
@@ -44,6 +44,10 @@ public struct AppCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _, action: .splash(.routeToTabCoordinatorScreen))):
+                state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
+                return .none
+
             case .router(.routeAction(id: _, action: .onboarding(.routeToTabCoordinator))):
                 state.routes.push(.tabCoordinator(.initialState))
                 return .none

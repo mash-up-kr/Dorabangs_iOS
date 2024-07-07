@@ -21,7 +21,8 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.splash",
             sources: ["SplashScene/**"],
             dependencies: [
-                .spm(.composableArchitecture)
+                .spm(.composableArchitecture),
+                .designSystem
             ]
         ),
         .make(
