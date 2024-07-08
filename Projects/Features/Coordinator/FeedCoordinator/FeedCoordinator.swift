@@ -32,6 +32,7 @@ public struct FeedCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<FeedScreen>)
+        case routeToPreviousScreen
     }
 
     public init() {}
@@ -39,6 +40,8 @@ public struct FeedCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { _, action in
             switch action {
+            case .router(.routeAction(id: _, action: .feed(.routeToPreviousScreen))):
+                .send(.routeToPreviousScreen)
             default:
                 .none
             }

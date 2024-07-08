@@ -12,16 +12,19 @@ public struct LKTextMiddleTopBar: View {
     private let title: String?
     private let backButtonAction: () -> Void
     private let rightButtonEnabled: Bool?
+    private let rightButtonImage: Image?
     private let action: () -> Void
 
     public init(
         title: String? = nil,
         backButtonAction: @escaping () -> Void = {},
+        rightButtomImage: Image? = nil,
         rightButtonEnabled: Bool? = false,
         action: @escaping () -> Void
     ) {
         self.title = title
         self.rightButtonEnabled = rightButtonEnabled
+        rightButtonImage = rightButtomImage
         self.backButtonAction = backButtonAction
         self.action = action
     }
@@ -35,9 +38,12 @@ public struct LKTextMiddleTopBar: View {
             Spacer()
 
             if let rightButtonEnabled, rightButtonEnabled {
-                Button(action: action) {
-                    // TODO: ... 버튼으로 변경
-                    Text("..")
+                Button(action: {
+                    action()
+                }) {
+                    rightButtonImage?
+                        .renderingMode(.template)
+                        .foregroundColor(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                 }
                 .frame(width: 24, height: 24)
             }

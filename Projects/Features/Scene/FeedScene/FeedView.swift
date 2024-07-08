@@ -20,10 +20,20 @@ public struct FeedView: View {
     public var body: some View {
         WithPerceptionTracking {
             VStack {
-                FeedHeaderView(folderName: "감자모음집", linkCount: 20)
+                LKTextMiddleTopBar(
+                    title: "감자모음집",
+                    backButtonAction: { store.send(.backButtonTapped) },
+                    rightButtomImage: DesignSystemKitAsset.Icons.icMore.swiftUIImage,
+                    rightButtonEnabled: true,
+                    action: {
+                        store.send(.tapMore)
+                    }
+                )
 
                 ScrollView {
                     LazyVStack(pinnedViews: .sectionHeaders) {
+                        FeedHeaderView(folderName: "감자모음집", linkCount: 20)
+
                         Section {
                             LazyVStack(spacing: 0) {
                                 ForEach(store.cards.indices, id: \.self) { index in
@@ -44,7 +54,24 @@ public struct FeedView: View {
                                 }
                             }
                         } header: {
-                            FeedHeaderTabView()
+                            VStack(spacing: 0) {
+                                FeedHeaderTabView(select: { selectType in
+                                    switch selectType {
+                                    case .all:
+                                        store.send(.tapAllType)
+                                    case .unread:
+                                        store.send(.tapUnreadType)
+                                    }
+                                })
+                                FeedSortView(onSort: { sortType in
+                                    switch sortType {
+                                    case .latest:
+                                        store.send(.tapSortLatest)
+                                    case .past:
+                                        store.send(.tapSortPast)
+                                    }
+                                })
+                            }
                         }
                     }
                 }
@@ -65,8 +92,8 @@ public struct FeedHeaderView: View {
 
     public var body: some View {
         HStack(alignment: .center) {
-            Image("")
-                .resizable()
+            DesignSystemKitAsset.Icons.imgAll
+                .swiftUIImage
                 .frame(width: 52, height: 52)
                 .scaledToFill()
                 .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
@@ -92,17 +119,100 @@ public struct FeedHeaderView: View {
     }
 }
 
+public struct FeedSortView: View {
+    let onSort: (SortType) -> Void
+
+    @State var selectedType: SortType = .latest
+
+    public enum SortType {
+        case latest, past
+    }
+
+    public init(onSort: @escaping (SortType) -> Void) {
+        self.onSort = onSort
+    }
+
+    public var body: some View {
+        HStack(alignment: .center, spacing: 16) {
+            Spacer()
+            FeedSortItem(image: DesignSystemKitAsset.Icons.icBookmark.swiftUIImage, title: "최신순", isSelected: selectedType == .latest, onTap: {
+                onSort(.latest)
+                selectedType = .latest
+
+            })
+            FeedSortItem(image: DesignSystemKitAsset.Icons.icBookmark.swiftUIImage, title: "과거순", isSelected: selectedType == .past, onTap: {
+                onSort(.past)
+                selectedType = .past
+            })
+            .padding(.trailing, 20)
+        }
+        .frame(height: 54)
+        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+    }
+}
+
+public struct FeedSortItem: View {
+    let image: Image
+    let title: String
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    public init(image: Image, title: String, isSelected: Bool, onTap: @escaping () -> Void) {
+        self.image = image
+        self.title = title
+        self.isSelected = isSelected
+        self.onTap = onTap
+    }
+
+    public var body: some View {
+        HStack(alignment: .center, spacing: 4) {
+            image
+                .resizable()
+                .renderingMode(.template)
+                .foregroundColor(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
+                .frame(width: 24, height: 24)
+
+            Text(title)
+                .font(weight: .medium, semantic: .caption1)
+                .foregroundStyle(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
+        }
+        .frame(height: 22)
+        .onTapGesture {
+            onTap()
+        }
+    }
+}
+
 public struct FeedHeaderTabView: View {
+    public enum FeedViewTypd {
+        case all, unread
+    }
+
+    let select: (FeedViewTypd) -> Void
+    @State var selectedType: FeedViewTypd = .all
+
+    public init(select: @escaping (FeedViewTypd) -> Void) {
+        self.select = select
+    }
+
     public var body: some View {
         VStack {
             HStack(alignment: .center, spacing: 0) {
-                FeedHeaderTabItemView(title: "전체", isSelected: true)
-                    .frame(width: 70)
+                FeedHeaderTabItemView(title: "전체", isSelected: selectedType == .all, onTap: {
+                    select(.all)
+                    selectedType = .all
+                })
+                .frame(width: 70)
+
                 Divider()
                     .foregroundStyle(DesignSystemKitAsset.Colors.g2.swiftUIColor)
                     .frame(width: 1, height: 12)
-                FeedHeaderTabItemView(title: "읽지 않은", isSelected: true)
-                    .frame(width: 98)
+
+                FeedHeaderTabItemView(title: "읽지 않은", isSelected: selectedType == .unread, onTap: {
+                    select(.unread)
+                    selectedType = .unread
+                })
+                .frame(width: 98)
 
                 Spacer()
             }
@@ -118,24 +228,29 @@ public struct FeedHeaderTabView: View {
 
 public struct FeedHeaderTabItemView: View {
     let title: String
-    var isSelected: Bool
+    var isSelected: Bool = false
+    var onTap: () -> Void
 
-    public init(title: String, isSelected: Bool) {
+    public init(title: String, isSelected: Bool, onTap: @escaping () -> Void) {
         self.title = title
         self.isSelected = isSelected
+        self.onTap = onTap
     }
 
     public var body: some View {
         VStack(alignment: .center, spacing: 4) {
             Text(title)
                 .font(weight: .medium, semantic: .caption2)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
+                .foregroundStyle(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
                 .frame(height: 22)
 
             Circle()
                 .frame(width: 3, height: 3)
-                .background(DesignSystemKitAsset.Colors.g9.swiftUIColor)
+                .background(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
         }
         .frame(height: 30)
+        .onTapGesture(perform: {
+            onTap()
+        })
     }
 }
