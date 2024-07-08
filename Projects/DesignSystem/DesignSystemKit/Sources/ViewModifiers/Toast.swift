@@ -14,7 +14,7 @@ public extension View {
         type: LKToast.ToastType,
         message: String,
         duration: TimeInterval = 2,
-        isEmbedTabbar: Bool?
+        isEmbedTabbar: Bool? = nil
     ) -> some View {
         modifier(
             ToastModifier(
