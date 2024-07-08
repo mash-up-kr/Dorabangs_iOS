@@ -14,7 +14,7 @@ public extension View {
     }
 }
 
-private struct RoundedCorner: Shape {
+struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
 
