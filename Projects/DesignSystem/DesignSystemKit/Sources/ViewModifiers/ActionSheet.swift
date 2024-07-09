@@ -27,7 +27,7 @@ public extension View {
                         }
 
                     LKActionSheet(isPresented: isPresented, items: items)
-                        .zIndex(2)
+                        .zIndex(999)
                         .transition(.move(edge: .bottom))
                 }
             }

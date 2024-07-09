@@ -47,14 +47,14 @@ public struct TabCoordinatorView: View {
                 LKTabBarItem(
                     tag: TabCoordinator.Tab.home,
                     title: "홈",
-                    image: DesignSystemKitAsset.Icons.icHome.swiftUIImage,
-                    selectedImage: DesignSystemKitAsset.Icons.icHomeFilled.swiftUIImage
+                    image: DesignSystemKitAsset.Icons.icNavigationHome.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icNavigationHomeFilled.swiftUIImage
                 ),
                 LKTabBarItem(
                     tag: TabCoordinator.Tab.storageBox,
                     title: "보관함",
-                    image: DesignSystemKitAsset.Icons.icFolder.swiftUIImage,
-                    selectedImage: DesignSystemKitAsset.Icons.icFloderFilled.swiftUIImage
+                    image: DesignSystemKitAsset.Icons.icNavigationFolder.swiftUIImage,
+                    selectedImage: DesignSystemKitAsset.Icons.icNavigationFolderFilled.swiftUIImage
                 )
             ]
         )

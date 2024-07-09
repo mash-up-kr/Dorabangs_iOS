@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import DesignSystemKit
 import SwiftUI
 
 public struct SplashView: View {
@@ -18,8 +19,15 @@ public struct SplashView: View {
 
     public var body: some View {
         WithPerceptionTracking {
-            Text("Splash View")
-                .onAppear { store.send(.onAppear) }
+            DesignSystemKitAsset.Icons.winter
+                .swiftUIImage
+                .resizable()
+                .ignoresSafeArea(.all, edges: [.vertical])
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        store.send(.onAppear, animation: .easeInOut)
+                    }
+                }
         }
     }
 }

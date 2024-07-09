@@ -8,12 +8,14 @@
 
 import ComposableArchitecture
 import Foundation
+import Onboarding
 import Splash
 import TabCoordinator
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum AppScreen {
+    case onboarding(Onboarding)
     case splash(Splash)
     case tabCoordinator(TabCoordinator)
 }
@@ -23,7 +25,7 @@ public struct AppCoordinator {
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State(
-            routes: [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
+            routes: [.root(.splash(.init()), embedInNavigationView: false)]
         )
         var routes: [Route<AppScreen.State>]
 
@@ -40,8 +42,16 @@ public struct AppCoordinator {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _, action: .splash(.routeToTabCoordinatorScreen))):
+                state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
+                return .none
+
+            case .router(.routeAction(id: _, action: .onboarding(.routeToTabCoordinator))):
+                state.routes.push(.tabCoordinator(.initialState))
+                return .none
+
             case let .saveURL(url):
                 let deeplink = TabCoordinator.Deeplink.homeCoodinator(.saveURL(url))
                 return .send(.router(.routeAction(id: 0, action: .tabCoordinator(.deeplink(deeplink)))))

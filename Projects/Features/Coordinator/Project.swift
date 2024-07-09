@@ -10,6 +10,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.appCoordinator",
             sources: ["AppCoordinator/**"],
             dependencies: [
+                .scene(.onboarding),
                 .scene(.splash),
                 .coordinator(.tab),
                 .spm(.tcaCoordinators)
@@ -46,7 +47,8 @@ let project = Project.make(
             dependencies: [
                 .scene(.storageBox),
                 .spm(.tcaCoordinators),
-                .coordinator(.feed)
+                .coordinator(.feed),
+                .scene(.changeFolderName)
             ]
         ),
         .make(

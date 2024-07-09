@@ -44,37 +44,20 @@ public struct LKTabBar<SelectionValue: Hashable>: View {
         .frame(height: 60)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .overlay {
-            RoundedTopCornersBorder(radius: 20)
-                .stroke(DesignSystemKitAsset.Colors.g2.swiftUIColor, lineWidth: 1)
+            RoundedTopBorder()
+                .stroke(DesignSystemKitAsset.Colors.g1.swiftUIColor, lineWidth: 1)
         }
+        .shadow(color: .primary.opacity(0.01), blur: 8, x: 0, y: -4)
     }
 }
 
-// 바텀 탭 뷰의 상단을 둥글게 하는 Shape
-private struct RoundedTopCornersBorder: Shape {
-    let radius: CGFloat
-
+// 바텀 탭 뷰의 상단의 일직선
+private struct RoundedTopBorder: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
-        path.move(to: CGPoint(x: 0, y: radius * 2))
-        path.addLine(to: CGPoint(x: 0, y: radius))
-        path.addArc(
-            center: CGPoint(x: radius, y: radius),
-            radius: radius,
-            startAngle: .degrees(180),
-            endAngle: .degrees(270),
-            clockwise: false
-        )
-        path.addLine(to: CGPoint(x: rect.maxX - radius, y: 0))
-        path.addArc(
-            center: CGPoint(x: rect.maxX - radius, y: radius),
-            radius: radius,
-            startAngle: .degrees(270),
-            endAngle: .degrees(0),
-            clockwise: false
-        )
-        path.addLine(to: CGPoint(x: rect.maxX, y: radius * 2))
+        path.move(to: CGPoint(x: 0, y: 0))
+        path.addLine(to: CGPoint(x: rect.maxX, y: 0))
         return path
     }
 }

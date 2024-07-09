@@ -22,7 +22,8 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.splash",
             sources: ["SplashScene/**"],
             dependencies: [
-                .spm(.composableArchitecture)
+                .spm(.composableArchitecture),
+                .designSystem
             ]
         ),
         .make(
@@ -85,6 +86,26 @@ let project = Project.make(
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.createNewFolder",
             sources: ["CreateNewFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
+        ),
+        .make(
+            name: "Onboarding",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.Onboarding",
+            sources: ["OnboardingScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
+        ),
+        .make(
+            name: "ChangeFolderName",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.changeFolderName",
+            sources: ["ChangeFolderNameScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
                 .designSystem

@@ -5,6 +5,7 @@
 //  Created by 김영균 on 6/14/24.
 //
 
+import ChangeFolderName
 import ComposableArchitecture
 import FeedCoordinator
 import StorageBox
@@ -27,12 +28,22 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
         TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
             switch screen.case {
             case let .storageBox(store):
-                VStack(spacing: 0) {
-                    StorageBoxView(store: store)
-                    tabbar()
-                }
+                StorageBoxContainerView(store: store, tabbar: tabbar())
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
             case let .feed(store):
                 FeedCoordinatorView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+                    
+            case let .changeFolderName(store):
+                ChangeFolderNameView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

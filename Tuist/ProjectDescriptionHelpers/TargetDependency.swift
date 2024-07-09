@@ -33,12 +33,15 @@ public enum Scene: String {
 	case saveURL = "SaveURL"
 	case selectFolder = "SelectFolder"
 	case createNewFolder = "CreateNewFolder"
+	case onboarding = "Onboarding"
+    case changeFolderName = "ChangeFolderName"
 }
 
 public enum SPM: String {
 	case acarousel = "ACarousel"
 	case composableArchitecture = "ComposableArchitecture"
 	case tcaCoordinators = "TCACoordinators"
+	case keychainAccess = "KeychainAccess"
 }
 
 public enum ShareExtension: String {

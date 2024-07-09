@@ -13,14 +13,16 @@ public extension View {
         isPresented: Binding<Bool>,
         type: LKToast.ToastType,
         message: String,
-        duration: TimeInterval = 2
+        duration: TimeInterval = 2,
+        isEmbedTabbar: Bool? = nil
     ) -> some View {
         modifier(
             ToastModifier(
                 isPresented: isPresented,
                 type: type,
                 message: message,
-                duration: duration
+                duration: duration,
+                isEmbedTabbar: isEmbedTabbar
             )
         )
     }
@@ -31,6 +33,7 @@ struct ToastModifier: ViewModifier {
     var type: LKToast.ToastType
     var message: String
     var duration: TimeInterval
+    var isEmbedTabbar: Bool?
 
     func body(content: Content) -> some View {
         ZStack {
@@ -41,7 +44,7 @@ struct ToastModifier: ViewModifier {
                     Spacer()
 
                     LKToast(type: type, message: message)
-                        .padding(.bottom, 20)
+                        .padding(.bottom, isEmbedTabbar == true ? 80 : 20)
                 }
                 .transition(.opacity.animation(.easeInOut))
                 .onAppear {

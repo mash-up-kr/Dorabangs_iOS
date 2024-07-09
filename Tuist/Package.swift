@@ -9,7 +9,8 @@ import PackageDescription
             "ACarousel": .framework,
             "Alamofire": .framework,
             "ComposableArchitecture": .framework,
-            "TCACoordinators": .framework
+			"TCACoordinators": .framework,
+			"KeychainAccess": .framework
         ]
     )
 #endif
@@ -20,6 +21,7 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", exact: "1.11.0"),
         .package(url: "https://github.com/johnpatrickmorgan/TCACoordinators", exact: "0.10.1"),
         .package(url: "https://github.com/Alamofire/Alamofire", exact: "5.9.1"),
-        .package(url: "https://github.com/JWAutumn/ACarousel", exact: "0.2.0")
+        .package(url: "https://github.com/JWAutumn/ACarousel", exact: "0.2.0"),
+		.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", exact: "4.0.0")
     ]
 )

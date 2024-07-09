@@ -21,6 +21,7 @@ public extension DesignSystemKitAsset.Typography {
         case regular
         case medium
         case bold
+        case extrabold
         case heavy
     }
 
@@ -105,29 +106,12 @@ public extension DesignSystemKitAsset.Typography.Semantic {
 }
 
 public extension DesignSystemKitAsset.Typography.Weight {
-    var swiftUIFontWeight: Font.Weight {
-        switch self {
-        case .regular: .regular
-        case .medium: .medium
-        case .bold: .bold
-        case .heavy: .heavy
-        }
-    }
-
-    var uikitFontWeight: UIFont.Weight {
-        switch self {
-        case .regular: .regular
-        case .medium: .medium
-        case .bold: .bold
-        case .heavy: .heavy
-        }
-    }
-
     var value: CGFloat {
         switch self {
         case .regular: 400
         case .medium: 500
         case .bold: 700
+        case .extrabold: 800
         case .heavy: 900
         }
     }
