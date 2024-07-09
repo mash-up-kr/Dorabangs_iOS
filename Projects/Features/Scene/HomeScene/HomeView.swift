@@ -67,7 +67,6 @@ public struct HomeView: View {
                 guard newValue == .active else { return }
                 checkClipboardURL()
             }
-            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
         }
     }
 
@@ -76,18 +75,5 @@ public struct HomeView: View {
             store.send(.clipboardURLChanged(url))
             UIPasteboard.general.url = nil
         }
-    }
-}
-
-private extension View {
-    @ViewBuilder
-    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
-        @Perception.Bindable var store = store
-        clipboardToast(
-            isPresented: $store.isPresented.sending(\.isPresentedChanged),
-            urlString: store.shared.urlString,
-            saveAction: { store.send(.saveButtonTapped) },
-            closeAction: { store.send(.closeButtonTapped) }
-        )
     }
 }
