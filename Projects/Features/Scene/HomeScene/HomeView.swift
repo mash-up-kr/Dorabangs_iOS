@@ -6,12 +6,13 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import ACarousel
 import ComposableArchitecture
 import DesignSystemKit
 import SwiftUI
 
 public struct HomeView: View {
-    private let store: StoreOf<Home>
+    @Perception.Bindable private var store: StoreOf<Home>
     @Environment(\.scenePhase) var scenePhase
 
     public init(store: StoreOf<Home>) {
@@ -25,11 +26,36 @@ public struct HomeView: View {
                     store.send(.addLinkButtonTapped)
                 }
 
-                ScrollView {
-                    Color.pink
-                        .frame(height: 306)
+                LKTopScrollBar(
+                    titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
+                    selectedIndex: 0
+                )
 
-                    LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
+                ScrollView {
+                    ACarousel(
+                        store.bannerList,
+                        id: \.self,
+                        index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
+                        spacing: 0,
+                        headspace: 0,
+                        sidesScaling: 1,
+                        isWrap: false,
+                        autoScroll: .active(TimeInterval(2))
+                    ) { item in
+                        LKBannerView(
+                            prefix: item.prefix,
+                            count: item.count,
+                            action: {}
+                        )
+                    }
+                    .frame(height: 340)
+
+                    HomeBannerPageControlView(
+                        count: 3,
+                        selectedIndex: 0
+                    )
+
+                    LazyVStack(spacing: 0) {
                         Section {
                             LazyVStack(spacing: 0) {
                                 ForEach(store.cards.indices, id: \.self) { index in
@@ -49,11 +75,6 @@ public struct HomeView: View {
                                     }
                                 }
                             }
-                        } header: {
-                            LKTopScrollBar(
-                                titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
-                                selectedIndex: 0
-                            )
                         }
                     }
                 }
@@ -62,7 +83,10 @@ public struct HomeView: View {
             .navigationBarHidden(true)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear(perform: checkClipboardURL)
+            .onAppear {
+                store.send(.onAppear)
+                checkClipboardURL()
+            }
             .onChange(of: scenePhase) { newValue in
                 guard newValue == .active else { return }
                 checkClipboardURL()
