@@ -98,6 +98,7 @@ let project = Project.make(
             sources: ["OnboardingScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
+                .core(.service),
                 .designSystem
             ]
         ),

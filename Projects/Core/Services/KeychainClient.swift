@@ -24,6 +24,7 @@ public struct KeychainClient: Sendable {
 enum KeychainKey {
     static let accessToken = "accessToken"
     static let udid = "udid"
+    static let hasOnboarded = "hasOnboarded"
 }
 
 public extension KeychainClient {
@@ -41,6 +42,14 @@ public extension KeychainClient {
 
     func setUDID(_ udid: String) {
         setString(udid, KeychainKey.udid)
+    }
+
+    var hasOnboarded: Bool {
+        boolForKey(KeychainKey.hasOnboarded)
+    }
+
+    func setHasOnboarded(_ hasOnboarded: Bool) {
+        setBool(hasOnboarded, KeychainKey.hasOnboarded)
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Services
 
 @Reducer
 public struct Onboarding {
@@ -31,10 +32,12 @@ public struct Onboarding {
         case fetchKeywordsResponse(Result<[String], Error>)
 
         // MARK: Navigation Action
-        case routeToTabCoordinator
+        case routeToTabCoordinatorScreen
     }
 
     public init() {}
+
+    @Dependency(\.keychainClient) var keychainClient
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -52,7 +55,8 @@ public struct Onboarding {
                 return .none
 
             case .completeButtonTapped:
-                return .send(.routeToTabCoordinator)
+                keychainClient.setHasOnboarded(true)
+                return .send(.routeToTabCoordinatorScreen)
 
             case .fetchKeywords:
                 return .none

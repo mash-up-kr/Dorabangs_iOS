@@ -44,12 +44,16 @@ public struct AppCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .router(.routeAction(id: _, action: .splash(.routeToOnboardingScreen))):
+                state.routes = [.root(.onboarding(.initialState), embedInNavigationView: false)]
+                return .none
+
             case .router(.routeAction(id: _, action: .splash(.routeToTabCoordinatorScreen))):
                 state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
                 return .none
 
-            case .router(.routeAction(id: _, action: .onboarding(.routeToTabCoordinator))):
-                state.routes.push(.tabCoordinator(.initialState))
+            case .router(.routeAction(id: _, action: .onboarding(.routeToTabCoordinatorScreen))):
+                state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
                 return .none
 
             case let .saveURL(url):

@@ -32,8 +32,9 @@ public struct Splash {
         Reduce { _, action in
             switch action {
             case .onAppear:
-                .run { _ in
+                .run { send in
                     try await handleUDIDAndAccessToken()
+                    await handleRouting(send: send)
                 } catch: { error, _ in
                     debugPrint(error.localizedDescription)
                 }
@@ -63,5 +64,13 @@ private extension Splash {
     func setAccessTokenIfNeeded(udid: String) async throws {
         let accessToken = try await userAPIClient.postUsers(udid)
         keychainClient.setAccessToken(accessToken)
+    }
+
+    func handleRouting(send: Send<Splash.Action>) async {
+        if keychainClient.hasOnboarded {
+            await send(.routeToTabCoordinatorScreen)
+        } else {
+            await send(.routeToOnboardingScreen)
+        }
     }
 }
