@@ -20,7 +20,7 @@ public struct HomeBannerPageControlView: View {
     public var body: some View {
         HStack(spacing: 0) {
             HStack(spacing: 6) {
-                ForEach(0..<count) { index in
+                ForEach(0 ..< count) { index in
                     if index == selectedIndex {
                         DesignSystemKitAsset.Icons.icStar.swiftUIImage
                             .frame(width: 8, height: 8)
