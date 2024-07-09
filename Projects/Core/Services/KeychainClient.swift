@@ -23,6 +23,7 @@ public struct KeychainClient: Sendable {
 
 enum KeychainKey {
     static let accessToken = "accessToken"
+    static let udid = "udid"
 }
 
 public extension KeychainClient {
@@ -32,6 +33,14 @@ public extension KeychainClient {
 
     func setAccessToken(_ assessToken: String) {
         setString(assessToken, KeychainKey.accessToken)
+    }
+
+    var udid: String? {
+        stringForKey(KeychainKey.udid)
+    }
+
+    func setUDID(_ udid: String) {
+        setString(udid, KeychainKey.udid)
     }
 }
 
