@@ -40,92 +40,120 @@ public struct LKClassificationCard: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                Spacer()
-
-                Button(action: deleteAction) {
-                    Image(.icCloseCircle)
-                        .font(weight: .medium, semantic: .caption1)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
-                }
-                .frame(width: 24, height: 24)
-            }
+            closeButton
 
             Spacer()
                 .frame(height: 20)
 
-            HStack(spacing: 13) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(title ?? "")
-                        .font(weight: .bold, semantic: .caption3)
-                        .lineLimit(2)
-
-                    HStack(spacing: 4) {
-                        Image(.icEclipse)
-                            .frame(width: 12, height: 16)
-
-                        // TODO: Constants로 변경~
-                        Text("주요 내용")
-                            .font(weight: .medium, semantic: .s)
-                            .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
-
-                        Spacer()
-                    }
-
-                    Text(description ?? "")
-                        .font(weight: .regular, semantic: .caption1)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
-                        .lineLimit(3)
-                }
-
-                VStack(spacing: 0) {
-                    DesignSystemKitAsset.Colors.g2.swiftUIColor
-                        .frame(width: 65, height: 65)
-
-                    Spacer()
-                }
+            HStack(spacing: 16) {
+                content
+                thumbnail
             }
 
             Spacer()
                 .frame(height: 12)
 
-            HStack(spacing: 12) {
-                ForEach(tags, id: \.self) { tag in
-                    LKTag(tag)
-                }
-
-                Spacer()
-            }
+            tag
 
             Spacer()
-                .frame(height: 16)
+                .frame(height: 12)
 
-            HStack(spacing: 8) {
-                Text(category ?? "")
-                    .font(weight: .regular, semantic: .xs)
-                    .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-
-                Image(.icEclipse)
-                    .frame(width: 2, height: 2)
-
-                Text(timeSince ?? "")
-                    .font(weight: .regular, semantic: .xs)
-                    .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-
-                Spacer()
-            }
+            categoryAndTimeSince
 
             Spacer()
                 .frame(height: 20)
 
-            Button(action: moveToFolderAction) {
-                Text(buttonTitle)
-                    .font(weight: .medium, semantic: .caption1)
-                    .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
-            }
-            .frame(height: 36)
+            moveToFolderButton
         }
         .padding(20)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+    }
+
+    var closeButton: some View {
+        HStack(spacing: 0) {
+            Spacer()
+
+            Button(action: deleteAction) {
+                Image(.icCloseCircle)
+                    .font(weight: .medium, semantic: .caption1)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
+            }
+            .frame(width: 24, height: 24)
+        }
+    }
+
+    var content: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title ?? "")
+                .font(weight: .bold, semantic: .caption3)
+                .lineLimit(2)
+
+            HStack(spacing: 4) {
+                Image(.icAi)
+                    .frame(width: 14, height: 14)
+
+                // TODO: Constants로 변경~
+                Text("주요 내용")
+                    .font(weight: .medium, semantic: .xs)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
+
+                Spacer()
+            }
+
+            Text(description ?? "")
+                .font(weight: .regular, semantic: .caption1)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
+                .lineLimit(3)
+        }
+    }
+
+    var thumbnail: some View {
+        VStack(spacing: 0) {
+            DesignSystemKitAsset.Colors.g2.swiftUIColor
+                .frame(width: 80, height: 80)
+                .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
+                .cornerRadius(4, corners: .allCorners)
+
+            Spacer()
+        }
+    }
+
+    var tag: some View {
+        HStack(spacing: 12) {
+            ForEach(tags, id: \.self) { tag in
+                LKTag(tag)
+            }
+
+            Spacer()
+        }
+    }
+
+    var categoryAndTimeSince: some View {
+        HStack(spacing: 8) {
+            Text(category ?? "")
+                .font(weight: .regular, semantic: .xs)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+
+            Image(.icEclipse)
+                .frame(width: 2, height: 2)
+
+            Text(timeSince ?? "")
+                .font(weight: .regular, semantic: .xs)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+
+            Spacer()
+        }
+    }
+
+    var moveToFolderButton: some View {
+        Button(action: moveToFolderAction) {
+            Text(buttonTitle)
+                .font(weight: .medium, semantic: .caption1)
+                .foregroundStyle(DesignSystemKitAsset.Colors.gradient5)
+                .padding(.vertical, 7)
+                .frame(maxWidth: .infinity)
+        }
+        .background(DesignSystemKitAsset.Colors.gradient1)
+        .cornerRadius(99, corners: .allCorners)
     }
 }
