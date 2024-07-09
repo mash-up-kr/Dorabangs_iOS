@@ -109,6 +109,17 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem
             ]
+        ),
+        .make(
+            name: "AIClassification",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.aiClassification",
+            sources: ["AIClassificationScene/**"],
+            dependencies: [
+                .core(.model),
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )

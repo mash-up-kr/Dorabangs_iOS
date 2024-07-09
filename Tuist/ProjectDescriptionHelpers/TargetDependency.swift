@@ -35,6 +35,7 @@ public enum Scene: String {
 	case createNewFolder = "CreateNewFolder"
 	case onboarding = "Onboarding"
     case changeFolderName = "ChangeFolderName"
+	case aiClassification = "AIClassification"
 }
 
 public enum SPM: String {
