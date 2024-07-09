@@ -21,32 +21,11 @@ struct AIClassificationCardView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            ScrollView {
-                Spacer().frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight)
-
-                LazyVStack(spacing: 0) {
-                    ForEach(Array(store.sections.keys), id: \.self) { section in
-                        VStack(spacing: 0) {
-                            AIClassificationCardSectionHeaderView(
-                                title: section.name,
-                                count: section.postCounts,
-                                action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
-                            )
-
-                            WithPerceptionTracking {
-                                AIClassificationCardSectionItemView(
-                                    section: section,
-                                    items: store.sections[section] ?? [],
-                                    deleteAction: { section, item in
-                                        store.send(.deleteButtonTapped(section: section, item: item))
-                                    },
-                                    moveToFolderAction: { section, item in
-                                        store.send(.moveToFolderButtonTapped(section: section, item: item))
-                                    }
-                                )
-                            }
-                        }
-                    }
+            VStack(spacing: 0) {
+                if store.sections.isEmpty {
+                    emptyView()
+                } else {
+                    contentScrollView()
                 }
             }
             .onAppear {
