@@ -29,7 +29,7 @@ public enum Scene: String {
 	case home = "Home"
 	case splash = "Splash"
 	case web = "Web"
-  case feed = "Feed"
+    case feed = "Feed"
 	case saveURL = "SaveURL"
 	case selectFolder = "SelectFolder"
 	case createNewFolder = "CreateNewFolder"
@@ -39,6 +39,7 @@ public enum Scene: String {
 
 public enum SPM: String {
 	case acarousel = "ACarousel"
+    case alamofire = "Alamofire"
 	case composableArchitecture = "ComposableArchitecture"
 	case tcaCoordinators = "TCACoordinators"
 	case keychainAccess = "KeychainAccess"

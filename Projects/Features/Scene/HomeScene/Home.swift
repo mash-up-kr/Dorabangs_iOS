@@ -75,7 +75,7 @@ public struct Home {
                 }
 
             case .fetchAILinkCount:
-                state.aiLinkCount = 0
+                state.aiLinkCount = 6
                 return .none
 
             case .fetchUnReadLinkCount:
