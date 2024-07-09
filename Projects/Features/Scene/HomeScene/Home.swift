@@ -17,11 +17,13 @@ public struct Home {
         public static let initialState = State()
         var bannerList: [HomeBanner] = [
             .init(
+                bannerType: HomeBannerType.onboarding,
                 prefix: HomeBannerType.onboarding.prefix,
                 buttonTitle: HomeBannerType.onboarding.buttonTitle,
                 count: 0
             )
         ]
+        var selectedBannerType: HomeBannerType = .onboarding
         var bannerIndex: Int = 0
         var aiLinkCount = 0
         var unreadLinkCount = 0
@@ -40,6 +42,7 @@ public struct Home {
         case fetchData
         case updateBannerList
         case updateBannerPageIndicator(Int)
+        case updateBannerType(HomeBannerType)
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
@@ -72,11 +75,11 @@ public struct Home {
                 }
 
             case .fetchAILinkCount:
-                state.aiLinkCount = 10
+                state.aiLinkCount = 0
                 return .none
 
             case .fetchUnReadLinkCount:
-                state.unreadLinkCount = 5
+                state.unreadLinkCount = 2
                 return .none
 
             case .fetchData:
@@ -93,36 +96,57 @@ public struct Home {
                     let bannerType = HomeBannerType.ai
                     state.bannerList = [
                         .init(
+                            bannerType: bannerType,
                             prefix: bannerType.prefix,
                             buttonTitle: bannerType.buttonTitle,
                             count: state.aiLinkCount
                         )
                     ]
+                    state.selectedBannerType = bannerType
                 }
 
                 if state.unreadLinkCount > 0 {
                     let bannerType = HomeBannerType.unread
                     state.bannerList.append(
                         .init(
+                            bannerType: bannerType,
                             prefix: bannerType.prefix,
                             buttonTitle: bannerType.buttonTitle,
                             count: state.unreadLinkCount
                         )
                     )
+
+                    if state.bannerList.isEmpty {
+                        state.selectedBannerType = bannerType
+                    }
                 }
 
                 let bannerType = HomeBannerType.onboarding
                 state.bannerList.append(
                     .init(
+                        bannerType: bannerType,
                         prefix: bannerType.prefix,
                         buttonTitle: bannerType.buttonTitle,
                         count: 0
                     )
                 )
+
+                if state.bannerList.isEmpty {
+                    state.selectedBannerType = bannerType
+                }
                 return .none
 
             case let .updateBannerPageIndicator(index):
                 state.bannerIndex = index
+
+                let banner = state.bannerList[index]
+                state.selectedBannerType = banner.bannerType
+
+                return .none
+
+            case let .updateBannerType(bannerType):
+                state.selectedBannerType = bannerType
+                print("bannerType,,", bannerType)
                 return .none
 
             case let .setAILinkCount(count):
@@ -135,6 +159,11 @@ public struct Home {
 
             case .addLinkButtonTapped:
                 // TODO: 링크 추가 버튼 탭 동작 구현
+                return .none
+
+            case let .bannerButtonTapped(bannerType):
+                // TODO: 배너 버튼 클릭 시 동작 구현
+                print("Banner Type \(bannerType) 탭 됐어요~")
                 return .none
 
             case let .bookMarkButtonTapped(index):

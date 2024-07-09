@@ -35,15 +35,18 @@ public enum HomeBannerType: Int {
 }
 
 public struct HomeBanner: Hashable {
+    public let bannerType: HomeBannerType
     public let prefix: String
     public let buttonTitle: String
     public let count: Int
 
     public init(
+        bannerType: HomeBannerType,
         prefix: String,
         buttonTitle: String,
         count: Int
     ) {
+        self.bannerType = bannerType
         self.prefix = prefix
         self.buttonTitle = buttonTitle
         self.count = count

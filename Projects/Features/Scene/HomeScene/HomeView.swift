@@ -40,20 +40,25 @@ public struct HomeView: View {
                         headspace: 0,
                         sidesScaling: 1,
                         isWrap: false,
-                        autoScroll: .active(TimeInterval(2))
+                        autoScroll: .active(TimeInterval(3))
                     ) { item in
                         LKBannerView(
                             prefix: item.prefix,
                             count: item.count,
-                            action: {}
+                            buttonTitle: item.buttonTitle,
+                            action: {
+                                store.send(.bannerButtonTapped(item.bannerType))
+                            }
                         )
                     }
                     .frame(height: 340)
 
-                    HomeBannerPageControlView(
-                        count: 3,
-                        selectedIndex: 0
-                    )
+                    if store.bannerList.count > 1 {
+                        HomeBannerPageControlView(
+                            bannerList: store.bannerList,
+                            selectedBanner: store.selectedBannerType
+                        )
+                    }
 
                     LazyVStack(spacing: 0) {
                         Section {

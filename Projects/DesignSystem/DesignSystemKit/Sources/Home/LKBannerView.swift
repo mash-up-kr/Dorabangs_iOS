@@ -11,11 +11,18 @@ import SwiftUI
 public struct LKBannerView: View {
     private let prefix: String
     private let count: Int?
+    private let buttonTitle: String
     private let action: () -> Void
 
-    public init(prefix: String, count: Int?, action: @escaping () -> Void) {
+    public init(
+        prefix: String,
+        count: Int?,
+        buttonTitle: String,
+        action: @escaping () -> Void
+    ) {
         self.prefix = prefix
         self.count = count
+        self.buttonTitle = buttonTitle
         self.action = action
     }
 
@@ -32,7 +39,7 @@ public struct LKBannerView: View {
             Spacer()
                 .frame(height: 12)
 
-            BannerButton(title: "확인하기", action: action)
+            BannerButton(title: buttonTitle, action: action)
 
             Spacer()
                 .frame(height: 24)
@@ -85,6 +92,6 @@ private struct HomeBannerMessageView: View {
 }
 
 #Preview {
-    LKBannerView(prefix: "AI로 분류한 링크가", count: 2, action: {})
+    LKBannerView(prefix: "AI로 분류한 링크가", count: 2, buttonTitle: "저장하기", action: {})
 //    LKBannerView(prefix: "3초만에 링크를\n저장하는 방법이에요", count: 0, action: {})
 }
