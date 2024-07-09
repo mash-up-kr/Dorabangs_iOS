@@ -30,17 +30,7 @@ public struct BannerButton: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 8)
             .frame(height: 38, alignment: .center)
-            .background(
-                LinearGradient(
-                    stops: [
-                        Gradient.Stop(color: Color(red: 1, green: 0.92, blue: 0.96), location: 0.00),
-                        Gradient.Stop(color: Color(red: 0.97, green: 0.97, blue: 1), location: 0.50),
-                        Gradient.Stop(color: Color(red: 0.89, green: 0.93, blue: 1), location: 1.00)
-                    ],
-                    startPoint: UnitPoint(x: 1, y: 1),
-                    endPoint: UnitPoint(x: -0.03, y: -0.07)
-                )
-            )
+            .background(DesignSystemKitAsset.Colors.gradient3)
             .cornerRadius(50, corners: .allCorners)
         }
     }

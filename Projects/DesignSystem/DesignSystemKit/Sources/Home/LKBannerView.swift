@@ -45,17 +45,7 @@ public struct LKBannerView: View {
                 .frame(height: 24)
         }
         .frame(width: 390, height: 340)
-        .background(
-            LinearGradient(
-                stops: [
-                    Gradient.Stop(color: Color(red: 1, green: 0.58, blue: 0.78).opacity(0.1), location: 0.00),
-                    Gradient.Stop(color: Color(red: 0.63, green: 0.62, blue: 1).opacity(0.1), location: 0.50),
-                    Gradient.Stop(color: Color(red: 0.54, green: 0.86, blue: 1).opacity(0.1), location: 1.00)
-                ],
-                startPoint: UnitPoint(x: 1, y: 1),
-                endPoint: UnitPoint(x: -0.03, y: -0.07)
-            )
-        )
+        .background(DesignSystemKitAsset.Colors.gradient6)
         .background(.white.opacity(0.5))
     }
 }
@@ -93,5 +83,4 @@ private struct HomeBannerMessageView: View {
 
 #Preview {
     LKBannerView(prefix: "AI로 분류한 링크가", count: 2, buttonTitle: "저장하기", action: {})
-//    LKBannerView(prefix: "3초만에 링크를\n저장하는 방법이에요", count: 0, action: {})
 }
