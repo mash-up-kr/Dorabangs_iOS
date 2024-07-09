@@ -11,6 +11,7 @@ let project = Project.make(
             sources: ["HomeScene/**"],
             dependencies: [
                 .core(.model),
+                .spm(.acarousel),
                 .spm(.composableArchitecture),
                 .designSystem
             ]

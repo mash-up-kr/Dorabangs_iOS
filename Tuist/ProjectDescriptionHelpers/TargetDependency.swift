@@ -36,7 +36,7 @@ public enum Scene: String {
 }
 
 public enum SPM: String {
-	case alamofire = "Alamofire"
+	case acarousel = "ACarousel"
 	case composableArchitecture = "ComposableArchitecture"
 	case tcaCoordinators = "TCACoordinators"
 }
