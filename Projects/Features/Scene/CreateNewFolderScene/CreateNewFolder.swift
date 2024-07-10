@@ -15,7 +15,7 @@ public struct CreateNewFolder {
         public static let initialState = State(folders: [])
 
         var folders: [String]
-        var newFolderName: String = ""
+        public fileprivate(set) var newFolderName: String = ""
         var isTextFieldWarned: Bool = false
         var isSaveButtonDisabled: Bool = true
 
