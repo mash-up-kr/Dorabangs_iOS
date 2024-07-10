@@ -71,7 +71,7 @@ public struct HomeView: View {
                                         category: "Category",
                                         timeSince: "1일 전",
                                         bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                                        showModalAction: { store.send(.showModalButtonTapped(index)) }
+                                        showModalAction: { store.send(.showModalButtonTapped(index), animation: .easeInOut) }
                                     )
                                     .onAppear {
                                         if index % 9 == 0 {

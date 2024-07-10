@@ -30,6 +30,9 @@ public struct Home {
 
         /// 클립보드 토스트 상태
         public var clipboardToast = ClipboardToastFeature.State()
+        /// 모달, 토스트 바텀시트 등 화면 덮는 컴포넌트 상태
+        var overlayComponent = HomeOverlayComponent.State()
+
         public init() {}
     }
 
@@ -56,6 +59,7 @@ public struct Home {
 
         // MARK: Child Action
         case clipboardToast(ClipboardToastFeature.Action)
+        case overlayComponent(HomeOverlayComponent.Action)
 
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
@@ -66,6 +70,9 @@ public struct Home {
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
             ClipboardToastFeature()
+        }
+        Scope(state: \.overlayComponent, action: \.overlayComponent) {
+            HomeOverlayComponent()
         }
         Reduce { state, action in
             switch action {
@@ -171,8 +178,9 @@ public struct Home {
                 return .none
 
             case let .showModalButtonTapped(index):
-                // TODO: 카드 > 모달 버튼 탭 동작 구현
-                return .none
+                return HomeOverlayComponent()
+                    .reduce(into: &state.overlayComponent, action: .binding(.set(\.isCardActionSheetPresented, true)))
+                    .map(Action.overlayComponent)
 
             case let .clipboardURLChanged(url):
                 return ClipboardToastFeature()

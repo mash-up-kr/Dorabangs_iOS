@@ -8,6 +8,7 @@
 
 import AIClassification
 import ComposableArchitecture
+import CreateNewFolder
 import Home
 import SaveURLCoordinator
 import SwiftUI
@@ -36,6 +37,12 @@ public struct HomeCoordinatorView<Content: View>: View {
 
             case let .saveURLCoordinator(store):
                 SaveURLCoordinatorView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .createNewFolder(store):
+                CreateNewFolderView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

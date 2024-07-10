@@ -12,6 +12,7 @@ import SwiftUI
 
 public struct HomeContainerView<Content: View>: View {
     private let store: StoreOf<Home>
+    private let overlayComponent: StoreOf<HomeOverlayComponent>
     private let tabbar: () -> Content
 
     public init(
@@ -19,30 +20,26 @@ public struct HomeContainerView<Content: View>: View {
         tabbar: @autoclosure @escaping () -> Content
     ) {
         self.store = store
+        overlayComponent = store.scope(state: \.overlayComponent, action: \.overlayComponent)
         self.tabbar = tabbar
     }
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            HomeView(store: store)
-            tabbar()
+        WithPerceptionTracking {
+            ZStack(alignment: .bottom) {
+                HomeView(store: store)
+                tabbar()
+            }
+            .cardActionSheet(store: overlayComponent)
+            .deleteCardModal(store: overlayComponent)
+            .selectFolderBottomSheet(store: overlayComponent)
+            .toast(store: overlayComponent)
+            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
-        .navigationBarHidden(true)
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-private extension View {
-    @ViewBuilder
-    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
-        @Perception.Bindable var store = store
-        clipboardToast(
-            isPresented: $store.isPresented.sending(\.isPresentedChanged),
-            urlString: store.shared.urlString,
-            saveAction: { store.send(.saveButtonTapped) },
-            closeAction: { store.send(.closeButtonTapped) }
-        )
-    }
-}
+private extension View {}
