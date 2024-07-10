@@ -59,6 +59,16 @@ public extension DesignSystemKitAsset.Colors {
         startPoint: .bottomTrailing,
         endPoint: .topLeading
     )
+    
+    static let gradient6 = LinearGradient(
+        stops: [
+            Gradient.Stop(color: Color(red: 1, green: 0.58, blue: 0.78).opacity(0.1), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.63, green: 0.62, blue: 1).opacity(0.1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.54, green: 0.86, blue: 1).opacity(0.1), location: 1.00)
+        ],
+        startPoint: UnitPoint(x: 1, y: 1),
+        endPoint: UnitPoint(x: -0.03, y: -0.07)
+    )
 }
 
 public extension DesignSystemKitAsset.Colors {
