@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import AIClassification
 import ComposableArchitecture
 import Foundation
 import Home
@@ -16,6 +17,7 @@ import TCACoordinators
 public enum HomeScreen {
     case home(Home)
     case saveURLCoordinator(SaveURLCoordinator)
+    case aiClassification(AIClassification)
 }
 
 @Reducer

@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import AIClassification
 import ComposableArchitecture
 import Home
 import SaveURLCoordinator
@@ -35,6 +36,12 @@ public struct HomeCoordinatorView<Content: View>: View {
 
             case let .saveURLCoordinator(store):
                 SaveURLCoordinatorView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .aiClassification(store):
+                AIClassificationView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
