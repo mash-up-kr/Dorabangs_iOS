@@ -14,7 +14,10 @@ public struct Onboarding {
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State()
-        public var keywords: [String] = []
+        public var keywords: [String] = [
+            "경제", "디자인", "개발", "쇼핑", "요리법", "여행", "음악", "UX", "자기개발", "금융", "소셜 미디어", "뉴스", "오락", "비즈니스", "건강",
+            "부동산", "세계", "예술", "스포츠", "경영", "운동", "기술", "영화", "책", "사진", "교육", "과학", "패션", "정치", "생산성", "환경"
+        ]
         public var selectedKeywords: Set<String> = []
         public var isCompleteButtonDisabled: Bool = true
 

@@ -9,5 +9,5 @@
 import Foundation
 
 enum Secrets {
-    static let baseURL = ""
+    static let baseURL = "https://api-dev.link-it.co.kr"
 }
