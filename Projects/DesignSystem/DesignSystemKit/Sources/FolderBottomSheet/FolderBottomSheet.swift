@@ -14,8 +14,9 @@ public struct FolderBottomSheet: View {
     private let actionSheetHeight: CGFloat = 0.0
 
     private let folders: [String]
+    private let onSelectNewFolder: () -> Void
     private let onComplete: (String?) -> Void
-    var selectedIndex: Int?
+    @State var selectedIndex: Int?
     private let keywindow = UIApplication.shared.connectedScenes
         .compactMap { $0 as? UIWindowScene }
         .flatMap(\.windows)
@@ -24,10 +25,12 @@ public struct FolderBottomSheet: View {
     public init(
         isPresented: Binding<Bool>,
         folders: [String],
+        onSelectNewFolder: @escaping () -> Void,
         onComplete: @escaping (String?) -> Void
     ) {
         _isPresented = isPresented
         self.folders = folders
+        self.onSelectNewFolder = onSelectNewFolder
         self.onComplete = onComplete
     }
 
@@ -46,26 +49,31 @@ public struct FolderBottomSheet: View {
             ScrollView {
                 VStack(spacing: 0) {
                     NewFolderView()
+                        .onTapGesture(perform: onSelectNewFolder)
                         .padding(.horizontal, 16)
                         .frame(height: 52)
 
                     FolderList(
                         folders: folders,
                         onSelect: { index in
-                            print("tap folder : \(folders[index])")
+                            selectedIndex = index
                         }
                     )
                 }
             }
 
-            RoundedButton(title: "완료", action: {
-                dismissView()
-                if let selectedIndex {
-                    onComplete(folders[selectedIndex])
-                } else {
-                    onComplete(nil)
+            RoundedButton(
+                title: "완료",
+                isDisabled: selectedIndex == nil,
+                action: {
+                    dismissView()
+                    if let selectedIndex {
+                        onComplete(folders[selectedIndex])
+                    } else {
+                        onComplete(nil)
+                    }
                 }
-            })
+            )
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
 
@@ -119,5 +127,5 @@ public struct FolderBottomSheet: View {
 }
 
 #Preview {
-    FolderBottomSheet(isPresented: .constant(true), folders: ["새폴더", "개폴더", "말폴더"], onComplete: { _ in })
+    FolderBottomSheet(isPresented: .constant(true), folders: ["새폴더", "개폴더", "말폴더"], onSelectNewFolder: {}, onComplete: { _ in })
 }

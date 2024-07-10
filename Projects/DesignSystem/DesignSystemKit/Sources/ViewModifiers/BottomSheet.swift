@@ -12,6 +12,7 @@ public extension View {
     func bottomSheet(
         isPresented: Binding<Bool>,
         folders: [String],
+        onSelectNewFolder: @escaping () -> Void,
         onComplete: @escaping (String?) -> Void
     ) -> some View {
         ZStack {
@@ -30,6 +31,7 @@ public extension View {
                     FolderBottomSheet(
                         isPresented: isPresented,
                         folders: folders,
+                        onSelectNewFolder: onSelectNewFolder,
                         onComplete: onComplete
                     )
                     .zIndex(2)
