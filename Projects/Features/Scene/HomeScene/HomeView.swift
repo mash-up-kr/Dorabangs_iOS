@@ -15,6 +15,11 @@ public struct HomeView: View {
     @Perception.Bindable private var store: StoreOf<Home>
     @Environment(\.scenePhase) var scenePhase
 
+    enum Constant {
+        static let LKTopLogoBarHeight: CGFloat = 48
+        static let LKTopScrollViewHeight: CGFloat = 56
+    }
+
     public init(store: StoreOf<Home>) {
         self.store = store
     }
@@ -23,6 +28,9 @@ public struct HomeView: View {
         WithPerceptionTracking {
             ZStack(alignment: .top) {
                 ScrollView {
+                    Spacer()
+                        .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
+
                     ACarousel(
                         store.bannerList,
                         id: \.self,
@@ -75,6 +83,9 @@ public struct HomeView: View {
                     }
                 }
                 .zIndex(1)
+                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
+                .background(.ultraThinMaterial)
+                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
 
                 VStack(spacing: 0) {
                     LKTopLogoBar {
@@ -86,10 +97,10 @@ public struct HomeView: View {
                         selectedIndex: 0
                     )
                 }
+                .zIndex(2)
                 .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
                 .background(.ultraThinMaterial)
                 .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
-                .zIndex(2)
             }
             .padding(.vertical, 12)
             .navigationBarHidden(true)
