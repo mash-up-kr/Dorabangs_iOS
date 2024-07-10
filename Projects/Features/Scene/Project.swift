@@ -11,6 +11,7 @@ let project = Project.make(
             sources: ["HomeScene/**"],
             dependencies: [
                 .core(.model),
+                .spm(.acarousel),
                 .spm(.composableArchitecture),
                 .designSystem
             ]
@@ -106,6 +107,17 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.changeFolderName",
             sources: ["ChangeFolderNameScene/**"],
             dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
+        ),
+        .make(
+            name: "AIClassification",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.aiClassification",
+            sources: ["AIClassificationScene/**"],
+            dependencies: [
+                .core(.model),
                 .spm(.composableArchitecture),
                 .designSystem
             ]

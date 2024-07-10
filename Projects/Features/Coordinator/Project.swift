@@ -35,6 +35,7 @@ let project = Project.make(
             sources: ["HomeCoordinator/**"],
             dependencies: [
                 .scene(.home),
+                .scene(.aiClassification),
                 .scene(.createNewFolder),
                 .coordinator(.saveURL),
                 .spm(.tcaCoordinators)

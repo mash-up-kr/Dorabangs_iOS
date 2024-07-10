@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import AIClassification
 import ComposableArchitecture
 import CreateNewFolder
 import Foundation
@@ -18,6 +19,7 @@ public enum HomeScreen {
     case home(Home)
     case saveURLCoordinator(SaveURLCoordinator)
     case createNewFolder(CreateNewFolder)
+    case aiClassification(AIClassification)
 }
 
 @Reducer

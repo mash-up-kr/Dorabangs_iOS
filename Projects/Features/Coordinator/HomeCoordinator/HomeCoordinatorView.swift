@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import AIClassification
 import ComposableArchitecture
 import CreateNewFolder
 import Home
@@ -42,6 +43,12 @@ public struct HomeCoordinatorView<Content: View>: View {
 
             case let .createNewFolder(store):
                 CreateNewFolderView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .aiClassification(store):
+                AIClassificationView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

@@ -30,6 +30,7 @@ struct ContentView: View {
 
     @ViewBuilder
     var atomicPreviews: some View {
+        NavigationLink("BannerButton") { BannerButtonPreview() }
         NavigationLink("RoundedButton") { RoundedButtonPreview() }
         NavigationLink("RoundedCornersButton") { RoundedCornersButtonPreview() }
         NavigationLink("TextField") { TextFieldPreview() }
