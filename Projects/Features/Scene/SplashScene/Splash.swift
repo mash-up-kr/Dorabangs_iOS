@@ -7,8 +7,8 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import Services
-import UIKit
 
 @Reducer
 public struct Splash {
@@ -54,10 +54,9 @@ private extension Splash {
         if let udid = keychainClient.udid {
             try await setAccessTokenIfNeeded(udid: udid)
         } else {
-            if let udid = await UIDevice.current.identifierForVendor?.uuidString {
-                keychainClient.setUDID(udid)
-                try await setAccessTokenIfNeeded(udid: udid)
-            }
+            let udid = UUID().uuidString
+            keychainClient.setUDID(udid)
+            try await setAccessTokenIfNeeded(udid: udid)
         }
     }
 
