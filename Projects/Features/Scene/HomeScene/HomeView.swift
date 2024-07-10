@@ -21,16 +21,7 @@ public struct HomeView: View {
 
     public var body: some View {
         WithPerceptionTracking {
-            VStack(spacing: 0) {
-                LKTopLogoBar {
-                    store.send(.addLinkButtonTapped)
-                }
-
-                LKTopScrollBar(
-                    titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
-                    selectedIndex: 0
-                )
-
+            ZStack(alignment: .top) {
                 ScrollView {
                     ACarousel(
                         store.bannerList,
@@ -83,6 +74,22 @@ public struct HomeView: View {
                         }
                     }
                 }
+                .zIndex(1)
+
+                VStack(spacing: 0) {
+                    LKTopLogoBar {
+                        store.send(.addLinkButtonTapped)
+                    }
+
+                    LKTopScrollBar(
+                        titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
+                        selectedIndex: 0
+                    )
+                }
+                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
+                .background(.ultraThinMaterial)
+                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
+                .zIndex(2)
             }
             .padding(.vertical, 12)
             .navigationBarHidden(true)
