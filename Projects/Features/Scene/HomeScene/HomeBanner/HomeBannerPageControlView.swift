@@ -31,22 +31,8 @@ public struct HomeBannerPageControlView: View {
         }
         .padding(.horizontal, 8)
         .frame(height: 16)
-        .background(gradientBackground)
+        .background(DesignSystemKitAsset.Colors.gradient1)
         .cornerRadius(50, corners: .allCorners)
-    }
-
-    private var gradientBackground: AngularGradient {
-        AngularGradient(
-            gradient: Gradient(stops: [
-                .init(color: Color(red: 0.9, green: 0.93, blue: 1).opacity(0.1), location: 0.05),
-                .init(color: Color(red: 0.47, green: 0.78, blue: 1).opacity(0.1), location: 0.25),
-                .init(color: Color(red: 0.67, green: 0.74, blue: 1).opacity(0.1), location: 0.50),
-                .init(color: Color(red: 0.84, green: 0.59, blue: 1).opacity(0.1), location: 0.75),
-                .init(color: Color(red: 0.65, green: 0.6, blue: 1).opacity(0.1), location: 1.00)
-            ]),
-            center: .center,
-            angle: .degrees(45)
-        )
     }
 }
 

@@ -1,45 +1,40 @@
 //
-//  LKBannerView.swift
-//  DesignSystemKit
+//  HomeBannerView.swift
+//  Home
 //
 //  Created by 안상희 on 7/5/24.
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import DesignSystemKit
 import SwiftUI
 
-public struct LKBannerView: View {
-    private let prefix: String
-    private let count: Int?
-    private let buttonTitle: String
+public struct HomeBannerView: View {
+    private let banner: HomeBanner
     private let action: () -> Void
 
     public init(
-        prefix: String,
-        count: Int?,
-        buttonTitle: String,
+        banner: HomeBanner,
         action: @escaping () -> Void
     ) {
-        self.prefix = prefix
-        self.count = count
-        self.buttonTitle = buttonTitle
+        self.banner = banner
         self.action = action
     }
 
     public var body: some View {
         VStack(spacing: 0) {
-            DesignSystemKitAsset.Icons.icStar.swiftUIImage
+            DesignSystemKitAsset.Images.icTempgif.swiftUIImage
                 .frame(width: 250, height: 212)
 
             HomeBannerMessageView(
-                prefix: prefix,
-                count: count
+                prefix: banner.prefix,
+                count: banner.count
             )
 
             Spacer()
                 .frame(height: 12)
 
-            BannerButton(title: buttonTitle, action: action)
+            BannerButton(title: banner.buttonTitle, action: action)
 
             Spacer()
                 .frame(height: 24)
@@ -79,8 +74,4 @@ private struct HomeBannerMessageView: View {
             }
         }
     }
-}
-
-#Preview {
-    LKBannerView(prefix: "AI로 분류한 링크가", count: 2, buttonTitle: "저장하기", action: {})
 }
