@@ -13,7 +13,7 @@ import Foundation
 public struct Home {
     @ObservableState
     public struct State: Equatable {
-        public var cards: [String] = ["카드0", "카드1", "카드2", "카드3", "카드4", "카드5", "카드6", "카드7", "카드8", "카드9", "카드10"]
+        public var cardList: [String] = []
         public static let initialState = State()
         var bannerList: [HomeBanner] = [
             .init(
@@ -23,7 +23,7 @@ public struct Home {
                 count: 0
             )
         ]
-        var selectedBannerType: HomeBannerType = .onboarding
+        var selectedBannerType: HomeBannerType = .unread
         var bannerIndex: Int = 0
         var aiLinkCount = 0
         var unreadLinkCount = 0
@@ -46,6 +46,7 @@ public struct Home {
         case updateBannerList
         case updateBannerPageIndicator(Int)
         case updateBannerType(HomeBannerType)
+        case updateCardList
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
@@ -82,18 +83,19 @@ public struct Home {
                 }
 
             case .fetchAILinkCount:
-                state.aiLinkCount = 6
+                state.aiLinkCount = 1
                 return .none
 
             case .fetchUnReadLinkCount:
-                state.unreadLinkCount = 2
+                state.unreadLinkCount = 0
                 return .none
 
             case .fetchData:
-                return .merge(
+                return .concatenate(
                     .send(.fetchAILinkCount),
                     .send(.fetchUnReadLinkCount),
-                    .send(.updateBannerList)
+                    .send(.updateBannerList),
+                    .send(.updateCardList)
                 )
 
             case .updateBannerList:
@@ -154,6 +156,10 @@ public struct Home {
             case let .updateBannerType(bannerType):
                 state.selectedBannerType = bannerType
                 print("bannerType,,", bannerType)
+                return .none
+
+            case .updateCardList:
+                state.cardList = ["카드"]
                 return .none
 
             case let .setAILinkCount(count):

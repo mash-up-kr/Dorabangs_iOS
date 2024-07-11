@@ -37,7 +37,6 @@ public struct LKTopScrollBar: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 8)
-            .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         }
     }
 }
