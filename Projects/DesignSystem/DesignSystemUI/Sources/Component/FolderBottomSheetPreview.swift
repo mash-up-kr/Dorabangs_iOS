@@ -18,6 +18,7 @@ struct FolderBottomSheetPreview: View {
                              FolderBottomSheet(
                                  isPresented: .constant(true),
                                  folders: folders,
+                                 onSelectNewFolder: {},
                                  onComplete: { _ in
                                      isPresented = false
                                  }
@@ -36,7 +37,9 @@ struct FolderBottomSheetPreview: View {
             .bottomSheet(
                 isPresented: $isPresented,
                 folders: folders,
-                onComplete: { _ in
+                onSelectNewFolder: {},
+                onComplete: {
+                    _ in
                     isPresented = false
                 }
             )
