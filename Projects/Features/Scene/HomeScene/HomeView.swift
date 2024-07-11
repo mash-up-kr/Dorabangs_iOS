@@ -103,6 +103,7 @@ public struct HomeView: View {
                 .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
             }
             .padding(.vertical, 12)
+            .homeBackgroundView()
             .navigationBarHidden(true)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
@@ -121,6 +122,37 @@ public struct HomeView: View {
         if let url = UIPasteboard.general.url {
             store.send(.clipboardURLChanged(url))
             UIPasteboard.general.url = nil
+        }
+    }
+}
+
+fileprivate struct HomeBackgroundView: View {
+    fileprivate init() {}
+    
+    fileprivate var body: some View {
+        ZStack {
+            DesignSystemKitAsset.Colors.white.swiftUIColor
+                .opacity(1)
+                .edgesIgnoringSafeArea(.all)
+            
+            GeometryReader { geometry in
+                Circle()
+                    .fill(
+                        Color(red: 191/255, green: 221/255, blue: 252/255, opacity: 0.5)
+                    )
+                    .frame(width: 357, height: 357)
+                    .blur(radius: 96)
+                    .offset(x: -40, y: 28)
+            }
+        }
+    }
+}
+
+extension View {
+    fileprivate func homeBackgroundView() -> some View {
+        ZStack {
+            HomeBackgroundView()
+            self
         }
     }
 }
