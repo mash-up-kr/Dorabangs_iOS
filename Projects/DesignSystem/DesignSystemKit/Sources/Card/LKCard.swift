@@ -9,6 +9,7 @@
 import SwiftUI
 
 public struct LKCard: View {
+    public var isSummarizing: Bool = true
     private let title: String?
     private let description: String?
     private let tags: [String]
@@ -43,22 +44,26 @@ public struct LKCard: View {
                         .font(weight: .bold, semantic: .caption3)
                         .lineLimit(2)
 
-                    HStack(spacing: 4) {
-                        Image(.icStar)
-                            .frame(width: 12, height: 16)
+                    if isSummarizing {
+                        SummarizingView()
+                    } else {
+                        HStack(spacing: 4) {
+                            Image(.icStar)
+                                .frame(width: 14, height: 14)
 
-                        // TODO: Constants로 변경~
-                        Text("주요 내용")
-                            .font(weight: .medium, semantic: .s)
-                            .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
+                            // TODO: Constants로 변경~
+                            Text("주요 내용")
+                                .font(weight: .medium, semantic: .xs)
+                                .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
 
-                        Spacer()
+                            Spacer()
+                        }
+
+                        Text(description ?? "")
+                            .font(weight: .regular, semantic: .caption1)
+                            .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
+                            .lineLimit(3)
                     }
-
-                    Text(description ?? "")
-                        .font(weight: .regular, semantic: .caption1)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
-                        .lineLimit(3)
                 }
 
                 VStack(spacing: 0) {
@@ -67,19 +72,36 @@ public struct LKCard: View {
                 }
             }
 
-            Spacer()
-                .frame(height: 12)
-
-            HStack(spacing: 12) {
-                ForEach(tags, id: \.self) { tag in
-                    LKTag(tag)
-                }
-
+            if isSummarizing {
                 Spacer()
+                    .frame(height: 16)
+
+                HStack(spacing: 0) {
+//                    Color.pink
+//                        .frame(width: 345, height: 4) // 프로그레스바
+                    LKCardProgressBar(progress: 1)
+                        .padding(.horizontal, 20)
+
+                    Spacer()
+                }
+                .frame(height: 4)
+                .padding(.horizontal, 20)
+            } else {
+                Spacer()
+                    .frame(height: 12)
+
+                HStack(spacing: 12) {
+                    ForEach(tags, id: \.self) { tag in
+                        LKTag(tag)
+                    }
+
+                    Spacer()
+                }
+                .frame(height: 24)
             }
 
             Spacer()
-                .frame(height: 16)
+                .frame(height: 12)
 
             HStack {
                 HStack(spacing: 8) {
@@ -115,4 +137,53 @@ public struct LKCard: View {
         .padding(20)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
+}
+
+private struct SummarizingView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 4) {
+                Image(.icStar)
+                    .frame(width: 14, height: 14)
+
+                Text("요약 중")
+                    .font(weight: .medium, semantic: .xs)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
+
+                Spacer()
+            }
+            .frame(height: 14)
+
+            Spacer()
+                .frame(height: 12)
+
+            Color.pink
+                .frame(width: 254, height: 56) // 스켈레톤 뷰
+
+            Spacer()
+                .frame(height: 8)
+
+            Color.pink
+                .frame(width: 172, height: 26) // 키워드 스켈레톤 뷰
+        }
+    }
+}
+
+private struct CategorySummarizingView: View {
+    var body: some View {
+        HStack(spacing: 0) {}
+            .padding(.trailing, 5)
+    }
+}
+
+#Preview {
+    LKCard(
+        title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
+        description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
+        tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],
+        category: "Category",
+        timeSince: "1일 전",
+        bookMarkAction: {},
+        showModalAction: {}
+    )
 }
