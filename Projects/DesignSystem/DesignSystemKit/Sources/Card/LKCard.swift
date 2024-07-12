@@ -154,13 +154,17 @@ private struct SummarizingView: View {
             Spacer()
                 .frame(height: 12)
 
-            Color.pink
-                .frame(width: 254, height: 56) // 스켈레톤 뷰
+            HStack(spacing: 0) {
+                LKDescriptionSkeletonView()
+                    .frame(width: 254, height: 56) // 스켈레톤 뷰
+
+                Spacer()
+            }
 
             Spacer()
                 .frame(height: 8)
 
-            Color.pink
+            LKKeywordSkeletonView()
                 .frame(width: 172, height: 26) // 키워드 스켈레톤 뷰
         }
     }
