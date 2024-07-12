@@ -18,28 +18,39 @@ struct LKCardProgressBar: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 0) {
-                Rectangle()
-                    .frame(
-                        width: geometry.size.width * progress,
-                        height: 4
-                    )
-                    .foregroundColor(DesignSystemKitAsset.Colors.primary.swiftUIColor)
-                    .cornerRadius(99, corners: .allCorners)
-                
-                Spacer()
-                    .frame(width: 4)
-                
+                if progress != 0 {
+                    Rectangle()
+                        .frame(
+                            width: geometry.size.width * progress,
+                            height: 4
+                        )
+                        .foregroundColor(DesignSystemKitAsset.Colors.primary.swiftUIColor)
+                        .cornerRadius(99, corners: .allCorners)
+
+                    Spacer()
+                        .frame(width: 4)
+                }
+
                 Rectangle()
                     .frame(width: geometry.size.width - geometry.size.width * progress - 4)
                     .frame(height: 4)
                     .foregroundStyle(DesignSystemKitAsset.Colors.gradient2)
                     .cornerRadius(99, corners: .allCorners)
             }
+            .preference(key: ViewSizeKey.self, value: geometry.size)
         }
         .frame(maxWidth: .infinity)
     }
 }
 
+private struct ViewSizeKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
+    }
+}
+
 #Preview {
-    LKCardProgressBar(progress: 0.5)
+    LKCardProgressBar(progress: 0.3)
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 public struct LKCard: View {
     public var isSummarizing: Bool = true
+    public var progress: CGFloat = 0.3
     private let title: String?
     private let description: String?
     private let tags: [String]
@@ -75,8 +76,8 @@ public struct LKCard: View {
             if isSummarizing {
                 Spacer()
                     .frame(height: 16)
-                
-                LKCardProgressBar(progress: 0)
+
+                LKCardProgressBar(progress: progress)
                     .frame(height: 4)
             } else {
                 Spacer()
