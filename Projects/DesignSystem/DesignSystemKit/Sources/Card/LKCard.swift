@@ -75,17 +75,9 @@ public struct LKCard: View {
             if isSummarizing {
                 Spacer()
                     .frame(height: 16)
-
-                HStack(spacing: 0) {
-//                    Color.pink
-//                        .frame(width: 345, height: 4) // 프로그레스바
-                    LKCardProgressBar(progress: 1)
-                        .padding(.horizontal, 20)
-
-                    Spacer()
-                }
-                .frame(height: 4)
-                .padding(.horizontal, 20)
+                
+                LKCardProgressBar(progress: 0)
+                    .frame(height: 4)
             } else {
                 Spacer()
                     .frame(height: 12)
