@@ -156,7 +156,7 @@ private struct SummarizingView: View {
 
             HStack(spacing: 0) {
                 LKDescriptionSkeletonView()
-                    .frame(width: 254, height: 56) // 스켈레톤 뷰
+                    .frame(width: 254, height: 56)
 
                 Spacer()
             }
@@ -165,7 +165,7 @@ private struct SummarizingView: View {
                 .frame(height: 8)
 
             LKKeywordSkeletonView()
-                .frame(width: 172, height: 26) // 키워드 스켈레톤 뷰
+                .frame(width: 172, height: 26)
         }
     }
 }

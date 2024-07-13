@@ -34,7 +34,7 @@ struct LKSkeletonLine: View {
                     RoundedRectangle(cornerRadius: 4)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                 )
-                .animation(Animation.linear(duration: Double.random(in: 1.3...2.5)).repeatForever(autoreverses: false), value: animate)
+                .animation(Animation.linear(duration: Double.random(in: 1.3 ... 2.5)).repeatForever(autoreverses: false), value: animate)
         }
         .frame(maxHeight: .infinity)
     }
