@@ -7,6 +7,8 @@
 //
 
 import ComposableArchitecture
+import Foundation
+import Services
 
 @Reducer
 public struct Splash {
@@ -17,20 +19,57 @@ public struct Splash {
 
     public enum Action {
         case onAppear
+        case routeToOnboardingScreen
         case routeToTabCoordinatorScreen
     }
 
     public init() {}
 
+    @Dependency(\.keychainClient) var keychainClient
+    @Dependency(\.userAPIClient) var userAPIClient
+
     public var body: some ReducerOf<Self> {
         Reduce { _, action in
             switch action {
             case .onAppear:
-                .send(.routeToTabCoordinatorScreen)
+                .run { send in
+                    try await handleUDIDAndAccessToken()
+                    await handleRouting(send: send)
+                } catch: { error, _ in
+                    debugPrint(error.localizedDescription)
+                }
+
+            case .routeToOnboardingScreen:
+                .none
 
             case .routeToTabCoordinatorScreen:
                 .none
             }
+        }
+    }
+}
+
+private extension Splash {
+    func handleUDIDAndAccessToken() async throws {
+        if let udid = keychainClient.udid {
+            try await setAccessTokenIfNeeded(udid: udid)
+        } else {
+            let udid = UUID().uuidString
+            keychainClient.setUDID(udid)
+            try await setAccessTokenIfNeeded(udid: udid)
+        }
+    }
+
+    func setAccessTokenIfNeeded(udid: String) async throws {
+        let accessToken = try await userAPIClient.postUsers(udid)
+        keychainClient.setAccessToken(accessToken)
+    }
+
+    func handleRouting(send: Send<Splash.Action>) async {
+        if keychainClient.hasOnboarded {
+            await send(.routeToTabCoordinatorScreen)
+        } else {
+            await send(.routeToOnboardingScreen)
         }
     }
 }
