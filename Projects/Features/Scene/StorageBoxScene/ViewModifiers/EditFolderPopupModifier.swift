@@ -15,8 +15,7 @@ public struct EditFolderPopupModifier: ViewModifier {
     let onSelect: (Int) -> Void
 
     public init(isPresented: Binding<Bool>,
-                onSelect: @escaping (Int) -> Void)
-    {
+                onSelect: @escaping (Int) -> Void) {
         _isPresented = isPresented
         self.onSelect = onSelect
     }

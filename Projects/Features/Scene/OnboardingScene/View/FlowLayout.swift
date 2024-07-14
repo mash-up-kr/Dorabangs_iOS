@@ -50,8 +50,7 @@ final class FlowLayout: UICollectionViewFlowLayout {
                        y: previousFrame.origin.y,
                        width: .infinity,
                        height: previousFrame.size.height
-                   ))
-            {
+                   )) {
                 groupedCells.append([])
             }
             groupedCells[groupedCells.endIndex - 1].append(currentItemAttributes)
