@@ -37,7 +37,7 @@ public struct AIClassification {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                let tabs = [Folder(id: "A", name: "전체", type: .all, postCounts: 0)]
+                let tabs = [Folder(id: "A", name: "전체", type: .all, postCount: 0)]
                 // TODO: fetch Tabs
                 state.tabs = AIClassificationTab.State(tabs: tabs)
                 // TODO: fetch Cards

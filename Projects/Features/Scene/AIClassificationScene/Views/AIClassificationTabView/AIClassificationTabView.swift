@@ -26,7 +26,7 @@ struct AIClassificationTabView: View {
                             LKTopTabView(
                                 isSelected: store.selectedIndex == index,
                                 title: store.tabs[index].name,
-                                count: "\(store.tabs[index].postCounts)"
+                                count: "\(store.tabs[index].postCount)"
                             )
                             .frame(height: 36)
                             .onTapGesture {

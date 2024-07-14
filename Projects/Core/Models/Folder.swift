@@ -12,13 +12,18 @@ public struct Folder: Hashable {
     public let id: String
     public let name: String
     public let type: FolderType
-    public var postCounts: Int
+    public var postCount: Int
 
-    public init(id: String, name: String, type: FolderType, postCounts: Int) {
+    public init(
+        id: String,
+        name: String,
+        type: FolderType,
+        postCount: Int
+    ) {
         self.id = id
         self.name = name
         self.type = type
-        self.postCounts = postCounts
+        self.postCount = postCount
     }
 }
 

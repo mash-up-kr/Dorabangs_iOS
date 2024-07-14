@@ -58,7 +58,7 @@ struct AIClassificationCardView: View {
                     VStack(spacing: 0) {
                         AIClassificationCardSectionHeaderView(
                             title: section.name,
-                            count: section.postCounts,
+                            count: section.postCount,
                             action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
                         )
 
