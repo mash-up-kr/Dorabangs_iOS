@@ -24,7 +24,7 @@ public struct LKTopLogoBar: View {
             Spacer()
 
             Button(action: action) {
-                Image(.icAdd)
+                Image(.icLink)
                     .frame(width: 24, height: 24)
             }
         }
