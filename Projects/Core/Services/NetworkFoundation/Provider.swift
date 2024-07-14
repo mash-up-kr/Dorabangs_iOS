@@ -15,7 +15,7 @@ public struct Provider {
 
     public init() {
         let logger = NetworkEventLogger()
-        self.session = Alamofire.Session(configuration: .default, eventMonitors: [logger])
+        session = Alamofire.Session(configuration: .default, eventMonitors: [logger])
     }
 
     public func request<T: Decodable>(_ api: APIRepresentable) async throws -> T {

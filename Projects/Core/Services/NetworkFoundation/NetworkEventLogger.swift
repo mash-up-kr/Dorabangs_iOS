@@ -25,9 +25,9 @@ final class NetworkEventLogger: EventMonitor {
         debugPrint("=========================================================")
     }
 
-    func request<Value>(
-        _ request: DataRequest,
-        didParseResponse response: DataResponse<Value, AFError>
+    func request(
+        _: DataRequest,
+        didParseResponse response: DataResponse<some Any, AFError>
     ) {
         debugPrint("=============== 🎈 Network Response Log 🎈 ==============")
 
@@ -40,9 +40,9 @@ final class NetworkEventLogger: EventMonitor {
 
         if let statusCode = response.response?.statusCode {
             switch statusCode {
-            case 400..<500:
+            case 400 ..< 500:
                 debugPrint("  ❎ 클라이언트 오류")
-            case 500..<600:
+            case 500 ..< 600:
                 debugPrint("  ❎ 서버 오류")
             default:
                 break
@@ -56,26 +56,26 @@ final class NetworkEventLogger: EventMonitor {
     }
 
     func request(
-        _ request: Request,
-        didFailTask task: URLSessionTask,
-        earlyWithError error: AFError
+        _: Request,
+        didFailTask _: URLSessionTask,
+        earlyWithError _: AFError
     ) {
         debugPrint("  ❎ Did Fail URLSessionTask")
     }
 
     func request(
-        _ request: Request,
-        didFailToCreateURLRequestWithError error: AFError
+        _: Request,
+        didFailToCreateURLRequestWithError _: AFError
     ) {
         debugPrint("  ❎ Did Fail To Create URLRequest With Error")
     }
 
-    func requestDidCancel(_ request: Request) {
+    func requestDidCancel(_: Request) {
         debugPrint("  ❎ Request Did Cancel")
     }
 }
 
-fileprivate extension Data {
+private extension Data {
     var toPrettyPrintedString: String? {
         guard let object = try? JSONSerialization.jsonObject(with: self, options: []),
               let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
