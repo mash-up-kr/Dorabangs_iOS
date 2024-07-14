@@ -36,7 +36,7 @@ extension FolderDTO {
         return Folder(
             id: id ?? "",
             name: name,
-            type: FolderType(string: name) ?? .default,
+            type: FolderType(type: type) ?? .default,
             postCount: postCount ?? 0
         )
     }

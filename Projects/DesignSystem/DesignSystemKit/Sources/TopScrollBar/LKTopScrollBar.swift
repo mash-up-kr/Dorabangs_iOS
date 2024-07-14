@@ -25,6 +25,7 @@ public struct LKTopScrollBar: View {
             HStack(spacing: 8) {
                 ForEach(titleList.indices, id: \.self) { index in
                     LKTopTabView(
+                        folderType: .all,
                         isSelected: selectedIndex == index,
                         title: titleList[index],
                         count: ""

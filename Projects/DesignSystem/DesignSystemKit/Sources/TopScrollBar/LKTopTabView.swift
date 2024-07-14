@@ -9,15 +9,18 @@
 import SwiftUI
 
 public struct LKTopTabView: View {
+    private var folderType: TopFolderType
     private var isSelected: Bool
     private let title: String
     private let count: String?
 
     public init(
+        folderType: TopFolderType,
         isSelected: Bool,
         title: String,
-        count: String?
+        count: String? = nil
     ) {
+        self.folderType = folderType
         self.isSelected = isSelected
         self.title = title
         self.count = count
@@ -25,11 +28,21 @@ public struct LKTopTabView: View {
 
     public var body: some View {
         HStack(spacing: 2) {
-            Image(.icAll)
-                .frame(width: 24, height: 24)
+            if folderType == .all {
+                DesignSystemKitAsset.Icons.icTabAll.swiftUIImage
+                    .frame(width: 24, height: 24)
+            } else if folderType == .default {
+                DesignSystemKitAsset.Icons.icTabPin.swiftUIImage
+                    .frame(width: 24, height: 24)
+            } else if folderType == .favorite {
+                DesignSystemKitAsset.Icons.icTabFavorite.swiftUIImage
+                    .frame(width: 24, height: 24)
+            }
 
-            Spacer()
-                .frame(width: 2)
+            if folderType != .custom {
+                Spacer()
+                    .frame(width: 2)
+            }
 
             Text(title)
                 .font(weight: .medium, semantic: .caption1)
@@ -59,8 +72,31 @@ public struct LKTopTabView: View {
 
 #Preview {
     LKTopTabView(
+        folderType: .favorite,
         isSelected: true,
         title: "나중에 읽을 링크",
         count: "99+"
     )
+}
+
+public enum TopFolderType: Equatable {
+    case custom
+    case `default`
+    case all
+    case favorite
+
+    public init?(string: String) {
+        switch string.lowercased() {
+        case "custom":
+            self = .custom
+        case "default":
+            self = .default
+        case "all":
+            self = .all
+        case "favorite":
+            self = .favorite
+        default:
+            return nil
+        }
+    }
 }

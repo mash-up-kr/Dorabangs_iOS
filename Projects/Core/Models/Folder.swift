@@ -33,8 +33,8 @@ public enum FolderType: Equatable {
     case all
     case favorite
 
-    public init?(string: String) {
-        switch string.lowercased() {
+    public init?(type: String) {
+        switch type.lowercased() {
         case "custom":
             self = .custom
         case "default":
@@ -45,6 +45,19 @@ public enum FolderType: Equatable {
             self = .favorite
         default:
             return nil
+        }
+    }
+
+    public var toString: String {
+        switch self {
+        case .custom:
+            return "custom"
+        case .default:
+            return "default"
+        case .all:
+            return "all"
+        case .favorite:
+            return "favorite"
         }
     }
 }

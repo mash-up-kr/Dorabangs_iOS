@@ -25,7 +25,6 @@ struct HomeCardView: View {
                 if store.cards.isEmpty {
                     HomeCardEmptyView()
                 } else {
-//                    Color.pink
                     contentScrollView()
                 }
             }

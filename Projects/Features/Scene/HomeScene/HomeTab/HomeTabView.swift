@@ -24,9 +24,9 @@ struct HomeTabView: View {
                     ForEach(store.tabs.indices, id: \.self) { index in
                         WithPerceptionTracking {
                             LKTopTabView(
+                                folderType: TopFolderType(string: store.tabs[index].type.toString) ?? .custom,
                                 isSelected: store.selectedIndex == index,
-                                title: store.tabs[index].name,
-                                count: "\(store.tabs[index].postCount)"
+                                title: store.tabs[index].name
                             )
                             .frame(height: 36)
                             .onTapGesture {
