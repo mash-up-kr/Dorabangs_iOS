@@ -13,8 +13,9 @@ public struct Provider {
     private let session: Session
     private let requestHeaderInterceptor: RequestInterceptor = RequestHeaderInterceptor()
 
-    public init(session: Session = .default) {
-        self.session = session
+    public init() {
+        let logger = NetworkEventLogger()
+        self.session = Alamofire.Session(configuration: .default, eventMonitors: [logger])
     }
 
     public func request<T: Decodable>(_ api: APIRepresentable) async throws -> T {
@@ -38,7 +39,7 @@ public struct Provider {
 private extension Provider {
     func processSuccessResponse<T: Decodable>(response: AFDataResponse<Data>, data: Data, continuation: CheckedContinuation<T, Error>) throws {
         if let httpResponse = response.response, 200 ..< 400 ~= httpResponse.statusCode {
-            let decodedResponse = try JSONDecoder().decode(DataResponse<T>.self, from: data)
+            let decodedResponse = try JSONDecoder().decode(BaseDataResponse<T>.self, from: data)
             if let responseData = decodedResponse.data {
                 continuation.resume(returning: responseData)
             } else {
