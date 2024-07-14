@@ -63,6 +63,8 @@ public struct HomeView: View {
                                 LazyVStack(spacing: 0) {
                                     ForEach(store.cardList.indices, id: \.self) { index in
                                         LKCard(
+                                            isSummarizing: true,
+                                            progress: 0.3,
                                             title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
                                             description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
                                             tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],

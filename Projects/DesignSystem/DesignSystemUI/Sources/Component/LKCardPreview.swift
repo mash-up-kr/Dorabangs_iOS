@@ -10,6 +10,8 @@ import DesignSystemKit
 import SwiftUI
 
 struct LKCardPreview: View {
+    @State private var isSummarizing: Bool = false
+    @State private var progress: CGFloat = 0.4
     @State private var title: String = "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주"
     @State private var description: String = "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb"
     @State private var tags: [String] = ["# 에스파", "# SM", "# 오에이옹에이옹"]
@@ -20,6 +22,8 @@ struct LKCardPreview: View {
         ComponentPreview(
             component: {
                 LKCard(
+                    isSummarizing: isSummarizing,
+                    progress: progress,
                     title: title,
                     description: description,
                     tags: tags,
@@ -33,7 +37,8 @@ struct LKCardPreview: View {
                 .textField(description: "제목", text: $title),
                 .textField(description: "주요 내용", text: $description),
                 .textField(description: "카테고리", text: $category),
-                .textField(description: "저장 기간", text: $timeSince)
+                .textField(description: "저장 기간", text: $timeSince),
+                .toggle(description: "요약 중", isOn: $isSummarizing)
             ]
         )
         .navigationBarTitle("LKCard")
