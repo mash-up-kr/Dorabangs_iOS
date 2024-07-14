@@ -9,6 +9,7 @@
 import ComposableArchitecture
 import Foundation
 import Models
+import Services
 
 @Reducer
 public struct Home {
@@ -47,6 +48,7 @@ public struct Home {
         case fetchAILinkCount
         case fetchUnReadLinkCount
         case fetchData
+        case fetchFolderList
         case updateBannerList
         case updateBannerPageIndicator(Int)
         case updateBannerType(HomeBannerType)
@@ -54,6 +56,8 @@ public struct Home {
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
+        case setFolderList([Folder])
+        case showErrorToast
 
         // MARK: User Action
         case addLinkButtonTapped
@@ -72,6 +76,8 @@ public struct Home {
     }
 
     public init() {}
+
+    @Dependency(\.homeAPIClient) var homeAPIClient
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
@@ -104,11 +110,17 @@ public struct Home {
 
             case .fetchData:
                 return .concatenate(
+                    .send(.fetchFolderList),
                     .send(.fetchAILinkCount),
                     .send(.fetchUnReadLinkCount),
                     .send(.updateBannerList),
                     .send(.updateCardList)
                 )
+
+            case .fetchFolderList:
+                return .run { send in
+                    try await handleFolderList(send: send)
+                }
 
             case .updateBannerList:
                 state.bannerList = []
@@ -182,6 +194,14 @@ public struct Home {
                 state.unreadLinkCount = count
                 return .none
 
+            case let .setFolderList(folderList):
+                state.tabs = HomeTab.State(tabs: folderList)
+                return .none
+
+            case .showErrorToast:
+                // TODO: Show ErrorToast
+                return .none
+
             case .addLinkButtonTapped:
                 // TODO: 링크 추가 버튼 탭 동작 구현
                 return .none
@@ -217,6 +237,18 @@ public struct Home {
         }
         .ifLet(\.cards, action: \.cards) {
             HomeCard()
+        }
+    }
+}
+
+private extension Home {
+    private func handleFolderList(send: Send<Home.Action>) async throws {
+        let folderList = try await homeAPIClient.getFolders()
+
+        if folderList.isEmpty {
+            await send(.showErrorToast)
+        } else {
+            await send(.setFolderList(folderList))
         }
     }
 }

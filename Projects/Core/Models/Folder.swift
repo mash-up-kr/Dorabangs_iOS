@@ -32,4 +32,19 @@ public enum FolderType: Equatable {
     case `default`
     case all
     case favorite
+
+    public init?(string: String) {
+        switch string.lowercased() {
+        case "custom":
+            self = .custom
+        case "default":
+            self = .default
+        case "all":
+            self = .all
+        case "favorite":
+            self = .favorite
+        default:
+            return nil
+        }
+    }
 }
