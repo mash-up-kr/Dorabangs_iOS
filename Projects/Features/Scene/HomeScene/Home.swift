@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Foundation
+import Models
 
 @Reducer
 public struct Home {
@@ -27,6 +28,9 @@ public struct Home {
         var bannerIndex: Int = 0
         var aiLinkCount = 0
         var unreadLinkCount = 0
+
+        var tabs: HomeTab.State?
+        var cards: HomeCard.State?
 
         /// 클립보드 토스트 상태
         public var clipboardToast = ClipboardToastFeature.State()
@@ -54,13 +58,14 @@ public struct Home {
         // MARK: User Action
         case addLinkButtonTapped
         case bannerButtonTapped(HomeBannerType)
-        case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
         case clipboardURLChanged(URL)
 
         // MARK: Child Action
         case clipboardToast(ClipboardToastFeature.Action)
         case overlayComponent(HomeOverlayComponent.Action)
+        case tabs(HomeTab.Action)
+        case cards(HomeCard.Action)
 
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
@@ -78,6 +83,13 @@ public struct Home {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                let home = [
+                    Folder(id: "", name: "모든 링크", type: .default, postCount: 0),
+                    Folder(id: "", name: "즐겨찾기", type: .default, postCount: 0),
+                    Folder(id: "", name: "나중에 읽을 링크", type: .default, postCount: 0)
+                ]
+                state.tabs = HomeTab.State(tabs: home)
+                state.cards = HomeCard.State(tabs: home, selectedTabIndex: 0)
                 return .run { send in
                     await send(.fetchData)
                 }
@@ -179,10 +191,6 @@ public struct Home {
                 print("Banner Type \(bannerType) 탭 됐어요~")
                 return .none
 
-            case let .bookMarkButtonTapped(index):
-                // TODO: 카드 > 북마크 버튼 탭 동작 구현
-                return .none
-
             case let .showModalButtonTapped(index):
                 return HomeOverlayComponent()
                     .reduce(into: &state.overlayComponent, action: .binding(.set(\.isCardActionSheetPresented, true)))
@@ -197,9 +205,18 @@ public struct Home {
                 guard let url = URL(string: state.clipboardToast.shared.urlString) else { return .none }
                 return .send(.routeToSelectFolder(url))
 
+            case let .tabs(.tabSelected(index)):
+                return .none
+
             default:
                 return .none
             }
+        }
+        .ifLet(\.tabs, action: \.tabs) {
+            HomeTab()
+        }
+        .ifLet(\.cards, action: \.cards) {
+            HomeCard()
         }
     }
 }
