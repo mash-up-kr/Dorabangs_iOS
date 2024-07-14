@@ -33,7 +33,6 @@ struct LKDescriptionSkeletonView: View {
 
             LKSkeletonLine(primaryColor: primaryColor, containerColor: containerColor, animate: $animate)
                 .frame(height: 14)
-//                .frame(maxWidth: UIScreen.main.bounds.width * 0.7)
 
             Spacer()
                 .frame(height: 4)
