@@ -53,7 +53,7 @@ public struct StorageBoxView: View {
                         StorageBoxSection(
                             storageBoxList: store.customFolders,
                             onSelect: { index in
-                                store.send(.storageBoxTapped(section: 0, index: index), animation: .default)
+                                store.send(.storageBoxTapped(section: 1, index: index), animation: .default)
                             },
                             onEdit: { index in
                                 store.send(.onEdit(index: index), animation: .default)

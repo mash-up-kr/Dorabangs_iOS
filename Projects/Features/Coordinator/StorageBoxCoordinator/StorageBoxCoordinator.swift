@@ -49,6 +49,9 @@ public struct StorageBoxCoordinator {
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToPreviousScreen))):
                 state.routes.goBack()
                 return .none
+            case .router(.routeAction(id: _, action: .feed(.routeToPreviousScreen))):
+                state.routes.goBack()
+                return .none
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let newName)))):
                 state.routes.goBack()
                 return .send(.router(.routeAction(id: 0, action: .storageBox(.changedFolderName(newName)))))
