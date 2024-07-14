@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct DataResponse<T: Decodable>: Decodable {
+public struct BaseDataResponse<T: Decodable>: Decodable {
     public let success: Bool
     public let data: T?
 }
@@ -28,7 +28,7 @@ public struct ErrorResponse: Decodable {
     }
 }
 
-extension DataResponse {
+extension BaseDataResponse {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         success = try container.decode(Bool.self, forKey: .success)
