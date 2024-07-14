@@ -36,6 +36,15 @@ public struct FeedView: View {
 
                         Section {
                             LazyVStack(spacing: 0) {
+                                FeedSortView(onSort: { sortType in
+                                    switch sortType {
+                                    case .latest:
+                                        store.send(.tapSortLatest)
+                                    case .past:
+                                        store.send(.tapSortPast)
+                                    }
+                                })
+
                                 ForEach(store.cards.indices, id: \.self) { index in
                                     LKCard(
                                         title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
@@ -61,14 +70,6 @@ public struct FeedView: View {
                                         store.send(.tapAllType)
                                     case .unread:
                                         store.send(.tapUnreadType)
-                                    }
-                                })
-                                FeedSortView(onSort: { sortType in
-                                    switch sortType {
-                                    case .latest:
-                                        store.send(.tapSortLatest)
-                                    case .past:
-                                        store.send(.tapSortPast)
                                     }
                                 })
                             }

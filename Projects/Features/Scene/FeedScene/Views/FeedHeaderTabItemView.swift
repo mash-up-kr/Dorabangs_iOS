@@ -29,8 +29,8 @@ public struct FeedHeaderTabItemView: View {
                 .frame(height: 22)
 
             Circle()
+                .foregroundStyle(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
                 .frame(width: 3, height: 3)
-                .background(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
         }
         .frame(height: 30)
         .onTapGesture(perform: {
