@@ -58,33 +58,8 @@ public struct HomeView: View {
                             .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
                         }
 
-                        LazyVStack(spacing: 0) {
-                            Section {
-                                LazyVStack(spacing: 0) {
-                                    ForEach(store.cardList.indices, id: \.self) { index in
-                                        LKCard(
-                                            isSummarizing: true,
-                                            progress: 0.3,
-                                            title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
-                                            description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
-                                            tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],
-                                            category: "Category",
-                                            timeSince: "1일 전",
-                                            bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                                            showModalAction: { store.send(.showModalButtonTapped(index), animation: .easeInOut) }
-                                        )
-                                        .onAppear {
-                                            if index % 9 == 0 {
-                                                store.send(.fetchData)
-                                            }
-                                        }
-                                    }
-
-                                    if store.cardList.isEmpty {
-                                        HomeCardEmptyView()
-                                    }
-                                }
-                            }
+                        if let store = store.scope(state: \.cards, action: \.cards) {
+                            HomeCardView(store: store)
                         }
                     }
                 }
@@ -99,11 +74,10 @@ public struct HomeView: View {
                     }
                     .frame(height: Constant.LKTopLogoBarHeight)
 
-                    LKTopScrollBar(
-                        titleList: ["전체", "즐겨찾기", "나중에 읽을 링크", "나즁에 또 읽을 링크", "영원히 안 볼 링크"],
-                        selectedIndex: 0
-                    )
-                    .frame(height: Constant.LKTopScrollViewHeight)
+                    if let store = store.scope(state: \.tabs, action: \.tabs) {
+                        HomeTabView(store: store)
+                            .frame(height: Constant.LKTopScrollViewHeight)
+                    }
                 }
                 .zIndex(2)
                 .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))

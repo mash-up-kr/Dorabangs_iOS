@@ -8,6 +8,8 @@
 
 import ComposableArchitecture
 import Foundation
+import Models
+import Services
 
 @Reducer
 public struct Home {
@@ -28,6 +30,9 @@ public struct Home {
         var aiLinkCount = 0
         var unreadLinkCount = 0
 
+        var tabs: HomeTab.State?
+        var cards: HomeCard.State?
+
         /// 클립보드 토스트 상태
         public var clipboardToast = ClipboardToastFeature.State()
         /// 모달, 토스트 바텀시트 등 화면 덮는 컴포넌트 상태
@@ -43,6 +48,7 @@ public struct Home {
         case fetchAILinkCount
         case fetchUnReadLinkCount
         case fetchData
+        case fetchFolderList
         case updateBannerList
         case updateBannerPageIndicator(Int)
         case updateBannerType(HomeBannerType)
@@ -50,23 +56,28 @@ public struct Home {
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
+        case setFolderList([Folder])
+        case showErrorToast
 
         // MARK: User Action
         case addLinkButtonTapped
         case bannerButtonTapped(HomeBannerType)
-        case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
         case clipboardURLChanged(URL)
 
         // MARK: Child Action
         case clipboardToast(ClipboardToastFeature.Action)
         case overlayComponent(HomeOverlayComponent.Action)
+        case tabs(HomeTab.Action)
+        case cards(HomeCard.Action)
 
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
     }
 
     public init() {}
+
+    @Dependency(\.homeAPIClient) var homeAPIClient
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
@@ -78,6 +89,13 @@ public struct Home {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                let home = [
+                    Folder(id: "", name: "모든 링크", type: .all, postCount: 0),
+                    Folder(id: "", name: "즐겨찾기", type: .favorite, postCount: 0),
+                    Folder(id: "", name: "나중에 읽을 링크", type: .default, postCount: 0)
+                ]
+                state.tabs = HomeTab.State(tabs: home)
+                state.cards = HomeCard.State(tabs: home, selectedTabIndex: 0)
                 return .run { send in
                     await send(.fetchData)
                 }
@@ -92,11 +110,17 @@ public struct Home {
 
             case .fetchData:
                 return .concatenate(
+                    .send(.fetchFolderList),
                     .send(.fetchAILinkCount),
                     .send(.fetchUnReadLinkCount),
                     .send(.updateBannerList),
                     .send(.updateCardList)
                 )
+
+            case .fetchFolderList:
+                return .run { send in
+                    try await handleFolderList(send: send)
+                }
 
             case .updateBannerList:
                 state.bannerList = []
@@ -170,6 +194,14 @@ public struct Home {
                 state.unreadLinkCount = count
                 return .none
 
+            case let .setFolderList(folderList):
+                state.tabs = HomeTab.State(tabs: folderList)
+                return .none
+
+            case .showErrorToast:
+                // TODO: Show ErrorToast
+                return .none
+
             case .addLinkButtonTapped:
                 // TODO: 링크 추가 버튼 탭 동작 구현
                 return .none
@@ -177,10 +209,6 @@ public struct Home {
             case let .bannerButtonTapped(bannerType):
                 // TODO: 배너 버튼 클릭 시 동작 구현
                 print("Banner Type \(bannerType) 탭 됐어요~")
-                return .none
-
-            case let .bookMarkButtonTapped(index):
-                // TODO: 카드 > 북마크 버튼 탭 동작 구현
                 return .none
 
             case let .showModalButtonTapped(index):
@@ -197,9 +225,30 @@ public struct Home {
                 guard let url = URL(string: state.clipboardToast.shared.urlString) else { return .none }
                 return .send(.routeToSelectFolder(url))
 
+            case let .tabs(.tabSelected(index)):
+                return .none
+
             default:
                 return .none
             }
+        }
+        .ifLet(\.tabs, action: \.tabs) {
+            HomeTab()
+        }
+        .ifLet(\.cards, action: \.cards) {
+            HomeCard()
+        }
+    }
+}
+
+private extension Home {
+    private func handleFolderList(send: Send<Home.Action>) async throws {
+        let folderList = try await homeAPIClient.getFolders()
+
+        if folderList.isEmpty {
+            await send(.showErrorToast)
+        } else {
+            await send(.setFolderList(folderList))
         }
     }
 }

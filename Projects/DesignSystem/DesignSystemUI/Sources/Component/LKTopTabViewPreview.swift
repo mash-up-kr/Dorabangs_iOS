@@ -18,6 +18,7 @@ struct LKTopTabViewPreview: View {
         ComponentPreview(
             component: {
                 LKTopTabView(
+                    folderType: .all,
                     isSelected: isSelected,
                     title: title,
                     count: count
