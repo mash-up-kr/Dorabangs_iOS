@@ -32,9 +32,6 @@ public struct HomeCard {
 
         // MARK: View Action
         case onAppear
-        case moveToAllItemsToFolderButtonTapped(section: Folder)
-        case deleteButtonTapped(section: Folder, item: Card)
-        case moveToFolderButtonTapped(section: Folder, item: Card)
 
         // MARK: Inner Business
         case fetchCards
@@ -44,9 +41,6 @@ public struct HomeCard {
         // MARK: User Action
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
-
-        case routeToHomeScreen
-        case routeToFeedScreen(Folder)
     }
 
     public init() {}
@@ -62,7 +56,7 @@ public struct HomeCard {
             case .onAppear:
                 return .send(.fetchCards)
 
-            case let .fetchCards:
+            case .fetchCards:
                 // TODO: 데이터 받아오기
                 state.cards = [
                     Card(
@@ -91,20 +85,6 @@ public struct HomeCard {
                     )
                 ]
                 state.scrollPage += 1
-                return .none
-
-            case let .deleteButtonTapped(section, item):
-//                state.sections[section]?.removeAll { $0.id == item.id }
-//                state.sections = state.sections.compactMapValues { $0.isEmpty ? nil : $0 }
-                return .none
-
-            case let .addItems(items):
-                let groupedItems = Dictionary(grouping: items) { $0.folderId }
-                for tab in state.tabs {
-//                    if let itemForTab = groupedItems[tab.id] {
-//                        state.sections[tab, default: []].append(contentsOf: itemForTab)
-//                    }
-                }
                 return .none
 
             default:
