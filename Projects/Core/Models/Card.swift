@@ -17,7 +17,7 @@ public struct Card: Hashable {
     public let description: String?
     public let category: String
     public let createdAt: Date
-    public let keywords: [Keyword]
+    public let keywords: [Keyword]?
 
     public init(
         id: String,
@@ -28,7 +28,7 @@ public struct Card: Hashable {
         description: String?,
         category: String,
         createdAt: Date,
-        keywords: [Keyword]
+        keywords: [Keyword]?
     ) {
         self.id = id
         self.folderId = folderId

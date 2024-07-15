@@ -14,10 +14,10 @@ struct CardDTO: Decodable {
     let folderId: String
     let url: String
     let title: String
-    let description: String
+    let description: String?
     let isFavorite: Bool
     let createdAt: String
-    let keywords: [KeywordDTO]
+    let keywords: [KeywordDTO]?
 }
 
 extension CardDTO {
@@ -31,7 +31,7 @@ extension CardDTO {
             description: description,
             category: "",
             createdAt: .now,
-            keywords: keywords.map(\.toDomain)
+            keywords: keywords.map { $0.map { $0.toDomain } }
         )
     }
 }
