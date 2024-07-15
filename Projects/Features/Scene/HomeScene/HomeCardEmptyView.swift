@@ -20,10 +20,11 @@ struct HomeCardEmptyView: View {
             Text("생성된 게시글이 없어요")
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
+                .frame(maxWidth: .infinity)
 
             Spacer()
         }
-        .frame(width: 390, height: 260, alignment: .center)
+        .frame(height: 260, alignment: .center)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
 }
