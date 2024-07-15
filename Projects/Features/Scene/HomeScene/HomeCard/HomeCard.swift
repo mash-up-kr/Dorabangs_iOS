@@ -86,7 +86,7 @@ public struct HomeCard {
                 ]
                 state.scrollPage += 1
                 return .none
-              
+
             default:
                 return .none
             }
