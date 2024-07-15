@@ -11,15 +11,26 @@ import Foundation
 
 enum HomeAPI: APIRepresentable {
     case getFolders
+    case getFolderPosts(folderId: String, page: Int?, limit: Int?, unread: Bool?)
 }
 
 extension HomeAPI {
-    var path: String { "/folders" }
+    var path: String {
+        switch self {
+        case .getFolders:
+            "/folders"
+        case let .getFolderPosts(folderId, page, limit, unread):
+            "/folders/\(folderId)/posts"
+        }
+    }
 
     var method: HTTPMethod {
         switch self {
         case .getFolders:
-            return .get
+            .get
+
+        case .getFolderPosts:
+            .get
         }
     }
 
@@ -30,7 +41,10 @@ extension HomeAPI {
     var httpBody: BodyParameters? {
         switch self {
         case .getFolders:
-                .none
+            .none
+
+        case .getFolderPosts:
+            .none
         }
     }
 }

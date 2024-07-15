@@ -56,6 +56,7 @@ public struct Home {
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
+        case setCardList([Card])
         case setFolderList([Folder])
         case showErrorToast
 
@@ -95,7 +96,7 @@ public struct Home {
                     Folder(id: "", name: "나중에 읽을 링크", type: .default, postCount: 0)
                 ]
                 state.tabs = HomeTab.State(tabs: home)
-                state.cards = HomeCard.State(tabs: home, selectedTabIndex: 0)
+                state.cards = HomeCard.State(cards: [])
                 return .run { send in
                     await send(.fetchData)
                 }
@@ -194,6 +195,10 @@ public struct Home {
                 state.unreadLinkCount = count
                 return .none
 
+            case let .setCardList(cardList):
+                state.cards = HomeCard.State(cards: cardList)
+                return .none
+
             case let .setFolderList(folderList):
                 state.tabs = HomeTab.State(tabs: folderList)
                 return .none
@@ -228,6 +233,11 @@ public struct Home {
             case let .tabs(.tabSelected(index)):
                 return .none
 
+            case let .tabs(.setSelectedFolderId(folderId: folderId)):
+                return .run { send in
+                    try await handleCardList(send: send, folderId: folderId)
+                }
+
             default:
                 return .none
             }
@@ -250,5 +260,16 @@ private extension Home {
         } else {
             await send(.setFolderList(folderList))
         }
+    }
+
+    private func handleCardList(send: Send<Home.Action>, folderId: String) async throws {
+        let cardList = try await homeAPIClient.getFolderPosts(
+            folderId: folderId,
+            page: nil,
+            limit: nil,
+            unread: nil
+        )
+
+        await send(.setCardList(cardList))
     }
 }
