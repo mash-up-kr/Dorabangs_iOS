@@ -51,13 +51,13 @@ public enum FolderType: Equatable {
     public var toString: String {
         switch self {
         case .custom:
-            return "custom"
+            "custom"
         case .default:
-            return "default"
+            "default"
         case .all:
-            return "all"
+            "all"
         case .favorite:
-            return "favorite"
+            "favorite"
         }
     }
 }

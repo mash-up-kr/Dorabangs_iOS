@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import Models
 
 struct GetFolderResponseDTO: Decodable {
     let defaultFolders: [FolderDTO]
     let customFolders: [FolderDTO]
 }
 
- struct FolderList: Decodable {
+struct FolderList: Decodable {
     let defaultFolders: [FolderDTO]
     let customFolders: [FolderDTO]
- }
+}

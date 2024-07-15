@@ -228,6 +228,10 @@ public struct Home {
             case let .tabs(.tabSelected(index)):
                 return .none
 
+            case let .tabs(.setSelectedFolderId(folderId: folderId)):
+                // TODO: 2) 받은 folderId로 Card List 받아오기 -> Home 또는 HomeCard에서
+                return .none
+
             default:
                 return .none
             }

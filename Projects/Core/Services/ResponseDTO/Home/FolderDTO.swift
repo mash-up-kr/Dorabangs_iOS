@@ -33,7 +33,7 @@ struct FolderDTO: Decodable {
 
 extension FolderDTO {
     var toDomain: Folder {
-        return Folder(
+        Folder(
             id: id ?? "",
             name: name,
             type: FolderType(type: type) ?? .default,
