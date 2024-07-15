@@ -11,13 +11,14 @@ import Foundation
 
 enum FolderAPI: APIRepresentable {
     case getFolders
+    case postFolders(folders: [String])
     case getFolderPosts(folderId: String, page: Int?, limit: Int?, unread: Bool?)
 }
 
 extension FolderAPI {
     var path: String {
         switch self {
-        case .getFolders:
+        case .getFolders, .postFolders:
             "/folders"
         case let .getFolderPosts(folderId, page, limit, unread):
             "/folders/\(folderId)/posts"
@@ -26,11 +27,10 @@ extension FolderAPI {
 
     var method: HTTPMethod {
         switch self {
-        case .getFolders:
+        case .getFolders, .getFolderPosts:
             .get
-
-        case .getFolderPosts:
-            .get
+        case .postFolders:
+            .post
         }
     }
 
@@ -40,11 +40,10 @@ extension FolderAPI {
 
     var httpBody: BodyParameters? {
         switch self {
-        case .getFolders:
+        case .getFolders, .getFolderPosts:
             .none
-
-        case .getFolderPosts:
-            .none
+        case let .postFolders(folders):
+            .dictionary(["names": folders])
         }
     }
 }

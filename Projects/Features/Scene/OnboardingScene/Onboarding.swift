@@ -37,6 +37,7 @@ public struct Onboarding {
 
     public init() {}
 
+    @Dependency(\.folderAPIClient) var folderAPIClient
     @Dependency(\.keychainClient) var keychainClient
     @Dependency(\.onboardingClient) var onboardingClient
 
@@ -56,8 +57,14 @@ public struct Onboarding {
                 return .none
 
             case .completeButtonTapped:
-                keychainClient.setHasOnboarded(true)
-                return .send(.routeToTabCoordinatorScreen)
+                return .run { [selectedKeywords = state.selectedKeywords] send in
+                    let keywords = Array(selectedKeywords)
+                    try await folderAPIClient.postFolders(keywords)
+                    keychainClient.setHasOnboarded(true)
+                    await send(.routeToTabCoordinatorScreen)
+                } catch: { _, _ in
+                    // TODO: Handle error
+                }
 
             case .fetchKeywords:
                 return .run { send in
