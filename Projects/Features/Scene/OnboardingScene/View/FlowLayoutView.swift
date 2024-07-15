@@ -25,7 +25,8 @@ struct FlowLayoutView<Data: Hashable, Content: View>: UIViewControllerRepresenta
 final class FlowLayoutViewController<Data: Hashable, Content: View>:
     UIViewController,
     UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout
+{
     private let cellIdentifier = "Cell"
     private var items: [Data]
     private let content: (Data) -> Content

@@ -31,7 +31,7 @@ extension CardDTO {
             description: description,
             category: "",
             createdAt: .now,
-            keywords: keywords.map { $0.map { $0.toDomain } }
+            keywords: keywords.map { $0.map(\.toDomain) }
         )
     }
 }
