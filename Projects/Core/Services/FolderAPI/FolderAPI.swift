@@ -1,5 +1,5 @@
 //
-//  HomeAPI.swift
+//  FolderAPI.swift
 //  Services
 //
 //  Created by 안상희 on 7/14/24.
@@ -9,12 +9,12 @@
 import Alamofire
 import Foundation
 
-enum HomeAPI: APIRepresentable {
+enum FolderAPI: APIRepresentable {
     case getFolders
     case getFolderPosts(folderId: String, page: Int?, limit: Int?, unread: Bool?)
 }
 
-extension HomeAPI {
+extension FolderAPI {
     var path: String {
         switch self {
         case .getFolders:

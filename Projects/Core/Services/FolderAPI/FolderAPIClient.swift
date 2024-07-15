@@ -1,5 +1,5 @@
 //
-//  HomeAPIClient.swift
+//  FolderAPIClient.swift
 //  Services
 //
 //  Created by 안상희 on 7/14/24.
@@ -12,7 +12,7 @@ import Foundation
 import Models
 
 @DependencyClient
-public struct HomeAPIClient {
+public struct FolderAPIClient {
     public var getFolders: @Sendable () async throws -> [Folder]
     public var getFolderPosts: @Sendable (
         _ folderId: String,
@@ -23,16 +23,16 @@ public struct HomeAPIClient {
 }
 
 public extension DependencyValues {
-    var homeAPIClient: HomeAPIClient {
-        get { self[HomeAPIClient.self] }
-        set { self[HomeAPIClient.self] = newValue }
+    var folderAPIClient: FolderAPIClient {
+        get { self[FolderAPIClient.self] }
+        set { self[FolderAPIClient.self] = newValue }
     }
 }
 
-extension HomeAPIClient: DependencyKey {
-    public static var liveValue: HomeAPIClient = .init(
+extension FolderAPIClient: DependencyKey {
+    public static var liveValue: FolderAPIClient = .init(
         getFolders: {
-            let api = HomeAPI.getFolders
+            let api = FolderAPI.getFolders
             let responseDTO: GetFolderResponseDTO = try await Provider().request(api)
             let defaultFolders = responseDTO.defaultFolders.map(\.toDomain)
             let customFolders = responseDTO.customFolders.map(\.toDomain)
@@ -40,7 +40,7 @@ extension HomeAPIClient: DependencyKey {
             return folderList
         },
         getFolderPosts: { folderId, page, limit, unread in
-            let api = HomeAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, unread: unread)
+            let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, unread: unread)
             let responseDTO: GetFolderPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
             return cardList

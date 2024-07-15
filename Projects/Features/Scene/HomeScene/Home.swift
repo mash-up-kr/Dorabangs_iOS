@@ -78,7 +78,7 @@ public struct Home {
 
     public init() {}
 
-    @Dependency(\.homeAPIClient) var homeAPIClient
+    @Dependency(\.folderAPIClient) var folderAPIClient
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
@@ -253,7 +253,7 @@ public struct Home {
 
 private extension Home {
     private func handleFolderList(send: Send<Home.Action>) async throws {
-        let folderList = try await homeAPIClient.getFolders()
+        let folderList = try await folderAPIClient.getFolders()
 
         if folderList.isEmpty {
             await send(.showErrorToast)
@@ -263,11 +263,11 @@ private extension Home {
     }
 
     private func handleCardList(send: Send<Home.Action>, folderId: String) async throws {
-        let cardList = try await homeAPIClient.getFolderPosts(
-            folderId: folderId,
-            page: nil,
-            limit: nil,
-            unread: nil
+        let cardList = try await folderAPIClient.getFolderPosts(
+            folderId,
+            nil,
+            nil,
+            nil
         )
 
         await send(.setCardList(cardList))
