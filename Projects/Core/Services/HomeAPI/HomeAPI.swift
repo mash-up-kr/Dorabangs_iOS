@@ -23,7 +23,11 @@ extension HomeAPI {
             "/folders/\(folderId)/posts"
         }
     }
+}
 
+extension HomeAPI {
+    var path: String { "/folders" }
+  
     var method: HTTPMethod {
         switch self {
         case .getFolders:
