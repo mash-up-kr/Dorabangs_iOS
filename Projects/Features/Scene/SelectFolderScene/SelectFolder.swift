@@ -54,16 +54,14 @@ public struct SelectFolder {
     public init() {}
 
     @Dependency(\.folderAPIClient) var folderAPIClient
+    @Dependency(\.postAPIClient) var postAPIClient
     @Dependency(\.urlMetadataClient) var urlMetadataClient
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .merge(
-                    .send(.fetchFolders),
-                    .send(.fetchURLMetadata)
-                )
+                return .merge(.send(.fetchFolders), .send(.fetchURLMetadata))
 
             case .backButtonTapped:
                 return .send(.routeToPreviousScreen)
@@ -74,7 +72,13 @@ public struct SelectFolder {
                 return .none
 
             case .saveButtonTapped:
-                return .send(.routeToHomeScreen)
+                guard let folderIndex = state.selectedFolderIndex else { return .none }
+                return .run { [folder = state.folders[folderIndex], url = state.saveURL] send in
+                    try await postAPIClient.postPosts(folderId: folder.id, url: url)
+                    await send(.routeToHomeScreen)
+                } catch: { _, _ in
+                    // TODO: error handling
+                }
 
             case .createFolderButtonTapped:
                 let folderNames = state.folders.map(\.name)
