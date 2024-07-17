@@ -21,7 +21,7 @@ public struct FeedView: View {
         WithPerceptionTracking {
             VStack {
                 LKTextMiddleTopBar(
-                    title: "감자모음집",
+                    title: store.title,
                     backButtonAction: { store.send(.backButtonTapped) },
                     rightButtomImage: DesignSystemKitAsset.Icons.icMore.swiftUIImage,
                     rightButtonEnabled: true,
@@ -32,7 +32,7 @@ public struct FeedView: View {
 
                 ScrollView {
                     LazyVStack(pinnedViews: .sectionHeaders) {
-                        FeedHeaderView(folderName: "감자모음집", linkCount: 20)
+                        FeedHeaderView(folderName: store.title, linkCount: store.cards.count)
 
                         Section {
                             LazyVStack(spacing: 0) {
@@ -88,6 +88,14 @@ public struct FeedView: View {
                 store.send(.tapChangeFolderName)
             }
         })
+        .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+            removeFolderPopup(onCancel: {
+                store.send(.cancelRemoveFolder, animation: .default)
+            }, onRemove: {
+                store.send(.tapRemoveButton)
+            })
+        })
+        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
     }
 }
 

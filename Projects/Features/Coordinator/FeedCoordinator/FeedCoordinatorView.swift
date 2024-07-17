@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import ChangeFolderName
 import ComposableArchitecture
 import Feed
 import StorageBox
@@ -25,6 +26,11 @@ public struct FeedCoordinatorView: View {
                 switch screen.case {
                 case let .feed(store):
                     FeedView(store: store)
+                case let .changeFolderName(store):
+                    ChangeFolderNameView(store: store)
+                        .navigationBarHidden(true)
+                        .navigationTitle("")
+                        .navigationBarTitleDisplayMode(.inline)
                 }
             }
         }

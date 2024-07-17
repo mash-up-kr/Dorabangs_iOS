@@ -17,6 +17,7 @@ public struct Feed {
         public var title: String
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
+        public var toastPopupIsPresented: Bool = false
 
         public init(title: String) {
             self.title = title
@@ -41,8 +42,12 @@ public struct Feed {
         case tapChangeFolderName
 
         case showRemoveFolderPopup
+        case tapRemoveButton
         case removeFolder
         case cancelRemoveFolder
+
+        case routeToChangeFolderName(String)
+        case changedFolderName(String)
 
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
@@ -61,9 +66,6 @@ public struct Feed {
             case .backButtonTapped:
                 return .send(.routeToPreviousScreen)
             case .fetchData:
-                for i in 0 ..< 10 {
-                    state.cards.append("카드 0\(i)")
-                }
                 return .none
             case .tapMore:
                 state.editFolderPopupIsPresented = true
@@ -73,15 +75,22 @@ public struct Feed {
             case .tapSortPast:
                 return .none
             case .tapChangeFolderName:
+                state.editFolderPopupIsPresented = false
+                return .send(.routeToChangeFolderName(state.title))
+            case let .routeToChangeFolderName(currentTitle):
+                return .none
+            case let .changedFolderName(newName):
+                state.title = newName
+                state.toastPopupIsPresented = true
                 return .none
             case .showRemoveFolderPopup:
                 state.removeFolderPopupIsPresented = true
                 state.editFolderPopupIsPresented = false
                 return .none
-            case .removeFolder:
+            case .tapRemoveButton:
                 state.editFolderPopupIsPresented = false
                 state.removeFolderPopupIsPresented = false
-                return .none
+                return .send(.removeFolder)
             case .cancelRemoveFolder:
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
