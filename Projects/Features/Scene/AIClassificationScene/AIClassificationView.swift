@@ -23,38 +23,42 @@ public struct AIClassificationView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            ZStack(alignment: .top) {
-                if let store = store.scope(state: \.cards, action: \.cards) {
-                    AIClassificationCardView(store: store)
-                        .zIndex(1)
-                }
-
-                VStack(spacing: 0) {
-                    LKTextMiddleTopBar(
-                        title: "AI 분류",
-                        backButtonAction: { store.send(.backButtonTapped) },
-                        action: {}
-                    )
-                    .frame(height: Constant.LKTextMiddleTopBarHeight)
-
-                    if let store = store.scope(state: \.tabs, action: \.tabs) {
-                        AIClassificationTabView(store: store)
-                            .frame(height: Constant.AIClassificationTabViewHeight)
-                            .overlay {
-                                RoundedBottomBorder()
-                                    .stroke(DesignSystemKitAsset.Colors.g1.swiftUIColor, lineWidth: 1)
-                            }
+        GeometryReader { _ in
+            WithPerceptionTracking {
+                ZStack(alignment: .top) {
+                    if let store = store.scope(state: \.cards, action: \.cards) {
+                        AIClassificationCardView(store: store)
+                            .zIndex(1)
                     }
+                    VStack(spacing: 0) {
+                        LKTextMiddleTopBar(
+                            title: "AI 분류",
+                            backButtonAction: { store.send(.backButtonTapped) },
+                            action: {}
+                        )
+                        .frame(height: Constant.LKTextMiddleTopBarHeight)
+
+                        if let store = store.scope(state: \.tabs, action: \.tabs) {
+                            AIClassificationTabView(store: store)
+                                .frame(height: Constant.AIClassificationTabViewHeight)
+                                .overlay {
+                                    RoundedBottomBorder()
+                                        .stroke(DesignSystemKitAsset.Colors.g1.swiftUIColor, lineWidth: 1)
+                                }
+                        }
+                    }
+                    .zIndex(2)
+                    .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
+                    .background(.ultraThinMaterial)
+                    .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
                 }
-                .zIndex(2)
-                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
-                .background(.ultraThinMaterial)
-                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
             }
             .onAppear {
                 store.send(.onAppear)
             }
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
