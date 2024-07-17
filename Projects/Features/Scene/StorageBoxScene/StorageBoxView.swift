@@ -64,6 +64,9 @@ public struct StorageBoxView: View {
                 }
                 .padding(.vertical, 20)
             }
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
             .onAppear { store.send(.onAppear) }
         }

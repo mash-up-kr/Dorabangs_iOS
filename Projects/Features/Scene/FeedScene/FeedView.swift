@@ -80,6 +80,9 @@ public struct FeedView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear { store.send(.onAppear) }
         .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
             if index == 0 {

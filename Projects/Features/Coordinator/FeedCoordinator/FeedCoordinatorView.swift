@@ -26,6 +26,9 @@ public struct FeedCoordinatorView: View {
                 switch screen.case {
                 case let .feed(store):
                     FeedView(store: store)
+                        .navigationBarHidden(true)
+                        .navigationTitle("")
+                        .navigationBarTitleDisplayMode(.inline)
                 case let .changeFolderName(store):
                     ChangeFolderNameView(store: store)
                         .navigationBarHidden(true)
