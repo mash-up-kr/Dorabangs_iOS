@@ -60,7 +60,8 @@ let project = Project.make(
             sources: ["FeedCoordinator/**"],
             dependencies: [
                 .scene(.feed),
-                .spm(.tcaCoordinators)
+                .spm(.tcaCoordinators),
+                .scene(.changeFolderName)
             ]
         ),
         .make(

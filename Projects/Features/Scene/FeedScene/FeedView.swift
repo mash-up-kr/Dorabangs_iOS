@@ -11,7 +11,7 @@ import DesignSystemKit
 import SwiftUI
 
 public struct FeedView: View {
-    private let store: StoreOf<Feed>
+    @Perception.Bindable private var store: StoreOf<Feed>
 
     public init(store: StoreOf<Feed>) {
         self.store = store
@@ -21,18 +21,18 @@ public struct FeedView: View {
         WithPerceptionTracking {
             VStack {
                 LKTextMiddleTopBar(
-                    title: "감자모음집",
+                    title: store.title,
                     backButtonAction: { store.send(.backButtonTapped) },
                     rightButtomImage: DesignSystemKitAsset.Icons.icMore.swiftUIImage,
                     rightButtonEnabled: true,
                     action: {
-                        store.send(.tapMore)
+                        store.send(.tapMore, animation: .default)
                     }
                 )
 
                 ScrollView {
                     LazyVStack(pinnedViews: .sectionHeaders) {
-                        FeedHeaderView(folderName: "감자모음집", linkCount: 20)
+                        FeedHeaderView(folderName: store.title, linkCount: store.cards.count)
 
                         Section {
                             LazyVStack(spacing: 0) {
@@ -80,6 +80,61 @@ public struct FeedView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear { store.send(.onAppear) }
+        .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
+            if index == 0 {
+                store.send(.showRemoveFolderPopup, animation: .default)
+            } else {
+                store.send(.tapChangeFolderName)
+            }
+        })
+        .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+            removeFolderPopup(onCancel: {
+                store.send(.cancelRemoveFolder, animation: .default)
+            }, onRemove: {
+                store.send(.tapRemoveButton)
+            })
+        })
+        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+    }
+}
+
+extension View {
+    func editFolderPopup(isPresented: Binding<Bool>, onSelect: @escaping (Int) -> Void) -> some View {
+        modifier(EditFolderPopupModifier(isPresented: isPresented, onSelect: { index in
+            onSelect(index)
+        }))
+    }
+
+    func removeFolderPopup(onCancel: @escaping () -> Void, onRemove: @escaping () -> Void) -> some View {
+        LKModal(title: "폴더 삭제", content: "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?", leftButtonTitle: "취소", leftButtonAction: {
+            onCancel()
+        }, rightButtonTitle: "삭제", rightButtonAction: {
+            onRemove()
+        })
+    }
+}
+
+public struct EditFolderPopupModifier: ViewModifier {
+    @Binding var isPresented: Bool
+    let onSelect: (Int) -> Void
+
+    public init(isPresented: Binding<Bool>,
+                onSelect: @escaping (Int) -> Void)
+    {
+        _isPresented = isPresented
+        self.onSelect = onSelect
+    }
+
+    public func body(content: Content) -> some View {
+        content
+            .actionSheet(isPresented: $isPresented, items: [.init(title: "폴더 삭제", image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(), action: {
+                onSelect(0)
+            }), .init(title: "폴더 이름 변경", image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(), action: {
+                onSelect(1)
+            })])
     }
 }
