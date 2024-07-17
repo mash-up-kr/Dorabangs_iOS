@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import Models
 import SwiftUI
 
 public struct SelectFolderView: View {
@@ -113,7 +114,7 @@ private struct URLMetadataView: View {
 }
 
 private struct FolderListView: View {
-    let folders: [String]
+    let folders: [Folder]
     let onSelectNewFolder: () -> Void
     let onSelect: (Int) -> Void
 
@@ -124,7 +125,7 @@ private struct FolderListView: View {
                     .onTapGesture(perform: onSelectNewFolder)
                     .padding(.horizontal, 16)
 
-                FolderList(folders: folders, onSelect: onSelect)
+                FolderList(folders: folders.map(\.name), onSelect: onSelect)
             }
         }
     }

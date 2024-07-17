@@ -20,7 +20,7 @@ public struct SelectFolder {
         /// 저장할 URL의 메타데이터
         var saveURLMetadata: URLMetadata?
         /// 폴더 목록
-        var folders: [String] = []
+        var folders: [Folder] = []
         /// 선택된 폴더 인덱스
         var selectedFolderIndex: Int?
         /// 저장 버튼 비활성화 여부
@@ -40,6 +40,8 @@ public struct SelectFolder {
         case createFolderButtonTapped
 
         // MARK: Inner Business
+        case fetchFolders
+        case fetchFoldersResult(Result<[Folder], Error>)
         case fetchURLMetadata
         case fetchURLMetadataResult(Result<URLMetadata, Error>)
 
@@ -51,13 +53,15 @@ public struct SelectFolder {
 
     public init() {}
 
+    @Dependency(\.folderAPIClient) var folderAPIClient
+    @Dependency(\.postAPIClient) var postAPIClient
     @Dependency(\.urlMetadataClient) var urlMetadataClient
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .send(.fetchURLMetadata)
+                return .merge(.send(.fetchFolders), .send(.fetchURLMetadata))
 
             case .backButtonTapped:
                 return .send(.routeToPreviousScreen)
@@ -68,10 +72,29 @@ public struct SelectFolder {
                 return .none
 
             case .saveButtonTapped:
-                return .send(.routeToHomeScreen)
+                guard let folderIndex = state.selectedFolderIndex else { return .none }
+                return .run { [folder = state.folders[folderIndex], url = state.saveURL] send in
+                    try await postAPIClient.postPosts(folderId: folder.id, url: url)
+                    await send(.routeToHomeScreen)
+                } catch: { _, _ in
+                    // TODO: error handling
+                }
 
             case .createFolderButtonTapped:
-                return .send(.routeToCreateNewFolderScreen(folders: state.folders))
+                let folderNames = state.folders.map(\.name)
+                return .send(.routeToCreateNewFolderScreen(folders: folderNames))
+
+            case .fetchFolders:
+                return .run { send in
+                    await send(.fetchFoldersResult(Result { try await folderAPIClient.getFolders() }))
+                }
+
+            case let .fetchFoldersResult(.success(folders)):
+                state.folders = folders.filter { !$0.id.isEmpty }
+                return .none
+
+            case .fetchFoldersResult(.failure):
+                return .none
 
             case .fetchURLMetadata:
                 return .run { [url = state.saveURL] send in

@@ -90,12 +90,12 @@ public struct Home {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                let home = [
-                    Folder(id: "", name: "모든 링크", type: .all, postCount: 0),
-                    Folder(id: "", name: "즐겨찾기", type: .favorite, postCount: 0),
-                    Folder(id: "", name: "나중에 읽을 링크", type: .default, postCount: 0)
-                ]
-                state.tabs = HomeTab.State(tabs: home)
+//                let home = [
+//                    Folder(id: "", name: "모든 링크", type: .all, postCount: 0),
+//                    Folder(id: "", name: "즐겨찾기", type: .favorite, postCount: 0),
+//                    Folder(id: "", name: "나중에 읽을 링크", type: .default, postCount: 0)
+//                ]
+//                state.tabs = HomeTab.State(tabs: home)
                 state.cards = HomeCard.State(cards: [])
                 return .run { send in
                     await send(.fetchData)

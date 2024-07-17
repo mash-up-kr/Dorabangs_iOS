@@ -8,70 +8,77 @@
 
 import Alamofire
 import Foundation
+import os.log
 
 final class NetworkEventLogger: EventMonitor {
+    let logger = Logger(subsystem: "com.mashup.dorabangs", category: "NetworkEventLogger")
     let queue = DispatchQueue(label: "NetworkEventLogger")
 
     func requestDidFinish(_ request: Request) {
-        debugPrint("=============== 🎈 Network Request Log 🎈 ===============")
-        debugPrint("  ✅ [URL] : \(request.request?.url?.absoluteString ?? "")")
-        debugPrint("  ✅ [Method] : \(request.request?.httpMethod ?? "")")
-        debugPrint("  ✅ [Headers] : \(request.request?.allHTTPHeaderFields ?? [:])")
+        var message = """
+        =============== 🎈 Network Request Log 🎈 ===============
+        ✅ [URL] : \(request.request?.url?.absoluteString ?? "")
+        ✅ [Method] : \(request.request?.httpMethod ?? "")
+        ✅ [Headers] : \(request.request?.allHTTPHeaderFields ?? [:])
+        """
+
         if let body = request.request?.httpBody?.toPrettyPrintedString {
-            debugPrint("  ✅ [Body]: \(body)")
+            message += "\n✅ [Body]: \(body)"
         } else {
-            debugPrint("  ✅ [Body]: Body가 없습니다.")
+            message += "\n✅ [Body]: Body가 없습니다."
         }
-        debugPrint("=========================================================")
+
+        logger.log(level: .debug, "\(message)")
     }
 
     func request(
         _: DataRequest,
         didParseResponse response: DataResponse<some Any, AFError>
     ) {
-        debugPrint("=============== 🎈 Network Response Log 🎈 ==============")
+        var message = "=============== 🎈 Network Response Log 🎈 ==============="
 
         switch response.result {
         case .success:
-            debugPrint("  ✅ [Status Code] : \(response.response?.statusCode ?? 0)")
+            message += "\n✅ [Status Code] : \(response.response?.statusCode ?? 0)"
         case .failure:
-            debugPrint("  ❎ 요청에 실패했습니다.")
+            message += "\n❎ 요청에 실패했습니다."
         }
 
         if let statusCode = response.response?.statusCode {
             switch statusCode {
             case 400 ..< 500:
-                debugPrint("  ❎ 클라이언트 오류")
+                message += "\n❎ 클라이언트 오류"
             case 500 ..< 600:
-                debugPrint("  ❎ 서버 오류")
+                message += "\n❎ 서버 오류"
             default:
                 break
             }
         }
 
         if let response = response.data?.toPrettyPrintedString {
-            debugPrint("  ✅ [Response] : \(response)")
+            message += "\n✅ [Response] : \(response)"
         }
-        debugPrint("=========================================================")
+
+        logger.log(level: .debug, "\(message)")
     }
 
     func request(
         _: Request,
         didFailTask _: URLSessionTask,
-        earlyWithError _: AFError
+        earlyWithError error: AFError
     ) {
-        debugPrint("  ❎ Did Fail URLSessionTask")
+        logger.log(level: .error, "❎ Did Fail Task Early With Error: \(error.localizedDescription)")
     }
 
     func request(
         _: Request,
-        didFailToCreateURLRequestWithError _: AFError
+        didFailToCreateURLRequestWithError error: AFError
     ) {
-        debugPrint("  ❎ Did Fail To Create URLRequest With Error")
+        logger.log(level: .error, "❎ Did Fail To Create URLRequest With Error: \(error.localizedDescription)")
     }
 
     func requestDidCancel(_: Request) {
-        debugPrint("  ❎ Request Did Cancel")
+        logger.log(level: .debug, "❎ Request Did Cancel")
     }
 }
 

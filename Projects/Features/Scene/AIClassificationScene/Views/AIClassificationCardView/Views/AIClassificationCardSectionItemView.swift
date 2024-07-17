@@ -22,7 +22,7 @@ struct AIClassificationCardSectionItemView: View {
                 LKClassificationCard(
                     title: item.title,
                     description: item.description,
-                    tags: item.keywords?.compactMap { $0.name } ?? [],
+                    tags: (item.keywords ?? []).map(\.name),
                     category: "Category",
                     timeSince: "1일 전",
                     buttonTitle: "\(section.name)(으)로 옮기기",
