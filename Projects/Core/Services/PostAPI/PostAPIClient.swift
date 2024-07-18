@@ -9,9 +9,16 @@
 import Dependencies
 import DependenciesMacros
 import Foundation
+import Models
 
 @DependencyClient
 public struct PostAPIClient {
+    public var getPosts: @Sendable (
+        _ page: Int?,
+        _ limit: Int?,
+        _ order: String?,
+        _ favorite: Bool?
+    ) async throws -> [Card]
     public var postPosts: (_ folderId: String, _ url: URL) async throws -> Void
 }
 
@@ -23,9 +30,15 @@ public extension DependencyValues {
 }
 
 extension PostAPIClient: DependencyKey {
-    public static var liveValue: PostAPIClient = Self(
+    public static var liveValue: PostAPIClient = .init(
+        getPosts: { _, _, _, _ in
+            let api = PostAPI.getPosts
+            let responseDTO: GetPostsResponseDTO = try await Provider().request(api)
+            let cardList = responseDTO.list.map(\.toDomain)
+            return cardList
+        },
         postPosts: { folderId, url in
-            let api = CardAPI.postCard(folderId: folderId, urlString: url.absoluteString)
+            let api = PostAPI.postCard(folderId: folderId, urlString: url.absoluteString)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         }
     )

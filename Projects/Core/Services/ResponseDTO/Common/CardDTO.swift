@@ -10,20 +10,22 @@ import Foundation
 import Models
 
 struct CardDTO: Decodable {
-    let userId: String
+    let id: String
+    let userId: String?
     let folderId: String
     let url: String
     let title: String
     let description: String?
-    let isFavorite: Bool
-    let createdAt: String
+    let isFavorite: Bool?
+    let createdAt: String?
+    let readAt: String?
     let keywords: [KeywordDTO]?
 }
 
 extension CardDTO {
     var toDomain: Card {
         Card(
-            id: userId,
+            id: id,
             folderId: folderId,
             urlString: url,
             thumbnail: nil,

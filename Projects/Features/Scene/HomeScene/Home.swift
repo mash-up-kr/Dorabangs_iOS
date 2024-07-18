@@ -79,6 +79,7 @@ public struct Home {
     public init() {}
 
     @Dependency(\.folderAPIClient) var folderAPIClient
+    @Dependency(\.postAPIClient) var postAPIClient
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
@@ -180,12 +181,12 @@ public struct Home {
 
             case let .updateBannerType(bannerType):
                 state.selectedBannerType = bannerType
-                print("bannerType,,", bannerType)
                 return .none
 
             case .updateCardList:
-                state.cardList = ["카드"]
-                return .none
+                return .run { send in
+                    try await fetchAllCardList(send: send)
+                }
 
             case let .setAILinkCount(count):
                 state.aiLinkCount = count
@@ -268,6 +269,17 @@ private extension Home {
             nil,
             nil,
             nil
+        )
+
+        await send(.setCardList(cardList))
+    }
+
+    private func fetchAllCardList(send: Send<Home.Action>) async throws {
+        let cardList = try await postAPIClient.getPosts(
+            page: nil,
+            limit: nil,
+            order: nil,
+            favorite: nil
         )
 
         await send(.setCardList(cardList))
