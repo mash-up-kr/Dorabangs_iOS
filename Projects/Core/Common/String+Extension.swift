@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension Date {
-    public func timeAgo() -> String {
+public extension Date {
+    func timeAgo() -> String {
         let calendar = Calendar.current
         let now = Date()
         let components = calendar.dateComponents([.day], from: self, to: now)

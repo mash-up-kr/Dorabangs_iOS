@@ -46,7 +46,7 @@ struct HomeCardView: View {
                             progress: 0.4,
                             title: item.title,
                             description: item.description,
-                            tags: item.keywords?.map { $0.name } ?? [],
+                            tags: item.keywords?.map(\.name) ?? [],
                             category: item.category,
                             timeSince: item.createdAt.timeAgo(),
                             bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
