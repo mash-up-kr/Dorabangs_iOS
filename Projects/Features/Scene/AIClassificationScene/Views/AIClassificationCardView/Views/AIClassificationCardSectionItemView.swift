@@ -15,6 +15,7 @@ struct AIClassificationCardSectionItemView: View {
     let items: [Card]
     let deleteAction: (Folder, Card) -> Void
     let moveToFolderAction: (Folder, Card) -> Void
+    let fetchNextPageIfPossible: (_ item: Card) -> Void
 
     var body: some View {
         LazyVStack(spacing: 0) {
@@ -22,13 +23,16 @@ struct AIClassificationCardSectionItemView: View {
                 LKClassificationCard(
                     title: item.title,
                     description: item.description,
-                    tags: (item.keywords ?? []).map(\.name),
-                    category: "Category",
+                    tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                    category: section.name,
                     timeSince: "1일 전",
                     buttonTitle: "\(section.name)(으)로 옮기기",
                     deleteAction: { deleteAction(section, item) },
                     moveToFolderAction: { moveToFolderAction(section, item) }
                 )
+                .onAppear {
+                    fetchNextPageIfPossible(item)
+                }
 
                 if item != items.last {
                     Divider()

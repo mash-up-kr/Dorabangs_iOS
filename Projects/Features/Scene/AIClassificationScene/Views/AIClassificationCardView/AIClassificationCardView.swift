@@ -53,7 +53,7 @@ struct AIClassificationCardView: View {
             Spacer().frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight)
 
             LazyVStack(spacing: 0) {
-                ForEach(store.sections.keys.elements, id: \.self) { section in
+                ForEach(store.sections.values.elements, id: \.self) { section in
                     VStack(spacing: 0) {
                         AIClassificationCardSectionHeaderView(
                             title: section.name,
@@ -64,12 +64,15 @@ struct AIClassificationCardView: View {
                         WithPerceptionTracking {
                             AIClassificationCardSectionItemView(
                                 section: section,
-                                items: store.sections[section] ?? [],
+                                items: store.items[section.id] ?? [],
                                 deleteAction: { section, item in
                                     store.send(.deleteButtonTapped(section: section, item: item))
                                 },
                                 moveToFolderAction: { section, item in
                                     store.send(.moveToFolderButtonTapped(section: section, item: item))
+                                },
+                                fetchNextPageIfPossible: { item in
+                                    store.send(.fetchNextPageIfPossible(item: item))
                                 }
                             )
                         }
