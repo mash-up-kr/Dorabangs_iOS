@@ -32,8 +32,13 @@ extension CardDTO {
             title: title,
             description: description,
             category: "",
-            createdAt: .now,
+            createdAt: convertISO8601StringToDate(createdAt ?? "") ?? .now,
             keywords: keywords.map { $0.map(\.toDomain) }
         )
+    }
+
+    private func convertISO8601StringToDate(_ iso8601String: String) -> Date? {
+        let dateFormatter = ISO8601DateFormatter()
+        return dateFormatter.date(from: iso8601String)
     }
 }

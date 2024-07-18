@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import Common
 import ComposableArchitecture
 import DesignSystemKit
 import Models
@@ -38,16 +39,16 @@ struct HomeCardView: View {
     private func contentScrollView() -> some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                ForEach(store.cards.indices, id: \.self) { index in
+                ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
                     VStack(spacing: 0) {
                         LKCard(
-                            isSummarizing: true,
-                            progress: 0.3,
-                            title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
-                            description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
-                            tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],
-                            category: "Category",
-                            timeSince: "1일 전",
+                            isSummarizing: item.keywords != nil,
+                            progress: 0.4,
+                            title: item.title,
+                            description: item.description,
+                            tags: item.keywords?.map { $0.name } ?? [],
+                            category: item.category,
+                            timeSince: item.createdAt.timeAgo(),
                             bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                             showModalAction: { store.send(.showModalButtonTapped(index), animation: .easeInOut) }
                         )
