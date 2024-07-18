@@ -9,14 +9,22 @@
 import Alamofire
 import Foundation
 
-enum CardAPI: APIRepresentable {
+enum PostAPI: APIRepresentable {
+    case getPosts
     case postCard(folderId: String, urlString: String)
 }
 
-extension CardAPI {
+extension PostAPI {
     var path: String { "/posts" }
 
-    var method: HTTPMethod { .post }
+    var method: HTTPMethod {
+        switch self {
+        case .getPosts:
+            .get
+        case .postCard:
+            .post
+        }
+    }
 
     var headers: HTTPHeaders? { nil }
 
@@ -24,6 +32,9 @@ extension CardAPI {
 
     var httpBody: BodyParameters? {
         switch self {
+        case .getPosts:
+            .none
+
         case let .postCard(folderId, urlString):
             .dictionary(["folderId": folderId, "url": urlString])
         }
