@@ -24,6 +24,9 @@ public struct AIClassification {
         case onAppear
         case backButtonTapped
 
+        case tabsChanged(AIClassificationTab.State)
+        case cardsChanged(AIClassificationCard.State)
+
         case routeToHomeScreen
         case routeToFeedScreen(feedID: String)
 
@@ -37,21 +40,21 @@ public struct AIClassification {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                let tabs = [Folder(id: "A", name: "전체", type: .all, postCount: 0)]
-                // TODO: fetch Tabs
-                state.tabs = AIClassificationTab.State(tabs: tabs)
-                // TODO: fetch Cards
-                state.cards = AIClassificationCard.State(tabs: tabs, selectedTabIndex: 0)
-                return .none
+                return .run { send in
+                    let (totalCounts, customFolders) = try await aiClassificationAPIClient.getFolders()
+                    let allFolder = Folder(id: "", name: "전체", type: .all, postCount: totalCounts)
+                    let folders = [allFolder] + customFolders
+                    await send(.tabsChanged(.init(folders: folders, selectedFolder: allFolder)))
+                    await send(.cardsChanged(.init(folders: folders, selectedFolder: allFolder)))
+                }
 
             case .backButtonTapped:
                 return .send(.routeToHomeScreen)
 
-            case let .tabs(.tabSelected(index)):
-                guard var cardState = state.cards else { return .none }
-                return AIClassificationCard()
-                    .reduce(into: &cardState, action: .selectedTabIndexChanged(index))
-                    .map(Action.cards)
+            case let .tabs(.selectedFolderChanged(selectedFolder)):
+                guard let folders = state.tabs?.folders else { return .none }
+                state.cards = AIClassificationCard.State(folders: folders, selectedFolder: selectedFolder)
+                return .send(.cards(.fetchAIClassificationCards))
 
             default:
                 return .none

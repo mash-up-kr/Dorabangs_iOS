@@ -14,21 +14,21 @@ import OrderedCollections
 public struct AIClassificationCard {
     @ObservableState
     public struct State: Equatable {
-        private(set) var tabs: [Folder]
-        fileprivate(set) var selectedTabIndex: Int
+        private(set) var sections: OrderedDictionary<String, Folder>
+        fileprivate(set) var selectedFolder: Folder
         fileprivate(set) var scrollPage: Int
-        fileprivate(set) var sections: OrderedDictionary<Folder, [Card]>
+        fileprivate(set) var items: OrderedDictionary<String, [Card]> // key: folderId, value: cards
 
-        public init(tabs: [Folder], selectedTabIndex: Int) {
-            self.tabs = tabs
-            self.selectedTabIndex = selectedTabIndex
+        public init(folders: [Folder], selectedFolder: Folder) {
+            sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
+            self.selectedFolder = selectedFolder
             scrollPage = 0
             sections = [:]
         }
     }
 
     public enum Action {
-        case selectedTabIndexChanged(Int)
+        case selectedFolderChanged(Folder)
 
         // MARK: View Action
         case onAppear
@@ -49,8 +49,8 @@ public struct AIClassificationCard {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case let .selectedTabIndexChanged(selectedTabIndex):
-                state.selectedTabIndex = selectedTabIndex
+            case let .selectedFolderChanged(selectedFolder):
+                state.selectedFolder = selectedFolder
                 state.sections.removeAll()
                 return .none
 
@@ -61,15 +61,15 @@ public struct AIClassificationCard {
                 return .none
 
             case let .deleteButtonTapped(section, item):
-                state.sections[section]?.removeAll { $0.id == item.id }
-                state.sections = state.sections.compactMapValues { $0.isEmpty ? nil : $0 }
+                state.items[section.id]?.removeAll { $0.id == item.id }
+                state.items = state.items.compactMapValues { $0.isEmpty ? nil : $0 }
                 return .none
 
             case let .addItems(items):
                 let groupedItems = Dictionary(grouping: items) { $0.folderId }
-                for tab in state.tabs {
-                    if let itemForTab = groupedItems[tab.id] {
-                        state.sections[tab, default: []].append(contentsOf: itemForTab)
+                for folder in state.folders {
+                    if let itemForTab = groupedItems[folder.id] {
+                        state.sections[folder, default: []].append(contentsOf: itemForTab)
                     }
                 }
                 return .none

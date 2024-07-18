@@ -22,7 +22,7 @@ struct AIClassificationCardView: View {
     var body: some View {
         WithPerceptionTracking {
             VStack(spacing: 0) {
-                if store.sections.isEmpty {
+                if store.items.isEmpty {
                     emptyView()
                 } else {
                     contentScrollView()
@@ -36,14 +36,13 @@ struct AIClassificationCardView: View {
 
     @ViewBuilder
     private func emptyView() -> some View {
-        let selectedTab = store.tabs[store.selectedTabIndex]
-        if selectedTab.type == .all {
+        if store.selectedFolder.type == .all {
             AIClassificationCardEmptyView(title: "홈으로 이동") {
                 store.send(.routeToHomeScreen)
             }
         } else {
-            AIClassificationCardEmptyView(title: "\(selectedTab.name)(으)로 이동") {
-                store.send(.routeToFeedScreen(selectedTab))
+            AIClassificationCardEmptyView(title: "\(store.selectedFolder.name)(으)로 이동") {
+                store.send(.routeToFeedScreen(store.selectedFolder))
             }
         }
     }
