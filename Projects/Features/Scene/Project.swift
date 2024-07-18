@@ -122,6 +122,7 @@ let project = Project.make(
             sources: ["AIClassificationScene/**"],
             dependencies: [
                 .core(.model),
+                .core(.service),
                 .spm(.composableArchitecture),
                 .designSystem
             ]

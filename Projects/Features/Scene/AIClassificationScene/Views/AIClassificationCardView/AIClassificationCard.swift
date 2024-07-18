@@ -9,6 +9,7 @@
 import ComposableArchitecture
 import Models
 import OrderedCollections
+import Services
 
 @Reducer
 public struct AIClassificationCard {
@@ -22,14 +23,12 @@ public struct AIClassificationCard {
         public init(folders: [Folder], selectedFolder: Folder) {
             sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
             self.selectedFolder = selectedFolder
-            scrollPage = 0
-            sections = [:]
+            scrollPage = 1
+            items = [:]
         }
     }
 
     public enum Action {
-        case selectedFolderChanged(Folder)
-
         // MARK: View Action
         case onAppear
         case moveToAllItemsToFolderButtonTapped(section: Folder)
@@ -37,8 +36,9 @@ public struct AIClassificationCard {
         case moveToFolderButtonTapped(section: Folder, item: Card)
 
         // MARK: Inner Business
-        case fetchCards(page: Int)
-        case addItems(items: [Card])
+        case fetchAIClassificationCards
+        case fetchNextPageIfPossible(item: Card)
+        case appendAIClassificationCards(cards: [Card])
 
         case routeToHomeScreen
         case routeToFeedScreen(Folder)
@@ -46,31 +46,39 @@ public struct AIClassificationCard {
 
     public init() {}
 
+    @Dependency(\.aiClassificationAPIClient) var aiClassificationAPIClient
+
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case let .selectedFolderChanged(selectedFolder):
-                state.selectedFolder = selectedFolder
-                state.sections.removeAll()
-                return .none
-
             case .onAppear:
-                return .send(.fetchCards(page: 0))
-
-            case .fetchCards:
-                return .none
+                return .send(.fetchAIClassificationCards)
 
             case let .deleteButtonTapped(section, item):
                 state.items[section.id]?.removeAll { $0.id == item.id }
                 state.items = state.items.compactMapValues { $0.isEmpty ? nil : $0 }
                 return .none
 
-            case let .addItems(items):
-                let groupedItems = Dictionary(grouping: items) { $0.folderId }
-                for folder in state.folders {
-                    if let itemForTab = groupedItems[folder.id] {
-                        state.sections[folder, default: []].append(contentsOf: itemForTab)
-                    }
+            case .fetchAIClassificationCards:
+                let folderId = state.selectedFolder.id.isEmpty ? nil : state.selectedFolder.id
+                return .run { send in
+                    let posts = try await aiClassificationAPIClient.getPosts(folderId, 1)
+                    await send(.appendAIClassificationCards(cards: posts))
+                }
+
+            case let .fetchNextPageIfPossible(item):
+                guard let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }
+                state.scrollPage += 1
+                let folderId = state.selectedFolder.id.isEmpty ? nil : state.selectedFolder.id
+                return .run { [page = state.scrollPage] send in
+                    let posts = try await aiClassificationAPIClient.getPosts(folderId, page)
+                    await send(.appendAIClassificationCards(cards: posts))
+                }
+
+            case let .appendAIClassificationCards(cards):
+                let groupedItems = Dictionary(grouping: cards) { $0.folderId }
+                for item in groupedItems {
+                    state.items[item.key, default: []].append(contentsOf: item.value)
                 }
                 return .none
 

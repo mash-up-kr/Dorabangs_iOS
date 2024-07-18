@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Models
+import Services
 
 @Reducer
 public struct AIClassification {
@@ -36,6 +37,8 @@ public struct AIClassification {
 
     public init() {}
 
+    @Dependency(\.aiClassificationAPIClient) var aiClassificationAPIClient
+
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
@@ -50,6 +53,14 @@ public struct AIClassification {
 
             case .backButtonTapped:
                 return .send(.routeToHomeScreen)
+
+            case let .tabsChanged(tabs):
+                state.tabs = tabs
+                return .none
+
+            case let .cardsChanged(cards):
+                state.cards = cards
+                return .none
 
             case let .tabs(.selectedFolderChanged(selectedFolder)):
                 guard let folders = state.tabs?.folders else { return .none }
