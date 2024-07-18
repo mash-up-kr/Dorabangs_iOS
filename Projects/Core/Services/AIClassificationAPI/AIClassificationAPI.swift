@@ -11,6 +11,7 @@ import Foundation
 
 enum AIClassificationAPI: APIRepresentable {
     case getFolders
+    case getPosts(folderId: String?, page: Int)
 }
 
 extension AIClassificationAPI {
@@ -18,12 +19,18 @@ extension AIClassificationAPI {
         switch self {
         case .getFolders:
             "/classification/folders"
+        case let .getPosts(folderId, _):
+            if let folderId {
+                "/classification/posts/\(folderId)"
+            } else {
+                "/classification/posts"
+            }
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .getFolders: .get
+        case .getFolders, .getPosts: .get
         }
     }
 
@@ -32,6 +39,7 @@ extension AIClassificationAPI {
     var queryString: Parameters? {
         switch self {
         case .getFolders: .none
+        case let .getPosts(_, page): ["page": page]
         }
     }
 
