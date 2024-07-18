@@ -13,24 +13,24 @@ import Models
 public struct AIClassificationTab {
     @ObservableState
     public struct State: Equatable {
-        private(set) var tabs: [Folder]
-        fileprivate(set) var selectedIndex: Int
+        fileprivate(set) var folders: [Folder]
+        fileprivate(set) var selectedFolder: Folder
 
-        public init(tabs: [Folder]) {
-            self.tabs = tabs
-            selectedIndex = 0
+        public init(folders: [Folder], selectedFolder: Folder) {
+            self.folders = folders
+            self.selectedFolder = selectedFolder
         }
     }
 
     public enum Action {
-        case tabSelected(at: Int)
+        case selectedFolderChanged(selectedFolder: Folder)
     }
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case let .tabSelected(selectedIndex):
-                state.selectedIndex = selectedIndex
+            case let .selectedFolderChanged(selectedFolder):
+                state.selectedFolder = selectedFolder
                 return .none
             }
         }
