@@ -18,8 +18,8 @@ struct AIClassificationCardSectionItemView: View {
     let fetchNextPageIfPossible: (_ item: Card) -> Void
 
     var body: some View {
-        LazyVStack(spacing: 0) {
-            ForEach(items, id: \.self) { item in
+        ForEach(items, id: \.self) { item in
+            VStack(spacing: 0) {
                 LKClassificationCard(
                     title: item.title,
                     description: item.description,

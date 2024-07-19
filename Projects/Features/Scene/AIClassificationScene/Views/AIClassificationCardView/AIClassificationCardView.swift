@@ -49,36 +49,40 @@ struct AIClassificationCardView: View {
 
     @ViewBuilder
     private func contentScrollView() -> some View {
-        ScrollView {
-            Spacer().frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight)
+        List {
+            Spacer()
+                .frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight)
+                .buttonStyle(.plain)
+                .listRowInsets(.init())
+                .listRowSeparator(.hidden)
 
-            LazyVStack(spacing: 0) {
-                ForEach(store.sections.values.elements, id: \.self) { section in
-                    VStack(spacing: 0) {
-                        AIClassificationCardSectionHeaderView(
-                            title: section.name,
-                            count: section.postCount,
-                            action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
-                        )
+            ForEach(store.items.keys.elements, id: \.self) { folderId in
+                if let section = store.sections[folderId], let items = store.items[folderId] {
+                    AIClassificationCardSectionHeaderView(
+                        title: section.name,
+                        count: section.postCount,
+                        action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
+                    )
 
-                        WithPerceptionTracking {
-                            AIClassificationCardSectionItemView(
-                                section: section,
-                                items: store.items[section.id] ?? [],
-                                deleteAction: { section, item in
-                                    store.send(.deleteButtonTapped(section: section, item: item))
-                                },
-                                moveToFolderAction: { section, item in
-                                    store.send(.moveToFolderButtonTapped(section: section, item: item))
-                                },
-                                fetchNextPageIfPossible: { item in
-                                    store.send(.fetchNextPageIfPossible(item: item))
-                                }
-                            )
+                    AIClassificationCardSectionItemView(
+                        section: section,
+                        items: items,
+                        deleteAction: { section, item in
+                            store.send(.deleteButtonTapped(section: section, item: item))
+                        },
+                        moveToFolderAction: { section, item in
+                            store.send(.moveToFolderButtonTapped(section: section, item: item))
+                        },
+                        fetchNextPageIfPossible: { item in
+                            store.send(.fetchNextPageIfPossible(item: item))
                         }
-                    }
+                    )
                 }
             }
+            .buttonStyle(.plain)
+            .listRowInsets(.init())
+            .listRowSeparator(.hidden)
         }
+        .listStyle(.plain)
     }
 }
