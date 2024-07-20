@@ -51,11 +51,11 @@ public struct StorageBox {
         case fetchFoldersResult(Result<FoldersModel, Error>)
         case addNewFolder(String)
         case removeFolder
-        case changedFolderName(String)
+        case changedFolderName(Folder)
 
         // MARK: Navigation Action
         case routeToFeed(title: String)
-        case routeToChangeFolderName([String])
+        case routeToChangeFolderName(String, [String])
 
         case binding(BindingAction<State>)
     }
@@ -132,12 +132,13 @@ public struct StorageBox {
                 state.editFolderPopupIsPresented = false
                 return .none
             case .tapChangeFolderName:
-                return .send(.routeToChangeFolderName(state.defaultFolders.map(\.name) + state.customFolders.map(\.name)))
-            case let .changedFolderName(newName):
-                // TODO: - 여기도 통신타서 바꾸는걸로
-
-                if let editingID = state.editingID, let editingFolderIndex = state.customFolders.firstIndex(where: { $0.id == editingID }) {
-                    state.customFolders[editingFolderIndex].name = newName
+                if let editingID = state.editingID {
+                    return .send(.routeToChangeFolderName(editingID, state.defaultFolders.map(\.name) + state.customFolders.map(\.name)))
+                }
+                return .none
+            case let .changedFolderName(patchedFolder):
+                if let patchedFolderIndex = state.customFolders.firstIndex(where: { $0.id == patchedFolder.id }) {
+                    state.customFolders[patchedFolderIndex] = patchedFolder
                 }
                 state.editFolderPopupIsPresented = false
                 state.toastPopupIsPresented = true

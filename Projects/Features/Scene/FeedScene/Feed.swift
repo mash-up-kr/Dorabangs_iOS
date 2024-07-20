@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Models
 
 @Reducer
 public struct Feed {
@@ -47,7 +48,7 @@ public struct Feed {
         case cancelRemoveFolder
 
         case routeToChangeFolderName(String)
-        case changedFolderName(String)
+        case changedFolderName(Folder)
 
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
@@ -80,7 +81,8 @@ public struct Feed {
             case let .routeToChangeFolderName(currentTitle):
                 return .none
             case let .changedFolderName(newName):
-                state.title = newName
+                // TODO: - 통신탄 결과로 수정해야함~
+//                state.title = newName
                 state.toastPopupIsPresented = true
                 return .none
             case .showRemoveFolderPopup:

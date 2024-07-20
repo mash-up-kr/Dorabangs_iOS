@@ -47,15 +47,18 @@ public struct FeedCoordinator {
                 return .send(.routeToPreviousScreen)
             case .router(.routeAction(id: _, action: .feed(.removeFolder))):
                 return .send(.routeToPreviousScreen)
-            case .router(.routeAction(id: _, action: .feed(.routeToChangeFolderName(let folderTitle)))):
-                state.routes.push(.changeFolderName(.init(folders: [folderTitle])))
+            case .router(.routeAction(id: _, action:
+                // TODO: - folderID담아가는 걸로 수정해야함
+                .feed(.routeToChangeFolderName(let folderTitle)))):
+                state.routes.push(.changeFolderName(.init(folderID: "", folders: [folderTitle])))
                 return .none
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToPreviousScreen))):
                 state.routes.goBack()
                 return .none
-            case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let newName)))):
+            case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let patchedFolder)))):
                 state.routes.goBack()
-                return .send(.router(.routeAction(id: 0, action: .feed(.changedFolderName(newName)))))
+                // TODO: - routeFeed 만들어야함
+                return .send(.router(.routeAction(id: 0, action: .feed(.changedFolderName(patchedFolder)))))
             default:
                 return .none
             }

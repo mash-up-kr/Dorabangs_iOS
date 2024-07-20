@@ -43,8 +43,8 @@ public struct StorageBoxCoordinator {
                                       action: .storageBox(.routeToFeed(let title)))):
                 state.routes.push(.feed(.init(routes: [.root(.feed(.init(title: title)), embedInNavigationView: true)])))
                 return .none
-            case .router(.routeAction(id: _, action: .storageBox(.routeToChangeFolderName(let folderNames)))):
-                state.routes.push(.changeFolderName(.init(folders: folderNames)))
+            case .router(.routeAction(id: _, action: .storageBox(.routeToChangeFolderName(let folderID, let folderNames)))):
+                state.routes.push(.changeFolderName(.init(folderID: folderID, folders: folderNames)))
                 return .none
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToPreviousScreen))):
                 state.routes.goBack()
@@ -52,9 +52,9 @@ public struct StorageBoxCoordinator {
             case .router(.routeAction(id: _, action: .feed(.routeToPreviousScreen))):
                 state.routes.goBack()
                 return .none
-            case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let newName)))):
+            case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let patchedFolder)))):
                 state.routes.goBack()
-                return .send(.router(.routeAction(id: 0, action: .storageBox(.changedFolderName(newName)))))
+                return .send(.router(.routeAction(id: 0, action: .storageBox(.changedFolderName(patchedFolder)))))
             default:
                 return .none
             }
