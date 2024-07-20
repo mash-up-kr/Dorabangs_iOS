@@ -41,7 +41,7 @@ public struct AIClassificationCard {
         case appendAIClassificationCards(cards: [Card])
         case sectionsChanged(sections: OrderedDictionary<String, Folder>)
         case itemsChanged(items: OrderedDictionary<String, [Card]>)
-      
+
         case routeToHomeScreen
         case routeToFeedScreen(Folder)
     }
@@ -64,7 +64,7 @@ public struct AIClassificationCard {
                 updatedItems[section.id] = []
                 updatedItems.removeAll { $0.value.isEmpty }
                 return .run { [updatedSections, updatedItems] send in
-                    try await aiClassificationAPIClient.patchPosts(suggestionFolderId: section.id)
+                    try await aiClassificationAPIClient.patchPosts(section.id)
                     await send(.sectionsChanged(sections: updatedSections))
                     await send(.itemsChanged(items: updatedItems))
                 } catch: { _, _ in
@@ -91,6 +91,7 @@ public struct AIClassificationCard {
                 return .run { send in
                     let posts = try await aiClassificationAPIClient.getPosts(folderId, 1)
                     await send(.appendAIClassificationCards(cards: posts))
+                }
 
             case let .fetchNextPageIfPossible(item):
                 guard let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }

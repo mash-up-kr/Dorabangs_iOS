@@ -61,7 +61,7 @@ public struct AIClassification {
             case let .cardsChanged(cards):
                 state.cards = cards
                 return .none
-              
+
             case let .tabs(.selectedFolderIndexChanged(selectedFolderIndex)):
                 guard let folders = state.tabs?.folders else { return .none }
                 let selectedFolderId = folders[selectedFolderIndex].id
