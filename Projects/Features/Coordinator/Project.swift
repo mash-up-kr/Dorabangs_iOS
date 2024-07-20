@@ -59,6 +59,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.feedCoordinator",
             sources: ["FeedCoordinator/**"],
             dependencies: [
+                .core(.model),
                 .scene(.feed),
                 .spm(.tcaCoordinators),
                 .scene(.changeFolderName)

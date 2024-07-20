@@ -8,20 +8,21 @@
 
 import ComposableArchitecture
 import Models
+import Services
 
 @Reducer
 public struct Feed {
     @ObservableState
     public struct State: Equatable {
+        public var currentFolder: Folder
         public var cards: [String] = ["카드0", "카드1", "카드2", "카드3", "카드4", "카드5", "카드6", "카드7", "카드8", "카드9", "카드10"]
 
-        public var title: String
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
         public var toastPopupIsPresented: Bool = false
 
-        public init(title: String) {
-            self.title = title
+        public init(currentFolder: Folder) {
+            self.currentFolder = currentFolder
         }
     }
 
@@ -31,6 +32,8 @@ public struct Feed {
         case routeToPreviousScreen
 
         // MARK: Inner Business
+        case fetchFolderInfo(String)
+        case updateFolderInfo(Result<Folder, Error>)
         case fetchData
 
         // MARK: User Action
@@ -58,11 +61,21 @@ public struct Feed {
 
     public init() {}
 
+    @Dependency(\.folderAPIClient) var folderAPIClient
+
     public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
             switch action {
             case .onAppear:
+                return .send(.fetchFolderInfo(state.currentFolder.id))
+            case let .fetchFolderInfo(folderId):
+                return .run { send in
+                    await send(.updateFolderInfo(Result { try await folderAPIClient.getFolder(folderId)
+                    }))
+                }
+            case let .updateFolderInfo(.success(folder)):
+                state.currentFolder = folder
                 return .none
             case .backButtonTapped:
                 return .send(.routeToPreviousScreen)
@@ -77,7 +90,7 @@ public struct Feed {
                 return .none
             case .tapChangeFolderName:
                 state.editFolderPopupIsPresented = false
-                return .send(.routeToChangeFolderName(state.title))
+                return .send(.routeToChangeFolderName(state.currentFolder.name))
             case let .routeToChangeFolderName(currentTitle):
                 return .none
             case let .changedFolderName(newName):

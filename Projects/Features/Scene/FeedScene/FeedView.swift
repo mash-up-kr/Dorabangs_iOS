@@ -21,7 +21,7 @@ public struct FeedView: View {
         WithPerceptionTracking {
             VStack {
                 LKTextMiddleTopBar(
-                    title: store.title,
+                    title: store.currentFolder.name,
                     backButtonAction: { store.send(.backButtonTapped) },
                     rightButtomImage: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage,
                     rightButtonEnabled: true,
@@ -32,7 +32,7 @@ public struct FeedView: View {
 
                 ScrollView {
                     LazyVStack(pinnedViews: .sectionHeaders) {
-                        FeedHeaderView(folderName: store.title, linkCount: store.cards.count)
+                        FeedHeaderView(folderName: store.currentFolder.name, linkCount: store.currentFolder.postCount)
 
                         Section {
                             LazyVStack(spacing: 0) {

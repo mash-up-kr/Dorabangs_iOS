@@ -9,6 +9,7 @@
 import ChangeFolderName
 import ComposableArchitecture
 import Feed
+import Models
 import TCACoordinators
 
 @Reducer(state: .equatable)
@@ -27,8 +28,8 @@ public struct FeedCoordinator {
             self.routes = routes
         }
 
-        public init(title: String) {
-            routes = [.root(.feed(.init(title: title)), embedInNavigationView: true)]
+        public init(_ folder: Folder) {
+            routes = [.root(.feed(.init(currentFolder: folder)), embedInNavigationView: true)]
         }
     }
 
