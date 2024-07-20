@@ -15,7 +15,7 @@ enum FolderAPI: APIRepresentable {
     /// 폴더 리스트 조회
     case getFolders
     case postFolders(folders: [String])
-    case getFolderPosts(folderId: String, page: Int?, limit: Int?, unread: Bool?)
+    case getFolderPosts(folderId: String, page: Int?, limit: Int?, order: String?, unread: Bool?)
     case deleteFolder(folderId: String)
     case patchFolder(folderId: String, newName: String)
 }
@@ -27,7 +27,7 @@ extension FolderAPI {
             "/folders/\(folderId)"
         case .getFolders, .postFolders:
             "/folders"
-        case let .getFolderPosts(folderId, page, limit, unread):
+        case let .getFolderPosts(folderId, _, _, _, _):
             "/folders/\(folderId)/posts"
         case let .deleteFolder(folderId), let .patchFolder(folderId, _):
             "/folders/\(folderId)"

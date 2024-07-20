@@ -57,11 +57,6 @@ public struct FeedView: View {
                                         bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                                         showModalAction: { store.send(.showModalButtonTapped(index)) }
                                     )
-                                    .onAppear {
-                                        if index % 9 == 0 {
-                                            store.send(.fetchData)
-                                        }
-                                    }
                                 }
                             }
                         } header: {

@@ -8,6 +8,18 @@
 
 import Foundation
 
+public struct CardListModel {
+    public let hasNext: Bool
+    public let total: Int
+    public let cards: [Card]
+
+    public init(hasNext: Bool, total: Int, cards: [Card]) {
+        self.hasNext = hasNext
+        self.total = total
+        self.cards = cards
+    }
+}
+
 public struct Card: Hashable {
     public let id: String
     public let folderId: String

@@ -15,7 +15,8 @@ public struct Feed {
     @ObservableState
     public struct State: Equatable {
         public var currentFolder: Folder
-        public var cards: [String] = ["카드0", "카드1", "카드2", "카드3", "카드4", "카드5", "카드6", "카드7", "카드8", "카드9", "카드10"]
+        public var pageModel = PostPageModel()
+        public var cards: [Card] = []
 
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
@@ -28,13 +29,15 @@ public struct Feed {
 
     public enum Action: BindableAction {
         case onAppear
+        case onAppearList
         case backButtonTapped
         case routeToPreviousScreen
 
         // MARK: Inner Business
         case fetchFolderInfo(String)
         case updateFolderInfo(Result<Folder, Error>)
-        case fetchData
+        case fetchPostList(String, PostPageModel)
+        case fetchPostListResult(Result<CardListModel, Error>)
 
         // MARK: User Action
         case tapMore
@@ -68,7 +71,13 @@ public struct Feed {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .send(.fetchFolderInfo(state.currentFolder.id))
+                return .merge(.send(.fetchFolderInfo(state.currentFolder.id)), .send(.onAppearList))
+            case .onAppearList:
+                if state.pageModel.canLoadingMore() {
+                    state.pageModel.isLoading = true
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                }
+                return .none
             case let .fetchFolderInfo(folderId):
                 return .run { send in
                     await send(.updateFolderInfo(Result { try await folderAPIClient.getFolder(folderId)
@@ -79,7 +88,25 @@ public struct Feed {
                 return .none
             case .backButtonTapped:
                 return .send(.routeToPreviousScreen)
-            case .fetchData:
+            case let .fetchPostList(folderId, pageModel):
+                return .run { send in
+                    await send(.fetchPostListResult(Result {
+                        try await
+                            folderAPIClient.getFolderPosts(folderId: folderId,
+                                                           page: pageModel.currentPage,
+                                                           limit: 10,
+                                                           order: pageModel.order.rawValue,
+                                                           unread: pageModel.onlyUnread)
+                    }))
+                }
+            case let .fetchPostListResult(.success(resultModel)):
+                state.pageModel.currentPage += 1
+                state.pageModel.isLast = !resultModel.hasNext
+                state.pageModel.isLoading = false
+                state.cards.append(contentsOf: resultModel.cards)
+                return .none
+            case let .fetchPostListResult(.failure(error)):
+                state.pageModel.isLoading = false
                 return .none
             case .tapMore:
                 state.editFolderPopupIsPresented = true
