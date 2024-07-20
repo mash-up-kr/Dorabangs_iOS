@@ -26,10 +26,10 @@ extension LinkAPI {
 
     var headers: HTTPHeaders? { nil }
 
-    var queryString: Parameters? {
+    var queryString: QueryStringParameters? {
         switch self {
         case let .getValidation(link):
-            ["link": link]
+            .dictionary(["link": link])
         }
     }
 

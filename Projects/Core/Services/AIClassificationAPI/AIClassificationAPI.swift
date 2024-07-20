@@ -44,12 +44,12 @@ extension AIClassificationAPI {
 
     var headers: HTTPHeaders? { nil }
 
-    var queryString: Parameters? {
+    var queryString: QueryStringParameters? {
         switch self {
         case .getFolders: .none
-        case let .getPosts(_, page): ["page": page]
+        case let .getPosts(_, page): .dictionary(["page": page])
         case .deletePost: .none
-        case let .patchPosts(suggestionFolderId): ["suggestionFolderId": suggestionFolderId]
+        case let .patchPosts(suggestionFolderId): .dictionary(["suggestionFolderId": suggestionFolderId])
         }
     }
 

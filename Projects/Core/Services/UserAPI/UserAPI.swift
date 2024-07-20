@@ -20,7 +20,7 @@ extension UserAPI {
 
     var headers: HTTPHeaders? { nil }
 
-    var queryString: Parameters? { nil }
+    var queryString: QueryStringParameters? { nil }
 
     var httpBody: BodyParameters? {
         switch self {
