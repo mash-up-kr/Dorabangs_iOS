@@ -49,7 +49,17 @@ extension FolderAPI {
 
     var headers: HTTPHeaders? { nil }
 
-    var queryString: QueryStringParameters? { nil }
+    var queryString: QueryStringParameters? {
+        switch self {
+        case let .getFolderPosts(_, page, limit, order, unread):
+            .dictionary(["page": page,
+                         "limit": limit,
+                         "order": order,
+                         "unread": unread])
+        default:
+            nil
+        }
+    }
 
     var httpBody: BodyParameters? {
         switch self {
