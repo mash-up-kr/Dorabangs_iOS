@@ -13,6 +13,7 @@ enum FolderAPI: APIRepresentable {
     case getFolders
     case postFolders(folders: [String])
     case getFolderPosts(folderId: String, page: Int?, limit: Int?, unread: Bool?)
+    case deleteFolder(folderId: String)
 }
 
 extension FolderAPI {
@@ -22,6 +23,8 @@ extension FolderAPI {
             "/folders"
         case let .getFolderPosts(folderId, page, limit, unread):
             "/folders/\(folderId)/posts"
+        case let .deleteFolder(folderId):
+            "/folders/\(folderId)"
         }
     }
 
@@ -31,6 +34,8 @@ extension FolderAPI {
             .get
         case .postFolders:
             .post
+        case .deleteFolder:
+            .delete
         }
     }
 
@@ -40,7 +45,7 @@ extension FolderAPI {
 
     var httpBody: BodyParameters? {
         switch self {
-        case .getFolders, .getFolderPosts:
+        case .getFolders, .getFolderPosts, .deleteFolder:
             .none
         case let .postFolders(folders):
             .dictionary(["names": folders])

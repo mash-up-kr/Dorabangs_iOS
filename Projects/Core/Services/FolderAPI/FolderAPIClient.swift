@@ -21,6 +21,7 @@ public struct FolderAPIClient {
         _ limit: Int?,
         _ unread: Bool?
     ) async throws -> [Card]
+    public var deleteFolder: @Sendable (String) async throws -> Void
 }
 
 public extension DependencyValues {
@@ -49,6 +50,10 @@ extension FolderAPIClient: DependencyKey {
             let responseDTO: GetFolderPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
             return cardList
+        },
+        deleteFolder: { folderId in
+            let api = FolderAPI.deleteFolder(folderId: folderId)
+            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         }
     )
 }
