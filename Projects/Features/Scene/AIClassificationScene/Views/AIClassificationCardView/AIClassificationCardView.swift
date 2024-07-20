@@ -36,13 +36,13 @@ struct AIClassificationCardView: View {
 
     @ViewBuilder
     private func emptyView() -> some View {
-        if store.selectedFolder.type == .all {
+        if store.selectedFolderId == Folder.ID.all {
             AIClassificationCardEmptyView(title: "홈으로 이동") {
                 store.send(.routeToHomeScreen)
             }
-        } else {
-            AIClassificationCardEmptyView(title: "\(store.selectedFolder.name)(으)로 이동") {
-                store.send(.routeToFeedScreen(store.selectedFolder))
+        } else if let selectedSection = store.sections[store.selectedFolderId] {
+            AIClassificationCardEmptyView(title: "\(selectedSection.name)(으)로 이동") {
+                store.send(.routeToFeedScreen(selectedSection))
             }
         }
     }

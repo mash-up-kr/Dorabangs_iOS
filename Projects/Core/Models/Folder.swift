@@ -61,3 +61,10 @@ public enum FolderType: Equatable {
         }
     }
 }
+
+public extension Folder {
+    enum ID {
+        public static let all = "all"
+        public static let favorite = "favorite"
+    }
+}

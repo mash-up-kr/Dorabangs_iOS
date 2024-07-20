@@ -12,6 +12,7 @@ import Foundation
 enum AIClassificationAPI: APIRepresentable {
     case getFolders
     case getPosts(folderId: String?, page: Int)
+    case deletePost(postId: String)
 }
 
 extension AIClassificationAPI {
@@ -25,12 +26,15 @@ extension AIClassificationAPI {
             } else {
                 "/classification/posts"
             }
+        case let .deletePost(postId):
+            "/classification/posts/\(postId)"
         }
     }
 
     var method: HTTPMethod {
         switch self {
         case .getFolders, .getPosts: .get
+        case .deletePost: .delete
         }
     }
 
@@ -40,6 +44,7 @@ extension AIClassificationAPI {
         switch self {
         case .getFolders: .none
         case let .getPosts(_, page): ["page": page]
+        case .deletePost: .none
         }
     }
 

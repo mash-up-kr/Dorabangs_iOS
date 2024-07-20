@@ -21,17 +21,17 @@ struct AIClassificationTabView: View {
         WithPerceptionTracking {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
-                    ForEach(store.folders, id: \.self) { folder in
+                    ForEach(store.folders.indices, id: \.self) { index in
                         WithPerceptionTracking {
                             LKTopTabView(
                                 folderType: .custom,
-                                isSelected: store.selectedFolder == folder,
-                                title: folder.name,
-                                count: "\(folder.postCount)"
+                                isSelected: store.selectedFolderIndex == index,
+                                title: store.folders[index].name,
+                                count: "\(store.folders[index].postCount)"
                             )
                             .frame(height: 36)
                             .onTapGesture {
-                                store.send(.selectedFolderChanged(selectedFolder: folder))
+                                store.send(.selectedFolderIndexChanged(selectedFolderIndex: index))
                             }
                         }
                     }
