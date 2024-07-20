@@ -95,10 +95,11 @@ public struct StorageBox {
                 state.newFolderPopupIsPresented = true
                 return .none
             case let .addNewFolder(folderName):
-                print("add new folder")
-                // TODO: - 여기 통신으로 새폴더 만들어야함
-//                state.customFolders.append(.init(title: folderName, count: 0))
-                return .none
+                return .run { send in
+                    let folderName = [folderName]
+                    try await folderAPIClient.postFolders(folderName)
+                    await send(.fetchFolders)
+                }
             case .removeFolder:
                 if let editingIndex = state.editingIndex {
                     state.customFolders.remove(at: editingIndex)
