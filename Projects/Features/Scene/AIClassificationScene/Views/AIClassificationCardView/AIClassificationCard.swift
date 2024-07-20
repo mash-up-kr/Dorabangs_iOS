@@ -57,34 +57,49 @@ public struct AIClassificationCard {
                 return .send(.fetchAIClassificationCards)
 
             case let .moveToAllItemsToFolderButtonTapped(section):
-                var updatedSections = state.sections
-                updatedSections[section.id]?.postCount = 0
-                updatedSections[Folder.ID.all]?.postCount = 0
-                var updatedItems = state.items
-                updatedItems[section.id] = []
-                updatedItems.removeAll { $0.value.isEmpty }
-                return .run { [updatedSections, updatedItems] send in
-                    try await aiClassificationAPIClient.patchPosts(section.id)
-                    await send(.sectionsChanged(sections: updatedSections))
-                    await send(.itemsChanged(items: updatedItems))
-                } catch: { _, _ in
-                    // TODO: error handling
-                }
+                return updateSectionsAndItems(
+                    sections: state.sections,
+                    items: state.items,
+                    updateAPI: { try await aiClassificationAPIClient.patchPosts(suggestionFolderId: section.id, postId: nil) },
+                    updateSections: { sections in
+                        sections[section.id]?.postCount = 0
+                        sections[Folder.ID.all]?.postCount = 0
+                    },
+                    updateItems: { items in
+                        items[section.id] = []
+                        items.removeAll { $0.value.isEmpty }
+                    }
+                )
 
             case let .deleteButtonTapped(section, item):
-                var updatedSections = state.sections
-                updatedSections[section.id]?.postCount -= 1
-                updatedSections[Folder.ID.all]?.postCount -= 1
-                var updatedItems = state.items
-                updatedItems[section.id]?.removeAll { $0.id == item.id }
-                updatedItems.removeAll { $0.value.isEmpty }
-                return .run { [updatedSections, updatedItems] send in
-                    try await aiClassificationAPIClient.deletePost(item.id)
-                    await send(.sectionsChanged(sections: updatedSections))
-                    await send(.itemsChanged(items: updatedItems))
-                } catch: { _, _ in
-                    // TODO: error handling
-                }
+                return updateSectionsAndItems(
+                    sections: state.sections,
+                    items: state.items,
+                    updateAPI: { try await aiClassificationAPIClient.deletePost(item.id) },
+                    updateSections: { sections in
+                        sections[section.id]?.postCount -= 1
+                        sections[Folder.ID.all]?.postCount -= 1
+                    },
+                    updateItems: { items in
+                        items[section.id]?.removeAll { $0.id == item.id }
+                        items.removeAll { $0.value.isEmpty }
+                    }
+                )
+
+            case let .moveToFolderButtonTapped(section, item):
+                return updateSectionsAndItems(
+                    sections: state.sections,
+                    items: state.items,
+                    updateAPI: { try await aiClassificationAPIClient.patchPosts(suggestionFolderId: section.id, postId: item.id) },
+                    updateSections: { sections in
+                        sections[section.id]?.postCount -= 1
+                        sections[Folder.ID.all]?.postCount -= 1
+                    },
+                    updateItems: { items in
+                        items[section.id]?.removeAll { $0.id == item.id }
+                        items.removeAll { $0.value.isEmpty }
+                    }
+                )
 
             case .fetchAIClassificationCards:
                 let folderId = state.selectedFolderId == Folder.ID.all ? nil : state.selectedFolderId
@@ -120,6 +135,30 @@ public struct AIClassificationCard {
             default:
                 return .none
             }
+        }
+    }
+}
+
+extension AIClassificationCard {
+    private func updateSectionsAndItems(
+        sections: OrderedDictionary<String, Folder>,
+        items: OrderedDictionary<String, [Card]>,
+        updateAPI apiCall: @escaping () async throws -> Void,
+        updateSections: (inout OrderedDictionary<String, Folder>) -> Void,
+        updateItems: (inout OrderedDictionary<String, [Card]>) -> Void
+    ) -> Effect<Action> {
+        var updatedSections = sections
+        var updatedItems = items
+
+        updateSections(&updatedSections)
+        updateItems(&updatedItems)
+
+        return .run { [updatedSections, updatedItems] send in
+            try await apiCall()
+            await send(.sectionsChanged(sections: updatedSections))
+            await send(.itemsChanged(items: updatedItems))
+        } catch: { _, _ in
+            // TODO: error handling
         }
     }
 }
