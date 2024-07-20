@@ -29,7 +29,7 @@ public enum QueryStringParameters {
         switch self {
         case let .dictionary(dict):
             let nilFilteredDictionary = filterNilValues(from: dict)
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: dict)
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: nilFilteredDictionary)
 
         case let .encodable(encodable):
             let nilFilteredDictionary = filterNilValues(from: encodable.asDictionary())
@@ -39,14 +39,7 @@ public enum QueryStringParameters {
     }
 
     // 딕셔너리에서 nil 값을 필터링하는 함수
-    func filterNilValues(from dictionary: [String: Any]?) -> [String: Any] {
-        guard let dictionary else { return [:] }
-        var filteredDictionary = [String: Any]()
-        for (key, value) in dictionary {
-            if !(value is NSNull) {
-                filteredDictionary[key] = value
-            }
-        }
-        return filteredDictionary
+    func filterNilValues(from dictionary: [String: Any?]?) -> [String: Any] {
+        dictionary?.compactMapValues { $0 } ?? [:]
     }
 }
