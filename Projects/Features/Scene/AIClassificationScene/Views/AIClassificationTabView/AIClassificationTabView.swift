@@ -24,7 +24,7 @@ struct AIClassificationTabView: View {
                     ForEach(store.folders.indices, id: \.self) { index in
                         WithPerceptionTracking {
                             LKTopTabView(
-                                folderType: .custom,
+                                folderType: TopFolderType(string: store.folders[index].type.toString) ?? .custom,
                                 isSelected: store.selectedFolderIndex == index,
                                 title: store.folders[index].name,
                                 count: "\(store.folders[index].postCount)"
