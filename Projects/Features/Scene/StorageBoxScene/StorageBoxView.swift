@@ -43,20 +43,20 @@ public struct StorageBoxView: View {
                         StorageBoxSection(
                             storageBoxList: store.defaultFolders,
                             onSelect: { index in
-                                store.send(.storageBoxTapped(section: 0, index: index), animation: .default)
+                                store.send(.storageBoxTapped(section: 0, folderID: index), animation: .default)
                             },
                             onEdit: { index in
-                                store.send(.storageBoxTapped(section: 0, index: index), animation: .default)
+                                store.send(.storageBoxTapped(section: 0, folderID: index), animation: .default)
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icChevronRightM.swiftUIImage
                         )
                         StorageBoxSection(
                             storageBoxList: store.customFolders,
-                            onSelect: { index in
-                                store.send(.storageBoxTapped(section: 1, index: index), animation: .default)
+                            onSelect: { folderID in
+                                store.send(.storageBoxTapped(section: 1, folderID: folderID), animation: .default)
                             },
-                            onEdit: { index in
-                                store.send(.onEdit(index: index), animation: .default)
+                            onEdit: { folderID in
+                                store.send(.onEdit(folderID: folderID), animation: .default)
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage
                         )
@@ -74,7 +74,7 @@ public struct StorageBoxView: View {
 }
 
 extension View {
-    func newFolderPopup(isPresented: Binding<Bool>, list: [StorageBoxModel]?, onComplete: @escaping (String) -> Void) -> some View {
+    func newFolderPopup(isPresented: Binding<Bool>, list: [Folder]?, onComplete: @escaping (String) -> Void) -> some View {
         modifier(NewFolderPopupModifier(isPresented: isPresented, list: list, onComplete: onComplete))
     }
 

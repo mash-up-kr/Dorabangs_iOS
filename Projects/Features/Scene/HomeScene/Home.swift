@@ -260,10 +260,10 @@ private extension Home {
     private func handleFolderList(send: Send<Home.Action>) async throws {
         let folderList = try await folderAPIClient.getFolders()
 
-        if folderList.isEmpty {
+        if folderList.defaultFolders.isEmpty, folderList.customFolders.isEmpty {
             await send(.showErrorToast)
         } else {
-            await send(.setFolderList(folderList))
+            await send(.setFolderList(folderList.defaultFolders + folderList.customFolders))
         }
     }
 

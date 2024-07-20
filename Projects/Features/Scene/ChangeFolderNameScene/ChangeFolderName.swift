@@ -7,19 +7,23 @@
 //
 
 import ComposableArchitecture
+import Models
+import Services
 
 @Reducer
 public struct ChangeFolderName {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(folders: [])
+        public static let initialState = State(folderID: "", folders: [])
 
+        let folderID: String
         var folders: [String]
         var newFolderName: String = ""
         var isTextFieldWarned: Bool = false
         var isSaveButtonDisabled: Bool = true
 
-        public init(folders: [String]) {
+        public init(folderID: String, folders: [String]) {
+            self.folderID = folderID
             self.folders = folders
         }
     }
@@ -28,11 +32,16 @@ public struct ChangeFolderName {
         case backButtonTapped
         case folderNameChanged(String)
         case saveButtonTapped
+
+        case patchFolder(String, String)
+        case patchFolderResult(Result<Folder, Error>)
         case routeToPreviousScreen
-        case routeToStorageBox(String)
+        case routeToStorageBox(Folder)
     }
 
     public init() {}
+
+    @Dependency(\.folderAPIClient) var folderAPIClient
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -52,8 +61,20 @@ public struct ChangeFolderName {
                     state.isSaveButtonDisabled = true
                     return .none
                 } else {
-                    return .send(.routeToStorageBox(state.newFolderName))
+                    return .send(.patchFolder(state.folderID, state.newFolderName))
                 }
+
+            case let .patchFolder(folderID, newName):
+                return .run { send in
+                    await send(.patchFolderResult(Result { try await folderAPIClient.patchFolder(folderID, newName)
+                    }))
+                }
+
+            case let .patchFolderResult(.success(folder)):
+                return .send(.routeToStorageBox(folder))
+
+            case .patchFolderResult(.failure):
+                return .none
 
             default:
                 return .none

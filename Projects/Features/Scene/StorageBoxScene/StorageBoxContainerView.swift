@@ -42,7 +42,7 @@ public struct StorageBoxContainerView<Content: View>: View {
                 removeFolderPopup(onCancel: {
                     store.send(.cancelRemoveFolder, animation: .default)
                 }, onRemove: {
-                    store.send(.removeFolder)
+                    store.send(.tapRemoveFolderButton)
                 })
             })
             .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: true)

@@ -13,7 +13,8 @@ import Models
 
 @DependencyClient
 public struct FolderAPIClient {
-    public var getFolders: @Sendable () async throws -> [Folder]
+    public var getFolder: @Sendable (String) async throws -> Folder
+    public var getFolders: @Sendable () async throws -> FoldersModel
     public var postFolders: @Sendable ([String]) async throws -> Void
     public var getFolderPosts: @Sendable (
         _ folderId: String,
@@ -21,6 +22,8 @@ public struct FolderAPIClient {
         _ limit: Int?,
         _ unread: Bool?
     ) async throws -> [Card]
+    public var deleteFolder: @Sendable (String) async throws -> Void
+    public var patchFolder: @Sendable (String, String) async throws -> Folder
 }
 
 public extension DependencyValues {
@@ -32,13 +35,19 @@ public extension DependencyValues {
 
 extension FolderAPIClient: DependencyKey {
     public static var liveValue: FolderAPIClient = .init(
+        getFolder: { folderId in
+            let api = FolderAPI.getFolder(folderId: folderId)
+            let responseDTO: FolderDTO = try await Provider().request(api)
+            let folder = responseDTO.toDomain
+            return folder
+        },
         getFolders: {
             let api = FolderAPI.getFolders
             let responseDTO: GetFolderResponseDTO = try await Provider().request(api)
             let defaultFolders = responseDTO.defaultFolders.map(\.toDomain)
             let customFolders = responseDTO.customFolders.map(\.toDomain)
-            let folderList = defaultFolders + customFolders
-            return folderList
+            let folderModel = FoldersModel(defaultFolders: defaultFolders, customFolders: customFolders)
+            return folderModel
         },
         postFolders: { folders in
             let api = FolderAPI.postFolders(folders: folders)
@@ -49,6 +58,16 @@ extension FolderAPIClient: DependencyKey {
             let responseDTO: GetFolderPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
             return cardList
+        },
+        deleteFolder: { folderId in
+            let api = FolderAPI.deleteFolder(folderId: folderId)
+            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        patchFolder: { folderId, newName in
+            let api = FolderAPI.patchFolder(folderId: folderId, newName: newName)
+            let responseDTO: FolderDTO = try await Provider().request(api)
+            let patchedFolder = responseDTO.toDomain
+            return patchedFolder
         }
     )
 }
