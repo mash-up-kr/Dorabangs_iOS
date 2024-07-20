@@ -16,7 +16,7 @@ public struct AIClassificationAPIClient {
     public var getFolders: @Sendable () async throws -> (totalCounts: Int, folders: [Folder])
     public var getPosts: @Sendable (_ folderId: String?, _ page: Int) async throws -> [Card]
     public var deletePost: @Sendable (_ postId: String) async throws -> Void
-    public var patchPosts: @Sendable (_ suggestionFolderId: String) async throws -> Void
+    public var patchPosts: @Sendable (_ suggestionFolderId: String, _ postId: String?) async throws -> Void
 }
 
 public extension DependencyValues {
@@ -66,8 +66,8 @@ extension AIClassificationAPIClient: DependencyKey {
             let api = AIClassificationAPI.deletePost(postId: postId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         },
-        patchPosts: { suggestionFolderId in
-            let api = AIClassificationAPI.patchPosts(suggestionFolderId: suggestionFolderId)
+        patchPosts: { suggestionFolderId, postId in
+            let api = AIClassificationAPI.patchPosts(suggestionFolderId: suggestionFolderId, postId: postId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         }
     )
