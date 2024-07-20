@@ -13,7 +13,7 @@ public protocol APIRepresentable: URLRequestConvertible {
     var path: String { get }
     var method: HTTPMethod { get }
     var headers: HTTPHeaders? { get }
-    var queryString: Parameters? { get }
+    var queryString: QueryStringParameters? { get }
     var httpBody: BodyParameters? { get }
 }
 
@@ -23,7 +23,7 @@ public extension APIRepresentable {
         var urlRequest = try URLRequest(url: url, method: method)
         urlRequest = try urlRequest.addHeaders(headers)
         if let queryString {
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: queryString)
+            urlRequest = try queryString.encode(urlRequest)
         }
         if let httpBody {
             urlRequest = try httpBody.encode(urlRequest)
