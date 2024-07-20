@@ -74,26 +74,26 @@ public struct FeedView: View {
                     }
                 }
             }
-        }
-        .navigationBarHidden(true)
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear { store.send(.onAppear) }
-        .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
-            if index == 0 {
-                store.send(.showRemoveFolderPopup, animation: .default)
-            } else {
-                store.send(.tapChangeFolderName)
-            }
-        })
-        .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
-            removeFolderPopup(onCancel: {
-                store.send(.cancelRemoveFolder, animation: .default)
-            }, onRemove: {
-                store.send(.tapRemoveButton)
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear { store.send(.onAppear) }
+            .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
+                if index == 0 {
+                    store.send(.showRemoveFolderPopup, animation: .default)
+                } else {
+                    store.send(.tapChangeFolderName)
+                }
             })
-        })
-        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+            .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+                removeFolderPopup(onCancel: {
+                    store.send(.cancelRemoveFolder, animation: .default)
+                }, onRemove: {
+                    store.send(.tapRemoveButton)
+                })
+            })
+            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+        }
     }
 }
 
