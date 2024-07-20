@@ -11,12 +11,12 @@ import Models
 import SwiftUI
 
 public struct StorageBoxItem: View {
-    let model: StorageBoxModel
+    let model: Folder
     let onMove: () -> Void
     let onEdit: () -> Void
     let moreIcon: Image
 
-    public init(model: StorageBoxModel,
+    public init(model: Folder,
                 onMove: @escaping () -> Void,
                 onEdit: @escaping () -> Void,
                 moreIcon: Image)
@@ -34,7 +34,7 @@ public struct StorageBoxItem: View {
                 .frame(width: 24, height: 24)
                 .padding(.leading, 12)
 
-            Text(model.title)
+            Text(model.name)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                 .onTapGesture {
@@ -43,7 +43,7 @@ public struct StorageBoxItem: View {
 
             Spacer()
 
-            Text("\(model.count)")
+            Text("\(model.postCount)")
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
 

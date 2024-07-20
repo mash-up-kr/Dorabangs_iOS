@@ -11,13 +11,13 @@ import Models
 import SwiftUI
 
 public struct StorageBoxSection: View {
-    let storageBoxList: [StorageBoxModel]
+    let storageBoxList: [Folder]
     let onSelect: (Int) -> Void
     let onEdit: (Int) -> Void
     let moreIcon: Image
 
     public init(
-        storageBoxList: [StorageBoxModel],
+        storageBoxList: [Folder],
         onSelect: @escaping (Int) -> Void,
         onEdit: @escaping (Int) -> Void,
         moreIcon: Image

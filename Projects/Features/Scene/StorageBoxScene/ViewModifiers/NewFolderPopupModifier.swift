@@ -13,10 +13,10 @@ import SwiftUI
 public struct NewFolderPopupModifier: ViewModifier {
     @Binding var isPresented: Bool
     @State var newFolderName: String = ""
-    let duplicatedCheckList: [StorageBoxModel]
+    let duplicatedCheckList: [Folder]
     let onComplete: (String) -> Void
 
-    public init(isPresented: Binding<Bool>, list: [StorageBoxModel]?, onComplete: @escaping (String) -> Void) {
+    public init(isPresented: Binding<Bool>, list: [Folder]?, onComplete: @escaping (String) -> Void) {
         _isPresented = isPresented
         duplicatedCheckList = list ?? []
         self.onComplete = onComplete
@@ -47,6 +47,6 @@ public struct NewFolderPopupModifier: ViewModifier {
     }
 
     private func isDuplicatedNameCheck() -> Bool {
-        duplicatedCheckList.contains(where: { $0.title.lowercased() == newFolderName.lowercased() })
+        duplicatedCheckList.contains(where: { $0.name.lowercased() == newFolderName.lowercased() })
     }
 }

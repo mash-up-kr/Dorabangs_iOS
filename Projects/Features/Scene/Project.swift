@@ -35,6 +35,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.storageBox",
             sources: ["StorageBoxScene/**"],
             dependencies: [
+                .core(.service),
                 .spm(.composableArchitecture),
                 .designSystem,
                 .core(.model)
@@ -46,6 +47,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.feed",
             sources: ["FeedScene/**"],
             dependencies: [
+                .core(.service),
                 .spm(.composableArchitecture),
                 .designSystem,
                 .core(.model)
@@ -111,6 +113,8 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.changeFolderName",
             sources: ["ChangeFolderNameScene/**"],
             dependencies: [
+                .core(.service),
+                .core(.model),
                 .spm(.composableArchitecture),
                 .designSystem
             ]

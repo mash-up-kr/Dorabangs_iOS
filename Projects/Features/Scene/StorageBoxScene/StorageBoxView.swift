@@ -74,7 +74,7 @@ public struct StorageBoxView: View {
 }
 
 extension View {
-    func newFolderPopup(isPresented: Binding<Bool>, list: [StorageBoxModel]?, onComplete: @escaping (String) -> Void) -> some View {
+    func newFolderPopup(isPresented: Binding<Bool>, list: [Folder]?, onComplete: @escaping (String) -> Void) -> some View {
         modifier(NewFolderPopupModifier(isPresented: isPresented, list: list, onComplete: onComplete))
     }
 

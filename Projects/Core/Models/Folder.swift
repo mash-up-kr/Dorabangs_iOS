@@ -22,7 +22,7 @@ public struct FoldersModel: Hashable {
 
 public struct Folder: Hashable {
     public let id: String
-    public let name: String
+    public var name: String
     public let type: FolderType
     public var postCount: Int
 
