@@ -41,7 +41,7 @@ public struct AIClassificationCard {
         case appendAIClassificationCards(cards: [Card])
         case sectionsChanged(sections: OrderedDictionary<String, Folder>)
         case itemsChanged(items: OrderedDictionary<String, [Card]>)
-
+      
         case routeToHomeScreen
         case routeToFeedScreen(Folder)
     }
@@ -91,7 +91,6 @@ public struct AIClassificationCard {
                 return .run { send in
                     let posts = try await aiClassificationAPIClient.getPosts(folderId, 1)
                     await send(.appendAIClassificationCards(cards: posts))
-                }
 
             case let .fetchNextPageIfPossible(item):
                 guard let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }
