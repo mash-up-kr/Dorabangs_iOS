@@ -20,8 +20,9 @@ public struct FolderAPIClient {
         _ folderId: String,
         _ page: Int?,
         _ limit: Int?,
+        _ order: String?,
         _ unread: Bool?
-    ) async throws -> [Card]
+    ) async throws -> CardListModel
     public var deleteFolder: @Sendable (String) async throws -> Void
     public var patchFolder: @Sendable (String, String) async throws -> Folder
 }
@@ -53,11 +54,11 @@ extension FolderAPIClient: DependencyKey {
             let api = FolderAPI.postFolders(folders: folders)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         },
-        getFolderPosts: { folderId, page, limit, unread in
-            let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, unread: unread)
+        getFolderPosts: { folderId, page, limit, order, unread in
+            let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, order: order, unread: unread)
             let responseDTO: GetFolderPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
-            return cardList
+            return CardListModel(hasNext: responseDTO.hasNext, total: responseDTO.total, cards: cardList)
         },
         deleteFolder: { folderId in
             let api = FolderAPI.deleteFolder(folderId: folderId)

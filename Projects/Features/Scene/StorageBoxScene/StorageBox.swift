@@ -54,7 +54,7 @@ public struct StorageBox {
         case changedFolderName(Folder)
 
         // MARK: Navigation Action
-        case routeToFeed(title: String)
+        case routeToFeed(Folder)
         case routeToChangeFolderName(String, [String])
 
         case binding(BindingAction<State>)
@@ -84,8 +84,8 @@ public struct StorageBox {
                 return .none
             case let .storageBoxTapped(section, folderID):
                 // TODO: - 여기 타이틀 안가지고 가도됨, id만 넘기기
-                if let title = (section == 0) ? (state.defaultFolders.first(where: { $0.id == folderID })?.name) : (state.customFolders.first(where: { $0.id == folderID })?.name) {
-                    return .send(.routeToFeed(title: title))
+                if let folder = (section == 0) ? (state.defaultFolders.first(where: { $0.id == folderID })) : (state.customFolders.first(where: { $0.id == folderID })) {
+                    return .send(.routeToFeed(folder))
                 }
                 return .none
             case let .onEdit(folderID):

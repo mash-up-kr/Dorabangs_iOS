@@ -268,14 +268,15 @@ private extension Home {
     }
 
     private func handleCardList(send: Send<Home.Action>, folderId: String) async throws {
-        let cardList = try await folderAPIClient.getFolderPosts(
+        let cardListModel = try await folderAPIClient.getFolderPosts(
             folderId,
+            nil,
             nil,
             nil,
             nil
         )
 
-        await send(.setCardList(cardList))
+        await send(.setCardList(cardListModel.cards))
     }
 
     private func fetchAllCardList(send: Send<Home.Action>) async throws {

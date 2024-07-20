@@ -21,7 +21,7 @@ public struct FeedView: View {
         WithPerceptionTracking {
             VStack {
                 LKTextMiddleTopBar(
-                    title: store.title,
+                    title: store.currentFolder.name,
                     backButtonAction: { store.send(.backButtonTapped) },
                     rightButtomImage: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage,
                     rightButtonEnabled: true,
@@ -32,7 +32,7 @@ public struct FeedView: View {
 
                 ScrollView {
                     LazyVStack(pinnedViews: .sectionHeaders) {
-                        FeedHeaderView(folderName: store.title, linkCount: store.cards.count)
+                        FeedHeaderView(folderName: store.currentFolder.name, linkCount: store.currentFolder.postCount)
 
                         Section {
                             LazyVStack(spacing: 0) {
@@ -57,11 +57,6 @@ public struct FeedView: View {
                                         bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                                         showModalAction: { store.send(.showModalButtonTapped(index)) }
                                     )
-                                    .onAppear {
-                                        if index % 9 == 0 {
-                                            store.send(.fetchData)
-                                        }
-                                    }
                                 }
                             }
                         } header: {
@@ -79,26 +74,26 @@ public struct FeedView: View {
                     }
                 }
             }
-        }
-        .navigationBarHidden(true)
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear { store.send(.onAppear) }
-        .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
-            if index == 0 {
-                store.send(.showRemoveFolderPopup, animation: .default)
-            } else {
-                store.send(.tapChangeFolderName)
-            }
-        })
-        .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
-            removeFolderPopup(onCancel: {
-                store.send(.cancelRemoveFolder, animation: .default)
-            }, onRemove: {
-                store.send(.tapRemoveButton)
+            .navigationBarHidden(true)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear { store.send(.onAppear) }
+            .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
+                if index == 0 {
+                    store.send(.showRemoveFolderPopup, animation: .default)
+                } else {
+                    store.send(.tapChangeFolderName)
+                }
             })
-        })
-        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+            .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+                removeFolderPopup(onCancel: {
+                    store.send(.cancelRemoveFolder, animation: .default)
+                }, onRemove: {
+                    store.send(.tapRemoveButton)
+                })
+            })
+            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+        }
     }
 }
 

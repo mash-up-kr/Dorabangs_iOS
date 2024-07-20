@@ -40,8 +40,8 @@ public struct StorageBoxCoordinator {
         Reduce { state, action in
             switch action {
             case .router(.routeAction(id: _,
-                                      action: .storageBox(.routeToFeed(let title)))):
-                state.routes.push(.feed(.init(routes: [.root(.feed(.init(title: title)), embedInNavigationView: true)])))
+                                      action: .storageBox(.routeToFeed(let folder)))):
+                state.routes.push(.feed(.init(routes: [.root(.feed(.init(currentFolder: folder)), embedInNavigationView: true)])))
                 return .none
             case .router(.routeAction(id: _, action: .storageBox(.routeToChangeFolderName(let folderID, let folderNames)))):
                 state.routes.push(.changeFolderName(.init(folderID: folderID, folders: folderNames)))
