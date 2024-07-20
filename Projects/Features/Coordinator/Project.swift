@@ -35,8 +35,8 @@ let project = Project.make(
             sources: ["HomeCoordinator/**"],
             dependencies: [
                 .scene(.home),
-                .scene(.aiClassification),
                 .scene(.createNewFolder),
+                .coordinator(.aiClassification),
                 .coordinator(.saveURL),
                 .spm(.tcaCoordinators)
             ]
@@ -74,6 +74,17 @@ let project = Project.make(
                 .scene(.saveURL),
                 .scene(.selectFolder),
                 .scene(.createNewFolder),
+                .spm(.tcaCoordinators)
+            ]
+        ),
+        .make(
+            name: "AIClassificationCoordinator",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.aiClassificationCoordinator",
+            sources: ["AIClassificationCoordinator/**"],
+            dependencies: [
+                .scene(.aiClassification),
+                .coordinator(.feed),
                 .spm(.tcaCoordinators)
             ]
         )

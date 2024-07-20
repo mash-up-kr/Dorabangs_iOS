@@ -6,7 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
-import AIClassification
+import AIClassificationCoordinator
 import ComposableArchitecture
 import CreateNewFolder
 import Foundation
@@ -19,7 +19,7 @@ public enum HomeScreen {
     case home(Home)
     case saveURLCoordinator(SaveURLCoordinator)
     case createNewFolder(CreateNewFolder)
-    case aiClassification(AIClassification)
+    case aiClassificationCoordinator(AIClassificationCoordinator)
 }
 
 @Reducer
@@ -57,8 +57,8 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .createNewFolder(action))):
                 return handleCreateNewFolderAction(into: &state, action: action)
 
-            case let .router(.routeAction(id: _, action: .aiClassification(action))):
-                return handleAIClassificationAction(into: &state, action: action)
+            case let .router(.routeAction(id: _, action: .aiClassificationCoordinator(action))):
+                return handleAIClassificationCoordinatorAction(into: &state, action: action)
 
             case let .deeplink(.saveURL(saveURL)):
                 state.routes = [
@@ -93,7 +93,7 @@ public extension HomeCoordinator {
             return .none
 
         case .routeToAIClassificationScreen:
-            state.routes.push(.aiClassification(.initialState))
+            state.routes.push(.aiClassificationCoordinator(.initialState))
             return .none
 
         default:
@@ -130,9 +130,9 @@ public extension HomeCoordinator {
         }
     }
 
-    func handleAIClassificationAction(into state: inout State, action: AIClassification.Action) -> Effect<Action> {
+    func handleAIClassificationCoordinatorAction(into state: inout State, action: AIClassificationCoordinator.Action) -> Effect<Action> {
         switch action {
-        case .routeToHomeScreen:
+        case .routeToPreviousScreen:
             state.routes.goBack()
             return .none
 

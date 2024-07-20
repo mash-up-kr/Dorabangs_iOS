@@ -22,6 +22,7 @@ public enum Coordinator: String {
 	case storageBox = "StorageBoxCoordinator"
   case feed = "FeedCoordinator"
 	case saveURL = "SaveURLCoordinator"
+	case aiClassification = "AIClassificationCoordinator"
 }
 
 public enum Scene: String {

@@ -29,7 +29,7 @@ public struct AIClassification {
         case cardsChanged(AIClassificationCard.State)
 
         case routeToHomeScreen
-        case routeToFeedScreen(feedID: String)
+        case routeToFeedScreen(folder: Folder)
 
         case tabs(AIClassificationTab.Action)
         case cards(AIClassificationCard.Action)
@@ -71,6 +71,12 @@ public struct AIClassification {
             case let .cards(.sectionsChanged(sections)):
                 let folders = sections.values.elements
                 return .send(.tabs(.foldersChanged(folders: folders)))
+
+            case .cards(.routeToHomeScreen):
+                return .send(.routeToHomeScreen)
+
+            case let .cards(.routeToFeedScreen(folder)):
+                return .send(.routeToFeedScreen(folder: folder))
 
             default:
                 return .none
