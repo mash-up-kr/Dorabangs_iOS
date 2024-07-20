@@ -74,6 +74,7 @@ public struct Home {
 
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
+        case routeToAIClassificationScreen
     }
 
     public init() {}
@@ -213,6 +214,9 @@ public struct Home {
                 return .none
 
             case let .bannerButtonTapped(bannerType):
+                if bannerType == .ai {
+                    return .send(.routeToAIClassificationScreen)
+                }
                 // TODO: 배너 버튼 클릭 시 동작 구현
                 print("Banner Type \(bannerType) 탭 됐어요~")
                 return .none

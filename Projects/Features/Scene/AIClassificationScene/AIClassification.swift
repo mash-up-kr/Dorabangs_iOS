@@ -45,10 +45,10 @@ public struct AIClassification {
             case .onAppear:
                 return .run { send in
                     let (totalCounts, customFolders) = try await aiClassificationAPIClient.getFolders()
-                    let allFolder = Folder(id: "", name: "전체", type: .all, postCount: totalCounts)
+                    let allFolder = Folder(id: Folder.ID.all, name: "전체", type: .all, postCount: totalCounts)
                     let folders = [allFolder] + customFolders
-                    await send(.tabsChanged(.init(folders: folders, selectedFolder: allFolder)))
-                    await send(.cardsChanged(.init(folders: folders, selectedFolder: allFolder)))
+                    await send(.tabsChanged(.init(folders: folders, selectedFolderIndex: 0)))
+                    await send(.cardsChanged(.init(folders: folders, selectedFolderId: allFolder.id)))
                 }
 
             case .backButtonTapped:
@@ -61,11 +61,16 @@ public struct AIClassification {
             case let .cardsChanged(cards):
                 state.cards = cards
                 return .none
-
-            case let .tabs(.selectedFolderChanged(selectedFolder)):
+              
+            case let .tabs(.selectedFolderIndexChanged(selectedFolderIndex)):
                 guard let folders = state.tabs?.folders else { return .none }
-                state.cards = AIClassificationCard.State(folders: folders, selectedFolder: selectedFolder)
+                let selectedFolderId = folders[selectedFolderIndex].id
+                state.cards = AIClassificationCard.State(folders: folders, selectedFolderId: selectedFolderId)
                 return .send(.cards(.fetchAIClassificationCards))
+
+            case let .cards(.sectionsChanged(sections)):
+                let folders = sections.values.elements
+                return .send(.tabs(.foldersChanged(folders: folders)))
 
             default:
                 return .none

@@ -152,8 +152,8 @@ public struct LKClassificationCard: View {
                 .foregroundStyle(DesignSystemKitAsset.Colors.gradient5)
                 .padding(.vertical, 7)
                 .frame(maxWidth: .infinity)
+                .background(DesignSystemKitAsset.Colors.gradient1)
+                .cornerRadius(99, corners: .allCorners)
         }
-        .background(DesignSystemKitAsset.Colors.gradient1)
-        .cornerRadius(99, corners: .allCorners)
     }
 }
