@@ -120,12 +120,12 @@ public struct LKCard: View {
 
                 HStack(spacing: 12) {
                     Button(action: bookMarkAction) {
-                        Image(.icBookmark)
+                        Image(.icBookmarkDefault)
                             .frame(width: 24, height: 24)
                     }
 
                     Button(action: showModalAction) {
-                        Image(.icMore)
+                        Image(.icMoreGray)
                             .frame(width: 24, height: 24)
                     }
                 }

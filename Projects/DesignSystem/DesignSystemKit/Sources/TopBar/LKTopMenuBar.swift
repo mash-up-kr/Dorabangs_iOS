@@ -24,7 +24,7 @@ public struct LKTopMenuBar: View {
             Spacer()
 
             Button(action: action) {
-                Image(.icLink)
+                Image(.icAddLink)
             }
             .frame(width: 24, height: 24)
         }

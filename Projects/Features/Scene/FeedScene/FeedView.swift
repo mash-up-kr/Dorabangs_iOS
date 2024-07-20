@@ -23,7 +23,7 @@ public struct FeedView: View {
                 LKTextMiddleTopBar(
                     title: store.title,
                     backButtonAction: { store.send(.backButtonTapped) },
-                    rightButtomImage: DesignSystemKitAsset.Icons.icMore.swiftUIImage,
+                    rightButtomImage: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage,
                     rightButtonEnabled: true,
                     action: {
                         store.send(.tapMore, animation: .default)

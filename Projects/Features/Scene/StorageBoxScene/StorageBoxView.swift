@@ -58,7 +58,7 @@ public struct StorageBoxView: View {
                             onEdit: { index in
                                 store.send(.onEdit(index: index), animation: .default)
                             },
-                            moreIcon: DesignSystemKitAsset.Icons.icMore.swiftUIImage
+                            moreIcon: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage
                         )
                     }
                 }
