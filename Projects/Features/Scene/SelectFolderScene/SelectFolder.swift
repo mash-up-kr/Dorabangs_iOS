@@ -41,7 +41,7 @@ public struct SelectFolder {
 
         // MARK: Inner Business
         case fetchFolders
-        case fetchFoldersResult(Result<[Folder], Error>)
+        case fetchFoldersResult(Result<FoldersModel, Error>)
         case fetchURLMetadata
         case fetchURLMetadataResult(Result<URLMetadata, Error>)
 
@@ -89,8 +89,8 @@ public struct SelectFolder {
                     await send(.fetchFoldersResult(Result { try await folderAPIClient.getFolders() }))
                 }
 
-            case let .fetchFoldersResult(.success(folders)):
-                state.folders = folders.filter { !$0.id.isEmpty }
+            case let .fetchFoldersResult(.success(foldersModel)):
+                state.folders = foldersModel.defaultFolders.filter { !$0.id.isEmpty } + foldersModel.customFolders.filter { !$0.id.isEmpty }
                 return .none
 
             case .fetchFoldersResult(.failure):

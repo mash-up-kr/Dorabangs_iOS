@@ -8,6 +8,18 @@
 
 import Foundation
 
+public struct FoldersModel: Hashable {
+    public var defaultFolders: [Folder]
+    public var customFolders: [Folder]
+
+    public init(defaultFolders: [Folder],
+                customFolders: [Folder])
+    {
+        self.defaultFolders = defaultFolders
+        self.customFolders = customFolders
+    }
+}
+
 public struct Folder: Hashable {
     public let id: String
     public let name: String
