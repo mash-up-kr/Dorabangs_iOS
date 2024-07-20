@@ -22,6 +22,7 @@ public struct FolderAPIClient {
         _ unread: Bool?
     ) async throws -> [Card]
     public var deleteFolder: @Sendable (String) async throws -> Void
+    public var patchFolder: @Sendable (String, String) async throws -> Folder
 }
 
 public extension DependencyValues {
@@ -54,6 +55,12 @@ extension FolderAPIClient: DependencyKey {
         deleteFolder: { folderId in
             let api = FolderAPI.deleteFolder(folderId: folderId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        patchFolder: { folderId, newName in
+            let api = FolderAPI.patchFolder(folderId: folderId, newName: newName)
+            let responseDTO: FolderDTO = try await Provider().request(api)
+            let patchedFolder = responseDTO.toDomain
+            return patchedFolder
         }
     )
 }
