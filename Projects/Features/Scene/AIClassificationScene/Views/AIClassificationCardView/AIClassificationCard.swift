@@ -56,6 +56,21 @@ public struct AIClassificationCard {
             case .onAppear:
                 return .send(.fetchAIClassificationCards)
 
+            case let .moveToAllItemsToFolderButtonTapped(section):
+                var updatedSections = state.sections
+                updatedSections[section.id]?.postCount = 0
+                updatedSections[Folder.ID.all]?.postCount = 0
+                var updatedItems = state.items
+                updatedItems[section.id] = []
+                updatedItems.removeAll { $0.value.isEmpty }
+                return .run { [updatedSections, updatedItems] send in
+                    try await aiClassificationAPIClient.patchPosts(suggestionFolderId: section.id)
+                    await send(.sectionsChanged(sections: updatedSections))
+                    await send(.itemsChanged(items: updatedItems))
+                } catch: { _, _ in
+                    // TODO: error handling
+                }
+
             case let .deleteButtonTapped(section, item):
                 var updatedSections = state.sections
                 updatedSections[section.id]?.postCount -= 1

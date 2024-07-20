@@ -13,6 +13,7 @@ enum AIClassificationAPI: APIRepresentable {
     case getFolders
     case getPosts(folderId: String?, page: Int)
     case deletePost(postId: String)
+    case patchPosts(suggestionFolderId: String)
 }
 
 extension AIClassificationAPI {
@@ -28,6 +29,8 @@ extension AIClassificationAPI {
             }
         case let .deletePost(postId):
             "/classification/posts/\(postId)"
+        case .patchPosts:
+            "/classification/posts"
         }
     }
 
@@ -35,6 +38,7 @@ extension AIClassificationAPI {
         switch self {
         case .getFolders, .getPosts: .get
         case .deletePost: .delete
+        case .patchPosts: .patch
         }
     }
 
@@ -45,6 +49,7 @@ extension AIClassificationAPI {
         case .getFolders: .none
         case let .getPosts(_, page): ["page": page]
         case .deletePost: .none
+        case let .patchPosts(suggestionFolderId): ["suggestionFolderId": suggestionFolderId]
         }
     }
 
