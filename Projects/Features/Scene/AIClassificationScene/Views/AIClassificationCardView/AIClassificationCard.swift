@@ -15,10 +15,14 @@ import Services
 public struct AIClassificationCard {
     @ObservableState
     public struct State: Equatable {
+        /// 폴더 ID와 폴더를 매핑하는 딕셔너리
         fileprivate(set) var sections: OrderedDictionary<String, Folder>
+        /// 현재 선택된 폴더의 ID
         fileprivate(set) var selectedFolderId: String
+        /// 현재 스크롤 페이지 번호
         fileprivate(set) var scrollPage: Int
-        fileprivate(set) var items: OrderedDictionary<String, [Card]> // key: folderId, value: cards
+        /// 폴더 ID와 카드 목록을 매핑하는 딕셔너리
+        fileprivate(set) var items: OrderedDictionary<String, [Card]>
 
         public init(folders: [Folder], selectedFolderId: String) {
             sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
@@ -29,20 +33,32 @@ public struct AIClassificationCard {
     }
 
     public enum Action {
-        // MARK: View Action
+        // MARK: View Actions
+        /// 뷰가 나타날 때 발생합니다.
         case onAppear
+        /// 특정 섹션에 포함된 모든 분류 카드를 추천된 폴더로 이동시키는 버튼이 눌릴 때 발생합니다.
         case moveToAllItemsToFolderButtonTapped(section: Folder)
+        /// 특저 섹션에 포함된 분류 카드에 대해 삭제 버튼이 눌릴 때 발생합니다.
         case deleteButtonTapped(section: Folder, item: Card)
+        /// 특정 섹션에 포함된 분류 카드를 추천된 폴더로 이동시키는 버튼이 눌릴 때 발생합니다.
         case moveToFolderButtonTapped(section: Folder, item: Card)
 
-        // MARK: Inner Business
+        // MARK: Inner Business Actions
+        /// AI 분류 카드를 가져옵니다.
         case fetchAIClassificationCards
+        /// 가능하면 다음 페이지의 카드를 가져옵니다.
         case fetchNextPageIfPossible(item: Card)
+        /// 현재 항목에 AI 분류 카드 목록을 추가합니다.
         case appendAIClassificationCards(cards: [Card])
+        /// 섹션이 변경되었을 때 발생합니다.
         case sectionsChanged(sections: OrderedDictionary<String, Folder>)
+        /// 항목이 변경되었을 때 발생합니다.
         case itemsChanged(items: OrderedDictionary<String, [Card]>)
 
+        // MARK: Navigation Actions
+        /// 홈 화면으로 이동합니다.
         case routeToHomeScreen
+        /// 특정 폴더의 피드 화면으로 이동합니다.
         case routeToFeedScreen(Folder)
     }
 
