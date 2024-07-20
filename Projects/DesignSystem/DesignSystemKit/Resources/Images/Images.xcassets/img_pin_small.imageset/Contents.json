@@ -5,12 +5,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "ic_tab_all@2x.png",
+      "filename" : "img_pin_small@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic_tab_all@3x.png",
+      "filename" : "img_pin_small@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
