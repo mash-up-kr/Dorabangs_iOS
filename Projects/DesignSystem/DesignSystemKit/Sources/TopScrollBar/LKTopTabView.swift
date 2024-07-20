@@ -29,13 +29,13 @@ public struct LKTopTabView: View {
     public var body: some View {
         HStack(spacing: 2) {
             if folderType == .all {
-                DesignSystemKitAsset.Icons.icTabAll.swiftUIImage
+                DesignSystemKitAsset.Images.imgAllSmall.swiftUIImage
                     .frame(width: 24, height: 24)
             } else if folderType == .default {
-                DesignSystemKitAsset.Icons.icTabPin.swiftUIImage
+                DesignSystemKitAsset.Images.imgPinSmall.swiftUIImage
                     .frame(width: 24, height: 24)
             } else if folderType == .favorite {
-                DesignSystemKitAsset.Icons.icTabFavorite.swiftUIImage
+                DesignSystemKitAsset.Images.imgBookmarkSmall.swiftUIImage
                     .frame(width: 24, height: 24)
             }
 

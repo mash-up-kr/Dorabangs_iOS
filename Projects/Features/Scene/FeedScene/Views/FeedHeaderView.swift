@@ -21,8 +21,7 @@ public struct FeedHeaderView: View {
 
     public var body: some View {
         HStack(alignment: .center) {
-            DesignSystemKitAsset.Icons.imgAll
-                .swiftUIImage
+            DesignSystemKitAsset.Images.imgAllBig.swiftUIImage
                 .frame(width: 52, height: 52)
                 .scaledToFill()
                 .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
