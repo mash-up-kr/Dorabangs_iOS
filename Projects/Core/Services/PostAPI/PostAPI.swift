@@ -10,12 +10,23 @@ import Alamofire
 import Foundation
 
 enum PostAPI: APIRepresentable {
+    /// 전체 피드 조회
     case getPosts
+    /// URL 링크 저장
     case postCard(folderId: String, urlString: String)
+    /// Post 상태 변경 (좋아요 / 읽음)
+    case patchPost(postId: String, isFavorite: Bool? = nil, read: Bool? = nil)
 }
 
 extension PostAPI {
-    var path: String { "/posts" }
+    var path: String {
+        switch self {
+        case .getPosts, .postCard:
+            "/posts"
+        case let .patchPost(postId, _, _):
+            "/posts/\(postId)"
+        }
+    }
 
     var method: HTTPMethod {
         switch self {
@@ -23,6 +34,8 @@ extension PostAPI {
             .get
         case .postCard:
             .post
+        case .patchPost:
+            .patch
         }
     }
 
@@ -34,9 +47,16 @@ extension PostAPI {
         switch self {
         case .getPosts:
             .none
-
         case let .postCard(folderId, urlString):
             .dictionary(["folderId": folderId, "url": urlString])
+        case let .patchPost(_, isFavorite, read):
+            if let isFavorite {
+                .dictionary(["isFavorite": isFavorite])
+            } else if let read {
+                .dictionary(["readAt": read])
+            } else {
+                .none
+            }
         }
     }
 }

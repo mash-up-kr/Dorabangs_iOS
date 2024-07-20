@@ -20,6 +20,10 @@ public struct PostAPIClient {
         _ favorite: Bool?
     ) async throws -> [Card]
     public var postPosts: (_ folderId: String, _ url: URL) async throws -> Void
+    /// Post 북마크 여부
+    public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Void
+    /// Post 읽음 처리
+    public var readPost: @Sendable (_ postId: String) async throws -> Void
 }
 
 public extension DependencyValues {
@@ -39,6 +43,14 @@ extension PostAPIClient: DependencyKey {
         },
         postPosts: { folderId, url in
             let api = PostAPI.postCard(folderId: folderId, urlString: url.absoluteString)
+            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        isFavoritePost: { postId, isFavorite in
+            let api = PostAPI.patchPost(postId: postId, isFavorite: isFavorite)
+            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        readPost: { postId in
+            let api = PostAPI.patchPost(postId: postId, read: true)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         }
     )
