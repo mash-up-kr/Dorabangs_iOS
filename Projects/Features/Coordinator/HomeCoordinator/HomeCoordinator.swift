@@ -57,6 +57,9 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .createNewFolder(action))):
                 return handleCreateNewFolderAction(into: &state, action: action)
 
+            case let .router(.routeAction(id: _, action: .aiClassification(action))):
+                return handleAIClassificationAction(into: &state, action: action)
+
             case let .deeplink(.saveURL(saveURL)):
                 state.routes = [
                     .root(.home(.initialState), embedInNavigationView: true),
@@ -89,6 +92,10 @@ public extension HomeCoordinator {
             state.routes.push(.createNewFolder(.init(folders: folders)))
             return .none
 
+        case .routeToAIClassificationScreen:
+            state.routes.push(.aiClassification(.initialState))
+            return .none
+
         default:
             return .none
         }
@@ -117,6 +124,17 @@ public extension HomeCoordinator {
             state.routes.goBack()
             let action = HomeScreen.Action.home(.overlayComponent(.presentToast(toastMessage: "\(folderName)(으)로 이동했어요.")))
             return .send(.router(.routeAction(id: 0, action: action)))
+
+        default:
+            return .none
+        }
+    }
+
+    func handleAIClassificationAction(into state: inout State, action: AIClassification.Action) -> Effect<Action> {
+        switch action {
+        case .routeToHomeScreen:
+            state.routes.goBack()
+            return .none
 
         default:
             return .none
