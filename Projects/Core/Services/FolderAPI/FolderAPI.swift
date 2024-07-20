@@ -10,6 +10,9 @@ import Alamofire
 import Foundation
 
 enum FolderAPI: APIRepresentable {
+    /// 단일 폴더 조회
+    case getFolder(folderId: String)
+    /// 폴더 리스트 조회
     case getFolders
     case postFolders(folders: [String])
     case getFolderPosts(folderId: String, page: Int?, limit: Int?, unread: Bool?)
@@ -20,6 +23,8 @@ enum FolderAPI: APIRepresentable {
 extension FolderAPI {
     var path: String {
         switch self {
+        case let .getFolder(folderId):
+            "/folders/\(folderId)"
         case .getFolders, .postFolders:
             "/folders"
         case let .getFolderPosts(folderId, page, limit, unread):
@@ -31,7 +36,7 @@ extension FolderAPI {
 
     var method: HTTPMethod {
         switch self {
-        case .getFolders, .getFolderPosts:
+        case .getFolder, .getFolders, .getFolderPosts:
             .get
         case .postFolders:
             .post
@@ -48,7 +53,7 @@ extension FolderAPI {
 
     var httpBody: BodyParameters? {
         switch self {
-        case .getFolders, .getFolderPosts, .deleteFolder:
+        case .getFolder, .getFolders, .getFolderPosts, .deleteFolder:
             .none
         case let .postFolders(folders):
             .dictionary(["names": folders])

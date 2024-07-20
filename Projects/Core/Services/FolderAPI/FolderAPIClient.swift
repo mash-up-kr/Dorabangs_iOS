@@ -13,6 +13,7 @@ import Models
 
 @DependencyClient
 public struct FolderAPIClient {
+    public var getFolder: @Sendable (String) async throws -> Folder
     public var getFolders: @Sendable () async throws -> FoldersModel
     public var postFolders: @Sendable ([String]) async throws -> Void
     public var getFolderPosts: @Sendable (
@@ -34,6 +35,12 @@ public extension DependencyValues {
 
 extension FolderAPIClient: DependencyKey {
     public static var liveValue: FolderAPIClient = .init(
+        getFolder: { folderId in
+            let api = FolderAPI.getFolder(folderId: folderId)
+            let responseDTO: FolderDTO = try await Provider().request(api)
+            let folder = responseDTO.toDomain
+            return folder
+        },
         getFolders: {
             let api = FolderAPI.getFolders
             let responseDTO: GetFolderResponseDTO = try await Provider().request(api)
