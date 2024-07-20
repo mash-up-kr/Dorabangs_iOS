@@ -16,6 +16,8 @@ enum PostAPI: APIRepresentable {
     case postCard(folderId: String, urlString: String)
     /// Post 상태 변경 (좋아요 / 읽음)
     case patchPost(postId: String, isFavorite: Bool? = nil, read: Bool? = nil)
+    /// URL 삭제
+    case deletePost(postId: String)
 }
 
 extension PostAPI {
@@ -23,7 +25,8 @@ extension PostAPI {
         switch self {
         case .getPosts, .postCard:
             "/posts"
-        case let .patchPost(postId, _, _):
+        case let .patchPost(postId, _, _),
+            let .deletePost(postId):
             "/posts/\(postId)"
         }
     }
@@ -36,6 +39,8 @@ extension PostAPI {
             .post
         case .patchPost:
             .patch
+        case .deletePost:
+            .delete
         }
     }
 
@@ -45,7 +50,7 @@ extension PostAPI {
 
     var httpBody: BodyParameters? {
         switch self {
-        case .getPosts:
+        case .getPosts, .deletePost(_):
             .none
         case let .postCard(folderId, urlString):
             .dictionary(["folderId": folderId, "url": urlString])

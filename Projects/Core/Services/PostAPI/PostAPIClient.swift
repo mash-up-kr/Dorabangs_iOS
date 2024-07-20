@@ -24,6 +24,8 @@ public struct PostAPIClient {
     public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Void
     /// Post 읽음 처리
     public var readPost: @Sendable (_ postId: String) async throws -> Void
+    /// Post 삭제
+    public var deletePost: @Sendable (_ postId: String) async throws -> Void
 }
 
 public extension DependencyValues {
@@ -51,6 +53,10 @@ extension PostAPIClient: DependencyKey {
         },
         readPost: { postId in
             let api = PostAPI.patchPost(postId: postId, read: true)
+            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        deletePost: { postId in
+            let api = PostAPI.deletePost(postId: postId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         }
     )
