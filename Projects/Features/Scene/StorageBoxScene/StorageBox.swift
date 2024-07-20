@@ -29,8 +29,8 @@ public struct StorageBox {
         public var removeFolderPopupIsPresented: Bool = false
         /// toast 메시지 present 여부
         public var toastPopupIsPresented: Bool = false
-        /// 현재 편집 중인 Folder Index
-        public var editingIndex: Int?
+        /// 현재 편집 중인 Folder ID
+        public var editingID: String?
 
         public init() {}
     }
@@ -38,11 +38,12 @@ public struct StorageBox {
     public enum Action: BindableAction {
         // MARK: View Action
         case onAppear
-        case storageBoxTapped(section: Int, index: Int)
-        case onEdit(index: Int)
+        case storageBoxTapped(section: Int, folderID: String)
+        case onEdit(folderID: String)
         case tapNewFolderButton
         case cancelRemoveFolder
         case showRemoveFolderPopup
+        case tapRemoveFolderButton
         case tapChangeFolderName
 
         // MARK: Inner Business
@@ -81,12 +82,14 @@ public struct StorageBox {
                 return .none
             case .fetchFoldersResult(.failure):
                 return .none
-            case let .storageBoxTapped(section, index):
-                let title = (section == 0) ? (state.defaultFolders[index].name) : (state.customFolders[index].name)
-                return .send(.routeToFeed(title: title))
-            case let .onEdit(index):
-                print("onEdit index : \(index)")
-                state.editingIndex = index
+            case let .storageBoxTapped(section, folderID):
+                // TODO: - 여기 타이틀 안가지고 가도됨, id만 넘기기
+                if let title = (section == 0) ? (state.defaultFolders.first(where: { $0.id == folderID })?.name) : (state.customFolders.first(where: { $0.id == folderID })?.name) {
+                    return .send(.routeToFeed(title: title))
+                }
+                return .none
+            case let .onEdit(folderID):
+                state.editingID = folderID
                 state.editFolderPopupIsPresented = true
                 return .none
             case .routeToFeed:
@@ -100,11 +103,22 @@ public struct StorageBox {
                     try await folderAPIClient.postFolders(folderName)
                     await send(.fetchFolders)
                 }
-            case .removeFolder:
-                if let editingIndex = state.editingIndex {
-                    state.customFolders.remove(at: editingIndex)
+            case .tapRemoveFolderButton:
+                if let editingID = state.editingID {
+                    return .run { send in
+                        try await folderAPIClient.deleteFolder(editingID)
+                        await send(.removeFolder)
+                    } catch: { _, _ in
+                        // TODO: Handle error
+                    }
                 }
-                state.editingIndex = nil
+                return .none
+            case .removeFolder:
+                if let editingID = state.editingID {
+                    // 패치 타지 말고 이것만 지우자~
+                    state.customFolders.removeAll(where: { $0.id == editingID })
+                }
+                state.editingID = nil
                 state.editFolderPopupIsPresented = false
                 state.removeFolderPopupIsPresented = false
                 return .none
@@ -122,8 +136,8 @@ public struct StorageBox {
             case let .changedFolderName(newName):
                 // TODO: - 여기도 통신타서 바꾸는걸로
 
-                if let editingIndex = state.editingIndex {
-                    state.customFolders[editingIndex].name = newName
+                if let editingID = state.editingID, let editingFolderIndex = state.customFolders.firstIndex(where: { $0.id == editingID }) {
+                    state.customFolders[editingFolderIndex].name = newName
                 }
                 state.editFolderPopupIsPresented = false
                 state.toastPopupIsPresented = true
