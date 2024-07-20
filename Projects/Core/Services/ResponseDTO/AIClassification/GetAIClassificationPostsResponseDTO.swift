@@ -9,5 +9,6 @@
 import Foundation
 
 struct GetAIClassificationPostsResponseDTO: Decodable {
+    let metadata: MetadataDTO
     let list: [AIClassificationCardDTO]
 }

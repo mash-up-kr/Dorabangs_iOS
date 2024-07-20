@@ -15,10 +15,6 @@ struct AIClassificationCardDTO: Decodable {
     let title: String
     let description: String
     let createdAt: String
-    let aiClassification: AIClassificationDTO
-}
-
-struct AIClassificationDTO: Decodable {
     let keywords: [String]
 }
 

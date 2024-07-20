@@ -19,15 +19,15 @@ public struct AIClassificationCard {
         fileprivate(set) var sections: OrderedDictionary<String, Folder>
         /// 현재 선택된 폴더의 ID
         fileprivate(set) var selectedFolderId: String
-        /// 현재 스크롤 페이지 번호
-        fileprivate(set) var scrollPage: Int
+        /// 현재 페이지 정보
+        fileprivate(set) var pageModel: AIClassificationCardPageModel
         /// 폴더 ID와 카드 목록을 매핑하는 딕셔너리
         fileprivate(set) var items: OrderedDictionary<String, [Card]>
 
         public init(folders: [Folder], selectedFolderId: String) {
             sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
             self.selectedFolderId = selectedFolderId
-            scrollPage = 1
+            pageModel = AIClassificationCardPageModel(hasNext: true, currentPage: 1)
             items = [:]
         }
     }
@@ -54,6 +54,8 @@ public struct AIClassificationCard {
         case sectionsChanged(sections: OrderedDictionary<String, Folder>)
         /// 항목이 변경되었을 때 발생합니다.
         case itemsChanged(items: OrderedDictionary<String, [Card]>)
+        /// 페이지 모델이 변경되었을 때 발생합니다.
+        case pageModelChanged(pageModel: AIClassificationCardPageModel)
 
         // MARK: Navigation Actions
         /// 홈 화면으로 이동합니다.
@@ -119,18 +121,20 @@ public struct AIClassificationCard {
 
             case .fetchAIClassificationCards:
                 let folderId = state.selectedFolderId == Folder.ID.all ? nil : state.selectedFolderId
-                return .run { send in
-                    let posts = try await aiClassificationAPIClient.getPosts(folderId, 1)
-                    await send(.appendAIClassificationCards(cards: posts))
+                return .run { [currentPage = state.pageModel.currentPage] send in
+                    let cardModel = try await aiClassificationAPIClient.getPosts(folderId, currentPage)
+                    await send(.pageModelChanged(pageModel: AIClassificationCardPageModel(hasNext: cardModel.hasNext, currentPage: currentPage)))
+                    await send(.appendAIClassificationCards(cards: cardModel.cards))
                 }
 
             case let .fetchNextPageIfPossible(item):
-                guard let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }
-                state.scrollPage += 1
+                guard state.pageModel.hasNext, let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }
+                state.pageModel.currentPage += 1
                 let folderId = state.selectedFolderId == Folder.ID.all ? nil : state.selectedFolderId
-                return .run { [page = state.scrollPage] send in
-                    let posts = try await aiClassificationAPIClient.getPosts(folderId, page)
-                    await send(.appendAIClassificationCards(cards: posts))
+                return .run { [currentPage = state.pageModel.currentPage] send in
+                    let cardModel = try await aiClassificationAPIClient.getPosts(folderId, currentPage)
+                    await send(.pageModelChanged(pageModel: AIClassificationCardPageModel(hasNext: cardModel.hasNext, currentPage: currentPage)))
+                    await send(.appendAIClassificationCards(cards: cardModel.cards))
                 }
 
             case let .appendAIClassificationCards(cards):
@@ -146,6 +150,10 @@ public struct AIClassificationCard {
 
             case let .itemsChanged(items):
                 state.items = items
+                return .none
+
+            case let .pageModelChanged(pageModel):
+                state.pageModel = pageModel
                 return .none
 
             default:
