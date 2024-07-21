@@ -78,7 +78,7 @@ public struct AIClassificationCard {
                 return updateSectionsAndItems(
                     sections: state.sections,
                     items: state.items,
-                    updateAPI: { try await aiClassificationAPIClient.patchPosts(suggestionFolderId: section.id, postId: nil) },
+                    updateAPI: { try await aiClassificationAPIClient.patchAllPost(suggestionFolderId: section.id) },
                     updateSections: { sections in
                         sections[section.id]?.postCount = 0
                         sections[Folder.ID.all]?.postCount = 0
@@ -108,7 +108,7 @@ public struct AIClassificationCard {
                 return updateSectionsAndItems(
                     sections: state.sections,
                     items: state.items,
-                    updateAPI: { try await aiClassificationAPIClient.patchPosts(suggestionFolderId: section.id, postId: item.id) },
+                    updateAPI: { try await aiClassificationAPIClient.patchPost(suggestionFolderId: section.id, postId: item.id) },
                     updateSections: { sections in
                         sections[section.id]?.postCount -= 1
                         sections[Folder.ID.all]?.postCount -= 1

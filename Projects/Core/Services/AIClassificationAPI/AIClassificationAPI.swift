@@ -13,7 +13,8 @@ enum AIClassificationAPI: APIRepresentable {
     case getFolders
     case getPosts(folderId: String?, page: Int)
     case deletePost(postId: String)
-    case patchPosts(suggestionFolderId: String, postId: String?)
+    case patchAllPost(suggestionFolderId: String)
+    case patchPost(suggestionFolderId: String, postId: String)
 }
 
 extension AIClassificationAPI {
@@ -29,12 +30,10 @@ extension AIClassificationAPI {
             }
         case let .deletePost(postId):
             "/classification/posts/\(postId)"
-        case let .patchPosts(_, postId):
-            if let postId {
-                "/classification/posts/\(postId)"
-            } else {
-                "/classification/posts"
-            }
+        case .patchAllPost:
+            "/classification/posts"
+        case let .patchPost(_, postId):
+            "/classification/posts/\(postId)"
         }
     }
 
@@ -42,7 +41,7 @@ extension AIClassificationAPI {
         switch self {
         case .getFolders, .getPosts: .get
         case .deletePost: .delete
-        case .patchPosts: .patch
+        case .patchAllPost, .patchPost: .patch
         }
     }
 
@@ -53,9 +52,18 @@ extension AIClassificationAPI {
         case .getFolders: .none
         case let .getPosts(_, page): .dictionary(["page": page])
         case .deletePost: .none
-        case let .patchPosts(suggestionFolderId, _): .dictionary(["suggestionFolderId": suggestionFolderId])
+        case let .patchAllPost(suggestionFolderId): .dictionary(["suggestionFolderId": suggestionFolderId])
+        case .patchPost: .none
         }
     }
 
-    var httpBody: BodyParameters? { nil }
+    var httpBody: BodyParameters? {
+        switch self {
+        case .getFolders: .none
+        case .getPosts: .none
+        case .deletePost: .none
+        case .patchAllPost: .none
+        case let .patchPost(suggestionFolderId, _): .dictionary(["suggestionFolderId": suggestionFolderId])
+        }
+    }
 }

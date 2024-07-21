@@ -40,7 +40,8 @@ public struct Card: Hashable {
         description: String? = nil,
         category: String? = nil,
         createdAt: Date,
-        keywords: [Keyword]? = nil
+        keywords: [Keyword]? = nil,
+        thumbnailImageUrl _: String? = nil
     ) {
         self.id = id
         self.folderId = folderId

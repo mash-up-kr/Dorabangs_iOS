@@ -41,6 +41,7 @@ extension CardDTO {
 
     private func convertISO8601StringToDate(_ iso8601String: String) -> Date? {
         let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return dateFormatter.date(from: iso8601String)
     }
 }
