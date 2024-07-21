@@ -45,6 +45,7 @@ public enum SPM: String {
 	case composableArchitecture = "ComposableArchitecture"
 	case tcaCoordinators = "TCACoordinators"
 	case keychainAccess = "KeychainAccess"
+	case kingfisher = "Kingfisher"
 }
 
 public enum ShareExtension: String {

@@ -8,9 +8,10 @@
 
 import SwiftUI
 
-public struct LKClassificationCard: View {
+public struct LKClassificationCard<Thumbnail: View>: View {
     private let title: String?
     private let description: String?
+    private let thumbnailImage: () -> Thumbnail
     private let tags: [String]
     private let category: String?
     private let timeSince: String?
@@ -21,6 +22,7 @@ public struct LKClassificationCard: View {
     public init(
         title: String?,
         description: String?,
+        thumbnailImage: @escaping () -> Thumbnail,
         tags: [String],
         category: String?,
         timeSince: String?,
@@ -30,6 +32,7 @@ public struct LKClassificationCard: View {
     ) {
         self.title = title
         self.description = description
+        self.thumbnailImage = thumbnailImage
         self.tags = tags
         self.category = category
         self.timeSince = timeSince
@@ -109,9 +112,8 @@ public struct LKClassificationCard: View {
 
     var thumbnail: some View {
         VStack(spacing: 0) {
-            DesignSystemKitAsset.Colors.g2.swiftUIColor
+            thumbnailImage()
                 .frame(width: 80, height: 80)
-                .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
                 .cornerRadius(4, corners: .allCorners)
 
             Spacer()
