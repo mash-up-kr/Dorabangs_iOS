@@ -16,7 +16,8 @@ public struct AIClassificationAPIClient {
     public var getFolders: @Sendable () async throws -> (totalCounts: Int, folders: [Folder])
     public var getPosts: @Sendable (_ folderId: String?, _ page: Int) async throws -> CardListModel
     public var deletePost: @Sendable (_ postId: String) async throws -> Void
-    public var patchPosts: @Sendable (_ suggestionFolderId: String, _ postId: String?) async throws -> Void
+    public var patchAllPost: @Sendable (_ suggestionFolderId: String) async throws -> Void
+    public var patchPost: @Sendable (_ suggestionFolderId: String, _ postId: String) async throws -> Void
 }
 
 public extension DependencyValues {
@@ -36,44 +37,20 @@ extension AIClassificationAPIClient: DependencyKey {
         getPosts: { folderId, page in
             let api = AIClassificationAPI.getPosts(folderId: folderId, page: page)
             let responseDTO: GetAIClassificationPostsResponseDTO = try await Provider().request(api)
-            let cards = mapToCards(from: responseDTO, with: folderId)
+            let cards = responseDTO.list.map(\.toDomain)
             return CardListModel(hasNext: responseDTO.metadata.hasNext, total: responseDTO.metadata.total, cards: cards)
         },
         deletePost: { postId in
             let api = AIClassificationAPI.deletePost(postId: postId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         },
-        patchPosts: { suggestionFolderId, postId in
-            let api = AIClassificationAPI.patchPosts(suggestionFolderId: suggestionFolderId, postId: postId)
+        patchAllPost: { suggestionFolderId in
+            let api = AIClassificationAPI.patchAllPost(suggestionFolderId: suggestionFolderId)
+            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        patchPost: { suggestionFolderId, postId in
+            let api = AIClassificationAPI.patchPost(suggestionFolderId: suggestionFolderId, postId: postId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
         }
     )
-
-    static func mapToCards(from dto: GetAIClassificationPostsResponseDTO, with folderId: String?) -> [Card] {
-        dto.list.compactMap { dto in
-            if let suggestionFolderId = dto.folderId {
-                Card(
-                    id: dto.postId,
-                    folderId: suggestionFolderId,
-                    urlString: dto.url,
-                    title: dto.title,
-                    description: dto.description,
-                    createdAt: ISO8601DateFormatter().date(from: dto.createdAt) ?? .now,
-                    keywords: dto.keywords.map { Keyword(id: UUID().uuidString, name: $0) }
-                )
-            } else if let folderId {
-                Card(
-                    id: dto.postId,
-                    folderId: folderId,
-                    urlString: dto.url,
-                    title: dto.title,
-                    description: dto.description,
-                    createdAt: ISO8601DateFormatter().date(from: dto.createdAt) ?? .now,
-                    keywords: dto.keywords.map { Keyword(id: UUID().uuidString, name: $0) }
-                )
-            } else {
-                nil
-            }
-        }
-    }
 }
