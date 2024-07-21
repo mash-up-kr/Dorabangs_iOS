@@ -23,6 +23,7 @@ struct LKClassificationCardPreview: View {
                 LKClassificationCard(
                     title: title,
                     description: description,
+                    thumbnailImage: { DesignSystemKitAsset.Colors.g2.swiftUIColor },
                     tags: tags,
                     category: category,
                     timeSince: timeSince,

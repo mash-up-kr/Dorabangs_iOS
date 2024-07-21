@@ -125,9 +125,11 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.aiClassification",
             sources: ["AIClassificationScene/**"],
             dependencies: [
+                .core(.common),
                 .core(.model),
                 .core(.service),
                 .spm(.composableArchitecture),
+                .spm(.kingfisher),
                 .designSystem
             ]
         )
