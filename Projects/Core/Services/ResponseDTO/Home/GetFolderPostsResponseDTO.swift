@@ -10,6 +10,5 @@ import Foundation
 
 struct GetFolderPostsResponseDTO: Decodable {
     let list: [CardDTO]
-    let hasNext: Bool
-    let total: Int
+    let metadata: MetadataDTO
 }

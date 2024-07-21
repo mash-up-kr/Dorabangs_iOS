@@ -20,6 +20,8 @@ struct CardDTO: Decodable {
     let createdAt: String?
     let readAt: String?
     let keywords: [KeywordDTO]?
+    let thumbnailImagUrl: String?
+    let aiStatus: AISummaryStatusDTO
 }
 
 extension CardDTO {
