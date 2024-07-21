@@ -28,7 +28,8 @@ extension FolderAPI {
         case .getFolders, .postFolders:
             "/folders"
         case let .getFolderPosts(folderId, _, _, _, _):
-            "/folders/\(folderId)/posts"
+            // 전체, 즐겨찾기 탭은 folderId가 빈 문자열이다.
+            folderId.isEmpty ? "/posts" : "/folders/\(folderId)/posts"
         case let .deleteFolder(folderId), let .patchFolder(folderId, _):
             "/folders/\(folderId)"
         }

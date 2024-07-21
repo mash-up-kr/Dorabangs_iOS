@@ -58,7 +58,7 @@ extension FolderAPIClient: DependencyKey {
             let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, order: order, unread: unread)
             let responseDTO: GetFolderPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
-            return CardListModel(hasNext: responseDTO.hasNext, total: responseDTO.total, cards: cardList)
+            return CardListModel(hasNext: responseDTO.metadata.hasNext, total: responseDTO.metadata.total, cards: cardList)
         },
         deleteFolder: { folderId in
             let api = FolderAPI.deleteFolder(folderId: folderId)
