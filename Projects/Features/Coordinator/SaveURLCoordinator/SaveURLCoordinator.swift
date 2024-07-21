@@ -65,8 +65,8 @@ public struct SaveURLCoordinator {
                 state.routes.goBackToRoot()
                 return .send(.routeToHomeScreen)
 
-            case .router(.routeAction(id: _, action: .selectFolder(.routeToCreateNewFolderScreen(let folders)))):
-                state.routes.push(.createNewFolder(.init(folders: folders)))
+            case .router(.routeAction(id: _, action: .selectFolder(.routeToCreateNewFolderScreen(let url)))):
+                state.routes.push(.createNewFolder(.init(sourceView: .saveURLScene(url: url))))
                 return .none
 
             case .router(.routeAction(id: _, action: .createNewFolder(.routeToPreviousScreen))):

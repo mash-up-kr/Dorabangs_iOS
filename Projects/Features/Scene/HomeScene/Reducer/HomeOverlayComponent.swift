@@ -33,7 +33,7 @@ public struct HomeOverlayComponent {
         case binding(BindingAction<State>)
 
         // MARK: Navigaiton Action
-        case routeToCreateNewFolderScreen(folders: [String])
+        case routeToCreateNewFolderScreen
     }
 
     public var body: some ReducerOf<Self> {
@@ -51,7 +51,7 @@ public struct HomeOverlayComponent {
                 return .none
 
             case .createNewFolderButtonTapped:
-                return .send(.routeToCreateNewFolderScreen(folders: state.folders))
+                return .send(.routeToCreateNewFolderScreen)
 
             case let .selectFolderCompleted(folder):
                 // TODO: call folder api
