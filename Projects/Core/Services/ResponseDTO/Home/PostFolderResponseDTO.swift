@@ -9,8 +9,5 @@
 import Foundation
 
 struct PostFolderResponseDTO: Decodable {
-    let id: String
-    let name: String
-    let type: String
-    let createdAt: String
+    let list: [FolderDTO]
 }

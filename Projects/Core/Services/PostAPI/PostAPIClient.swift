@@ -47,7 +47,7 @@ extension PostAPIClient: DependencyKey {
         },
         postPosts: { folderId, url in
             let api = PostAPI.postCard(folderId: folderId, urlString: url.absoluteString)
-            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+            let responseDTO: CardDTO = try await Provider().request(api)
         },
         isFavoritePost: { postId, isFavorite in
             let api = PostAPI.patchPost(postId: postId, isFavorite: isFavorite)
