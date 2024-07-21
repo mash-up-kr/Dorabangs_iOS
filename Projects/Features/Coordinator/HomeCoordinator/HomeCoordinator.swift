@@ -88,8 +88,8 @@ public extension HomeCoordinator {
             state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: saveURL)))
             return .none
 
-        case let .overlayComponent(.routeToCreateNewFolderScreen(folders)):
-            state.routes.push(.createNewFolder(.init(folders: folders)))
+        case .overlayComponent(.routeToCreateNewFolderScreen):
+            state.routes.push(.createNewFolder(.init(sourceView: .homeScene)))
             return .none
 
         case .routeToAIClassificationScreen:

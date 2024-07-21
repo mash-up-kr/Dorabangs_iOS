@@ -48,7 +48,7 @@ public struct SelectFolder {
         // MARK: Navigation Action
         case routeToPreviousScreen
         case routeToHomeScreen
-        case routeToCreateNewFolderScreen(folders: [String])
+        case routeToCreateNewFolderScreen(url: URL)
     }
 
     public init() {}
@@ -81,8 +81,7 @@ public struct SelectFolder {
                 }
 
             case .createFolderButtonTapped:
-                let folderNames = state.folders.map(\.name)
-                return .send(.routeToCreateNewFolderScreen(folders: folderNames))
+                return .send(.routeToCreateNewFolderScreen(url: state.saveURL))
 
             case .fetchFolders:
                 return .run { send in

@@ -7,20 +7,24 @@
 //
 
 import ComposableArchitecture
+import Foundation
 
 @Reducer
 public struct CreateNewFolder {
     @ObservableState
     public struct State: Equatable {
-        public static let initialState = State(folders: [])
+        public enum SourceView: Equatable {
+            case homeScene
+            case saveURLScene(url: URL)
+        }
 
-        var folders: [String]
         public fileprivate(set) var newFolderName: String = ""
         var isTextFieldWarned: Bool = false
         var isSaveButtonDisabled: Bool = true
+        var sourceView: SourceView
 
-        public init(folders: [String]) {
-            self.folders = folders
+        public init(sourceView: SourceView) {
+            self.sourceView = sourceView
         }
     }
 
