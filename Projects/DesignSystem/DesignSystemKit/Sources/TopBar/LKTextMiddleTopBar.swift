@@ -31,7 +31,7 @@ public struct LKTextMiddleTopBar: View {
 
     public var body: some View {
         HStack(spacing: 16) {
-            Image(.icChevron)
+            Image(.icChevronLeftBig)
                 .frame(width: 24, height: 24)
                 .onTapGesture(perform: backButtonAction)
 
@@ -54,6 +54,7 @@ public struct LKTextMiddleTopBar: View {
             if let title {
                 Text(title)
                     .font(weight: .bold, semantic: .base1)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
             }
         }
     }

@@ -12,13 +12,17 @@ public struct NewFolderView: View {
     public init() {}
 
     public var body: some View {
-        HStack {
-            RoundedRectangle(cornerSize: .init(width: 4, height: 4))
-                .stroke(DesignSystemKitAsset.Colors.g9.swiftUIColor, style: StrokeStyle(lineWidth: 0.5, dash: [4]))
+        HStack(spacing: 12) {
+            DesignSystemKitAsset.Icons.icAddFolder
+                .swiftUIImage
+                .resizable()
+                .renderingMode(.template)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
                 .frame(width: 24, height: 24)
 
             Text("새 폴더 추가")
                 .font(weight: .regular, semantic: .caption3)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
 
             Spacer()
         }

@@ -18,8 +18,8 @@ public struct FolderView: View {
     }
 
     public var body: some View {
-        HStack {
-            Image(.icFloderFilled)
+        HStack(spacing: 12) {
+            Image(.imgFolderSmall)
                 .resizable()
                 .frame(width: 24, height: 24)
 
@@ -28,7 +28,7 @@ public struct FolderView: View {
 
             Spacer()
 
-            Image(.icSelect)
+            Image(.icCheck)
                 .resizable()
                 .frame(width: 24, height: 24)
                 .hidden(!isSelected)
