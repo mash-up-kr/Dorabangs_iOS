@@ -15,6 +15,8 @@ public struct AIClassification {
     @ObservableState
     public struct State: Equatable {
         public static let initialState = State()
+        // 처음 진입했을 때만 API를 호출하기 위해 ViewDidLoad 여부를 저장합니다.
+        var viewDidLoad: Bool = false
         var tabs: AIClassificationTab.State?
         var cards: AIClassificationCard.State?
 
@@ -29,7 +31,7 @@ public struct AIClassification {
         case cardsChanged(AIClassificationCard.State)
 
         case routeToHomeScreen
-        case routeToFeedScreen(feedID: String)
+        case routeToFeedScreen(folder: Folder)
 
         case tabs(AIClassificationTab.Action)
         case cards(AIClassificationCard.Action)
@@ -43,6 +45,8 @@ public struct AIClassification {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                guard state.viewDidLoad == false else { return .none }
+                state.viewDidLoad = true
                 return .run { send in
                     let (totalCounts, customFolders) = try await aiClassificationAPIClient.getFolders()
                     let allFolder = Folder(id: Folder.ID.all, name: "전체", type: .all, postCount: totalCounts)
@@ -71,6 +75,12 @@ public struct AIClassification {
             case let .cards(.sectionsChanged(sections)):
                 let folders = sections.values.elements
                 return .send(.tabs(.foldersChanged(folders: folders)))
+
+            case .cards(.routeToHomeScreen):
+                return .send(.routeToHomeScreen)
+
+            case let .cards(.routeToFeedScreen(folder)):
+                return .send(.routeToFeedScreen(folder: folder))
 
             default:
                 return .none
