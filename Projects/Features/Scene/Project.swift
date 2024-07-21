@@ -93,7 +93,9 @@ let project = Project.make(
             sources: ["CreateNewFolderScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .core(.service),
+                .core(.model)
             ]
         ),
         .make(
