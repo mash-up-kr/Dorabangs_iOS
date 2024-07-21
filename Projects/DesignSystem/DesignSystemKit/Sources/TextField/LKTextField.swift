@@ -143,7 +143,7 @@ private struct InputField: View {
 
     private func clearButton() -> some View {
         Button(action: { text = "" }) {
-            DesignSystemKitAsset.Icons.icCloseWhite.swiftUIImage
+            Image(.icCloseCircle)
                 .resizable()
                 .frame(width: Layout.iconSize, height: Layout.iconSize)
         }
