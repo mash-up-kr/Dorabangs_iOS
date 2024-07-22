@@ -8,11 +8,14 @@
 import ChangeFolderName
 import ComposableArchitecture
 import FeedCoordinator
+import Foundation
+import SaveURLCoordinator
 import StorageBox
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum StorageBoxScreen {
+    case saveURLCoordinator(SaveURLCoordinator)
     case storageBox(StorageBox)
     case feed(FeedCoordinator)
     case changeFolderName(ChangeFolderName)
@@ -32,6 +35,7 @@ public struct StorageBoxCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<StorageBoxScreen>)
+        case routeToSaveURLCoordinator(url: URL)
     }
 
     public init() {}
@@ -55,10 +59,31 @@ public struct StorageBoxCoordinator {
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let patchedFolder)))):
                 state.routes.goBack()
                 return .send(.router(.routeAction(id: 0, action: .storageBox(.changedFolderName(patchedFolder)))))
+            case .router(.routeAction(id: 0, action: .saveURLCoordinator(.routeToPreviousScreen))):
+                state.routes.goBack()
+                return .none
+            case let .router(.routeAction(id: _, action: .saveURLCoordinator(action))):
+                return handleSaveURLCoordinatorAction(into: &state, action: action)
+            case let .routeToSaveURLCoordinator(url):
+                state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: url)))
+                return .none
             default:
                 return .none
             }
         }
         .forEachRoute(\.routes, action: \.router)
+    }
+}
+
+extension StorageBoxCoordinator {
+    func handleSaveURLCoordinatorAction(into state: inout State, action: SaveURLCoordinator.Action) -> Effect<Action> {
+        switch action {
+        case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
+        default:
+            return .none
+        }
     }
 }

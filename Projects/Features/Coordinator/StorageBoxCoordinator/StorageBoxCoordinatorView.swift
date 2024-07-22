@@ -8,6 +8,7 @@
 import ChangeFolderName
 import ComposableArchitecture
 import FeedCoordinator
+import SaveURLCoordinator
 import StorageBox
 import SwiftUI
 import TCACoordinators
@@ -27,6 +28,12 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
     public var body: some View {
         TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
             switch screen.case {
+            case let .saveURLCoordinator(store):
+                SaveURLCoordinatorView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
             case let .storageBox(store):
                 StorageBoxContainerView(store: store, tabbar: tabbar())
                     .navigationBarHidden(true)

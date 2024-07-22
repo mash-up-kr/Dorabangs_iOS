@@ -14,6 +14,7 @@ import SwiftUI
 
 public struct TabCoordinatorView: View {
     @Perception.Bindable private var store: StoreOf<TabCoordinator>
+    @Environment(\.scenePhase) private var scenePhase
 
     public init(store: StoreOf<TabCoordinator>) {
         self.store = store
@@ -34,8 +35,14 @@ public struct TabCoordinatorView: View {
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
             }
+            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
             .onAppear {
                 UITabBar.appearance().isHidden = true
+                checkClipboardURL()
+            }
+            .onChange(of: scenePhase) { newValue in
+                guard newValue == .active else { return }
+                checkClipboardURL()
             }
         }
     }
@@ -57,6 +64,26 @@ public struct TabCoordinatorView: View {
                     selectedImage: DesignSystemKitAsset.Icons.icFolderActive.swiftUIImage
                 )
             ]
+        )
+    }
+
+    private func checkClipboardURL() {
+        if let url = UIPasteboard.general.url {
+            store.send(.clipboardURLChanged(url))
+            UIPasteboard.general.url = nil
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
+        @Perception.Bindable var store = store
+        clipboardToast(
+            isPresented: $store.isPresented.sending(\.isPresentedChanged),
+            urlString: store.shared.urlString,
+            saveAction: { store.send(.saveButtonTapped) },
+            closeAction: { store.send(.closeButtonTapped) }
         )
     }
 }

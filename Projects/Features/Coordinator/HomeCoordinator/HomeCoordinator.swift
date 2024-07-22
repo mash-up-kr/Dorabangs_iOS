@@ -34,13 +34,9 @@ public struct HomeCoordinator {
         }
     }
 
-    public enum Deeplink {
-        case saveURL(URL)
-    }
-
     public enum Action {
         case router(IndexedRouterActionOf<HomeScreen>)
-        case deeplink(Deeplink)
+        case routeToSaveURLCoordinator(url: URL)
     }
 
     public init() {}
@@ -60,11 +56,8 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .aiClassificationCoordinator(action))):
                 return handleAIClassificationCoordinatorAction(into: &state, action: action)
 
-            case let .deeplink(.saveURL(saveURL)):
-                state.routes = [
-                    .root(.home(.initialState), embedInNavigationView: true),
-                    .push(.saveURLCoordinator(.init(routeToSelectFolder: saveURL)))
-                ]
+            case let .routeToSaveURLCoordinator(url):
+                state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: url)))
                 return .none
 
             default:
@@ -103,7 +96,7 @@ public extension HomeCoordinator {
 
     func handleSaveURLCoordinatorAction(into state: inout State, action: SaveURLCoordinator.Action) -> Effect<Action> {
         switch action {
-        case .routeToHomeScreen:
+        case .routeToPreviousScreen:
             state.routes.goBack()
             return .none
 
