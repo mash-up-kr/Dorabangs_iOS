@@ -58,8 +58,7 @@ public struct AppCoordinator {
 
             case let .saveURL(url):
                 state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
-                let deeplink = TabCoordinator.Deeplink.homeCoodinator(.saveURL(url))
-                return .send(.router(.routeAction(id: 0, action: .tabCoordinator(.deeplink(deeplink)))))
+                return .send(.router(.routeAction(id: 0, action: .tabCoordinator(.deeplink(url)))))
 
             default:
                 return .none

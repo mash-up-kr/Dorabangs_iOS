@@ -22,6 +22,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.tabCoordinator",
             sources: ["TabCoordinator/**"],
             dependencies: [
+                .core(.model),
                 .coordinator(.home),
                 .coordinator(.storageBox),
                 .spm(.tcaCoordinators),
@@ -50,6 +51,7 @@ let project = Project.make(
                 .scene(.storageBox),
                 .spm(.tcaCoordinators),
                 .coordinator(.feed),
+                .coordinator(.saveURL),
                 .scene(.changeFolderName)
             ]
         ),

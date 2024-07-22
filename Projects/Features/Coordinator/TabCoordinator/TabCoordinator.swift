@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import HomeCoordinator
 import StorageBoxCoordinator
 import TCACoordinators
@@ -27,6 +28,7 @@ public struct TabCoordinator {
         )
         var home: HomeCoordinator.State
         var storageBox: StorageBoxCoordinator.State
+        var clipboardToast = ClipboardToastFeature.State()
         var selectedTab: Tab
 
         public init(
@@ -40,15 +42,14 @@ public struct TabCoordinator {
         }
     }
 
-    public enum Deeplink {
-        case homeCoodinator(HomeCoordinator.Deeplink)
-    }
-
     public enum Action {
         case home(HomeCoordinator.Action)
         case storageBox(StorageBoxCoordinator.Action)
+        case clipboardToast(ClipboardToastFeature.Action)
         case tabSelected(Tab)
-        case deeplink(Deeplink)
+
+        case deeplink(URL)
+        case clipboardURLChanged(URL)
     }
 
     public init() {}
@@ -59,6 +60,9 @@ public struct TabCoordinator {
         }
         Scope(state: \.storageBox, action: \.storageBox) {
             StorageBoxCoordinator()
+        }
+        Scope(state: \.clipboardToast, action: \.clipboardToast) {
+            ClipboardToastFeature()
         }
         Reduce { state, action in
             switch action {
@@ -72,12 +76,37 @@ public struct TabCoordinator {
                 state.selectedTab = tab
                 return .none
 
-            case let .deeplink(.homeCoodinator(deeplink)):
-                state.selectedTab = .home
-                return HomeCoordinator()
-                    .reduce(into: &state.home, action: .deeplink(deeplink))
-                    .map(Action.home)
+            case let .clipboardURLChanged(url):
+                return ClipboardToastFeature()
+                    .reduce(into: &state.clipboardToast, action: .presentToast(url))
+                    .map(Action.clipboardToast)
+
+            case let .deeplink(url):
+                return routeToSaveURLCoordinator(state: &state, with: url)
+
+            case .clipboardToast(.saveButtonTapped):
+                guard let url = URL(string: state.clipboardToast.shared.urlString) else { return .none }
+                return routeToSaveURLCoordinator(state: &state, with: url)
+
+            default:
+                return .none
             }
+        }
+    }
+}
+
+extension TabCoordinator {
+    func routeToSaveURLCoordinator(state: inout State, with url: URL) -> Effect<Action> {
+        switch state.selectedTab {
+        case .home:
+            HomeCoordinator()
+                .reduce(into: &state.home, action: .routeToSaveURLCoordinator(url: url))
+                .map(Action.home)
+
+        case .storageBox:
+            StorageBoxCoordinator()
+                .reduce(into: &state.storageBox, action: .routeToSaveURLCoordinator(url: url))
+                .map(Action.storageBox)
         }
     }
 }
