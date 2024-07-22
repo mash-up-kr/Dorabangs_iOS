@@ -20,7 +20,7 @@ public struct LKTabBar<SelectionValue: Hashable>: View {
     public var body: some View {
         HStack(spacing: 0) {
             ForEach(tabItems) { item in
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     (selection == item.tag ? item.selectedImage : item.image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -37,11 +37,11 @@ public struct LKTabBar<SelectionValue: Hashable>: View {
                 .onTapGesture {
                     selection = item.tag
                 }
-                .padding(.vertical, 20)
+                .padding(.vertical, 4)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .frame(height: 60)
+        .frame(height: 48)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .overlay {
             RoundedTopBorder()

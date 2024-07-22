@@ -53,7 +53,7 @@ public struct LKClipboardToast: View {
 
                 Spacer()
 
-                DesignSystemKitAsset.Icons.icCloseCircle.swiftUIImage
+                Image(.icCloseCircle)
                     .resizable()
                     .frame(width: 24, height: 24)
                     .onTapGesture(perform: closeAction)
