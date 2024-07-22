@@ -13,7 +13,6 @@ import SwiftUI
 
 public struct HomeView: View {
     @Perception.Bindable private var store: StoreOf<Home>
-    @Environment(\.scenePhase) var scenePhase
 
     enum Constant {
         static let LKTopLogoBarHeight: CGFloat = 48
@@ -91,19 +90,7 @@ public struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 store.send(.onAppear)
-                checkClipboardURL()
             }
-            .onChange(of: scenePhase) { newValue in
-                guard newValue == .active else { return }
-                checkClipboardURL()
-            }
-        }
-    }
-
-    private func checkClipboardURL() {
-        if let url = UIPasteboard.general.url {
-            store.send(.clipboardURLChanged(url))
-            UIPasteboard.general.url = nil
         }
     }
 }

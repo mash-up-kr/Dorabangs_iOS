@@ -87,15 +87,4 @@ extension View {
             isEmbedTabbar: true
         )
     }
-
-    @ViewBuilder
-    func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
-        @Perception.Bindable var store = store
-        clipboardToast(
-            isPresented: $store.isPresented.sending(\.isPresentedChanged),
-            urlString: store.shared.urlString,
-            saveAction: { store.send(.saveButtonTapped) },
-            closeAction: { store.send(.closeButtonTapped) }
-        )
-    }
 }

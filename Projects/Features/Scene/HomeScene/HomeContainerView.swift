@@ -34,12 +34,9 @@ public struct HomeContainerView<Content: View>: View {
             .deleteCardModal(store: overlayComponent)
             .selectFolderBottomSheet(store: overlayComponent)
             .toast(store: overlayComponent)
-            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
             .navigationBarHidden(true)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
-
-private extension View {}
