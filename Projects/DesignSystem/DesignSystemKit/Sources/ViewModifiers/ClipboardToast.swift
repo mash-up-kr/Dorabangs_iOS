@@ -53,7 +53,7 @@ private struct ClipboardToastModifier: ViewModifier {
                             closeAction?()
                         }
                     )
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 68)
                     .padding(.horizontal, 20)
                 }
                 .transition(.opacity.animation(.easeInOut))
