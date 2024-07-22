@@ -17,7 +17,7 @@ struct AIClassificationCardDTO: Decodable {
     let description: String
     let createdAt: String
     let keywords: [String]
-    let aiStatus: AISummaryStatusDTO
+    let aiStatus: AISummaryStatusDTO?
     let thumbnailImgUrl: String?
     let readAt: String?
 }
