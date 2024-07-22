@@ -33,8 +33,6 @@ public struct Home {
         var tabs: HomeTab.State?
         var cards: HomeCard.State?
 
-        /// 클립보드 토스트 상태
-        public var clipboardToast = ClipboardToastFeature.State()
         /// 모달, 토스트 바텀시트 등 화면 덮는 컴포넌트 상태
         var overlayComponent = HomeOverlayComponent.State()
 
@@ -64,10 +62,8 @@ public struct Home {
         case addLinkButtonTapped
         case bannerButtonTapped(HomeBannerType)
         case showModalButtonTapped(Int)
-        case clipboardURLChanged(URL)
 
         // MARK: Child Action
-        case clipboardToast(ClipboardToastFeature.Action)
         case overlayComponent(HomeOverlayComponent.Action)
         case tabs(HomeTab.Action)
         case cards(HomeCard.Action)
@@ -83,9 +79,6 @@ public struct Home {
     @Dependency(\.postAPIClient) var postAPIClient
 
     public var body: some ReducerOf<Self> {
-        Scope(state: \.clipboardToast, action: \.clipboardToast) {
-            ClipboardToastFeature()
-        }
         Scope(state: \.overlayComponent, action: \.overlayComponent) {
             HomeOverlayComponent()
         }
@@ -225,15 +218,6 @@ public struct Home {
                 return HomeOverlayComponent()
                     .reduce(into: &state.overlayComponent, action: .binding(.set(\.isCardActionSheetPresented, true)))
                     .map(Action.overlayComponent)
-
-            case let .clipboardURLChanged(url):
-                return ClipboardToastFeature()
-                    .reduce(into: &state.clipboardToast, action: .presentToast(url))
-                    .map(Action.clipboardToast)
-
-            case .clipboardToast(.saveButtonTapped):
-                guard let url = URL(string: state.clipboardToast.shared.urlString) else { return .none }
-                return .send(.routeToSelectFolder(url))
 
             case let .tabs(.tabSelected(index)):
                 return .none
