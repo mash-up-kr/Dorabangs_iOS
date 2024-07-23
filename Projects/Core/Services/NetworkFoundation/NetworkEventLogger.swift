@@ -54,7 +54,11 @@ final class NetworkEventLogger: EventMonitor {
                 break
             }
         }
-
+        
+        if let networkDuration = response.metrics.map({ "\($0.taskInterval.duration)s" }) {
+            message += "\n✅ [Network Duration] : \(networkDuration)"
+        }
+        
         if let response = response.data?.toPrettyPrintedString {
             message += "\n✅ [Response] : \(response)"
         }
