@@ -134,6 +134,17 @@ let project = Project.make(
                 .spm(.kingfisher),
                 .designSystem
             ]
+        ),
+        .make(
+            name: "Setting",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.setting",
+            sources: ["SettingScene/**"],
+            dependencies: [
+                .core(.service),
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
         )
     ]
 )

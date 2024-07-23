@@ -9,12 +9,14 @@
 import ComposableArchitecture
 import Foundation
 import Onboarding
+import Setting
 import Splash
 import TabCoordinator
 import TCACoordinators
 
 @Reducer(state: .equatable)
 public enum AppScreen {
+    case setting(Setting)
     case onboarding(Onboarding)
     case splash(Splash)
     case tabCoordinator(TabCoordinator)
@@ -37,6 +39,7 @@ public struct AppCoordinator {
     public enum Action {
         case router(IndexedRouterActionOf<AppScreen>)
         case saveURL(URL)
+        case routeToSettingScreen
     }
 
     public init() {}
@@ -44,6 +47,18 @@ public struct AppCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .routeToSettingScreen:
+                state.routes.push(.setting(.initialState))
+                return .none
+
+            case .router(.routeAction(id: _, action: .setting(.routeToPreviousScreen))):
+                state.routes.goBack()
+                return .none
+
+            case .router(.routeAction(id: _, action: .setting(.routeToSplashScreen))):
+                state.routes = [.root(.splash(.init()))]
+                return .none
+
             case .router(.routeAction(id: _, action: .splash(.routeToOnboardingScreen))):
                 state.routes = [.root(.onboarding(.initialState), embedInNavigationView: false)]
                 return .none
