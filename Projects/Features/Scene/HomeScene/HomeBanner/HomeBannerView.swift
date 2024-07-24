@@ -13,6 +13,7 @@ import SwiftUI
 public struct HomeBannerView: View {
     private let banner: HomeBanner
     private let action: () -> Void
+    private let bundle = Bundle(identifier: "com.mashup.dorabangs.designSystemKit")
 
     public init(
         banner: HomeBanner,
@@ -26,9 +27,11 @@ public struct HomeBannerView: View {
         VStack(spacing: 0) {
             LottieView(
                 animation: .named(
-                    banner.bannerType == .ai ? JSONFiles.Ai.name : JSONFiles.Unread.name
+                    banner.bannerType == .ai ? JSONFiles.Ai.jsonName : JSONFiles.Unread.jsonName,
+                    bundle: bundle ?? .main
                 )
             )
+            .playing(loopMode: .playOnce)
             .frame(width: 250, height: 212)
 
             HomeBannerMessageView(

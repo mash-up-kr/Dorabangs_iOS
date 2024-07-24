@@ -17,9 +17,7 @@ import Foundation
   {% if document.metadata.type == "Array" %}
   {{accessModifier}} static let items: {{rootType}} = objectFromJSON(at: "{% call transformPath file.path %}")
   {% elif document.metadata.type == "Dictionary" %}
-  
-  public static let name = "{% call transformPath file.path %}"
-  
+  public static let jsonName = "{% call transformPath file.path %}"
   private static let _document = JSONDocument(path: "{% call transformPath file.path %}")
   {% for key,value in document.metadata.properties %}
   {{accessModifier}} {%+ call propertyBlock key value %}
