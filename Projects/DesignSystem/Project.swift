@@ -19,7 +19,8 @@ let project = Project.make(
             sources: ["DesignSystemUI/Sources**"],
             resources: ["DesignSystemUI/Resources/**"],
             dependencies: [
-                .designSystem
+                .designSystem,
+                .spm(.lottie)
             ],
             settings: .settings(
                 base: [
@@ -48,6 +49,7 @@ let project = Project.make(
         )
     ],
     resourceSynthesizers: [
-        .assets()
+        .assets(),
+        .custom(name: "Json", parser: .json, extensions: ["json"])
     ]
 )
