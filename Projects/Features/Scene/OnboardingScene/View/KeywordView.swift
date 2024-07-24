@@ -56,26 +56,16 @@ private struct DeselectBackground: ViewModifier {
 }
 
 private struct SelectBackground: ViewModifier {
-    let gradient = LinearGradient(
-        colors: [
-            Color(red: 1, green: 0.92, blue: 0.96),
-            Color(red: 0.97, green: 0.97, blue: 1),
-            Color(red: 0.89, green: 0.93, blue: 1)
-        ],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-
     func body(content: Content) -> some View {
         content
             .font(weight: .medium, semantic: .caption2)
             .lineLimit(1)
-            .foregroundStyle(gradient)
+            .foregroundStyle(DesignSystemKitAsset.Colors.gradient3)
             .padding(.horizontal, 20)
             .padding(.vertical, 6)
             .frame(height: 40)
             .background(DesignSystemKitAsset.Colors.g9.swiftUIColor)
             .cornerRadius(99.9, corners: .allCorners)
-            .border(gradient, width: 1, cornerRadius: 99.9)
+            .border(DesignSystemKitAsset.Colors.gradient4, width: 1, cornerRadius: 99.9)
     }
 }
