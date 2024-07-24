@@ -24,7 +24,7 @@ public struct BannerButton: View {
                     .font(weight: .bold, semantic: .caption1)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
 
-                Image(.icArrow)
+                Image(.icChevronRightSmallBlack)
                     .frame(width: 12, height: 12)
             }
             .padding(.horizontal, 20)

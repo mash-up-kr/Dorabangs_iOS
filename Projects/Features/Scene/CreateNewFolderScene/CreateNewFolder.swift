@@ -74,7 +74,7 @@ public struct CreateNewFolder {
                         try await postAPIClient.postPosts(folderId: createdFolder.id, url: url)
                         await send(.routeToHomeScreen)
                     }
-                } catch: { error, send in
+                } catch: { _, send in
                     await send(.isTextFieldWarnedChanged(true))
                     await send(.isSaveButtonDisabledChanged(true))
                 }

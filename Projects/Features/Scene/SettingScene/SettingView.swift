@@ -79,7 +79,7 @@ public extension View {
 
 struct GifImageView: UIViewRepresentable {
     private let name: String
-    
+
     init(_ name: String) {
         self.name = name
     }

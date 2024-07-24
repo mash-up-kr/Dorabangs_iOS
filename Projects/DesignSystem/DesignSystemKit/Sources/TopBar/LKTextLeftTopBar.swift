@@ -25,7 +25,7 @@ public struct LKTextLeftTopBar: View {
 
     public var body: some View {
         HStack(spacing: 16) {
-            Image(.icChevron)
+            Image(.icChevronLeftBig)
                 .frame(width: 24, height: 24)
 
             if let title {

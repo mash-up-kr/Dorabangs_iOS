@@ -48,7 +48,7 @@ public struct StorageBoxView: View {
                             onEdit: { index in
                                 store.send(.storageBoxTapped(section: 0, folderID: index), animation: .default)
                             },
-                            moreIcon: DesignSystemKitAsset.Icons.icChevronRightM.swiftUIImage
+                            moreIcon: DesignSystemKitAsset.Icons.icChevronRightMedium.swiftUIImage
                         )
                         StorageBoxSection(
                             storageBoxList: store.customFolders,

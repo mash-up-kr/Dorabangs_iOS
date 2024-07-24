@@ -26,12 +26,12 @@ public struct FeedSortView: View {
     public var body: some View {
         HStack(alignment: .center, spacing: 16) {
             Spacer()
-            FeedSortItemView(image: DesignSystemKitAsset.Icons.icArrowDown.swiftUIImage, title: "최신순", isSelected: selectedType == .latest, onTap: {
+            FeedSortItemView(image: DesignSystemKitAsset.Icons.icDirectionDownEnabled.swiftUIImage, title: "최신순", isSelected: selectedType == .latest, onTap: {
                 onSort(.latest)
                 selectedType = .latest
 
             })
-            FeedSortItemView(image: DesignSystemKitAsset.Icons.icArrowUp.swiftUIImage, title: "과거순", isSelected: selectedType == .past, onTap: {
+            FeedSortItemView(image: DesignSystemKitAsset.Icons.icDirectionUpEnabled.swiftUIImage, title: "과거순", isSelected: selectedType == .past, onTap: {
                 onSort(.past)
                 selectedType = .past
             })

@@ -39,7 +39,7 @@ public struct LKClipboardToast: View {
                     .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                     .onTapGesture(perform: saveAction)
 
-                DesignSystemKitAsset.Icons.icChevronRightS.swiftUIImage
+                DesignSystemKitAsset.Icons.icChevronRightSmallWhite.swiftUIImage
                     .resizable()
                     .frame(width: 20, height: 20)
             }
