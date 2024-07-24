@@ -94,6 +94,7 @@ private struct URLMetadataView: View {
         VStack(alignment: .leading) {
             Text(title ?? "")
                 .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
                 .font(weight: .bold, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
@@ -102,6 +103,7 @@ private struct URLMetadataView: View {
 
             Text(urlString ?? "")
                 .lineLimit(1)
+                .truncationMode(.tail)
                 .font(weight: .medium, semantic: .s)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
         }
