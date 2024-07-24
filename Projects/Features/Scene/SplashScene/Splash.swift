@@ -14,11 +14,18 @@ import Services
 public struct Splash {
     @ObservableState
     public struct State: Equatable {
+        var isAccessTokenSet: Bool = false
+        var isAnimationFinished: Bool = false
+
         public init() {}
     }
 
     public enum Action {
         case onAppear
+        case isAccessTokenSetChanged(Bool)
+        case isAnimationFinishedChanged(Bool)
+
+        case handleRouting
         case routeToOnboardingScreen
         case routeToTabCoordinatorScreen
     }
@@ -29,21 +36,36 @@ public struct Splash {
     @Dependency(\.userAPIClient) var userAPIClient
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
             case .onAppear:
-                .run { send in
+                return .run { send in
                     try await handleUDIDAndAccessToken()
-                    await handleRouting(send: send)
+                    await send(.isAccessTokenSetChanged(true))
                 } catch: { error, _ in
                     debugPrint(error.localizedDescription)
                 }
 
+            case let .isAccessTokenSetChanged(isAccessTokenSet):
+                state.isAccessTokenSet = isAccessTokenSet
+                return .none
+
+            case let .isAnimationFinishedChanged(isAnimationFinished):
+                state.isAnimationFinished = isAnimationFinished
+                return .none
+
+            case .handleRouting:
+                if keychainClient.hasOnboarded {
+                    return .send(.routeToTabCoordinatorScreen)
+                } else {
+                    return .send(.routeToOnboardingScreen)
+                }
+
             case .routeToOnboardingScreen:
-                .none
+                return .none
 
             case .routeToTabCoordinatorScreen:
-                .none
+                return .none
             }
         }
     }
@@ -63,13 +85,5 @@ private extension Splash {
     func setAccessTokenIfNeeded(udid: String) async throws {
         let accessToken = try await userAPIClient.postUsers(udid)
         keychainClient.setAccessToken(accessToken)
-    }
-
-    func handleRouting(send: Send<Splash.Action>) async {
-        if keychainClient.hasOnboarded {
-            await send(.routeToTabCoordinatorScreen)
-        } else {
-            await send(.routeToOnboardingScreen)
-        }
     }
 }

@@ -26,6 +26,7 @@ let project = Project.make(
             dependencies: [
                 .core(.service),
                 .spm(.composableArchitecture),
+                .spm(.lottie),
                 .designSystem
             ]
         ),
