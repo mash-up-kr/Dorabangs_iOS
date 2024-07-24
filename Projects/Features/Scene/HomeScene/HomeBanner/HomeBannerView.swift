@@ -7,6 +7,7 @@
 //
 
 import DesignSystemKit
+import Lottie
 import SwiftUI
 
 public struct HomeBannerView: View {
@@ -23,8 +24,12 @@ public struct HomeBannerView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            DesignSystemKitAsset.Images.icTempgif.swiftUIImage
-                .frame(width: 250, height: 212)
+            LottieView(
+                animation: .named(
+                    banner.bannerType == .ai ? JSONFiles.Ai.name : JSONFiles.Unread.name
+                )
+            )
+            .frame(width: 250, height: 212)
 
             HomeBannerMessageView(
                 prefix: banner.prefix,
