@@ -47,6 +47,7 @@ public enum SPM: String {
 	case tcaCoordinators = "TCACoordinators"
 	case keychainAccess = "KeychainAccess"
 	case kingfisher = "Kingfisher"
+	case lottie = "Lottie"
 }
 
 public enum ShareExtension: String {
