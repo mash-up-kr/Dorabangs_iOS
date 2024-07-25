@@ -23,7 +23,8 @@ let project = Project.make(
                 .shareExtension(.prod)
             ],
             settings: .settings(
-                configurations: [.release(name: .release, xcconfig: releaseConfig)]
+                configurations: [.release(name: .release, xcconfig: releaseConfig)],
+                defaultSettings: .recommended(excluding: ["ASSETCATALOG_COMPILER_APPICON_NAME"])
             )
         ),
         .make(
@@ -38,7 +39,8 @@ let project = Project.make(
                 .shareExtension(.dev)
             ],
             settings: .settings(
-                configurations: [.debug(name: .debug, xcconfig: debugConfig)]
+                configurations: [.debug(name: .debug, xcconfig: debugConfig)],
+                defaultSettings: .recommended(excluding: ["ASSETCATALOG_COMPILER_APPICON_NAME"])
             )
         ),
         .make(
