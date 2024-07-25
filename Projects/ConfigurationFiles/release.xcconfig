@@ -19,3 +19,5 @@ BUNDLE_NAME = 링킷
 PROVISIONING_PROFILE_SPECIFIER = Distribution com.mashup.dorabangs
 
 CODE_SIGN_IDENTITY = Apple Distribution: YoungGyun Kim (8ATYCP492F)
+
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
