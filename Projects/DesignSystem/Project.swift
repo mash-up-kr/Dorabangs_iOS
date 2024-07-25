@@ -19,8 +19,7 @@ let project = Project.make(
             sources: ["DesignSystemUI/Sources**"],
             resources: ["DesignSystemUI/Resources/**"],
             dependencies: [
-                .designSystem,
-                .spm(.lottie)
+                .designSystem
             ],
             settings: .settings(
                 base: [
@@ -37,7 +36,10 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.designSystemKit",
             infoPlist: .extendingDefault(with: ["UIAppFonts": "NanumSquareNeo-Variable.ttf"]),
             sources: ["DesignSystemKit/Sources/**"],
-            resources: ["DesignSystemKit/Resources/**"]
+            resources: ["DesignSystemKit/Resources/**"],
+            dependencies: [
+                .spm(.lottie)
+            ]
         )
     ],
     schemes: [
@@ -50,6 +52,6 @@ let project = Project.make(
     ],
     resourceSynthesizers: [
         .assets(),
-        .custom(name: "Json", parser: .json, extensions: ["json"])
+        .custom(name: "JSON", parser: .json, extensions: ["json"])
     ]
 )

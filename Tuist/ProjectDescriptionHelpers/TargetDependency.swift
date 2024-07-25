@@ -20,7 +20,7 @@ public enum Coordinator: String {
 	case tab = "TabCoordinator"
 	case home = "HomeCoordinator"
 	case storageBox = "StorageBoxCoordinator"
-  case feed = "FeedCoordinator"
+    case feed = "FeedCoordinator"
 	case saveURL = "SaveURLCoordinator"
 	case aiClassification = "AIClassificationCoordinator"
 }

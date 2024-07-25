@@ -15,6 +15,7 @@ let project = Project.make(
                 .core(.service),
                 .spm(.acarousel),
                 .spm(.composableArchitecture),
+                .spm(.lottie),
                 .designSystem
             ]
         ),

@@ -7,11 +7,13 @@
 //
 
 import DesignSystemKit
+import Lottie
 import SwiftUI
 
 public struct HomeBannerView: View {
     private let banner: HomeBanner
     private let action: () -> Void
+    private let bundle = Bundle(identifier: "com.mashup.dorabangs.designSystemKit")
 
     public init(
         banner: HomeBanner,
@@ -23,8 +25,14 @@ public struct HomeBannerView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            DesignSystemKitAsset.Images.icTempgif.swiftUIImage
-                .frame(width: 250, height: 212)
+            LottieView(
+                animation: .named(
+                    banner.bannerType == .ai ? JSONFiles.Ai.jsonName : JSONFiles.Unread.jsonName,
+                    bundle: bundle ?? .main
+                )
+            )
+            .playing(loopMode: .playOnce)
+            .frame(width: 250, height: 212)
 
             HomeBannerMessageView(
                 prefix: banner.prefix,
