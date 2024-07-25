@@ -38,6 +38,7 @@ let project = Project.make(
             dependencies: [
                 .scene(.home),
                 .scene(.createNewFolder),
+                .scene(.saveURLVideoGuide),
                 .coordinator(.aiClassification),
                 .coordinator(.saveURL),
                 .spm(.tcaCoordinators)
