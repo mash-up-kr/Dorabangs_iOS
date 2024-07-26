@@ -63,7 +63,8 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.web",
             sources: ["WebScene/**"],
             dependencies: [
-                .spm(.composableArchitecture)
+                .spm(.composableArchitecture),
+                .designSystem
             ]
         ),
         .make(
