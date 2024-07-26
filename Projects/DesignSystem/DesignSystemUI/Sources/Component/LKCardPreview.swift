@@ -21,11 +21,12 @@ struct LKCardPreview: View {
     var body: some View {
         ComponentPreview(
             component: {
-                LKCard(
+                LKCard<ThumbnailView>(
                     isSummarizing: isSummarizing,
                     progress: progress,
                     title: title,
                     description: description,
+                    thumbnailImage: { ThumbnailView() },
                     tags: tags,
                     category: category,
                     timeSince: timeSince,

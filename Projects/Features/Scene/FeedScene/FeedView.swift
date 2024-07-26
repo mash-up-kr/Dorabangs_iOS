@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import Kingfisher
 import SwiftUI
 
 public struct FeedView: View {
@@ -51,6 +52,7 @@ public struct FeedView: View {
                                         progress: 1.0,
                                         title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
                                         description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
+                                        thumbnailImage: { ThumbnailImage(urlString: "") },
                                         tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],
                                         category: "Category",
                                         timeSince: "1일 전",
@@ -131,5 +133,23 @@ public struct EditFolderPopupModifier: ViewModifier {
             }), .init(title: "폴더 이름 변경", image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(), action: {
                 onSelect(1)
             })])
+    }
+}
+
+struct ThumbnailImage: View {
+    let urlString: String?
+
+    var body: some View {
+        if let urlString, let url = URL(string: urlString) {
+            KFImage(url)
+                .placeholder {
+                    DesignSystemKitAsset.Colors.g2.swiftUIColor
+                }
+                .roundCorner(radius: .point(4), roundingCorners: .all)
+                .resizable()
+                .frame(width: 80, height: 80)
+        } else {
+            DesignSystemKitAsset.Colors.g2.swiftUIColor
+        }
     }
 }
