@@ -8,8 +8,14 @@
 
 import SwiftUI
 
+public enum LKCardAIStatus {
+    case success
+    case inProgress
+    case failure
+}
+
 public struct LKCard<Thumbnail: View>: View {
-    public var isSummarizing: Bool = true
+    public var aiStatus: LKCardAIStatus = .inProgress
     public var progress: CGFloat = 0.3
     private let title: String?
     private let description: String?
@@ -21,7 +27,7 @@ public struct LKCard<Thumbnail: View>: View {
     private let showModalAction: () -> Void
 
     public init(
-        isSummarizing: Bool,
+        aiStatus: LKCardAIStatus = .inProgress,
         progress: CGFloat,
         title: String?,
         description: String?,
@@ -32,7 +38,7 @@ public struct LKCard<Thumbnail: View>: View {
         bookMarkAction: @escaping () -> Void,
         showModalAction: @escaping () -> Void
     ) {
-        self.isSummarizing = isSummarizing
+        self.aiStatus = aiStatus
         self.progress = progress
         self.title = title
         self.description = description
@@ -52,7 +58,7 @@ public struct LKCard<Thumbnail: View>: View {
                         .font(weight: .bold, semantic: .caption3)
                         .lineLimit(2)
 
-                    if isSummarizing {
+                    if aiStatus == .inProgress {
                         SummarizingView()
                     } else {
                         HStack(spacing: 4) {
@@ -79,13 +85,13 @@ public struct LKCard<Thumbnail: View>: View {
                 }
             }
 
-            if isSummarizing {
+            if aiStatus == .inProgress {
                 Spacer()
                     .frame(height: 16)
 
                 LKCardProgressBar(progress: progress)
                     .frame(height: 4)
-            } else {
+            } else if aiStatus == .success {
                 Spacer()
                     .frame(height: 12)
 
@@ -191,12 +197,12 @@ private struct CategorySummarizingView: View {
 
 #Preview {
     LKCard<ThumbnailView>(
-        isSummarizing: true,
+        aiStatus: .success,
         progress: 0.3,
         title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
         description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
         thumbnailImage: { ThumbnailView() },
-        tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],
+        tags: ["에스파", "SM", "오에이옹에이옹"],
         category: "Category",
         timeSince: "1일 전",
         bookMarkAction: {},

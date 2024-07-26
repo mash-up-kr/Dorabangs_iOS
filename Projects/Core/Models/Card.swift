@@ -30,6 +30,7 @@ public struct Card: Hashable {
     public let category: String?
     public let createdAt: Date
     public let keywords: [Keyword]?
+    public let aiStatus: AIStatus?
 
     public init(
         id: String,
@@ -41,7 +42,8 @@ public struct Card: Hashable {
         category: String? = nil,
         createdAt: Date,
         keywords: [Keyword]? = nil,
-        thumbnailImageUrl _: String? = nil
+        thumbnailImageUrl _: String? = nil,
+        aiStatus: AIStatus? = nil
     ) {
         self.id = id
         self.folderId = folderId
@@ -52,5 +54,6 @@ public struct Card: Hashable {
         self.category = category
         self.createdAt = createdAt
         self.keywords = keywords
+        self.aiStatus = aiStatus
     }
 }

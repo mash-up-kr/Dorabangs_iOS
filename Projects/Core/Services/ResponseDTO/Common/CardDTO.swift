@@ -11,7 +11,7 @@ import Models
 
 struct CardDTO: Decodable {
     let id: String
-    let userId: String?
+    let userId: String? // TODO: 사용하는 곳 없으면 제거필요
     let folderId: String
     let url: String
     let title: String
@@ -35,7 +35,8 @@ extension CardDTO {
             description: description,
             category: "",
             createdAt: convertISO8601StringToDate(createdAt ?? "") ?? .now,
-            keywords: keywords.map { $0.map(\.toDomain) }
+            keywords: keywords.map { $0.map(\.toDomain) },
+            aiStatus: aiStatus?.toDomain
         )
     }
 

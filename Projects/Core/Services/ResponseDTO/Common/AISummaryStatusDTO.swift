@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Models
 
 enum AISummaryStatusDTO: String, Decodable {
     case success
@@ -31,6 +32,19 @@ enum AISummaryStatusDTO: String, Decodable {
             self = .failure
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid status")
+        }
+    }
+}
+
+extension AISummaryStatusDTO {
+    var toDomain: AIStatus {
+        switch self {
+        case .success:
+            .success
+        case .inProgress:
+            .inProgress
+        case .failure:
+            .failure
         }
     }
 }

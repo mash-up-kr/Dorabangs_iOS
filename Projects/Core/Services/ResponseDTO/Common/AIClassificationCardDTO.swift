@@ -32,7 +32,8 @@ extension AIClassificationCardDTO {
             title: title,
             description: description,
             createdAt: convertISO8601StringToDate(createdAt) ?? .now,
-            keywords: keywords.map { Keyword(id: UUID().uuidString, name: $0) }
+            keywords: keywords.map { Keyword(id: UUID().uuidString, name: $0) },
+            aiStatus: aiStatus?.toDomain ?? .inProgress
         )
     }
 
