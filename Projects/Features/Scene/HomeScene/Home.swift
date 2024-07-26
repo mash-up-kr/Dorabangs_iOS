@@ -76,6 +76,7 @@ public struct Home {
 
     public init() {}
 
+    @Dependency(\.folderClient) var folderClient
     @Dependency(\.folderAPIClient) var folderAPIClient
     @Dependency(\.postAPIClient) var postAPIClient
 
@@ -197,6 +198,16 @@ public struct Home {
 
             case let .setFolderList(folderList):
                 state.tabs = HomeTab.State(tabs: folderList)
+
+                let folderDictionary: [String: String] = folderList.reduce(into: [String: String]()) { dict, folder in
+                    var folderId = folder.id
+
+                    if folderId.isEmpty {
+                        folderId = folder.name
+                    }
+                    dict[folderId] = folder.name
+                }
+                folderClient.setFolderList(folderDictionary) // TODO: 실패했을 경우 처리 필요
                 return .none
 
             case .showErrorToast:
