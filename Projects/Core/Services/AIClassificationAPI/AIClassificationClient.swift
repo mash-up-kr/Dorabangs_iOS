@@ -15,6 +15,7 @@ import Models
 public struct AIClassificationAPIClient {
     public var getFolders: @Sendable () async throws -> (totalCounts: Int, folders: [Folder])
     public var getPosts: @Sendable (_ folderId: String?, _ page: Int) async throws -> CardListModel
+    public var getAIClassificationCount: @Sendable () async throws -> Int
     public var deletePost: @Sendable (_ postId: String) async throws -> Void
     public var patchAllPost: @Sendable (_ suggestionFolderId: String) async throws -> Void
     public var patchPost: @Sendable (_ suggestionFolderId: String, _ postId: String) async throws -> Void
@@ -39,6 +40,11 @@ extension AIClassificationAPIClient: DependencyKey {
             let responseDTO: GetAIClassificationPostsResponseDTO = try await Provider().request(api)
             let cards = responseDTO.list.map(\.toDomain)
             return CardListModel(hasNext: responseDTO.metadata.hasNext, total: responseDTO.metadata.total, cards: cards)
+        },
+        getAIClassificationCount: {
+            let api = AIClassificationAPI.getAIClassificationCount
+            let count: Int = try await Provider().request(api)
+            return count
         },
         deletePost: { postId in
             let api = AIClassificationAPI.deletePost(postId: postId)

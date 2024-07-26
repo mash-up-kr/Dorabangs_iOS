@@ -76,6 +76,7 @@ public struct Home {
 
     public init() {}
 
+    @Dependency(\.aiClassificationAPIClient) var aiClassificationAPIClient
     @Dependency(\.folderClient) var folderClient
     @Dependency(\.folderAPIClient) var folderAPIClient
     @Dependency(\.postAPIClient) var postAPIClient
@@ -99,8 +100,9 @@ public struct Home {
                 }
 
             case .fetchAILinkCount:
-                state.aiLinkCount = 1
-                return .none
+                return .run { send in
+                    try await handleAIClassificationCount(send: send)
+                }
 
             case .fetchUnReadLinkCount:
                 state.unreadLinkCount = 0
@@ -255,6 +257,12 @@ public struct Home {
 }
 
 private extension Home {
+    private func handleAIClassificationCount(send: Send<Home.Action>) async throws {
+        let aiClassificationCount = try await aiClassificationAPIClient.getAIClassificationCount()
+
+        await send(.setAILinkCount(aiClassificationCount))
+    }
+
     private func handleFolderList(send: Send<Home.Action>) async throws {
         let folderList = try await folderAPIClient.getFolders()
 

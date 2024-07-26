@@ -12,6 +12,7 @@ import Foundation
 enum AIClassificationAPI: APIRepresentable {
     case getFolders
     case getPosts(folderId: String?, page: Int)
+    case getAIClassificationCount
     case deletePost(postId: String)
     case patchAllPost(suggestionFolderId: String)
     case patchPost(suggestionFolderId: String, postId: String)
@@ -28,6 +29,8 @@ extension AIClassificationAPI {
             } else {
                 "/classification/posts"
             }
+        case .getAIClassificationCount:
+            "/classification/count"
         case let .deletePost(postId):
             "/classification/posts/\(postId)"
         case .patchAllPost:
@@ -39,7 +42,7 @@ extension AIClassificationAPI {
 
     var method: HTTPMethod {
         switch self {
-        case .getFolders, .getPosts: .get
+        case .getFolders, .getPosts, .getAIClassificationCount: .get
         case .deletePost: .delete
         case .patchAllPost, .patchPost: .patch
         }
@@ -49,7 +52,7 @@ extension AIClassificationAPI {
 
     var queryString: QueryStringParameters? {
         switch self {
-        case .getFolders: .none
+        case .getFolders, .getAIClassificationCount: .none
         case let .getPosts(_, page): .dictionary(["page": page])
         case .deletePost: .none
         case let .patchAllPost(suggestionFolderId): .dictionary(["suggestionFolderId": suggestionFolderId])
@@ -61,6 +64,7 @@ extension AIClassificationAPI {
         switch self {
         case .getFolders: .none
         case .getPosts: .none
+        case .getAIClassificationCount: .none
         case .deletePost: .none
         case .patchAllPost: .none
         case let .patchPost(suggestionFolderId, _): .dictionary(["suggestionFolderId": suggestionFolderId])
