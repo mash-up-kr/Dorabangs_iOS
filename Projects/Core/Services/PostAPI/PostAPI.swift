@@ -12,6 +12,8 @@ import Foundation
 enum PostAPI: APIRepresentable {
     /// 전체 피드 조회
     case getPosts
+    /// 피드 갯수 반환
+    case getPostsCount(isRead: Bool)
     /// URL 링크 저장
     case postCard(folderId: String, urlString: String)
     /// Post 상태 변경 (좋아요 / 읽음)
@@ -27,6 +29,8 @@ extension PostAPI {
         switch self {
         case .getPosts, .postCard:
             "/posts"
+        case .getPostsCount:
+            "/posts/count"
         case let .patchPost(postId, _, _),
              let .deletePost(postId):
             "/posts/\(postId)"
@@ -37,7 +41,7 @@ extension PostAPI {
 
     var method: HTTPMethod {
         switch self {
-        case .getPosts:
+        case .getPosts, .getPostsCount:
             .get
         case .postCard:
             .post
@@ -50,11 +54,17 @@ extension PostAPI {
 
     var headers: HTTPHeaders? { nil }
 
-    var queryString: QueryStringParameters? { nil }
+    var queryString: QueryStringParameters? {
+        switch self {
+        case let .getPostsCount(isRead):
+            .dictionary(["isRead": isRead])
+        default: nil
+        }
+    }
 
     var httpBody: BodyParameters? {
         switch self {
-        case .getPosts, .deletePost:
+        case .getPosts, .getPostsCount, .deletePost:
             .none
         case let .postCard(folderId, urlString):
             .dictionary(["folderId": folderId, "url": urlString])

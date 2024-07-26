@@ -19,6 +19,7 @@ public struct PostAPIClient {
         _ order: String?,
         _ favorite: Bool?
     ) async throws -> [Card]
+    public var getPostsCount: @Sendable (_ isRead: Bool) async throws -> Int
     public var postPosts: (_ folderId: String, _ url: URL) async throws -> Void
     /// Post 북마크 여부
     public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Void
@@ -44,6 +45,11 @@ extension PostAPIClient: DependencyKey {
             let responseDTO: GetPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
             return cardList
+        },
+        getPostsCount: { isRead in
+            let api = PostAPI.getPostsCount(isRead: isRead)
+            let unreadCount: Int = try await Provider().request(api)
+            return unreadCount
         },
         postPosts: { folderId, url in
             let api = PostAPI.postCard(folderId: folderId, urlString: url.absoluteString)
