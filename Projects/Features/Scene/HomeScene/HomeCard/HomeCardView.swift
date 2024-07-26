@@ -21,6 +21,8 @@ struct HomeCardView: View {
         static let LKTopScrollViewHeight: CGFloat = 56
     }
 
+    @Dependency(\.folderClient) var folderClient
+
     var body: some View {
         WithPerceptionTracking {
             VStack(spacing: 0) {
@@ -43,13 +45,13 @@ struct HomeCardView: View {
                 ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
                     VStack(spacing: 0) {
                         LKCard(
-                            isSummarizing: item.keywords != nil,
+                            aiStatus: getStatus(item.aiStatus ?? .failure),
                             progress: 0.4,
                             title: item.title,
                             description: item.description,
                             thumbnailImage: { ThumbnailImage(urlString: "") },
-                            tags: item.keywords?.map(\.name) ?? [],
-                            category: item.category ?? "",
+                            tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                            category: folderClient.getFolderName(folderId: item.folderId) ?? "",
                             timeSince: item.createdAt.timeAgo(),
                             bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                             showModalAction: { store.send(.showModalButtonTapped(index), animation: .easeInOut) }
@@ -62,6 +64,17 @@ struct HomeCardView: View {
                     }
                 }
             }
+        }
+    }
+
+    private func getStatus(_ aiStatus: AIStatus) -> LKCardAIStatus {
+        switch aiStatus {
+        case .success:
+            .success
+        case .failure:
+            .failure
+        case .inProgress:
+            .inProgress
         }
     }
 }

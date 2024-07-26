@@ -16,7 +16,7 @@ public struct LKTag: View {
     }
 
     public var body: some View {
-        Text(tag)
+        Text("# \(tag)")
             .font(weight: .bold, semantic: .xs)
             .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
             .padding(.horizontal, 8)
