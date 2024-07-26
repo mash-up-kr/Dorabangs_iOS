@@ -40,6 +40,7 @@ let project = Project.make(
                 .scene(.createNewFolder),
                 .scene(.saveURLVideoGuide),
                 .coordinator(.aiClassification),
+                .coordinator(.feed),
                 .coordinator(.saveURL),
                 .spm(.tcaCoordinators)
             ]

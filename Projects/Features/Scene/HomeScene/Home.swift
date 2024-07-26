@@ -71,6 +71,7 @@ public struct Home {
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
         case routeToAIClassificationScreen
+        case routeToUnreadFeed
         case routeToSaveURLVideoGuideScreen
     }
 
@@ -217,9 +218,9 @@ public struct Home {
                     return .send(.routeToAIClassificationScreen)
                 } else if bannerType == .onboarding {
                     return .send(.routeToSaveURLVideoGuideScreen)
+                } else {
+                    return .send(.routeToUnreadFeed)
                 }
-                // TODO: 배너 버튼 클릭 시 동작 구현
-                print("Banner Type \(bannerType) 탭 됐어요~")
                 return .none
 
             case let .showModalButtonTapped(index):

@@ -9,8 +9,10 @@
 import AIClassificationCoordinator
 import ComposableArchitecture
 import CreateNewFolder
+import FeedCoordinator
 import Foundation
 import Home
+import Models
 import SaveURLCoordinator
 import SaveURLVideoGuide
 import TCACoordinators
@@ -21,6 +23,7 @@ public enum HomeScreen {
     case saveURLCoordinator(SaveURLCoordinator)
     case createNewFolder(CreateNewFolder)
     case aiClassificationCoordinator(AIClassificationCoordinator)
+    case feedCoordinator(FeedCoordinator)
     case saveURLVideoGuide(SaveURLVideoGuide)
 }
 
@@ -58,6 +61,9 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .aiClassificationCoordinator(action))):
                 return handleAIClassificationCoordinatorAction(into: &state, action: action)
 
+            case let .router(.routeAction(id: _, action: .feedCoordinator(action))):
+                return handleFeedCoordinatorAction(into: &state, action: action)
+
             case let .router(.routeAction(id: _, action: .saveURLVideoGuide(action))):
                 return handleSaveURLVideoGuideAction(into: &state, action: action)
 
@@ -92,6 +98,10 @@ public extension HomeCoordinator {
 
         case .routeToAIClassificationScreen:
             state.routes.push(.aiClassificationCoordinator(.initialState))
+            return .none
+
+        case .routeToUnreadFeed:
+            state.routes.push(.feedCoordinator(.init(Folder(id: "", name: "", type: .all, postCount: 6))))
             return .none
 
         case .routeToSaveURLVideoGuideScreen:
@@ -133,6 +143,17 @@ public extension HomeCoordinator {
     }
 
     func handleAIClassificationCoordinatorAction(into state: inout State, action: AIClassificationCoordinator.Action) -> Effect<Action> {
+        switch action {
+        case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
+        default:
+            return .none
+        }
+    }
+
+    func handleFeedCoordinatorAction(into state: inout State, action: FeedCoordinator.Action) -> Effect<Action> {
         switch action {
         case .routeToPreviousScreen:
             state.routes.goBack()
