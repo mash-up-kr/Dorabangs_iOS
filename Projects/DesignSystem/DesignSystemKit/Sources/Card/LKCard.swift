@@ -62,7 +62,7 @@ public struct LKCard<Thumbnail: View>: View {
                         SummarizingView()
                     } else {
                         HStack(spacing: 4) {
-                            Image(.icStar)
+                            Image(.icAi)
                                 .frame(width: 14, height: 14)
 
                             // TODO: Constants로 변경~
@@ -158,7 +158,7 @@ private struct SummarizingView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 4) {
-                Image(.icStar)
+                Image(.icAi)
                     .frame(width: 14, height: 14)
 
                 Text("요약 중")
