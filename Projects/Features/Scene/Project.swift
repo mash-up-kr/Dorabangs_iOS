@@ -16,6 +16,7 @@ let project = Project.make(
                 .spm(.acarousel),
                 .spm(.composableArchitecture),
                 .spm(.lottie),
+                .spm(.kingfisher),
                 .designSystem
             ]
         ),
@@ -51,6 +52,7 @@ let project = Project.make(
             dependencies: [
                 .core(.service),
                 .spm(.composableArchitecture),
+                .spm(.kingfisher),
                 .designSystem,
                 .core(.model)
             ]

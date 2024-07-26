@@ -9,6 +9,7 @@
 import Common
 import ComposableArchitecture
 import DesignSystemKit
+import Kingfisher
 import Models
 import SwiftUI
 
@@ -46,6 +47,7 @@ struct HomeCardView: View {
                             progress: 0.4,
                             title: item.title,
                             description: item.description,
+                            thumbnailImage: { ThumbnailImage(urlString: "") },
                             tags: item.keywords?.map(\.name) ?? [],
                             category: item.category ?? "",
                             timeSince: item.createdAt.timeAgo(),
@@ -60,6 +62,24 @@ struct HomeCardView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+struct ThumbnailImage: View {
+    let urlString: String?
+
+    var body: some View {
+        if let urlString, let url = URL(string: urlString) {
+            KFImage(url)
+                .placeholder {
+                    DesignSystemKitAsset.Colors.g2.swiftUIColor
+                }
+                .roundCorner(radius: .point(4), roundingCorners: .all)
+                .resizable()
+                .frame(width: 80, height: 80)
+        } else {
+            DesignSystemKitAsset.Colors.g2.swiftUIColor
         }
     }
 }

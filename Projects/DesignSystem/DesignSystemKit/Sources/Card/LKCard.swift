@@ -8,11 +8,12 @@
 
 import SwiftUI
 
-public struct LKCard: View {
+public struct LKCard<Thumbnail: View>: View {
     public var isSummarizing: Bool = true
     public var progress: CGFloat = 0.3
     private let title: String?
     private let description: String?
+    private let thumbnailImage: () -> Thumbnail
     private let tags: [String]
     private let category: String
     private let timeSince: String
@@ -24,6 +25,7 @@ public struct LKCard: View {
         progress: CGFloat,
         title: String?,
         description: String?,
+        thumbnailImage: @escaping () -> Thumbnail,
         tags: [String],
         category: String,
         timeSince: String,
@@ -34,6 +36,7 @@ public struct LKCard: View {
         self.progress = progress
         self.title = title
         self.description = description
+        self.thumbnailImage = thumbnailImage
         self.tags = tags
         self.category = category
         self.timeSince = timeSince
@@ -72,8 +75,7 @@ public struct LKCard: View {
                 }
 
                 VStack(spacing: 0) {
-                    DesignSystemKitAsset.Colors.g2.swiftUIColor
-                        .frame(width: 65, height: 65)
+                    thumbnail
                 }
             }
 
@@ -134,6 +136,16 @@ public struct LKCard: View {
         .padding(20)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
+
+    private var thumbnail: some View {
+        VStack(spacing: 0) {
+            thumbnailImage()
+                .frame(width: 80, height: 80)
+                .cornerRadius(4, corners: .allCorners)
+
+            Spacer()
+        }
+    }
 }
 
 private struct SummarizingView: View {
@@ -178,11 +190,12 @@ private struct CategorySummarizingView: View {
 }
 
 #Preview {
-    LKCard(
+    LKCard<ThumbnailView>(
         isSummarizing: true,
         progress: 0.3,
         title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
         description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
+        thumbnailImage: { ThumbnailView() },
         tags: ["# 에스파", "# SM", "# 오에이옹에이옹"],
         category: "Category",
         timeSince: "1일 전",
