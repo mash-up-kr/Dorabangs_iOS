@@ -38,16 +38,17 @@ public enum Scene: String {
     case changeFolderName = "ChangeFolderName"
 	case aiClassification = "AIClassification"
 	case setting = "Setting"
+	case saveURLVideoGuide = "SaveURLVideoGuide"
 }
 
 public enum SPM: String {
 	case acarousel = "ACarousel"
     case alamofire = "Alamofire"
 	case composableArchitecture = "ComposableArchitecture"
-    case lottie = "Lottie"
 	case tcaCoordinators = "TCACoordinators"
 	case keychainAccess = "KeychainAccess"
 	case kingfisher = "Kingfisher"
+	case lottie = "Lottie"
 }
 
 public enum ShareExtension: String {

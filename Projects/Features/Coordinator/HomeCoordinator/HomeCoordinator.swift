@@ -12,6 +12,7 @@ import CreateNewFolder
 import Foundation
 import Home
 import SaveURLCoordinator
+import SaveURLVideoGuide
 import TCACoordinators
 
 @Reducer(state: .equatable)
@@ -20,6 +21,7 @@ public enum HomeScreen {
     case saveURLCoordinator(SaveURLCoordinator)
     case createNewFolder(CreateNewFolder)
     case aiClassificationCoordinator(AIClassificationCoordinator)
+    case saveURLVideoGuide(SaveURLVideoGuide)
 }
 
 @Reducer
@@ -56,6 +58,9 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .aiClassificationCoordinator(action))):
                 return handleAIClassificationCoordinatorAction(into: &state, action: action)
 
+            case let .router(.routeAction(id: _, action: .saveURLVideoGuide(action))):
+                return handleSaveURLVideoGuideAction(into: &state, action: action)
+
             case let .routeToSaveURLCoordinator(url):
                 state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: url)))
                 return .none
@@ -87,6 +92,10 @@ public extension HomeCoordinator {
 
         case .routeToAIClassificationScreen:
             state.routes.push(.aiClassificationCoordinator(.initialState))
+            return .none
+
+        case .routeToSaveURLVideoGuideScreen:
+            state.routes.push(.saveURLVideoGuide(.initialState))
             return .none
 
         default:
@@ -124,6 +133,17 @@ public extension HomeCoordinator {
     }
 
     func handleAIClassificationCoordinatorAction(into state: inout State, action: AIClassificationCoordinator.Action) -> Effect<Action> {
+        switch action {
+        case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
+        default:
+            return .none
+        }
+    }
+
+    func handleSaveURLVideoGuideAction(into state: inout State, action: SaveURLVideoGuide.Action) -> Effect<Action> {
         switch action {
         case .routeToPreviousScreen:
             state.routes.goBack()

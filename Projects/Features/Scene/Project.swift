@@ -27,6 +27,7 @@ let project = Project.make(
             dependencies: [
                 .core(.service),
                 .spm(.composableArchitecture),
+                .spm(.lottie),
                 .designSystem
             ]
         ),
@@ -143,6 +144,16 @@ let project = Project.make(
             sources: ["SettingScene/**"],
             dependencies: [
                 .core(.service),
+                .spm(.composableArchitecture),
+                .designSystem
+            ]
+        ),
+        .make(
+            name: "SaveURLVideoGuide",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.saveURLVideoGuide",
+            sources: ["SaveURLVideoGuideScene/**"],
+            dependencies: [
                 .spm(.composableArchitecture),
                 .designSystem
             ]

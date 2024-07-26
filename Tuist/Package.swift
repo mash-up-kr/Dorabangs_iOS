@@ -9,10 +9,10 @@ import PackageDescription
             "ACarousel": .framework,
             "Alamofire": .framework,
             "ComposableArchitecture": .framework,
-            "Lottie": .framework,
 			"TCACoordinators": .framework,
 			"KeychainAccess": .framework,
-			"Kingfisher": .framework
+			"Kingfisher": .framework,
+			"Lottie": .framework
         ]
     )
 #endif

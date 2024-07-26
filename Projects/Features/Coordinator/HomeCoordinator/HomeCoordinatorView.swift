@@ -11,6 +11,7 @@ import ComposableArchitecture
 import CreateNewFolder
 import Home
 import SaveURLCoordinator
+import SaveURLVideoGuide
 import SwiftUI
 import TCACoordinators
 
@@ -49,6 +50,12 @@ public struct HomeCoordinatorView<Content: View>: View {
 
             case let .aiClassificationCoordinator(store):
                 AIClassificationCoordinatorView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .saveURLVideoGuide(store):
+                SaveURLVideoGuideView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

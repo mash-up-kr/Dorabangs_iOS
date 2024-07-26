@@ -36,7 +36,10 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.designSystemKit",
             infoPlist: .extendingDefault(with: ["UIAppFonts": "NanumSquareNeo-Variable.ttf"]),
             sources: ["DesignSystemKit/Sources/**"],
-            resources: ["DesignSystemKit/Resources/**"]
+            resources: ["DesignSystemKit/Resources/**"],
+            dependencies: [
+                .spm(.lottie)
+            ]
         )
     ],
     schemes: [
