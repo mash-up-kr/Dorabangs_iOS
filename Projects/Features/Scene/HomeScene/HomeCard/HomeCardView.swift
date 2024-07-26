@@ -49,7 +49,7 @@ struct HomeCardView: View {
                             progress: 0.4,
                             title: item.title,
                             description: item.description,
-                            thumbnailImage: { ThumbnailImage(urlString: "") },
+                            thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
                             tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
                             category: folderClient.getFolderName(folderId: item.folderId) ?? "",
                             timeSince: item.createdAt.timeAgo(),

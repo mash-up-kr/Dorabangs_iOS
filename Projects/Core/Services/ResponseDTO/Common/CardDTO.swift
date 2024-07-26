@@ -20,7 +20,7 @@ struct CardDTO: Decodable {
     let createdAt: String?
     let readAt: String?
     let keywords: [KeywordDTO]?
-    let thumbnailImagUrl: String?
+    let thumbnailImgUrl: String?
     let aiStatus: AISummaryStatusDTO?
 }
 
@@ -30,7 +30,7 @@ extension CardDTO {
             id: id,
             folderId: folderId,
             urlString: url,
-            thumbnail: nil,
+            thumbnail: thumbnailImgUrl,
             title: title,
             description: description,
             category: "",
