@@ -56,6 +56,9 @@ struct HomeCardView: View {
                             bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                             showModalAction: { store.send(.showModalButtonTapped(index), animation: .easeInOut) }
                         )
+                        .onTapGesture {
+                            store.send(.cardTapped(item: item))
+                        }
                         .onAppear {
                             if index % 9 == 0 {
                                 store.send(.fetchCards)
