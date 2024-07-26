@@ -33,6 +33,7 @@ public struct HomeCard {
         case setScrollPage
 
         // MARK: User Action
+        case cardTapped(item: Card)
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
     }

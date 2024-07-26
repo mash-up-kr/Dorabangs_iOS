@@ -14,6 +14,7 @@ import SaveURLCoordinator
 import SaveURLVideoGuide
 import SwiftUI
 import TCACoordinators
+import Web
 
 public struct HomeCoordinatorView<Content: View>: View {
     private let store: StoreOf<HomeCoordinator>
@@ -56,6 +57,12 @@ public struct HomeCoordinatorView<Content: View>: View {
 
             case let .saveURLVideoGuide(store):
                 SaveURLVideoGuideView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .web(store):
+                WebView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
