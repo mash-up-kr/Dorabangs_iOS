@@ -72,6 +72,7 @@ public struct Home {
         case routeToSelectFolder(URL)
         case routeToAIClassificationScreen
         case routeToUnreadFeed
+        case routeToWebScreen(URL)
         case routeToSaveURLVideoGuideScreen
     }
 
@@ -235,6 +236,10 @@ public struct Home {
                 return .run { send in
                     try await handleCardList(send: send, folderId: folderId)
                 }
+
+            case let .cards(.cardTapped(item)):
+                guard let url = URL(string: item.urlString) else { return .none }
+                return .send(.routeToWebScreen(url))
 
             default:
                 return .none

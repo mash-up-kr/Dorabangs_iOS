@@ -16,6 +16,7 @@ import Models
 import SaveURLCoordinator
 import SaveURLVideoGuide
 import TCACoordinators
+import Web
 
 @Reducer(state: .equatable)
 public enum HomeScreen {
@@ -25,6 +26,7 @@ public enum HomeScreen {
     case aiClassificationCoordinator(AIClassificationCoordinator)
     case feedCoordinator(FeedCoordinator)
     case saveURLVideoGuide(SaveURLVideoGuide)
+    case web(Web)
 }
 
 @Reducer
@@ -67,6 +69,9 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .saveURLVideoGuide(action))):
                 return handleSaveURLVideoGuideAction(into: &state, action: action)
 
+            case let .router(.routeAction(id: _, action: .web(action))):
+                return handleWebAction(into: &state, action: action)
+
             case let .routeToSaveURLCoordinator(url):
                 state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: url)))
                 return .none
@@ -106,6 +111,10 @@ public extension HomeCoordinator {
 
         case .routeToSaveURLVideoGuideScreen:
             state.routes.push(.saveURLVideoGuide(.initialState))
+            return .none
+
+        case let .routeToWebScreen(url):
+            state.routes.push(.web(.init(url: url)))
             return .none
 
         default:
@@ -165,6 +174,17 @@ public extension HomeCoordinator {
     }
 
     func handleSaveURLVideoGuideAction(into state: inout State, action: SaveURLVideoGuide.Action) -> Effect<Action> {
+        switch action {
+        case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
+        default:
+            return .none
+        }
+    }
+
+    func handleWebAction(into state: inout State, action: Web.Action) -> Effect<Action> {
         switch action {
         case .routeToPreviousScreen:
             state.routes.goBack()
