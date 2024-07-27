@@ -17,6 +17,7 @@ struct LKCardAIStatusSuccessPreview: View {
     @State private var tags: [String] = ["에스파", "SM", "오에이옹에이옹"]
     @State private var category: String = "Category"
     @State private var timeSince: String = "1일 전"
+    @State private var isFavorite: Bool = false
 
     var body: some View {
         ComponentPreview(
@@ -30,6 +31,7 @@ struct LKCardAIStatusSuccessPreview: View {
                     tags: tags,
                     category: category,
                     timeSince: timeSince,
+                    isFavorite: isFavorite,
                     bookMarkAction: {},
                     showModalAction: {}
                 )
@@ -39,7 +41,8 @@ struct LKCardAIStatusSuccessPreview: View {
                 .textField(description: "주요 내용", text: $description),
                 .textField(description: "카테고리", text: $category),
                 .textField(description: "저장 기간", text: $timeSince),
-                .toggle(description: "요약 성공 여부", isOn: $aiStatus)
+                .toggle(description: "요약 성공 여부", isOn: $aiStatus),
+                .toggle(description: "북마크 저장", isOn: $isFavorite)
             ]
         )
         .navigationBarTitle("LKCard")

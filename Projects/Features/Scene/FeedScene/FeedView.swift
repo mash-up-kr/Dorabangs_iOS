@@ -56,6 +56,7 @@ public struct FeedView: View {
                                         tags: ["에스파", "SM", "오에이옹에이옹"],
                                         category: "Category",
                                         timeSince: "1일 전",
+                                        isFavorite: false,
                                         bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                                         showModalAction: { store.send(.showModalButtonTapped(index)) }
                                     )

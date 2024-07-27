@@ -35,6 +35,7 @@ extension CardDTO {
             description: description,
             category: "",
             createdAt: convertISO8601StringToDate(createdAt ?? "") ?? .now,
+            isFavorite: isFavorite,
             keywords: keywords.map { $0.map(\.toDomain) },
             aiStatus: aiStatus?.toDomain
         )

@@ -23,6 +23,7 @@ public struct LKCard<Thumbnail: View>: View {
     private let tags: [String]
     private let category: String
     private let timeSince: String
+    private let isFavorite: Bool
     private let bookMarkAction: () -> Void
     private let showModalAction: () -> Void
 
@@ -35,6 +36,7 @@ public struct LKCard<Thumbnail: View>: View {
         tags: [String],
         category: String,
         timeSince: String,
+        isFavorite: Bool,
         bookMarkAction: @escaping () -> Void,
         showModalAction: @escaping () -> Void
     ) {
@@ -46,6 +48,7 @@ public struct LKCard<Thumbnail: View>: View {
         self.tags = tags
         self.category = category
         self.timeSince = timeSince
+        self.isFavorite = isFavorite
         self.bookMarkAction = bookMarkAction
         self.showModalAction = showModalAction
     }
@@ -128,7 +131,7 @@ public struct LKCard<Thumbnail: View>: View {
 
                 HStack(spacing: 12) {
                     Button(action: bookMarkAction) {
-                        Image(.icBookmarkDefault)
+                        Image(isFavorite ? .icBookmarkActive : .icBookmarkDefault)
                             .frame(width: 24, height: 24)
                     }
 
@@ -205,6 +208,7 @@ private struct CategorySummarizingView: View {
         tags: ["에스파", "SM", "오에이옹에이옹"],
         category: "Category",
         timeSince: "1일 전",
+        isFavorite: true,
         bookMarkAction: {},
         showModalAction: {}
     )
