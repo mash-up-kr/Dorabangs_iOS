@@ -50,6 +50,8 @@ public struct AIClassification {
                 guard state.viewDidLoad == false else { return .none }
                 state.viewDidLoad = true
                 return .run { send in
+                    await send(.isLoadingChanged(isLoading: true))
+
                     async let folderResponse = try aiClassificationAPIClient.getFolders()
                     async let postsResponse = try aiClassificationAPIClient.getPosts(folderId: nil, page: 1)
                     let (customFolders, totalCounts, cardListModel) = try await (folderResponse.folders, folderResponse.totalCounts, postsResponse)
@@ -59,6 +61,7 @@ public struct AIClassification {
 
                     await send(.tabsChanged(.init(folders: folders, selectedFolderIndex: 0)))
                     await send(.cardsChanged(.init(folders: folders, selectedFolderId: allFolder.id, cardList: cardListModel)))
+                    await send(.isLoadingChanged(isLoading: false))
                 }
 
             case .backButtonTapped:
@@ -72,13 +75,19 @@ public struct AIClassification {
                 state.cards = cards
                 return .none
 
+            case let .isLoadingChanged(isLoading):
+                state.isLoading = isLoading
+                return .none
+
             case let .tabs(.selectedFolderIndexChanged(selectedFolderIndex)):
                 guard let folders = state.tabs?.folders else { return .none }
                 let apiSelectedFolderId = folders[selectedFolderIndex].id == Folder.ID.all ? nil : folders[selectedFolderIndex].id
                 let selectedFolderId = folders[selectedFolderIndex].id
                 return .run { send in
+                    await send(.isLoadingChanged(isLoading: true))
                     let cardListModel = try await aiClassificationAPIClient.getPosts(folderId: apiSelectedFolderId, page: 1)
                     await send(.cardsChanged(.init(folders: folders, selectedFolderId: selectedFolderId, cardList: cardListModel)))
+                    await send(.isLoadingChanged(isLoading: false))
                 }
 
             case let .cards(.sectionsChanged(sections)):
