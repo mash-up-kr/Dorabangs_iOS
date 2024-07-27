@@ -24,18 +24,21 @@ public struct AIClassificationCard {
         /// 폴더 ID와 카드 목록을 매핑하는 딕셔너리
         fileprivate(set) var items: OrderedDictionary<String, [Card]>
 
-        public init(folders: [Folder], selectedFolderId: String) {
+        public init(
+            folders: [Folder],
+            selectedFolderId: String,
+            cardList: CardListModel
+        ) {
             sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
             self.selectedFolderId = selectedFolderId
-            pageModel = AIClassificationCardPageModel(hasNext: true, currentPage: 1)
-            items = [:]
+            pageModel = AIClassificationCardPageModel(hasNext: cardList.hasNext, currentPage: 1)
+            let groupedItems = Dictionary(grouping: cardList.cards) { $0.folderId }
+            items = OrderedDictionary(uniqueKeysWithValues: groupedItems.map { ($0.key, $0.value) })
         }
     }
 
     public enum Action {
         // MARK: View Actions
-        /// 뷰가 나타날 때 발생합니다.
-        case onAppear
         /// 특정 섹션에 포함된 모든 분류 카드를 추천된 폴더로 이동시키는 버튼이 눌릴 때 발생합니다.
         case moveToAllItemsToFolderButtonTapped(section: Folder)
         /// 특저 섹션에 포함된 분류 카드에 대해 삭제 버튼이 눌릴 때 발생합니다.
@@ -44,8 +47,6 @@ public struct AIClassificationCard {
         case moveToFolderButtonTapped(section: Folder, item: Card)
 
         // MARK: Inner Business Actions
-        /// AI 분류 카드를 가져옵니다.
-        case fetchAIClassificationCards
         /// 가능하면 다음 페이지의 카드를 가져옵니다.
         case fetchNextPageIfPossible(item: Card)
         /// 현재 항목에 AI 분류 카드 목록을 추가합니다.
@@ -71,9 +72,6 @@ public struct AIClassificationCard {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
-                return .send(.fetchAIClassificationCards)
-
             case let .moveToAllItemsToFolderButtonTapped(section):
                 return updateSectionsAndItems(
                     sections: state.sections,
@@ -118,14 +116,6 @@ public struct AIClassificationCard {
                         items.removeAll { $0.value.isEmpty }
                     }
                 )
-
-            case .fetchAIClassificationCards:
-                let folderId = state.selectedFolderId == Folder.ID.all ? nil : state.selectedFolderId
-                return .run { [currentPage = state.pageModel.currentPage] send in
-                    let cardModel = try await aiClassificationAPIClient.getPosts(folderId, currentPage)
-                    await send(.pageModelChanged(pageModel: AIClassificationCardPageModel(hasNext: cardModel.hasNext, currentPage: currentPage)))
-                    await send(.appendAIClassificationCards(cards: cardModel.cards))
-                }
 
             case let .fetchNextPageIfPossible(item):
                 guard state.pageModel.hasNext, let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }

@@ -17,6 +17,7 @@ public struct AIClassification {
         public static let initialState = State()
         // 처음 진입했을 때만 API를 호출하기 위해 ViewDidLoad 여부를 저장합니다.
         var viewDidLoad: Bool = false
+        var isLoading: Bool = false
         var tabs: AIClassificationTab.State?
         var cards: AIClassificationCard.State?
 
@@ -29,6 +30,7 @@ public struct AIClassification {
 
         case tabsChanged(AIClassificationTab.State)
         case cardsChanged(AIClassificationCard.State)
+        case isLoadingChanged(isLoading: Bool)
 
         case routeToHomeScreen
         case routeToFeedScreen(folder: Folder)
@@ -48,11 +50,15 @@ public struct AIClassification {
                 guard state.viewDidLoad == false else { return .none }
                 state.viewDidLoad = true
                 return .run { send in
-                    let (totalCounts, customFolders) = try await aiClassificationAPIClient.getFolders()
+                    async let folderResponse = try aiClassificationAPIClient.getFolders()
+                    async let postsResponse = try aiClassificationAPIClient.getPosts(folderId: nil, page: 1)
+                    let (customFolders, totalCounts, cardListModel) = try await (folderResponse.folders, folderResponse.totalCounts, postsResponse)
+
                     let allFolder = Folder(id: Folder.ID.all, name: "전체", type: .all, postCount: totalCounts)
                     let folders = [allFolder] + customFolders
+
                     await send(.tabsChanged(.init(folders: folders, selectedFolderIndex: 0)))
-                    await send(.cardsChanged(.init(folders: folders, selectedFolderId: allFolder.id)))
+                    await send(.cardsChanged(.init(folders: folders, selectedFolderId: allFolder.id, cardList: cardListModel)))
                 }
 
             case .backButtonTapped:
@@ -68,9 +74,12 @@ public struct AIClassification {
 
             case let .tabs(.selectedFolderIndexChanged(selectedFolderIndex)):
                 guard let folders = state.tabs?.folders else { return .none }
+                let apiSelectedFolderId = folders[selectedFolderIndex].id == Folder.ID.all ? nil : folders[selectedFolderIndex].id
                 let selectedFolderId = folders[selectedFolderIndex].id
-                state.cards = AIClassificationCard.State(folders: folders, selectedFolderId: selectedFolderId)
-                return .send(.cards(.fetchAIClassificationCards))
+                return .run { send in
+                    let cardListModel = try await aiClassificationAPIClient.getPosts(folderId: apiSelectedFolderId, page: 1)
+                    await send(.cardsChanged(.init(folders: folders, selectedFolderId: selectedFolderId, cardList: cardListModel)))
+                }
 
             case let .cards(.sectionsChanged(sections)):
                 let folders = sections.values.elements

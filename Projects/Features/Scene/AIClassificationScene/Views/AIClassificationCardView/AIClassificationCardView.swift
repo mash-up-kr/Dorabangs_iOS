@@ -28,9 +28,6 @@ struct AIClassificationCardView: View {
                     contentScrollView()
                 }
             }
-            .onAppear {
-                store.send(.onAppear)
-            }
         }
     }
 
