@@ -9,6 +9,7 @@
 import AIClassificationCoordinator
 import ComposableArchitecture
 import CreateNewFolder
+import FeedCoordinator
 import Home
 import SaveURLCoordinator
 import SaveURLVideoGuide
@@ -51,6 +52,12 @@ public struct HomeCoordinatorView<Content: View>: View {
 
             case let .aiClassificationCoordinator(store):
                 AIClassificationCoordinatorView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .feedCoordinator(store):
+                FeedCoordinatorView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

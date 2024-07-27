@@ -32,7 +32,7 @@ struct LKCardProgressBar: View {
                 }
 
                 Rectangle()
-                    .frame(width: geometry.size.width - geometry.size.width * progress - 4)
+                    .frame(width: max(geometry.size.width - geometry.size.width * progress - 4, geometry.size.width))
                     .frame(height: 4)
                     .foregroundStyle(DesignSystemKitAsset.Colors.gradient2)
                     .cornerRadius(99, corners: .allCorners)

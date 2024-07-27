@@ -41,6 +41,7 @@ let project = Project.make(
                 .scene(.web),
                 .scene(.saveURLVideoGuide),
                 .coordinator(.aiClassification),
+                .coordinator(.feed),
                 .coordinator(.saveURL),
                 .spm(.tcaCoordinators)
             ]

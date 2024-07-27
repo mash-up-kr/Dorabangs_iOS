@@ -71,6 +71,7 @@ public struct Home {
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
         case routeToAIClassificationScreen
+        case routeToUnreadFeed
         case routeToWebScreen(URL)
         case routeToSaveURLVideoGuideScreen
     }
@@ -89,16 +90,7 @@ public struct Home {
         Reduce { state, action in
             switch action {
             case .onAppear:
-//                let home = [
-//                    Folder(id: "", name: "모든 링크", type: .all, postCount: 0),
-//                    Folder(id: "", name: "즐겨찾기", type: .favorite, postCount: 0),
-//                    Folder(id: "", name: "나중에 읽을 링크", type: .default, postCount: 0)
-//                ]
-//                state.tabs = HomeTab.State(tabs: home)
-                state.cards = HomeCard.State(cards: [])
-                return .run { send in
-                    await send(.fetchData)
-                }
+                return .send(.fetchData)
 
             case .fetchAILinkCount:
                 return .run { send in
@@ -106,8 +98,9 @@ public struct Home {
                 }
 
             case .fetchUnReadLinkCount:
-                state.unreadLinkCount = 0
-                return .none
+                return .run { send in
+                    try await handleUnreadLinkCount(send: send)
+                }
 
             case .fetchData:
                 return .concatenate(
@@ -226,9 +219,9 @@ public struct Home {
                     return .send(.routeToAIClassificationScreen)
                 } else if bannerType == .onboarding {
                     return .send(.routeToSaveURLVideoGuideScreen)
+                } else {
+                    return .send(.routeToUnreadFeed)
                 }
-                // TODO: 배너 버튼 클릭 시 동작 구현
-                print("Banner Type \(bannerType) 탭 됐어요~")
                 return .none
 
             case let .showModalButtonTapped(index):
@@ -262,6 +255,11 @@ public struct Home {
 }
 
 private extension Home {
+    private func handleUnreadLinkCount(send: Send<Home.Action>) async throws {
+        let unreadLinkCount = try await postAPIClient.getPostsCount(isRead: false)
+        await send(.setUnReadLinkCount(unreadLinkCount))
+    }
+
     private func handleAIClassificationCount(send: Send<Home.Action>) async throws {
         let aiClassificationCount = try await aiClassificationAPIClient.getAIClassificationCount()
 
