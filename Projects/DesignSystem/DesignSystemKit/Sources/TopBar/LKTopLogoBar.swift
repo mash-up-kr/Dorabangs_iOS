@@ -17,9 +17,10 @@ public struct LKTopLogoBar: View {
 
     public var body: some View {
         HStack(spacing: 0) {
-            // TODO: 로고로 변경 필요
-            Color.pink
-                .frame(width: 51, height: 26)
+            Image(.imgLogoText)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 22)
 
             Spacer()
 
