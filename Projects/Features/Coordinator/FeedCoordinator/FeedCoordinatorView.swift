@@ -12,6 +12,7 @@ import Feed
 import StorageBox
 import SwiftUI
 import TCACoordinators
+import Web
 
 public struct FeedCoordinatorView: View {
     private let store: StoreOf<FeedCoordinator>
@@ -31,6 +32,11 @@ public struct FeedCoordinatorView: View {
                         .navigationBarTitleDisplayMode(.inline)
                 case let .changeFolderName(store):
                     ChangeFolderNameView(store: store)
+                        .navigationBarHidden(true)
+                        .navigationTitle("")
+                        .navigationBarTitleDisplayMode(.inline)
+                case let .web(store):
+                    WebView(store: store)
                         .navigationBarHidden(true)
                         .navigationTitle("")
                         .navigationBarTitleDisplayMode(.inline)
