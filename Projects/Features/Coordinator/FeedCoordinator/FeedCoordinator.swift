@@ -53,7 +53,6 @@ public struct FeedCoordinator {
                 return .none
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let patchedFolder)))):
                 state.routes.goBack()
-                // TODO: - routeFeed 만들어야함
                 return .send(.router(.routeAction(id: 0, action: .feed(.changedFolderName(patchedFolder)))))
             case .router(.routeAction(id: _, action: .web(.routeToPreviousScreen))):
                 state.routes.goBack()
@@ -74,7 +73,7 @@ public extension FeedCoordinator {
         case let .routeToChangeFolderName(folderId):
             state.routes.push(.changeFolderName(.init(folderID: folderId, folders: [])))
             return .none
-        case .removeFolder:
+        case .removeFolderResult:
             return .send(.routeToPreviousScreen)
         case let .routeToWebScreen(url):
             state.routes.push(.web(.init(url: url)))
