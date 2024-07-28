@@ -71,9 +71,8 @@ public extension FeedCoordinator {
         switch action {
         case .routeToPreviousScreen:
             return .send(.routeToPreviousScreen)
-        case let .routeToChangeFolderName(folderTitle):
-            // TODO: - folderID담아가는 걸로 수정해야함
-            state.routes.push(.changeFolderName(.init(folderID: "", folders: [folderTitle])))
+        case let .routeToChangeFolderName(folderId):
+            state.routes.push(.changeFolderName(.init(folderID: folderId, folders: [])))
             return .none
         case .removeFolder:
             return .send(.routeToPreviousScreen)

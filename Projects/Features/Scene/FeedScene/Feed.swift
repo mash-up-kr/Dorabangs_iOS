@@ -120,8 +120,8 @@ public struct Feed {
                 return .none
             case .tapChangeFolderName:
                 state.editFolderPopupIsPresented = false
-                return .send(.routeToChangeFolderName(state.currentFolder.name))
-            case let .routeToChangeFolderName(currentTitle):
+                return .send(.routeToChangeFolderName(state.currentFolder.id))
+            case let .routeToChangeFolderName(currentFolderId):
                 return .none
             case let .changedFolderName(newName):
                 // TODO: - 통신탄 결과로 수정해야함~
