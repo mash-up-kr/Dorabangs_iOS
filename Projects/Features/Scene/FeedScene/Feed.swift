@@ -52,7 +52,8 @@ public struct Feed {
 
         case showRemoveFolderPopup
         case tapRemoveButton
-        case removeFolder
+        case removeFolder(String)
+        case removeFolderResult
         case cancelRemoveFolder
 
         case routeToChangeFolderName(String)
@@ -135,7 +136,16 @@ public struct Feed {
             case .tapRemoveButton:
                 state.editFolderPopupIsPresented = false
                 state.removeFolderPopupIsPresented = false
-                return .send(.removeFolder)
+                return .send(.removeFolder(state.currentFolder.id))
+            case let .removeFolder(folderId):
+                return .run { send in
+                    try await folderAPIClient.deleteFolder(folderId)
+                    await send(.removeFolderResult)
+                } catch: { _, _ in
+                    // TODO: Handle error
+                }
+            case .removeFolderResult:
+                return .none
             case .cancelRemoveFolder:
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
