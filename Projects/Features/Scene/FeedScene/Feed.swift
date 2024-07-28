@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import Models
 import Services
 
@@ -45,6 +46,7 @@ public struct Feed {
         case tapUnreadType
         case tapSortLatest
         case tapSortPast
+        case tapCard(item: Card)
 
         case tapChangeFolderName
 
@@ -59,6 +61,7 @@ public struct Feed {
         case bookMarkButtonTapped(Int)
         case showModalButtonTapped(Int)
 
+        case routeToWebScreen(URL)
         case binding(BindingAction<State>)
     }
 
@@ -137,6 +140,9 @@ public struct Feed {
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
                 return .none
+            case let .tapCard(item):
+                guard let url = URL(string: item.urlString) else { return .none }
+                return .send(.routeToWebScreen(url))
             case let .bookMarkButtonTapped(index):
                 // TODO: 카드 > 북마크 버튼 탭 동작 구현
                 return .none

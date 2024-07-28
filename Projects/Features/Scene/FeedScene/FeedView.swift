@@ -6,9 +6,11 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import Common
 import ComposableArchitecture
 import DesignSystemKit
 import Kingfisher
+import Models
 import SwiftUI
 
 public struct FeedView: View {
@@ -46,19 +48,24 @@ public struct FeedView: View {
                                     }
                                 })
 
-                                ForEach(store.cards.indices, id: \.self) { index in
-                                    LKCard(
-                                        aiStatus: .inProgress,
-                                        progress: 1.0,
-                                        title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
-                                        description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
-                                        thumbnailImage: { ThumbnailImage(urlString: "") },
-                                        tags: ["에스파", "SM", "오에이옹에이옹"],
-                                        category: "Category",
-                                        timeSince: "1일 전",
-                                        bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                                        showModalAction: { store.send(.showModalButtonTapped(index)) }
-                                    )
+                                ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
+                                    VStack(spacing: 0) {
+                                        LKCard(
+                                            aiStatus: getStatus(item.aiStatus ?? .failure),
+                                            progress: 0.4,
+                                            title: item.title,
+                                            description: item.description,
+                                            thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
+                                            tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                                            category: store.currentFolder.name,
+                                            timeSince: item.createdAt.timeAgo(),
+                                            bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
+                                            showModalAction: { store.send(.showModalButtonTapped(index)) }
+                                        )
+                                        .onTapGesture {
+                                            store.send(.tapCard(item: item))
+                                        }
+                                    }
                                 }
                             }
                         } header: {
@@ -95,6 +102,17 @@ public struct FeedView: View {
                 })
             })
             .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+        }
+    }
+
+    private func getStatus(_ aiStatus: AIStatus) -> LKCardAIStatus {
+        switch aiStatus {
+        case .success:
+            .success
+        case .failure:
+            .failure
+        case .inProgress:
+            .inProgress
         }
     }
 }
