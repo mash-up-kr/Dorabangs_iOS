@@ -11,7 +11,7 @@ import Foundation
 public struct PostPageModel: Equatable {
     var currentPage: Int
     var order: Order
-    var onlyUnread: Bool?
+    var isRead: Bool?
     var isLast: Bool
     var isLoading: Bool
 
@@ -22,8 +22,8 @@ public struct PostPageModel: Equatable {
 
     public init() {
         currentPage = 1
-        order = .ASC
-        onlyUnread = nil
+        order = .DESC
+        isRead = nil
         isLast = false
         isLoading = false
     }
