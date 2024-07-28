@@ -100,7 +100,7 @@ public struct Feed {
                                                            page: pageModel.currentPage,
                                                            limit: 10,
                                                            order: pageModel.order.rawValue,
-                                                           unread: pageModel.onlyUnread)
+                                                           isRead: pageModel.isRead)
                     }))
                 }
             case let .fetchPostListResult(.success(resultModel)):
@@ -119,14 +119,24 @@ public struct Feed {
             case .tapMore:
                 state.editFolderPopupIsPresented = true
                 return .none
+            case .tapAllType:
+                state.pageModel.isLoading = true
+                state.pageModel.currentPage = 1
+                state.pageModel.isRead = nil
+                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+            case .tapUnreadType:
+                state.pageModel.isLoading = true
+                state.pageModel.currentPage = 1
+                state.pageModel.isRead = false
+                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
             case .tapSortLatest:
                 state.pageModel.isLoading = true
-                state.pageModel.order = .ASC
+                state.pageModel.order = .DESC
                 state.pageModel.currentPage = 1
                 return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
             case .tapSortPast:
                 state.pageModel.isLoading = true
-                state.pageModel.order = .DESC
+                state.pageModel.order = .ASC
                 state.pageModel.currentPage = 1
                 return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
             case .tapChangeFolderName:

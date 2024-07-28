@@ -15,7 +15,7 @@ enum FolderAPI: APIRepresentable {
     /// 폴더 리스트 조회
     case getFolders
     case postFolders(folders: [String])
-    case getFolderPosts(folderId: String, page: Int?, limit: Int?, order: String?, unread: Bool?)
+    case getFolderPosts(folderId: String, page: Int?, limit: Int?, order: String?, isRead: Bool?)
     case deleteFolder(folderId: String)
     case patchFolder(folderId: String, newName: String)
 }
@@ -52,11 +52,11 @@ extension FolderAPI {
 
     var queryString: QueryStringParameters? {
         switch self {
-        case let .getFolderPosts(_, page, limit, order, unread):
+        case let .getFolderPosts(_, page, limit, order, isRead):
             .dictionary(["page": page,
                          "limit": limit,
                          "order": order,
-                         "unread": unread])
+                         "isRead": isRead])
         default:
             nil
         }
