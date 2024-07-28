@@ -104,10 +104,14 @@ public struct Feed {
                     }))
                 }
             case let .fetchPostListResult(.success(resultModel)):
+                if state.pageModel.currentPage == 1 {
+                    state.cards = resultModel.cards
+                } else {
+                    state.cards.append(contentsOf: resultModel.cards)
+                }
                 state.pageModel.currentPage += 1
                 state.pageModel.isLast = !resultModel.hasNext
                 state.pageModel.isLoading = false
-                state.cards.append(contentsOf: resultModel.cards)
                 return .none
             case let .fetchPostListResult(.failure(error)):
                 state.pageModel.isLoading = false
@@ -116,9 +120,15 @@ public struct Feed {
                 state.editFolderPopupIsPresented = true
                 return .none
             case .tapSortLatest:
-                return .none
+                state.pageModel.isLoading = true
+                state.pageModel.order = .ASC
+                state.pageModel.currentPage = 1
+                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
             case .tapSortPast:
-                return .none
+                state.pageModel.isLoading = true
+                state.pageModel.order = .DESC
+                state.pageModel.currentPage = 1
+                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
             case .tapChangeFolderName:
                 state.editFolderPopupIsPresented = false
                 return .send(.routeToChangeFolderName(state.currentFolder.id))
