@@ -23,6 +23,7 @@ public struct LKCard<Thumbnail: View>: View {
     private let tags: [String]
     private let category: String
     private let timeSince: String
+    private let isFavorite: Bool
     private let bookMarkAction: () -> Void
     private let showModalAction: () -> Void
 
@@ -35,6 +36,7 @@ public struct LKCard<Thumbnail: View>: View {
         tags: [String],
         category: String,
         timeSince: String,
+        isFavorite: Bool,
         bookMarkAction: @escaping () -> Void,
         showModalAction: @escaping () -> Void
     ) {
@@ -46,110 +48,203 @@ public struct LKCard<Thumbnail: View>: View {
         self.tags = tags
         self.category = category
         self.timeSince = timeSince
+        self.isFavorite = isFavorite
         self.bookMarkAction = bookMarkAction
         self.showModalAction = showModalAction
     }
 
     public var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .top, spacing: 13) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(title ?? "")
-                        .font(weight: .bold, semantic: .caption3)
-                        .lineLimit(2)
-
-                    if aiStatus == .inProgress {
-                        SummarizingView()
-                    } else {
-                        HStack(spacing: 4) {
-                            Image(.icAi)
-                                .frame(width: 14, height: 14)
-
-                            // TODO: Constants로 변경~
-                            Text("주요 내용")
-                                .font(weight: .medium, semantic: .xs)
-                                .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
-
-                            Spacer()
-                        }
-
-                        Text(description ?? "")
-                            .font(weight: .regular, semantic: .caption1)
-                            .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
-                            .lineLimit(3)
-                    }
-                }
-
-                VStack(spacing: 0) {
-                    thumbnail
-                }
-            }
+            HeaderView(
+                title: title,
+                aiStatus: aiStatus,
+                description: description,
+                thumbnail: thumbnailImage
+            )
 
             if aiStatus == .inProgress {
-                Spacer()
-                    .frame(height: 16)
-
-                LKCardProgressBar(progress: progress)
-                    .frame(height: 4)
+                ProgressBarView(progress: progress)
             } else if aiStatus == .success {
-                Spacer()
-                    .frame(height: 12)
-
-                HStack(spacing: 12) {
-                    ForEach(tags, id: \.self) { tag in
-                        LKTag(tag)
-                    }
-
-                    Spacer()
-                }
-                .frame(height: 24)
+                TagsView(tags: tags)
             }
 
-            Spacer()
-                .frame(height: 12)
-
-            HStack {
-                HStack(spacing: 8) {
-                    Text(category)
-                        .font(weight: .regular, semantic: .xs)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-
-                    Image(.icEclipse)
-                        .frame(width: 2, height: 2)
-
-                    Text(timeSince)
-                        .font(weight: .regular, semantic: .xs)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-
-                    Spacer()
-                }
-
-                Spacer()
-
-                HStack(spacing: 12) {
-                    Button(action: bookMarkAction) {
-                        Image(.icBookmarkDefault)
-                            .frame(width: 24, height: 24)
-                    }
-
-                    Button(action: showModalAction) {
-                        Image(.icMoreGray)
-                            .frame(width: 24, height: 24)
-                    }
-                }
-            }
+            FooterView(
+                category: category,
+                timeSince: timeSince,
+                aiStatus: aiStatus,
+                isFavorite: isFavorite,
+                bookMarkAction: bookMarkAction,
+                showModalAction: showModalAction
+            )
         }
         .padding(20)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
+}
 
-    private var thumbnail: some View {
+private struct HeaderView<Thumbnail: View>: View {
+    let title: String?
+    let aiStatus: LKCardAIStatus
+    let description: String?
+    let thumbnail: () -> Thumbnail
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 13) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(title ?? "")
+                    .font(weight: .bold, semantic: .caption3)
+                    .lineLimit(2)
+
+                if aiStatus == .inProgress {
+                    SummarizingView()
+                } else {
+                    MajorContentView(description: description)
+                }
+            }
+
+            VStack(spacing: 0) {
+                CardThumbnailView(thumbnail: thumbnail)
+            }
+        }
+    }
+}
+
+private struct MajorContentView: View {
+    let description: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 4) {
+                Image(.icAi)
+                    .frame(width: 14, height: 14)
+
+                Text("주요 내용")
+                    .font(weight: .medium, semantic: .xs)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
+
+                Spacer()
+            }
+
+            Text(description ?? "")
+                .font(weight: .regular, semantic: .caption1)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
+                .lineLimit(3)
+        }
+    }
+}
+
+private struct CardThumbnailView<Thumbnail: View>: View {
+    let thumbnail: () -> Thumbnail
+
+    var body: some View {
         VStack(spacing: 0) {
-            thumbnailImage()
+            thumbnail()
                 .frame(width: 80, height: 80)
                 .cornerRadius(4, corners: .allCorners)
 
             Spacer()
+        }
+    }
+}
+
+private struct ProgressBarView: View {
+    let progress: CGFloat
+
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: 16)
+            LKCardProgressBar(progress: progress).frame(height: 4)
+        }
+    }
+}
+
+private struct TagsView: View {
+    let tags: [String]
+
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: 12)
+            HStack(spacing: 12) {
+                ForEach(tags, id: \.self) { tag in
+                    LKTag(tag)
+                }
+                Spacer()
+            }.frame(height: 24)
+        }
+    }
+}
+
+private struct FooterView: View {
+    let category: String
+    let timeSince: String
+    let aiStatus: LKCardAIStatus
+    let isFavorite: Bool
+    let bookMarkAction: () -> Void
+    let showModalAction: () -> Void
+
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: 12)
+
+            HStack {
+                CategoryInfoView(
+                    category: category,
+                    timeSince: timeSince
+                )
+
+                Spacer()
+
+                if aiStatus == .success {
+                    ActionButtons(
+                        isFavorite: isFavorite,
+                        bookMarkAction: bookMarkAction,
+                        showModalAction: showModalAction
+                    )
+                }
+            }
+        }
+    }
+}
+
+private struct CategoryInfoView: View {
+    let category: String
+    let timeSince: String
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Text(category)
+                .font(weight: .regular, semantic: .xs)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+
+            Image(.icEclipse)
+                .frame(width: 2, height: 2)
+
+            Text(timeSince)
+                .font(weight: .regular, semantic: .xs)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+        }
+    }
+}
+
+private struct ActionButtons: View {
+    let isFavorite: Bool
+    let bookMarkAction: () -> Void
+    let showModalAction: () -> Void
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Button(action: bookMarkAction) {
+                Image(isFavorite ? .icBookmarkActive : .icBookmarkDefault)
+                    .frame(width: 24, height: 24)
+            }
+
+            Button(action: showModalAction) {
+                Image(.icMoreGray)
+                    .frame(width: 24, height: 24)
+            }
         }
     }
 }
@@ -175,7 +270,6 @@ private struct SummarizingView: View {
             HStack(spacing: 0) {
                 LKDescriptionSkeletonView()
                     .frame(width: 254, height: 56)
-
                 Spacer()
             }
 
@@ -205,6 +299,7 @@ private struct CategorySummarizingView: View {
         tags: ["에스파", "SM", "오에이옹에이옹"],
         category: "Category",
         timeSince: "1일 전",
+        isFavorite: true,
         bookMarkAction: {},
         showModalAction: {}
     )

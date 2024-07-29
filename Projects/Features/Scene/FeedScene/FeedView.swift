@@ -59,6 +59,7 @@ public struct FeedView: View {
                                             tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
                                             category: store.currentFolder.name,
                                             timeSince: item.createdAt.timeAgo(),
+                                            isFavorite: item.isFavorite ?? false,
                                             bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
                                             showModalAction: { store.send(.showModalButtonTapped(index)) }
                                         )

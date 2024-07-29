@@ -9,6 +9,7 @@
 import ComposableArchitecture
 import Models
 import OrderedCollections
+import Services
 
 @Reducer
 public struct HomeCard {
@@ -31,14 +32,17 @@ public struct HomeCard {
         case fetchCards
         case addItems(items: [Card])
         case setScrollPage
+        case itemsChanged(items: [Card])
 
         // MARK: User Action
         case cardTapped(item: Card)
-        case bookMarkButtonTapped(Int)
-        case showModalButtonTapped(Int)
+        case bookMarkButtonTapped(postId: String, isFavorite: Bool)
+        case showModalButtonTapped(postId: String, folderId: String)
     }
 
     public init() {}
+
+    @Dependency(\.postAPIClient) var postAPIClient
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -51,9 +55,28 @@ public struct HomeCard {
                 state.scrollPage += 1
                 return .none
 
+            case let .bookMarkButtonTapped(postId, isFavorite):
+                for index in 0 ..< state.cards.count {
+                    if state.cards[index].id == postId {
+                        state.cards[index].isFavorite = isFavorite
+                    }
+                }
+                return .run { _ in
+                    try await postAPIClient.isFavoritePost(postId, isFavorite)
+                }
+
+            case let .showModalButtonTapped(id):
+                return .none
+
             default:
                 return .none
             }
         }
     }
 }
+
+// private extension HomeCard {
+//    private func handleFavoritePost(cardState _: inout State, postId: String, send _: Send<HomeCard.Action>) async throws {
+//        try await postAPIClient.isFavoritePost(postId, isFavorite)
+//    }
+// }

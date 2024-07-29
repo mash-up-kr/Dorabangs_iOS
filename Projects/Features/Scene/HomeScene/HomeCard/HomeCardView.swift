@@ -53,8 +53,9 @@ struct HomeCardView: View {
                             tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
                             category: folderClient.getFolderName(folderId: item.folderId) ?? "",
                             timeSince: item.createdAt.timeAgo(),
-                            bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                            showModalAction: { store.send(.showModalButtonTapped(index), animation: .easeInOut) }
+                            isFavorite: item.isFavorite ?? false,
+                            bookMarkAction: { store.send(.bookMarkButtonTapped(postId: item.id, isFavorite: !(item.isFavorite ?? true))) },
+                            showModalAction: { store.send(.showModalButtonTapped(postId: item.id, folderId: item.folderId), animation: .easeInOut) }
                         )
                         .onTapGesture {
                             store.send(.cardTapped(item: item))
