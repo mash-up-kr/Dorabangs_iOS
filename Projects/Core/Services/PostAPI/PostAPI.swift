@@ -17,7 +17,7 @@ enum PostAPI: APIRepresentable {
     /// URL 링크 저장
     case postCard(folderId: String, urlString: String)
     /// Post 상태 변경 (좋아요 / 읽음)
-    case patchPost(postId: String, isFavorite: Bool? = nil, read: Bool? = nil)
+    case patchPost(postId: String, isFavorite: Bool? = nil, read: String? = nil)
     /// URL 삭제
     case deletePost(postId: String)
     /// URL 폴더 변경

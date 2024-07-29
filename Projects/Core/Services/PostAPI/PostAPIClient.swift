@@ -61,7 +61,9 @@ extension PostAPIClient: DependencyKey {
             return responseDTO.toDomain
         },
         readPost: { postId in
-            let api = PostAPI.patchPost(postId: postId, read: true)
+            let DateFormatter = ISO8601DateFormatter()
+            let dateString = DateFormatter.string(from: Date())
+            let api = PostAPI.patchPost(postId: postId, read: dateString)
             let responseDTO: CardDTO = try await Provider().request(api)
             return responseDTO.toDomain
         },

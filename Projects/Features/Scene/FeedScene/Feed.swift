@@ -47,6 +47,8 @@ public struct Feed {
         case tapSortLatest
         case tapSortPast
         case tapCard(item: Card)
+        case readCard(String)
+        case readCardResult(Result<Card, Error>)
 
         case tapChangeFolderName
 
@@ -61,7 +63,7 @@ public struct Feed {
 
         case bookMarkButtonTapped(Int)
         case changeBookMarkStatus(Card)
-        case changeBookMarkResult(Result<Card, Error>)
+        case updatedPostResult(Result<Card, Error>)
         case showModalButtonTapped(Int)
 
         case routeToWebScreen(URL)
@@ -175,16 +177,22 @@ public struct Feed {
                 return .none
             case let .tapCard(item):
                 guard let url = URL(string: item.urlString) else { return .none }
-                return .send(.routeToWebScreen(url))
+                return .merge(.send(.readCard(item.id)), .send(.routeToWebScreen(url)))
+            case let .readCard(postId):
+                return .run { send in
+                    await send(.updatedPostResult(Result {
+                        try await postAPIClient.readPost(postId: postId)
+                    }))
+                }
             case let .bookMarkButtonTapped(index):
                 return .send(.changeBookMarkStatus(state.cards[index]))
             case let .changeBookMarkStatus(post):
                 return .run { send in
-                    await send(.changeBookMarkResult(Result {
+                    await send(.updatedPostResult(Result {
                         try await postAPIClient.isFavoritePost(postId: post.id, isFavorite: !(post.isFavorite ?? true))
                     }))
                 }
-            case let .changeBookMarkResult(.success(updatedPost)):
+            case let .updatedPostResult(.success(updatedPost)):
                 if let index = state.cards.firstIndex(where: { $0.id == updatedPost.id }) {
                     state.cards[index] = updatedPost
                 }
