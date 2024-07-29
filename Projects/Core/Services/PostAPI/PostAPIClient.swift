@@ -22,9 +22,9 @@ public struct PostAPIClient {
     public var getPostsCount: @Sendable (_ isRead: Bool) async throws -> Int
     public var postPosts: (_ folderId: String, _ url: URL) async throws -> Void
     /// Post 북마크 여부
-    public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Void
+    public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Card
     /// Post 읽음 처리
-    public var readPost: @Sendable (_ postId: String) async throws -> Void
+    public var readPost: @Sendable (_ postId: String) async throws -> Card
     /// Post 삭제
     public var deletePost: @Sendable (_ postId: String) async throws -> Void
     /// URL 폴더 변경
@@ -57,11 +57,13 @@ extension PostAPIClient: DependencyKey {
         },
         isFavoritePost: { postId, isFavorite in
             let api = PostAPI.patchPost(postId: postId, isFavorite: isFavorite)
-            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+            let responseDTO: CardDTO = try await Provider().request(api)
+            return responseDTO.toDomain
         },
         readPost: { postId in
             let api = PostAPI.patchPost(postId: postId, read: true)
-            let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+            let responseDTO: CardDTO = try await Provider().request(api)
+            return responseDTO.toDomain
         },
         deletePost: { postId in
             let api = PostAPI.deletePost(postId: postId)

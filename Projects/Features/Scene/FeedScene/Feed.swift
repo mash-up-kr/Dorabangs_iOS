@@ -60,6 +60,8 @@ public struct Feed {
         case changedFolderName(Folder)
 
         case bookMarkButtonTapped(Int)
+        case changeBookMarkStatus(Card)
+        case changeBookMarkResult(Result<Card, Error>)
         case showModalButtonTapped(Int)
 
         case routeToWebScreen(URL)
@@ -69,6 +71,7 @@ public struct Feed {
     public init() {}
 
     @Dependency(\.folderAPIClient) var folderAPIClient
+    @Dependency(\.postAPIClient) var postAPIClient
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -174,7 +177,17 @@ public struct Feed {
                 guard let url = URL(string: item.urlString) else { return .none }
                 return .send(.routeToWebScreen(url))
             case let .bookMarkButtonTapped(index):
-                // TODO: 카드 > 북마크 버튼 탭 동작 구현
+                return .send(.changeBookMarkStatus(state.cards[index]))
+            case let .changeBookMarkStatus(post):
+                return .run { send in
+                    await send(.changeBookMarkResult(Result {
+                        try await postAPIClient.isFavoritePost(postId: post.id, isFavorite: !(post.isFavorite ?? true))
+                    }))
+                }
+            case let .changeBookMarkResult(.success(updatedPost)):
+                if let index = state.cards.firstIndex(where: { $0.id == updatedPost.id }) {
+                    state.cards[index] = updatedPost
+                }
                 return .none
             case let .showModalButtonTapped(index):
                 // TODO: 카드 > 모달 버튼 탭 동작 구현
