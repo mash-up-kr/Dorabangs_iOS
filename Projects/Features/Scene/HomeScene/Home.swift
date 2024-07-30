@@ -240,6 +240,12 @@ public struct Home {
             case let .cards(.cardTapped(item)):
                 guard let url = URL(string: item.urlString) else { return .none }
                 return .send(.routeToWebScreen(url))
+                
+            case let .cards(.showModalButtonTapped(postId: postId, folderId: folderId)):
+                return .concatenate(
+                    .send(.overlayComponent(.set(\.postId, postId))),
+                    .send(.overlayComponent(.set(\.isCardActionSheetPresented, true)))
+                )
 
             default:
                 return .none

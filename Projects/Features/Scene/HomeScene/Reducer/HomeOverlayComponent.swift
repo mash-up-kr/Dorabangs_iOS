@@ -12,6 +12,7 @@ import ComposableArchitecture
 public struct HomeOverlayComponent {
     @ObservableState
     public struct State: Equatable {
+        var postId: String?
         // 카드 액션 시트
         var isCardActionSheetPresented: Bool = false
         // 카드 삭제 확인 모달
