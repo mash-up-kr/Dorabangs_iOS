@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import AVFoundation
 import AVKit
 import DesignSystemKit
 import Foundation
