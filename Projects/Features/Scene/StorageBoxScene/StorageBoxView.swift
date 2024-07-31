@@ -60,6 +60,8 @@ public struct StorageBoxView: View {
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage
                         )
+
+                        Spacer().frame(height: 60)
                     }
                 }
                 .padding(.vertical, 20)
