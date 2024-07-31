@@ -33,7 +33,7 @@ public struct LKActionSheet: View {
         }
         .frame(height: actionSheetHeight, alignment: .top)
         .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
-        .cornerRadius(16, corners: .allCorners)
+        .cornerRadius(16, corners: [.topLeft, .topRight])
         .shadow(
             color: DesignSystemKitAsset.Colors.topShadow.swiftUIColor,
             blur: 12,
@@ -85,7 +85,7 @@ private struct ActionList: View {
                 if index > 0 {
                     Divider()
                         .frame(height: 0.5)
-                        .background(DesignSystemKitAsset.Colors.g3.swiftUIColor)
+                        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
                         .padding(.horizontal, 16)
                 }
 

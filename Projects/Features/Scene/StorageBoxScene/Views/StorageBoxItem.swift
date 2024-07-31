@@ -28,8 +28,8 @@ public struct StorageBoxItem: View {
     }
 
     public var body: some View {
-        HStack {
-            DesignSystemKitAsset.Icons.icFolder.swiftUIImage
+        HStack(spacing: 12) {
+            icon
                 .resizable()
                 .frame(width: 24, height: 24)
                 .padding(.leading, 12)
@@ -50,7 +50,7 @@ public struct StorageBoxItem: View {
             moreIcon
                 .resizable()
                 .renderingMode(.template)
-                .foregroundColor(.black)
+                .foregroundColor(DesignSystemKitAsset.Colors.g4.swiftUIColor)
                 .frame(width: 24, height: 24)
                 .padding(.trailing, 12)
                 .onTapGesture {
@@ -59,5 +59,18 @@ public struct StorageBoxItem: View {
         }
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .frame(height: 52)
+    }
+
+    var icon: Image {
+        switch model.type {
+        case .custom:
+            DesignSystemKitAsset.Images.imgFolderSmall.swiftUIImage
+        case .default:
+            DesignSystemKitAsset.Images.imgAllSmall.swiftUIImage
+        case .all:
+            DesignSystemKitAsset.Images.imgBookmarkSmall.swiftUIImage
+        case .favorite:
+            DesignSystemKitAsset.Images.imgPinSmall.swiftUIImage
+        }
     }
 }

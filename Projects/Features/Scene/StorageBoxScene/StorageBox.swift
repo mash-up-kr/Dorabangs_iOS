@@ -21,12 +21,11 @@ public struct StorageBox {
         /// 유저가 생성한 폴더 목록
         public var customFolders: [Folder] = []
 
-        /// 새 폴더 생성 팝업 present 여부
-        public var newFolderPopupIsPresented: Bool = false
         /// 폴더 편집  팝업 present 여부
         public var editFolderPopupIsPresented: Bool = false
         /// 폴더 삭제 팝업 present 여부
         public var removeFolderPopupIsPresented: Bool = false
+        public var toastMessage: String = ""
         /// toast 메시지 present 여부
         public var toastPopupIsPresented: Bool = false
         /// 현재 편집 중인 Folder ID
@@ -42,6 +41,7 @@ public struct StorageBox {
         case onEdit(folderID: String)
         case tapNewFolderButton
         case cancelRemoveFolder
+        case showToast(message: String)
         case showRemoveFolderPopup
         case tapRemoveFolderButton
         case tapChangeFolderName
@@ -49,14 +49,13 @@ public struct StorageBox {
         // MARK: Inner Business
         case fetchFolders
         case fetchFoldersResult(Result<FoldersModel, Error>)
-        case addNewFolder(String)
         case removeFolder
         case changedFolderName(Folder)
 
         // MARK: Navigation Action
         case routeToFeed(Folder)
         case routeToChangeFolderName(String, [String])
-
+        case routeToCreateNewFolderScene
         case binding(BindingAction<State>)
     }
 
@@ -95,14 +94,7 @@ public struct StorageBox {
             case .routeToFeed:
                 return .none
             case .tapNewFolderButton:
-                state.newFolderPopupIsPresented = true
-                return .none
-            case let .addNewFolder(folderName):
-                return .run { send in
-                    let folderName = [folderName]
-                    try await folderAPIClient.postFolders(folderName)
-                    await send(.fetchFolders)
-                }
+                return .send(.routeToCreateNewFolderScene)
             case .tapRemoveFolderButton:
                 if let editingID = state.editingID {
                     return .run { send in
@@ -121,10 +113,14 @@ public struct StorageBox {
                 state.editingID = nil
                 state.editFolderPopupIsPresented = false
                 state.removeFolderPopupIsPresented = false
-                return .none
+                return .send(.showToast(message: "삭제 완료했어요."))
             case .cancelRemoveFolder:
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
+                return .none
+            case let .showToast(message):
+                state.toastMessage = message
+                state.toastPopupIsPresented = true
                 return .none
             case .showRemoveFolderPopup:
                 print("show remove folder popup")
@@ -141,9 +137,10 @@ public struct StorageBox {
                     state.customFolders[patchedFolderIndex] = patchedFolder
                 }
                 state.editFolderPopupIsPresented = false
-                state.toastPopupIsPresented = true
-                return .none
+                return .send(.showToast(message: "폴더 이름을 변경했어요."))
             case .routeToChangeFolderName:
+                return .none
+            case .routeToCreateNewFolderScene:
                 return .none
             case .binding:
                 return .none

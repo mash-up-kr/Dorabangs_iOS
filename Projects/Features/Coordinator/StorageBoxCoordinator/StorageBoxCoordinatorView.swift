@@ -7,6 +7,7 @@
 
 import ChangeFolderName
 import ComposableArchitecture
+import CreateNewFolder
 import FeedCoordinator
 import SaveURLCoordinator
 import StorageBox
@@ -48,6 +49,12 @@ public struct StorageBoxCoordinatorView<Content: View>: View {
 
             case let .changeFolderName(store):
                 ChangeFolderNameView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .createNewFolder(store):
+                CreateNewFolderView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

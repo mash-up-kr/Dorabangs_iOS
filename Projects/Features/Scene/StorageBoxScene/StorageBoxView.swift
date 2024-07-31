@@ -27,7 +27,7 @@ public struct StorageBoxView: View {
 
                     Spacer()
 
-                    DesignSystemKitAsset.Icons.icAdd
+                    DesignSystemKitAsset.Icons.icAddFolder
                         .swiftUIImage
                         .resizable()
                         .frame(width: 24, height: 24)
@@ -60,6 +60,8 @@ public struct StorageBoxView: View {
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage
                         )
+
+                        Spacer().frame(height: 60)
                     }
                 }
                 .padding(.vertical, 20)
@@ -74,10 +76,6 @@ public struct StorageBoxView: View {
 }
 
 extension View {
-    func newFolderPopup(isPresented: Binding<Bool>, list: [Folder]?, onComplete: @escaping (String) -> Void) -> some View {
-        modifier(NewFolderPopupModifier(isPresented: isPresented, list: list, onComplete: onComplete))
-    }
-
     func editFolderPopup(isPresented: Binding<Bool>, onSelect: @escaping (Int) -> Void) -> some View {
         modifier(EditFolderPopupModifier(isPresented: isPresented, onSelect: { index in
             onSelect(index)
@@ -85,7 +83,7 @@ extension View {
     }
 
     func removeFolderPopup(onCancel: @escaping () -> Void, onRemove: @escaping () -> Void) -> some View {
-        LKModal(title: "폴더 삭제", content: "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?", leftButtonTitle: "취소", leftButtonAction: {
+        LKModal(title: "폴더 삭제", content: "폴더를 삭제하면 모든 데이터가 영구적으로\n삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?", leftButtonTitle: "취소", leftButtonAction: {
             onCancel()
         }, rightButtonTitle: "삭제", rightButtonAction: {
             onRemove()

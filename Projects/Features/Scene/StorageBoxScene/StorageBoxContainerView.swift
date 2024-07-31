@@ -27,10 +27,6 @@ public struct StorageBoxContainerView<Content: View>: View {
                 StorageBoxView(store: store)
                 tabbar()
             }
-            .newFolderPopup(isPresented: $store.newFolderPopupIsPresented.projectedValue,
-                            list: store.defaultFolders + store.customFolders, onComplete: { folderName in
-                                store.send(.addNewFolder(folderName))
-                            })
             .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
                 if index == 0 {
                     store.send(.showRemoveFolderPopup, animation: .default)
@@ -45,7 +41,7 @@ public struct StorageBoxContainerView<Content: View>: View {
                     store.send(.tapRemoveFolderButton)
                 })
             })
-            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: true)
+            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: store.toastMessage, isEmbedTabbar: true)
             .navigationBarHidden(true)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
