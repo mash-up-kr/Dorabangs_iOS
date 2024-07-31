@@ -54,14 +54,13 @@ public struct Home {
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
-        case setCardList([Card])
+        case setCardList([Card], FolderType)
         case setFolderList([Folder])
         case showErrorToast
 
         // MARK: User Action
         case addLinkButtonTapped
         case bannerButtonTapped(HomeBannerType)
-        case showModalButtonTapped(Int)
 
         // MARK: Child Action
         case overlayComponent(HomeOverlayComponent.Action)
@@ -188,20 +187,28 @@ public struct Home {
                 state.unreadLinkCount = count
                 return .none
 
-            case let .setCardList(cardList):
-                state.cards = HomeCard.State(cards: cardList)
+            case let .setCardList(cardList, folderType):
+                if folderType == .favorite {
+                    let favoriteCard = cardList.filter { $0.isFavorite ?? false }
+                    state.cards = HomeCard.State(cards: favoriteCard)
+                } else {
+                    state.cards = HomeCard.State(cards: cardList)
+                }
                 return .none
 
             case let .setFolderList(folderList):
-                state.tabs = HomeTab.State(tabs: folderList)
-
-                let folderDictionary: [String: String] = folderList.reduce(into: [String: String]()) { dict, folder in
-                    var folderId = folder.id
-
-                    if folderId.isEmpty {
-                        folderId = folder.name
+                var receivedFolderList = folderList
+                for index in 0..<folderList.count {
+                    if folderList[index].type == .all {
+                        receivedFolderList[index].id = "all"
+                    } else if folderList[index].type == .favorite {
+                        receivedFolderList[index].id =  "favorite"
                     }
-                    dict[folderId] = folder.name
+                }
+                state.tabs = HomeTab.State(tabs: receivedFolderList)
+
+                let folderDictionary: [String: String] = receivedFolderList.reduce(into: [String: String]()) { dict, folder in
+                    dict[folder.id] = folder.name
                 }
                 folderClient.setFolderList(folderDictionary) // TODO: 실패했을 경우 처리 필요
                 return .none
@@ -224,17 +231,22 @@ public struct Home {
                 }
                 return .none
 
-            case let .showModalButtonTapped(index):
-                return HomeOverlayComponent()
-                    .reduce(into: &state.overlayComponent, action: .binding(.set(\.isCardActionSheetPresented, true)))
-                    .map(Action.overlayComponent)
-
             case let .tabs(.tabSelected(index)):
                 return .none
 
             case let .tabs(.setSelectedFolderId(folderId: folderId)):
-                return .run { send in
-                    try await handleCardList(send: send, folderId: folderId)
+                if folderId == "all" {
+                    return .run { send in
+                        try await handleCardList(send: send, folderId: "", folderType: .all)
+                    }
+                } else if folderId == "favorite" {
+                    return .run { send in
+                        try await handleCardList(send: send, folderId: "", folderType: .favorite)
+                    }
+                } else {
+                    return .run { send in
+                        try await handleCardList(send: send, folderId: folderId, folderType: .custom)
+                    }
                 }
 
             case let .cards(.cardTapped(item)):
@@ -282,7 +294,7 @@ private extension Home {
         }
     }
 
-    private func handleCardList(send: Send<Home.Action>, folderId: String) async throws {
+    private func handleCardList(send: Send<Home.Action>, folderId: String, folderType: FolderType) async throws {
         let cardListModel = try await folderAPIClient.getFolderPosts(
             folderId,
             nil,
@@ -291,7 +303,7 @@ private extension Home {
             nil
         )
 
-        await send(.setCardList(cardListModel.cards))
+        await send(.setCardList(cardListModel.cards, folderType))
     }
 
     private func fetchAllCardList(send: Send<Home.Action>) async throws {
@@ -302,6 +314,6 @@ private extension Home {
             favorite: nil
         )
 
-        await send(.setCardList(cardList))
+        await send(.setCardList(cardList, .all))
     }
 }

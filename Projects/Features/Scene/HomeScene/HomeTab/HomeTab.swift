@@ -34,7 +34,6 @@ public struct HomeTab {
             switch action {
             case let .tabSelected(selectedIndex):
                 state.selectedIndex = selectedIndex
-                // TODO: 1) 상위코어로 선택된 FolderId 넘기기
                 let folderId = state.tabs[selectedIndex].id
                 return .run { send in
                     await send(.setSelectedFolderId(folderId: folderId))
