@@ -94,9 +94,13 @@ struct ThumbnailImage: View {
                 }
                 .roundCorner(radius: .point(4), roundingCorners: .all)
                 .resizable()
+                .scaledToFill()
                 .frame(width: 80, height: 80)
         } else {
-            DesignSystemKitAsset.Colors.g2.swiftUIColor
+            DesignSystemKitAsset.Images.imgThumbnail.swiftUIImage
+                .resizable()
+                .frame(width: 80, height: 80)
+                .cornerRadius(4, corners: .allCorners)
         }
     }
 }

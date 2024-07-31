@@ -39,7 +39,7 @@ public struct HomeView: View {
                             headspace: 0,
                             sidesScaling: 1,
                             isWrap: false,
-                            autoScroll: .active(TimeInterval(3))
+                            autoScroll: .active(TimeInterval(8))
                         ) { item in
                             HomeBannerView(banner: item) {
                                 store.send(.bannerButtonTapped(item.bannerType))

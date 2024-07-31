@@ -58,6 +58,7 @@ struct ThumbnailImage: View {
                 .placeholder { DesignSystemKitAsset.Images.imgThumbnail.swiftUIImage }
                 .roundCorner(radius: .point(4), roundingCorners: .all)
                 .resizable()
+                .scaledToFill()
                 .frame(width: 80, height: 80)
         } else {
             DesignSystemKitAsset.Images.imgThumbnail.swiftUIImage
