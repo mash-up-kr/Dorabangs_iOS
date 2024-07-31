@@ -63,7 +63,10 @@ public extension DependencyValues {
 // MARK: - Live
 extension KeychainClient: DependencyKey {
     public static var liveValue: KeychainClient {
-        let keychain = Keychain(service: "com.mashup.dorabangs")
+        guard let appIdentifierPrefix = Bundle.main.infoDictionary?["AppIdentifierPrefix"] as? String else {
+            fatalError("AppIdentifierPrefix is not set in Info.plist")
+        }
+        let keychain = Keychain(service: "com.mashup.dorabangs", accessGroup: "\(appIdentifierPrefix)group.com.mashup.dorabangs")
         return KeychainClient(
             setBool: { keychain[$1] = $0 ? "true" : "false" },
             setString: { keychain[$1] = $0 },

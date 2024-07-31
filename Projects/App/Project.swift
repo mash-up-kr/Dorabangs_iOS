@@ -18,6 +18,7 @@ let project = Project.make(
             infoPlist: .file(path: .relativeToRoot("Projects/App/InfoPlists/Info.plist")),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Prod-Dorabangs.entitlements")),
             dependencies: [
                 .coordinator(.app),
                 .shareExtension(.prod)
@@ -34,6 +35,7 @@ let project = Project.make(
             infoPlist: .file(path: .relativeToRoot("Projects/App/InfoPlists/Info.plist")),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Dev-Dorabangs.entitlements")),
             dependencies: [
                 .coordinator(.app),
                 .shareExtension(.dev)
@@ -49,6 +51,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs.share",
             infoPlist: .file(path: .relativeToRoot("Projects/App/InfoPlists/ShareExtension-Info.plist")),
             sources: ["ShareExtension/**"],
+            entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Prod-ShareExtension.entitlements")),
             dependencies: [.designSystem],
             settings: .settings(
                 configurations: [.release(name: .release, xcconfig: shareExtensionReleaseConfig)]
@@ -61,6 +64,7 @@ let project = Project.make(
             bundleId: "com.mashup.dorabangs-dev.share",
             infoPlist: .file(path: .relativeToRoot("Projects/App/InfoPlists/ShareExtension-Info.plist")),
             sources: ["ShareExtension/**"],
+            entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Dev-ShareExtension.entitlements")),
             dependencies: [.designSystem],
             settings: .settings(
                 configurations: [.debug(name: .debug, xcconfig: shareExtensionDebugConfig)]
