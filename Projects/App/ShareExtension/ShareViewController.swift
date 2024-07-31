@@ -22,6 +22,7 @@ final class ShareViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         folderAPIClient = .liveValue
         postAPIClient = .liveValue
+        try? DesignSystemKitAsset.Typography.registerFont()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -125,15 +126,16 @@ private extension ShareViewController {
 
     func setViewConstraints() {
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -87),
             divider.widthAnchor.constraint(equalToConstant: 1),
             divider.heightAnchor.constraint(equalToConstant: 21.5)
         ])
     }
 
     func setViewAttributes() {
+        view.backgroundColor = DesignSystemKitAsset.Colors.white.color.withAlphaComponent(0.01)
         setStackViewAttributes()
         setDescriptionLabelAttributes()
         setEditButtonAttributes()
@@ -154,21 +156,21 @@ private extension ShareViewController {
 
     func setDescriptionLabelAttributes() {
         descriptionLabel.text = "나중에 읽을 링크에 저장했어요!"
-        descriptionLabel.font = .systemFont(ofSize: 18, weight: .semibold)
-        descriptionLabel.textColor = .white
+        descriptionLabel.font = UIFont.nanumSquareNeo(size: 18, weight: 600)
+        descriptionLabel.textColor = DesignSystemKitAsset.Colors.white.color
     }
 
     func setEditButtonAttributes() {
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = DesignSystemKitAsset.Colors.white.color
         var container = AttributeContainer()
-        container.font = .systemFont(ofSize: 18, weight: .semibold)
+        container.font = UIFont.nanumSquareNeo(size: 18, weight: 600)
         configuration.attributedTitle = AttributedString("편집", attributes: container)
         editButton.configuration = configuration
         editButton.addTarget(self, action: #selector(editButtonDidTapped), for: .touchUpInside)
     }
 
     func setDividerAttributes() {
-        divider.backgroundColor = .white
+        divider.backgroundColor = DesignSystemKitAsset.Colors.white.color
     }
 }
