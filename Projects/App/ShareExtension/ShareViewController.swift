@@ -35,6 +35,10 @@ final class ShareViewController: UIViewController {
         setViewHierarchies()
         setViewConstraints()
         setViewAttributes()
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideStackView(_:)))
+        view.addGestureRecognizer(tapGesture)
+
         Task { [weak self] in
             guard let url = await self?.loadSharedURL() else { return }
             DispatchQueue.main.async { self?.url = url }
@@ -46,6 +50,14 @@ final class ShareViewController: UIViewController {
 // 출처: https://forums.swift.org/t/how-to-use-non-sendable-type-in-async-reducer-code/62069/6
 extension NSItemProvider: @unchecked Sendable {}
 private extension ShareViewController {
+    @objc
+    func didTapOutsideStackView(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: view)
+        if !stackView.frame.contains(location) {
+            extensionContext?.completeRequest(returningItems: nil)
+        }
+    }
+
     func saveURL(_ url: URL) async {
         do {
             let folders = try await folderAPIClient.getFolders()
