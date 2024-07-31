@@ -113,7 +113,7 @@ public struct StorageBox {
                 state.editingID = nil
                 state.editFolderPopupIsPresented = false
                 state.removeFolderPopupIsPresented = false
-                return .none
+                return .send(.showToast(message: "삭제 완료했어요."))
             case .cancelRemoveFolder:
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
