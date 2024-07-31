@@ -198,11 +198,11 @@ public struct Home {
 
             case let .setFolderList(folderList):
                 var receivedFolderList = folderList
-                for index in 0..<folderList.count {
+                for index in 0 ..< folderList.count {
                     if folderList[index].type == .all {
                         receivedFolderList[index].id = "all"
                     } else if folderList[index].type == .favorite {
-                        receivedFolderList[index].id =  "favorite"
+                        receivedFolderList[index].id = "favorite"
                     }
                 }
                 state.tabs = HomeTab.State(tabs: receivedFolderList)
@@ -252,7 +252,7 @@ public struct Home {
             case let .cards(.cardTapped(item)):
                 guard let url = URL(string: item.urlString) else { return .none }
                 return .send(.routeToWebScreen(url))
-                
+
             case let .cards(.showModalButtonTapped(postId: postId, folderId: folderId)):
                 return .concatenate(
                     .send(.overlayComponent(.set(\.postId, postId))),

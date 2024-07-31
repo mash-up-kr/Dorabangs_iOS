@@ -101,11 +101,11 @@ public struct Feed {
                 return .run { send in
                     await send(.fetchPostListResult(Result {
                         try await
-                            folderAPIClient.getFolderPosts(folderId: folderId,
-                                                           page: pageModel.currentPage,
-                                                           limit: 10,
-                                                           order: pageModel.order.rawValue,
-                                                           isRead: pageModel.isRead)
+                            folderAPIClient.getFolderPosts(folderId,
+                                                           pageModel.currentPage,
+                                                           10,
+                                                           pageModel.order.rawValue,
+                                                           pageModel.isRead)
                     }))
                 }
             case let .fetchPostListResult(.success(resultModel)):
@@ -181,7 +181,7 @@ public struct Feed {
             case let .readCard(postId):
                 return .run { send in
                     await send(.updatedPostResult(Result {
-                        try await postAPIClient.readPost(postId: postId)
+                        try await postAPIClient.readPost(postId)
                     }))
                 }
             case let .bookMarkButtonTapped(index):
@@ -189,7 +189,7 @@ public struct Feed {
             case let .changeBookMarkStatus(post):
                 return .run { send in
                     await send(.updatedPostResult(Result {
-                        try await postAPIClient.isFavoritePost(postId: post.id, isFavorite: !(post.isFavorite ?? true))
+                        try await postAPIClient.isFavoritePost(post.id, !(post.isFavorite ?? true))
                     }))
                 }
             case let .updatedPostResult(.success(updatedPost)):
