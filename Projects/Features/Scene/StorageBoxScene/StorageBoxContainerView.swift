@@ -27,10 +27,6 @@ public struct StorageBoxContainerView<Content: View>: View {
                 StorageBoxView(store: store)
                 tabbar()
             }
-            .newFolderPopup(isPresented: $store.newFolderPopupIsPresented.projectedValue,
-                            list: store.defaultFolders + store.customFolders, onComplete: { folderName in
-                                store.send(.addNewFolder(folderName))
-                            })
             .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
                 if index == 0 {
                     store.send(.showRemoveFolderPopup, animation: .default)

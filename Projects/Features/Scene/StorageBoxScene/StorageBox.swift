@@ -21,8 +21,6 @@ public struct StorageBox {
         /// 유저가 생성한 폴더 목록
         public var customFolders: [Folder] = []
 
-        /// 새 폴더 생성 팝업 present 여부
-        public var newFolderPopupIsPresented: Bool = false
         /// 폴더 편집  팝업 present 여부
         public var editFolderPopupIsPresented: Bool = false
         /// 폴더 삭제 팝업 present 여부
@@ -49,14 +47,13 @@ public struct StorageBox {
         // MARK: Inner Business
         case fetchFolders
         case fetchFoldersResult(Result<FoldersModel, Error>)
-        case addNewFolder(String)
         case removeFolder
         case changedFolderName(Folder)
 
         // MARK: Navigation Action
         case routeToFeed(Folder)
         case routeToChangeFolderName(String, [String])
-
+        case routeToCreateNewFolderScene
         case binding(BindingAction<State>)
     }
 
@@ -95,14 +92,7 @@ public struct StorageBox {
             case .routeToFeed:
                 return .none
             case .tapNewFolderButton:
-                state.newFolderPopupIsPresented = true
-                return .none
-            case let .addNewFolder(folderName):
-                return .run { send in
-                    let folderName = [folderName]
-                    try await folderAPIClient.postFolders(folderName)
-                    await send(.fetchFolders)
-                }
+                return .send(.routeToCreateNewFolderScene)
             case .tapRemoveFolderButton:
                 if let editingID = state.editingID {
                     return .run { send in
@@ -144,6 +134,8 @@ public struct StorageBox {
                 state.toastPopupIsPresented = true
                 return .none
             case .routeToChangeFolderName:
+                return .none
+            case .routeToCreateNewFolderScene:
                 return .none
             case .binding:
                 return .none

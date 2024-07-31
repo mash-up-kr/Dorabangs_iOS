@@ -74,10 +74,6 @@ public struct StorageBoxView: View {
 }
 
 extension View {
-    func newFolderPopup(isPresented: Binding<Bool>, list: [Folder]?, onComplete: @escaping (String) -> Void) -> some View {
-        modifier(NewFolderPopupModifier(isPresented: isPresented, list: list, onComplete: onComplete))
-    }
-
     func editFolderPopup(isPresented: Binding<Bool>, onSelect: @escaping (Int) -> Void) -> some View {
         modifier(EditFolderPopupModifier(isPresented: isPresented, onSelect: { index in
             onSelect(index)

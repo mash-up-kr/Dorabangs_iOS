@@ -7,6 +7,7 @@
 
 import ChangeFolderName
 import ComposableArchitecture
+import CreateNewFolder
 import FeedCoordinator
 import Foundation
 import SaveURLCoordinator
@@ -19,6 +20,7 @@ public enum StorageBoxScreen {
     case storageBox(StorageBox)
     case feed(FeedCoordinator)
     case changeFolderName(ChangeFolderName)
+    case createNewFolder(CreateNewFolder)
 }
 
 @Reducer
@@ -62,6 +64,11 @@ public struct StorageBoxCoordinator {
             case .router(.routeAction(id: 0, action: .saveURLCoordinator(.routeToPreviousScreen))):
                 state.routes.goBack()
                 return .none
+            case .router(.routeAction(id: _, action: .storageBox(.routeToCreateNewFolderScene))):
+                state.routes.push(.createNewFolder(.init(sourceView: .storageBox)))
+                return .none
+            case let .router(.routeAction(id: _, action: .createNewFolder(action))):
+                return handleCreateNewFolderSceneAction(into: &state, action: action)
             case let .router(.routeAction(id: _, action: .saveURLCoordinator(action))):
                 return handleSaveURLCoordinatorAction(into: &state, action: action)
             case let .routeToSaveURLCoordinator(url):
@@ -79,6 +86,17 @@ extension StorageBoxCoordinator {
     func handleSaveURLCoordinatorAction(into state: inout State, action: SaveURLCoordinator.Action) -> Effect<Action> {
         switch action {
         case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
+        default:
+            return .none
+        }
+    }
+
+    func handleCreateNewFolderSceneAction(into state: inout State, action: CreateNewFolder.Action) -> Effect<Action> {
+        switch action {
+        case .routeToStorageBoxScene:
             state.routes.goBack()
             return .none
 

@@ -18,6 +18,7 @@ public struct CreateNewFolder {
         public enum SourceView: Equatable {
             case homeScene
             case saveURLScene(url: URL)
+            case storageBox
         }
 
         public fileprivate(set) var newFolderName: String = ""
@@ -40,6 +41,7 @@ public struct CreateNewFolder {
 
         case routeToPreviousScreen
         case routeToHomeScreen
+        case routeToStorageBoxScene
     }
 
     public init() {}
@@ -73,6 +75,9 @@ public struct CreateNewFolder {
                     case let .saveURLScene(url):
                         try await postAPIClient.postPosts(folderId: createdFolder.id, url: url)
                         await send(.routeToHomeScreen)
+
+                    case .storageBox:
+                        await send(.routeToStorageBoxScene)
                     }
                 } catch: { _, send in
                     await send(.isTextFieldWarnedChanged(true))
