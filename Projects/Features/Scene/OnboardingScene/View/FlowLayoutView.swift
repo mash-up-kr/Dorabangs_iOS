@@ -33,6 +33,7 @@ final class FlowLayoutViewController<Data: Hashable, Content: View>:
     private lazy var collectionView: UICollectionView = {
         let flowLayout = FlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.contentInset = .init(top: 1, left: 0, bottom: 1, right: 0)
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
