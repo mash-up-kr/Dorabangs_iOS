@@ -27,7 +27,7 @@ public struct StorageBoxView: View {
 
                     Spacer()
 
-                    DesignSystemKitAsset.Icons.icAdd
+                    DesignSystemKitAsset.Icons.icAddFolder
                         .swiftUIImage
                         .resizable()
                         .frame(width: 24, height: 24)
