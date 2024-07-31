@@ -37,11 +37,11 @@ public struct LKTabBar<SelectionValue: Hashable>: View {
                 .onTapGesture {
                     selection = item.tag
                 }
-                .padding(.vertical, 4)
+                .padding(.vertical, 10)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .frame(height: 48)
+        .frame(height: 60)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .overlay {
             RoundedTopBorder()
