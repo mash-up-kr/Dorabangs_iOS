@@ -13,12 +13,12 @@ import Foundation
 import SwiftUI
 
 struct VideoLoopPlayerView: View {
-    @State private var player: AVPlayer
+    @State private var player = AVPlayer()
     private let videoURL: URL
 
     init(videoURL: URL) {
-        player = AVPlayer(url: videoURL)
         self.videoURL = videoURL
+        player = AVPlayer(url: videoURL)
     }
 
     var body: some View {
