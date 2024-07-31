@@ -52,7 +52,10 @@ let project = Project.make(
             infoPlist: .file(path: .relativeToRoot("Projects/App/InfoPlists/ShareExtension-Info.plist")),
             sources: ["ShareExtension/**"],
             entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Prod-ShareExtension.entitlements")),
-            dependencies: [.designSystem],
+            dependencies: [
+                .designSystem,
+                .core(.service)
+            ],
             settings: .settings(
                 configurations: [.release(name: .release, xcconfig: shareExtensionReleaseConfig)]
             )
@@ -65,7 +68,10 @@ let project = Project.make(
             infoPlist: .file(path: .relativeToRoot("Projects/App/InfoPlists/ShareExtension-Info.plist")),
             sources: ["ShareExtension/**"],
             entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Dev-ShareExtension.entitlements")),
-            dependencies: [.designSystem],
+            dependencies: [
+                .designSystem,
+                .core(.service)
+            ],
             settings: .settings(
                 configurations: [.debug(name: .debug, xcconfig: shareExtensionDebugConfig)]
             )

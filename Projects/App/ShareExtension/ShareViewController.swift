@@ -6,6 +6,7 @@
 //
 
 import DesignSystemKit
+import Services
 import UIKit
 
 final class ShareViewController: UIViewController {
@@ -15,17 +16,45 @@ final class ShareViewController: UIViewController {
     private let divider = UIView()
     private var url: URL?
 
+    private let folderAPIClient: FolderAPIClient
+    private let postAPIClient: PostAPIClient
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        folderAPIClient = .liveValue
+        postAPIClient = .liveValue
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewHierarchies()
         setViewConstraints()
         setViewAttributes()
+        Task { [weak self] in
+            guard let url = await self?.loadSharedURL() else { return }
+            DispatchQueue.main.async { self?.url = url }
+            await self?.saveURL(url)
+        }
     }
 }
 
 // 출처: https://forums.swift.org/t/how-to-use-non-sendable-type-in-async-reducer-code/62069/6
 extension NSItemProvider: @unchecked Sendable {}
 private extension ShareViewController {
+    func saveURL(_ url: URL) async {
+        do {
+            let folders = try await folderAPIClient.getFolders()
+            // defaultFolder: 나중에 읽을 링크 폴더
+            guard let defaultFolder = folders.defaultFolders.first(where: { $0.type == .default }) else { return }
+            try await postAPIClient.postPosts(defaultFolder.id, url)
+        } catch {}
+    }
+
     func loadSharedURL() async -> URL? {
         let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem
         let itemProvider = extensionItem?.attachments?.first
