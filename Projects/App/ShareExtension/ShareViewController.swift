@@ -7,6 +7,7 @@
 
 import DesignSystemKit
 import Services
+import SwiftUI
 import UIKit
 
 final class ShareViewController: UIViewController {
@@ -14,6 +15,7 @@ final class ShareViewController: UIViewController {
     private let descriptionLabel = UILabel()
     private let editButton = UIButton()
     private let divider = UIView()
+    private let loadingIndicator = UIHostingController(rootView: LoadingIndicator())
     private var url: URL?
 
     private let folderAPIClient: FolderAPIClient
@@ -33,17 +35,19 @@ final class ShareViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewHierarchies()
-        setViewConstraints()
-        setViewAttributes()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideStackView(_:)))
         view.addGestureRecognizer(tapGesture)
 
         Task { [weak self] in
+            DispatchQueue.main.async { self?.showLoadingIndicator() }
             guard let url = await self?.loadSharedURL() else { return }
             DispatchQueue.main.async { self?.url = url }
             await self?.saveURL(url)
+            DispatchQueue.main.async {
+                self?.hideLoadingIndicator()
+                self?.showSaveMessage()
+            }
         }
     }
 }
@@ -117,6 +121,26 @@ private extension ShareViewController {
 // MARK: - View Methods
 
 private extension ShareViewController {
+    func showSaveMessage() {
+        setViewHierarchies()
+        setViewConstraints()
+        setViewAttributes()
+    }
+
+    func showLoadingIndicator() {
+        addChild(loadingIndicator)
+        loadingIndicator.view.frame = view.frame
+        loadingIndicator.view.backgroundColor = .clear
+        view.addSubview(loadingIndicator.view)
+        loadingIndicator.didMove(toParent: self)
+    }
+
+    func hideLoadingIndicator() {
+        loadingIndicator.willMove(toParent: nil)
+        loadingIndicator.view.removeFromSuperview()
+        loadingIndicator.removeFromParent()
+    }
+
     func setViewHierarchies() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(descriptionLabel)
