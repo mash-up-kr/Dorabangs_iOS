@@ -98,7 +98,8 @@ extension StorageBoxCoordinator {
         switch action {
         case .routeToStorageBoxScene:
             state.routes.goBack()
-            return .none
+            let showToast = StorageBox.Action.showToast(message: "폴더를 추가했어요.")
+            return .send(.router(.routeAction(id: 0, action: .storageBox(showToast))))
 
         default:
             return .none

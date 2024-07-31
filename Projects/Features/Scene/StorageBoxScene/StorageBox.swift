@@ -25,6 +25,7 @@ public struct StorageBox {
         public var editFolderPopupIsPresented: Bool = false
         /// 폴더 삭제 팝업 present 여부
         public var removeFolderPopupIsPresented: Bool = false
+        public var toastMessage: String = ""
         /// toast 메시지 present 여부
         public var toastPopupIsPresented: Bool = false
         /// 현재 편집 중인 Folder ID
@@ -40,6 +41,7 @@ public struct StorageBox {
         case onEdit(folderID: String)
         case tapNewFolderButton
         case cancelRemoveFolder
+        case showToast(message: String)
         case showRemoveFolderPopup
         case tapRemoveFolderButton
         case tapChangeFolderName
@@ -116,6 +118,10 @@ public struct StorageBox {
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
                 return .none
+            case let .showToast(message):
+                state.toastMessage = message
+                state.toastPopupIsPresented = true
+                return .none
             case .showRemoveFolderPopup:
                 print("show remove folder popup")
                 state.removeFolderPopupIsPresented = true
@@ -131,8 +137,7 @@ public struct StorageBox {
                     state.customFolders[patchedFolderIndex] = patchedFolder
                 }
                 state.editFolderPopupIsPresented = false
-                state.toastPopupIsPresented = true
-                return .none
+                return .send(.showToast(message: "폴더 이름을 변경했어요."))
             case .routeToChangeFolderName:
                 return .none
             case .routeToCreateNewFolderScene:
