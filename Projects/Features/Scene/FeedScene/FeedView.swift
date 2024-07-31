@@ -69,6 +69,11 @@ public struct FeedView: View {
                                         }
                                     }
                                 }
+                                .hidden(store.currentFolder.postCount == 0)
+
+                                FeedEmptyView()
+                                    .frame(height: 400)
+                                    .hidden(store.currentFolder.postCount != 0)
                             }
                         } header: {
                             VStack(spacing: 0) {
