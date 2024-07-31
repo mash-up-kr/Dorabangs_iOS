@@ -52,7 +52,7 @@ public struct ChangeFolderName {
             case let .folderNameChanged(newFolderName):
                 state.newFolderName = newFolderName
                 state.isTextFieldWarned = false
-                state.isSaveButtonDisabled = false
+                state.isSaveButtonDisabled = newFolderName.isEmpty
                 return .none
 
             case .saveButtonTapped:
