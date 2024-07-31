@@ -124,6 +124,7 @@ private struct FolderListView: View {
         ScrollView {
             VStack(spacing: 0) {
                 NewFolderView()
+                    .background(Rectangle().fill(Color.clear).contentShape(.rect))
                     .onTapGesture(perform: onSelectNewFolder)
                     .padding(.horizontal, 16)
 

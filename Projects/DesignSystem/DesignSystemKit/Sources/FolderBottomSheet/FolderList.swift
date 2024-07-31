@@ -28,6 +28,7 @@ public struct FolderList: View {
                     .padding(.horizontal, 16)
 
                 FolderView(title: folders[index], isSelected: selectedIndex == index)
+                    .background(Rectangle().fill(Color.clear).contentShape(.rect))
                     .padding(.horizontal, 16)
                     .frame(height: 52)
                     .onTapGesture {
