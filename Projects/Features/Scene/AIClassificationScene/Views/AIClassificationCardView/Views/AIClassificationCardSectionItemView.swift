@@ -27,7 +27,7 @@ struct AIClassificationCardSectionItemView: View {
                     description: item.description,
                     thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
                     tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                    category: section.name,
+                    category: "나중에 읽을 링크",
                     timeSince: item.createdAt.timeAgo(),
                     buttonTitle: "\(section.name)(으)로 옮기기",
                     deleteAction: { deleteAction(section, item) },
