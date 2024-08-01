@@ -84,9 +84,11 @@ private struct URLMetadataView: View {
                     .resizable()
 
             } else {
-                DesignSystemKitAsset.Colors.g1.swiftUIColor
+                DesignSystemKitAsset.Images.imgThumbnail.swiftUIImage
+                    .resizable()
             }
         }
+        .aspectRatio(contentMode: .fit)
         .frame(width: 88, height: 88)
     }
 
