@@ -54,26 +54,28 @@ struct AIClassificationCardView: View {
                 .listRowSeparator(.hidden)
 
             ForEach(store.items.keys.elements, id: \.self) { folderId in
-                if let section = store.sections[folderId], let items = store.items[folderId] {
-                    AIClassificationCardSectionHeaderView(
-                        title: section.name,
-                        count: section.postCount,
-                        action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
-                    )
+                WithPerceptionTracking {
+                    if let section = store.sections[folderId], let items = store.items[folderId] {
+                        AIClassificationCardSectionHeaderView(
+                            title: section.name,
+                            count: section.postCount,
+                            action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
+                        )
 
-                    AIClassificationCardSectionItemView(
-                        section: section,
-                        items: items,
-                        deleteAction: { section, item in
-                            store.send(.deleteButtonTapped(section: section, item: item))
-                        },
-                        moveToFolderAction: { section, item in
-                            store.send(.moveToFolderButtonTapped(section: section, item: item))
-                        },
-                        fetchNextPageIfPossible: { item in
-                            store.send(.fetchNextPageIfPossible(item: item))
-                        }
-                    )
+                        AIClassificationCardSectionItemView(
+                            section: section,
+                            items: items,
+                            deleteAction: { section, item in
+                                store.send(.deleteButtonTapped(section: section, item: item))
+                            },
+                            moveToFolderAction: { section, item in
+                                store.send(.moveToFolderButtonTapped(section: section, item: item))
+                            },
+                            fetchNextPageIfPossible: { item in
+                                store.send(.fetchNextPageIfPossible(item: item))
+                            }
+                        )
+                    }
                 }
             }
             .buttonStyle(.plain)
