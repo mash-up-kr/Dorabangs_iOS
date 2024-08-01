@@ -26,7 +26,8 @@ public struct FeedView: View {
                 LKTextMiddleTopBar(
                     title: store.currentFolder.name,
                     backButtonAction: { store.send(.backButtonTapped) },
-                    rightButtomImage: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage,
+                    rightButtomImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
+
                     rightButtonEnabled: true,
                     action: {
                         store.send(.tapMore, animation: .default)
@@ -68,6 +69,11 @@ public struct FeedView: View {
                                         }
                                     }
                                 }
+                                .hidden(store.currentFolder.postCount == 0)
+
+                                FeedEmptyView()
+                                    .frame(height: 400)
+                                    .hidden(store.currentFolder.postCount != 0)
                             }
                         } header: {
                             VStack(spacing: 0) {

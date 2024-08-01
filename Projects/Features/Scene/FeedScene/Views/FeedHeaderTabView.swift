@@ -23,7 +23,7 @@ public struct FeedHeaderTabView: View {
     }
 
     public var body: some View {
-        VStack {
+        ZStack(alignment: .bottom) {
             HStack(alignment: .center, spacing: 0) {
                 FeedHeaderTabItemView(title: "전체", isSelected: selectedType == .all, onTap: {
                     select(.all)
@@ -43,12 +43,14 @@ public struct FeedHeaderTabView: View {
 
                 Spacer()
             }
+            .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+            .frame(height: 48)
 
             Divider()
                 .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
                 .frame(height: 1)
         }
-        .frame(height: 48)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+        .frame(height: 48)
     }
 }
