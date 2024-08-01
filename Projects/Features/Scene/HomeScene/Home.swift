@@ -25,10 +25,11 @@ public struct Home {
                 count: 0
             )
         ]
-        var selectedBannerType: HomeBannerType = .unread
+        var selectedBannerType: HomeBannerType = .ai
         var bannerIndex: Int = 0
         var aiLinkCount = 0
         var unreadLinkCount = 0
+        var isLoading: Bool = false
 
         var tabs: HomeTab.State?
         var cards: HomeCard.State?
@@ -43,14 +44,11 @@ public struct Home {
         case onAppear
 
         // MARK: Inner Business
-        case fetchAILinkCount
-        case fetchUnReadLinkCount
-        case fetchData
-        case fetchFolderList
         case updateBannerList
         case updateBannerPageIndicator(Int)
         case updateBannerType(HomeBannerType)
         case updateCardList
+        case isLoadingChanged(isLoading: Bool)
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
@@ -89,30 +87,31 @@ public struct Home {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .send(.fetchData)
-
-            case .fetchAILinkCount:
                 return .run { send in
-                    try await handleAIClassificationCount(send: send)
-                }
+                    await send(.isLoadingChanged(isLoading: true))
 
-            case .fetchUnReadLinkCount:
-                return .run { send in
-                    try await handleUnreadLinkCount(send: send)
-                }
+                    async let folderListResponse = try folderAPIClient.getFolders()
+                    async let aiClassificationLinkCountResponse = try aiClassificationAPIClient.getAIClassificationCount()
+                    async let unreadLinkCountResponse = try postAPIClient.getPostsCount(isRead: false)
+                    async let cardListResponse = try postAPIClient.getPosts(
+                        page: nil,
+                        limit: nil,
+                        order: nil,
+                        favorite: nil
+                    )
 
-            case .fetchData:
-                return .concatenate(
-                    .send(.fetchFolderList),
-                    .send(.fetchAILinkCount),
-                    .send(.fetchUnReadLinkCount),
-                    .send(.updateBannerList),
-                    .send(.updateCardList)
-                )
+                    let folderList = try await folderListResponse.toFolderList
+                    let aiLinkCount = try await aiClassificationLinkCountResponse
+                    let unreadLinkCount = try await unreadLinkCountResponse
+                    let cardList = try await cardListResponse
 
-            case .fetchFolderList:
-                return .run { send in
-                    try await handleFolderList(send: send)
+                    await send(.setFolderList(folderList))
+                    await send(.setAILinkCount(aiLinkCount))
+                    await send(.setUnReadLinkCount(unreadLinkCount))
+                    await send(.updateBannerList)
+                    await send(.setCardList(cardList, .all))
+
+                    await send(.isLoadingChanged(isLoading: false))
                 }
 
             case .updateBannerList:
@@ -179,6 +178,10 @@ public struct Home {
                     try await fetchAllCardList(send: send)
                 }
 
+            case let .isLoadingChanged(isLoading: isLoading):
+                state.isLoading = isLoading
+                return .none
+
             case let .setAILinkCount(count):
                 state.aiLinkCount = count
                 return .none
@@ -237,15 +240,21 @@ public struct Home {
             case let .tabs(.setSelectedFolderId(folderId: folderId)):
                 if folderId == "all" {
                     return .run { send in
+                        await send(.isLoadingChanged(isLoading: true))
                         try await handleCardList(send: send, folderId: "", folderType: .all)
+                        await send(.isLoadingChanged(isLoading: false))
                     }
                 } else if folderId == "favorite" {
                     return .run { send in
+                        await send(.isLoadingChanged(isLoading: true))
                         try await handleCardList(send: send, folderId: "", folderType: .favorite)
+                        await send(.isLoadingChanged(isLoading: false))
                     }
                 } else {
                     return .run { send in
+                        await send(.isLoadingChanged(isLoading: true))
                         try await handleCardList(send: send, folderId: folderId, folderType: .custom)
+                        await send(.isLoadingChanged(isLoading: false))
                     }
                 }
 
@@ -276,27 +285,6 @@ public struct Home {
 }
 
 private extension Home {
-    private func handleUnreadLinkCount(send: Send<Home.Action>) async throws {
-        let unreadLinkCount = try await postAPIClient.getPostsCount(isRead: false)
-        await send(.setUnReadLinkCount(unreadLinkCount))
-    }
-
-    private func handleAIClassificationCount(send: Send<Home.Action>) async throws {
-        let aiClassificationCount = try await aiClassificationAPIClient.getAIClassificationCount()
-
-        await send(.setAILinkCount(aiClassificationCount))
-    }
-
-    private func handleFolderList(send: Send<Home.Action>) async throws {
-        let folderList = try await folderAPIClient.getFolders()
-
-        if folderList.defaultFolders.isEmpty, folderList.customFolders.isEmpty {
-            await send(.showErrorToast)
-        } else {
-            await send(.setFolderList(folderList.defaultFolders + folderList.customFolders))
-        }
-    }
-
     private func handleCardList(send: Send<Home.Action>, folderId: String, folderType: FolderType) async throws {
         let cardListModel = try await folderAPIClient.getFolderPosts(
             folderId,

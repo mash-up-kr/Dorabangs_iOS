@@ -88,6 +88,9 @@ public struct HomeView: View {
             .navigationBarHidden(true)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
+            .applyIf(store.isLoading, apply: { view in
+                view.overlay { LoadingIndicator() }
+            })
             .onAppear {
                 store.send(.onAppear)
             }

@@ -80,3 +80,9 @@ public extension Folder {
         public static let favorite = "favorite"
     }
 }
+
+public extension FoldersModel {
+    var toFolderList: [Folder] {
+        defaultFolders + customFolders
+    }
+}
