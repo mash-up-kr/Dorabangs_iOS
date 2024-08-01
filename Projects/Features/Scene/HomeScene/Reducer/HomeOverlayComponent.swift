@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import Services
 
 @Reducer
 public struct HomeOverlayComponent {
@@ -32,10 +33,16 @@ public struct HomeOverlayComponent {
         case createNewFolderButtonTapped
         case selectFolderCompleted(folder: String?)
         case binding(BindingAction<State>)
+        case deleteButtonTapped
+        
+        // MARK: Inner Business
+        case cardDeleted
 
         // MARK: Navigaiton Action
         case routeToCreateNewFolderScreen
     }
+    
+    @Dependency(\.postAPIClient) var postAPIClient
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -59,6 +66,12 @@ public struct HomeOverlayComponent {
                 return .run { send in
                     await send(.set(\.isSelectFolderBottomSheetPresented, false))
                     await send(.presentToast(toastMessage: "\(String(describing: folder))(으)로 이동했어요."))
+                }
+                
+            case .deleteButtonTapped:
+                return .run { [postId = state.postId] send in
+                    try await postAPIClient.deletePost(postId: postId ?? "")
+                    await send(.cardDeleted)
                 }
 
             default:

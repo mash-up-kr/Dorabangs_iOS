@@ -74,9 +74,3 @@ public struct HomeCard {
         }
     }
 }
-
-// private extension HomeCard {
-//    private func handleFavoritePost(cardState _: inout State, postId: String, send _: Send<HomeCard.Action>) async throws {
-//        try await postAPIClient.isFavoritePost(postId, isFavorite)
-//    }
-// }

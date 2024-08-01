@@ -258,6 +258,9 @@ public struct Home {
                     .send(.overlayComponent(.set(\.postId, postId))),
                     .send(.overlayComponent(.set(\.isCardActionSheetPresented, true)))
                 )
+                
+            case .overlayComponent(.cardDeleted):
+                return .send(.onAppear)
 
             default:
                 return .none

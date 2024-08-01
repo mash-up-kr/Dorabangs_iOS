@@ -57,6 +57,7 @@ extension View {
                     rightButtonAction: {
                         store.send(.set(\.isDeleteCardModalPresented, false))
                         store.send(.presentToast(toastMessage: "삭제 완료했어요."))
+                        store.send(.deleteButtonTapped)
                     }
                 )
             }
