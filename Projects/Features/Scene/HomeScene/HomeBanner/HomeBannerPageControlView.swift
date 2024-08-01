@@ -6,26 +6,27 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import ComposableArchitecture
 import DesignSystemKit
 import SwiftUI
 
 public struct HomeBannerPageControlView: View {
-    private let bannerList: [HomeBanner]
-    private let selectedBanner: HomeBannerType
+    @Perception.Bindable private var store: StoreOf<HomeBannerPageControl>
 
-    public init(bannerList: [HomeBanner], selectedBanner: HomeBannerType) {
-        self.bannerList = bannerList
-        self.selectedBanner = selectedBanner
+    public init(store: StoreOf<HomeBannerPageControl>) {
+        self.store = store
     }
 
     public var body: some View {
-        HStack(spacing: 0) {
+        WithPerceptionTracking {
             HStack(spacing: 6) {
-                ForEach(bannerList, id: \.self) { banner in
-                    PageControlComponentView(
-                        currentBannerType: banner.bannerType,
-                        isCurrentIndex: banner.bannerType == selectedBanner
-                    )
+                ForEach(store.bannerList, id: \.self) { banner in
+                    WithPerceptionTracking {
+                        PageControlComponentView(
+                            currentBannerType: banner.bannerType,
+                            isCurrentIndex: banner.bannerType == store.selectedBannerType
+                        )
+                    }
                 }
             }
         }

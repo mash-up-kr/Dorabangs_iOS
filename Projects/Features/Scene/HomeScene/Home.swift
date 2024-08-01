@@ -17,14 +17,6 @@ public struct Home {
     public struct State: Equatable {
         public var cardList: [String] = []
         public static let initialState = State()
-        var bannerList: [HomeBanner] = [
-            .init(
-                bannerType: HomeBannerType.onboarding,
-                prefix: HomeBannerType.onboarding.prefix,
-                buttonTitle: HomeBannerType.onboarding.buttonTitle,
-                count: 0
-            )
-        ]
         var selectedBannerType: HomeBannerType = .ai
         var bannerIndex: Int = 0
         var aiLinkCount = 0
@@ -32,6 +24,7 @@ public struct Home {
         var isLoading: Bool = false
 
         var tabs: HomeTab.State?
+        var banner: HomeBannerPageControl.State?
         var cards: HomeCard.State?
 
         /// 모달, 토스트 바텀시트 등 화면 덮는 컴포넌트 상태
@@ -44,7 +37,7 @@ public struct Home {
         case onAppear
 
         // MARK: Inner Business
-        case updateBannerList
+        case updateBannerList(Int, Int)
         case updateBannerPageIndicator(Int)
         case updateBannerType(HomeBannerType)
         case updateCardList
@@ -63,6 +56,7 @@ public struct Home {
         // MARK: Child Action
         case overlayComponent(HomeOverlayComponent.Action)
         case tabs(HomeTab.Action)
+        case banner(HomeBannerPageControl.Action)
         case cards(HomeCard.Action)
 
         // MARK: Navigation Action
@@ -108,65 +102,24 @@ public struct Home {
                     await send(.setFolderList(folderList))
                     await send(.setAILinkCount(aiLinkCount))
                     await send(.setUnReadLinkCount(unreadLinkCount))
-                    await send(.updateBannerList)
+                    await send(.updateBannerList(aiLinkCount, unreadLinkCount))
+                    await send(.banner(.updateBannerList(aiLinkCount, unreadLinkCount)))
                     await send(.setCardList(cardList, .all))
 
                     await send(.isLoadingChanged(isLoading: false))
                 }
 
-            case .updateBannerList:
-                state.bannerList = []
-
-                if state.aiLinkCount > 0 {
-                    let bannerType = HomeBannerType.ai
-                    state.bannerList = [
-                        .init(
-                            bannerType: bannerType,
-                            prefix: bannerType.prefix,
-                            buttonTitle: bannerType.buttonTitle,
-                            count: state.aiLinkCount
-                        )
-                    ]
-                    state.selectedBannerType = bannerType
-                }
-
-                if state.unreadLinkCount > 0 {
-                    let bannerType = HomeBannerType.unread
-                    state.bannerList.append(
-                        .init(
-                            bannerType: bannerType,
-                            prefix: bannerType.prefix,
-                            buttonTitle: bannerType.buttonTitle,
-                            count: state.unreadLinkCount
-                        )
-                    )
-
-                    if state.bannerList.isEmpty {
-                        state.selectedBannerType = bannerType
-                    }
-                }
-
-                let bannerType = HomeBannerType.onboarding
-                state.bannerList.append(
-                    .init(
-                        bannerType: bannerType,
-                        prefix: bannerType.prefix,
-                        buttonTitle: bannerType.buttonTitle,
-                        count: 0
-                    )
-                )
-
-                if state.bannerList.isEmpty {
-                    state.selectedBannerType = bannerType
-                }
+            case let .updateBannerList(aiLinkCount, unreadLinkCount):
+                state.banner = HomeBannerPageControl.State(aiLinkCount: aiLinkCount, unreadLinkCount: unreadLinkCount)
                 return .none
 
             case let .updateBannerPageIndicator(index):
                 state.bannerIndex = index
 
-                let banner = state.bannerList[index]
-                state.selectedBannerType = banner.bannerType
-
+                if let bannerList = state.banner?.bannerList {
+                    let selectedBannerType = bannerList[index].bannerType
+                    return .send(.banner(.set(\.selectedBannerType, selectedBannerType)))
+                }
                 return .none
 
             case let .updateBannerType(bannerType):
@@ -267,7 +220,7 @@ public struct Home {
                     .send(.overlayComponent(.set(\.postId, postId))),
                     .send(.overlayComponent(.set(\.isCardActionSheetPresented, true)))
                 )
-                
+
             case .overlayComponent(.cardDeleted):
                 return .send(.onAppear)
 
@@ -277,6 +230,9 @@ public struct Home {
         }
         .ifLet(\.tabs, action: \.tabs) {
             HomeTab()
+        }
+        .ifLet(\.banner, action: \.banner) {
+            HomeBannerPageControl()
         }
         .ifLet(\.cards, action: \.cards) {
             HomeCard()
