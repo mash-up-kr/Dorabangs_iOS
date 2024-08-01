@@ -66,11 +66,11 @@ public struct StorageBoxItem: View {
         case .custom:
             DesignSystemKitAsset.Images.imgFolderSmall.swiftUIImage
         case .default:
-            DesignSystemKitAsset.Images.imgAllSmall.swiftUIImage
-        case .all:
-            DesignSystemKitAsset.Images.imgBookmarkSmall.swiftUIImage
-        case .favorite:
             DesignSystemKitAsset.Images.imgPinSmall.swiftUIImage
+        case .all:
+            DesignSystemKitAsset.Images.imgAllSmall.swiftUIImage
+        case .favorite:
+            DesignSystemKitAsset.Images.imgBookmarkSmall.swiftUIImage
         }
     }
 }
