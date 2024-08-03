@@ -44,6 +44,7 @@ public struct Home {
         case updateCardList
         case updatePagingCardList([Card])
         case isLoadingChanged(isLoading: Bool)
+        case fetchSummarizingCard([String])
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
@@ -102,10 +103,6 @@ public struct Home {
                     let unreadLinkCount = try await unreadLinkCountResponse
                     let cardList = try await cardListResponse
 
-                    for card in cardList {
-                        if card.aiStatus == .inProgress {}
-                    }
-
                     await send(.setFolderList(folderList))
                     await send(.setAILinkCount(aiLinkCount))
                     await send(.setUnReadLinkCount(unreadLinkCount))
@@ -114,6 +111,11 @@ public struct Home {
                     await send(.setCardList(cardList, .all))
 
                     await send(.isLoadingChanged(isLoading: false))
+
+                    let summarizingCardIdList: [String] = cardList.filter { $0.aiStatus == .inProgress }.map(\.id)
+                    if !summarizingCardIdList.isEmpty {
+                        await send(.cards(.setSummarizingCardIdList(summarizingCardIdList)))
+                    }
                 }
 
             case let .updateBannerList(aiLinkCount, unreadLinkCount):
