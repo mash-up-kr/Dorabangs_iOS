@@ -32,31 +32,7 @@ public struct HomeView: View {
                             .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
 
                         if let selectedFolderId = store.tabs?.selectedFolderId, selectedFolderId == "all" {
-                            if let bannerList = store.banner?.bannerList, bannerList.count > 0 {
-                                ACarousel(
-                                    bannerList,
-                                    id: \.self,
-                                    index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
-                                    spacing: 0,
-                                    headspace: 0,
-                                    sidesScaling: 1,
-                                    isWrap: false,
-                                    autoScroll: .active(TimeInterval(8))
-                                ) { item in
-                                    HomeBannerView(banner: item) {
-                                        store.send(.bannerButtonTapped(item.bannerType))
-                                    }
-                                }
-                                .frame(height: 340)
-                            }
-                            if let store = store.scope(state: \.banner, action: \.banner) {
-                                WithPerceptionTracking {
-                                    HomeBannerPageControlView(store: store)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 40)
-                                        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-                                }
-                            }
+                            bannerView
                         }
 
                         if let store = store.scope(state: \.cards, action: \.cards) {
@@ -69,21 +45,11 @@ public struct HomeView: View {
                 .background(.ultraThinMaterial)
                 .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
 
-                VStack(spacing: 0) {
-                    LKTopLogoBar {
-                        store.send(.addLinkButtonTapped)
-                    }
-                    .frame(height: Constant.LKTopLogoBarHeight)
-
-                    if let store = store.scope(state: \.tabs, action: \.tabs) {
-                        HomeTabView(store: store)
-                            .frame(height: Constant.LKTopScrollViewHeight)
-                    }
-                }
-                .zIndex(2)
-                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
-                .background(.ultraThinMaterial)
-                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
+                topBarView
+                    .zIndex(2)
+                    .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
+                    .background(.ultraThinMaterial)
+                    .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
             }
             .padding(.bottom, 60)
             .homeBackgroundView()
@@ -95,6 +61,51 @@ public struct HomeView: View {
             })
             .onAppear {
                 store.send(.onAppear)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var bannerView: some View {
+        if let bannerList = store.banner?.bannerList, !bannerList.isEmpty {
+            ACarousel(
+                bannerList,
+                id: \.self,
+                index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
+                spacing: 0,
+                headspace: 0,
+                sidesScaling: 1,
+                isWrap: false,
+                autoScroll: .active(TimeInterval(8))
+            ) { item in
+                HomeBannerView(banner: item) {
+                    store.send(.bannerButtonTapped(item.bannerType))
+                }
+            }
+            .frame(height: 340)
+
+            if let store = store.scope(state: \.banner, action: \.banner) {
+                WithPerceptionTracking {
+                    HomeBannerPageControlView(store: store)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 40)
+                        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var topBarView: some View {
+        VStack(spacing: 0) {
+            LKTopLogoBar {
+                store.send(.addLinkButtonTapped)
+            }
+            .frame(height: Constant.LKTopLogoBarHeight)
+
+            if let store = store.scope(state: \.tabs, action: \.tabs) {
+                HomeTabView(store: store)
+                    .frame(height: Constant.LKTopScrollViewHeight)
             }
         }
     }
