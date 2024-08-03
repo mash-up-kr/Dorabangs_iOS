@@ -78,8 +78,9 @@ public struct AIClassificationCard {
                     items: state.items,
                     updateAPI: { try await aiClassificationAPIClient.patchAllPost(suggestionFolderId: section.id) },
                     updateSections: { sections in
+                        let deletedPostCount = sections[section.id]?.postCount
                         sections[section.id]?.postCount = 0
-                        sections[Folder.ID.all]?.postCount = 0
+                        sections[Folder.ID.all]?.postCount -= deletedPostCount ?? 0
                     },
                     updateItems: { items in
                         items[section.id] = []
