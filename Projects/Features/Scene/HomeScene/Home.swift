@@ -22,6 +22,7 @@ public struct Home {
         var aiLinkCount = 0
         var unreadLinkCount = 0
         var isLoading: Bool = false
+        var morePagingNeeded: Bool = true
 
         var tabs: HomeTab.State?
         var banner: HomeBannerPageControl.State?
@@ -41,12 +42,14 @@ public struct Home {
         case updateBannerPageIndicator(Int)
         case updateBannerType(HomeBannerType)
         case updateCardList
+        case updatePagingCardList([Card])
         case isLoadingChanged(isLoading: Bool)
 
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
         case setCardList([Card], FolderType)
         case setFolderList([Folder])
+        case setMorePagingStatus(Bool)
         case showErrorToast
 
         // MARK: User Action
@@ -131,6 +134,10 @@ public struct Home {
                     try await fetchAllCardList(send: send)
                 }
 
+            case let .updatePagingCardList(cardList):
+                state.cards?.cards.append(contentsOf: cardList)
+                return .none
+
             case let .isLoadingChanged(isLoading: isLoading):
                 state.isLoading = isLoading
                 return .none
@@ -167,6 +174,10 @@ public struct Home {
                     dict[folder.id] = folder.name
                 }
                 folderClient.setFolderList(folderDictionary) // TODO: 실패했을 경우 처리 필요
+                return .none
+
+            case let .setMorePagingStatus(morePagingNeeded):
+                state.morePagingNeeded = morePagingNeeded
                 return .none
 
             case .showErrorToast:
@@ -224,6 +235,29 @@ public struct Home {
                     .send(.overlayComponent(.set(\.postId, postId))),
                     .send(.overlayComponent(.set(\.isCardActionSheetPresented, true)))
                 )
+
+            case let .cards(.fetchCards(page)):
+                return .run { [state] send in
+                    if state.morePagingNeeded {
+                        await send(.isLoadingChanged(isLoading: true))
+                        async let cardListResponse = try postAPIClient.getPosts(
+                            page: page,
+                            limit: nil,
+                            order: nil,
+                            favorite: nil
+                        )
+
+                        let cardList = try await cardListResponse
+                        if cardList.count == 0 {
+                            async let _ = send(.setMorePagingStatus(false))
+                            async let _ = send(.cards(.setFetchedAllCardsStatus(true)))
+                        } else {
+                            await send(.updatePagingCardList(cardList))
+                        }
+
+                        await send(.isLoadingChanged(isLoading: false))
+                    }
+                }
 
             case .overlayComponent(.cardDeleted):
                 return .send(.onAppear)

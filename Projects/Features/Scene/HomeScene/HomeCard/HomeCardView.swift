@@ -61,8 +61,8 @@ struct HomeCardView: View {
                             store.send(.cardTapped(item: item))
                         }
                         .onAppear {
-                            if index % 9 == 0 {
-                                store.send(.fetchCards)
+                            if index != 0, index % 9 == 0, !store.fetchedAllCards {
+                                store.send(.updatePage)
                             }
                         }
                     }

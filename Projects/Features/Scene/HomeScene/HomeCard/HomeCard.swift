@@ -15,11 +15,12 @@ import Services
 public struct HomeCard {
     @ObservableState
     public struct State: Equatable {
-        fileprivate(set) var scrollPage: Int
-        fileprivate(set) var cards: [Card]
+        var page: Int
+        var cards: [Card]
+        var fetchedAllCards: Bool = false
 
         public init(cards: [Card]) {
-            scrollPage = 0
+            page = 1
             self.cards = cards
         }
     }
@@ -29,9 +30,12 @@ public struct HomeCard {
         case onAppear
 
         // MARK: Inner Business
-        case fetchCards
+        case updatePage
+        case fetchCards(Int)
         case addItems(items: [Card])
-        case setScrollPage
+        case setFetchedAllCardsStatus(Bool)
+        case setPage
+
         case itemsChanged(items: [Card])
 
         // MARK: User Action
@@ -48,11 +52,17 @@ public struct HomeCard {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .send(.fetchCards)
+                return .none
 
-            case .fetchCards:
-                // TODO: 데이터 받아오기
-                state.scrollPage += 1
+            case .updatePage:
+                state.page += 1
+                return .send(.fetchCards(state.page))
+
+            case let .fetchCards(page):
+                return .none
+
+            case let .setFetchedAllCardsStatus(fetchedAllCards):
+                state.fetchedAllCards = fetchedAllCards
                 return .none
 
             case let .bookMarkButtonTapped(postId, isFavorite):
