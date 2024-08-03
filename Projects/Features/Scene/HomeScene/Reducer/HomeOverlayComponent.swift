@@ -19,7 +19,9 @@ public struct HomeOverlayComponent {
         // 카드 삭제 확인 모달
         var isDeleteCardModalPresented: Bool = false
         // 폴더 선택 바텀시트
-        var folders: [String] = ["폴더1", "폴더2", "폴더3", "폴더4", "폴더5"]
+        var folders: [String] = []
+        // 폴더와 폴더 id
+        var folderList: [String: String] = [:]
         var isSelectFolderBottomSheetPresented: Bool = false
         // 토스트
         var toastMessage: String = ""
@@ -37,6 +39,7 @@ public struct HomeOverlayComponent {
 
         // MARK: Inner Business
         case cardDeleted
+        case cardMoved
 
         // MARK: Navigaiton Action
         case routeToCreateNewFolderScreen
@@ -62,10 +65,14 @@ public struct HomeOverlayComponent {
                 return .send(.routeToCreateNewFolderScreen)
 
             case let .selectFolderCompleted(folder):
-                // TODO: call folder api
-                return .run { send in
+                let folderList = UserFolder.shared.list
+                let folderId = folderList.first { $0.value == folder }?.key
+
+                return .run { [state] send in
+                    try await postAPIClient.movePostFolder(postId: state.postId ?? "", folderId: folderId ?? "")
                     await send(.set(\.isSelectFolderBottomSheetPresented, false))
-                    await send(.presentToast(toastMessage: "\(String(describing: folder))(으)로 이동했어요."))
+                    await send(.presentToast(toastMessage: "\(folder ?? "")(으)로 이동했어요."))
+                    await send(.cardMoved)
                 }
 
             case .deleteButtonTapped:

@@ -19,10 +19,10 @@ public struct FolderClient: Sendable {
     public var removeFolder: @Sendable (_ folderId: String) -> Bool = { _ in false }
 }
 
-final class UserFolder {
-    static let shared = UserFolder()
+public final class UserFolder {
+    public static let shared = UserFolder()
 
-    var list = [String: String]()
+    public var list = [String: String]()
 
     private init() {}
 }

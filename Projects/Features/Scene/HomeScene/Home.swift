@@ -216,12 +216,19 @@ public struct Home {
                 return .send(.routeToWebScreen(url))
 
             case let .cards(.showModalButtonTapped(postId: postId, folderId: folderId)):
+                var folderList = UserFolder.shared.list
+                folderList.removeValue(forKey: "all")
+                folderList.removeValue(forKey: "favorite")
                 return .concatenate(
+                    .send(.overlayComponent(.set(\.folderList, folderList))),
                     .send(.overlayComponent(.set(\.postId, postId))),
                     .send(.overlayComponent(.set(\.isCardActionSheetPresented, true)))
                 )
 
             case .overlayComponent(.cardDeleted):
+                return .send(.onAppear)
+
+            case .overlayComponent(.cardMoved):
                 return .send(.onAppear)
 
             default:

@@ -69,7 +69,7 @@ extension View {
         @Perception.Bindable var store = store
         bottomSheet(
             isPresented: $store.isSelectFolderBottomSheetPresented.projectedValue,
-            folders: store.folders,
+            folders: Array(store.folderList.values),
             onSelectNewFolder: {
                 store.send(.set(\.isSelectFolderBottomSheetPresented, false))
                 store.send(.createNewFolderButtonTapped)
