@@ -51,7 +51,7 @@ public struct SaveURL {
 
     public init() {}
 
-    @Dependency(\.urlValidatorClient) var urlValidatorClient
+    @Dependency(\.linkAPIClient) var linkAPIClient
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
@@ -69,8 +69,8 @@ public struct SaveURL {
 
             case .saveButtonTapped:
                 return .run { [urlString = state.urlString] send in
-                    if let url = URL(string: urlString), let validURL = await urlValidatorClient.validateURL(url) {
-                        await send(.routeToSelectFolderScreen(saveURL: validURL))
+                    if let url = addHTTPSIfNeeded(urlString: urlString), try await linkAPIClient.getValidation(url.absoluteString) {
+                        await send(.routeToSelectFolderScreen(saveURL: url))
                     } else {
                         await send(.isTextFieldWarnedChanged(true))
                     }
@@ -98,5 +98,19 @@ public struct SaveURL {
         state.isTextFieldWarned = false
         state.isSaveButtonDisabled = state.urlString.isEmpty
         return .none
+    }
+}
+
+private extension SaveURL {
+    // scheme이 없는 경우 https로 설정합니다.
+    func addHTTPSIfNeeded(urlString: String) -> URL? {
+        var modifiedURLString = urlString
+
+        // 스킴이 없는 경우 "https://"를 추가
+        if !urlString.lowercased().hasPrefix("http://"), !urlString.lowercased().hasPrefix("https://") {
+            modifiedURLString = "https://" + urlString
+        }
+
+        return URL(string: modifiedURLString)
     }
 }
