@@ -56,7 +56,11 @@ struct ThumbnailImage: View {
         if let urlString, let url = URL(string: urlString) {
             KFImage(url)
                 .placeholder { DesignSystemKitAsset.Images.imgThumbnail.swiftUIImage }
+                .appendProcessor(DownsamplingImageProcessor(size: .init(width: 80, height: 80)))
+                .scaleFactor(UIScreen.main.scale)
+                .cacheOriginalImage()
                 .roundCorner(radius: .point(4), roundingCorners: .all)
+                .cancelOnDisappear(true)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 80, height: 80)
