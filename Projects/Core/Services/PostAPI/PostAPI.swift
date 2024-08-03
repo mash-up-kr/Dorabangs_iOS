@@ -22,6 +22,8 @@ enum PostAPI: APIRepresentable {
     case deletePost(postId: String)
     /// URL 폴더 변경
     case movePostFolder(postId: String, folderId: String)
+    /// 단일 피드 조회
+    case getPost(postId: String)
 }
 
 extension PostAPI {
@@ -36,12 +38,14 @@ extension PostAPI {
             "/posts/\(postId)"
         case let .movePostFolder(postId, _):
             "/posts/\(postId)/move"
+        case let .getPost(postId: postId):
+            "/posts/\(postId)"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .getPosts, .getPostsCount:
+        case .getPosts, .getPostsCount, .getPost:
             .get
         case .postCard:
             .post
@@ -60,13 +64,15 @@ extension PostAPI {
             .dictionary(["page": page])
         case let .getPostsCount(isRead):
             .dictionary(["isRead": isRead])
+        case let .getPost(postId: postId):
+            .dictionary(["postId": postId])
         default: nil
         }
     }
 
     var httpBody: BodyParameters? {
         switch self {
-        case .getPosts, .getPostsCount, .deletePost:
+        case .getPosts, .getPostsCount, .deletePost, .getPost:
             .none
         case let .postCard(folderId, urlString):
             .dictionary(["folderId": folderId, "url": urlString])

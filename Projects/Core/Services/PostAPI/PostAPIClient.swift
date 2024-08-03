@@ -29,6 +29,8 @@ public struct PostAPIClient {
     public var deletePost: @Sendable (_ postId: String) async throws -> Void
     /// URL 폴더 변경
     public var movePostFolder: @Sendable (_ postId: String, _ folderId: String) async throws -> Void
+    /// 단일 피드 조회
+    public var getPost: @Sendable (_ postId: String) async throws -> Card
 }
 
 public extension DependencyValues {
@@ -74,6 +76,11 @@ extension PostAPIClient: DependencyKey {
         movePostFolder: { postId, folderId in
             let api = PostAPI.movePostFolder(postId: postId, folderId: folderId)
             let responseDTO: EmptyResponseDTO = try await Provider().request(api)
+        },
+        getPost: { postId in
+            let api = PostAPI.getPost(postId: postId)
+            let responseDTO: CardDTO = try await Provider().request(api)
+            return responseDTO.toDomain
         }
     )
 }
