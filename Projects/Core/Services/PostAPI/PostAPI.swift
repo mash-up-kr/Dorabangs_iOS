@@ -11,7 +11,7 @@ import Foundation
 
 enum PostAPI: APIRepresentable {
     /// 전체 피드 조회
-    case getPosts
+    case getPosts(page: Int)
     /// 피드 갯수 반환
     case getPostsCount(isRead: Bool)
     /// URL 링크 저장
@@ -56,6 +56,8 @@ extension PostAPI {
 
     var queryString: QueryStringParameters? {
         switch self {
+        case let .getPosts(page: page):
+            .dictionary(["page": page])
         case let .getPostsCount(isRead):
             .dictionary(["isRead": isRead])
         default: nil
