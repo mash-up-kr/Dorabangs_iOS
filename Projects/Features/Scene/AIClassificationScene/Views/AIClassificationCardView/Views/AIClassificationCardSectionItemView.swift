@@ -20,29 +20,32 @@ struct AIClassificationCardSectionItemView: View {
     let fetchNextPageIfPossible: (_ item: Card) -> Void
 
     var body: some View {
-        ForEach(items, id: \.self) { item in
-            VStack(spacing: 0) {
-                LKClassificationCard(
-                    title: item.title,
-                    description: item.description,
-                    thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
-                    tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                    category: "나중에 읽을 링크",
-                    timeSince: item.createdAt.timeAgo(),
-                    buttonTitle: "\(section.name)(으)로 옮기기",
-                    deleteAction: { deleteAction(section, item) },
-                    moveToFolderAction: { moveToFolderAction(section, item) }
-                )
-                .onAppear {
-                    fetchNextPageIfPossible(item)
-                }
+        LazyVStack(spacing: 0) {
+            ForEach(items, id: \.self) { item in
+                VStack(spacing: 0) {
+                    LKClassificationCard(
+                        title: item.title,
+                        description: item.description,
+                        thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
+                        tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                        category: "나중에 읽을 링크",
+                        timeSince: item.createdAt.timeAgo(),
+                        buttonTitle: "\(section.name)(으)로 옮기기",
+                        deleteAction: { deleteAction(section, item) },
+                        moveToFolderAction: { moveToFolderAction(section, item) }
+                    )
+                    .onAppear {
+                        print("On Appear: \(item.title)")
+                        fetchNextPageIfPossible(item)
+                    }
 
-                if item != items.last {
-                    Divider()
-                        .frame(height: 0.5)
-                        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 20)
+                    if item != items.last {
+                        Divider()
+                            .frame(height: 0.5)
+                            .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 20)
+                    }
                 }
             }
         }
