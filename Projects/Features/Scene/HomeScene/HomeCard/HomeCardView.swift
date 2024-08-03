@@ -25,7 +25,7 @@ struct HomeCardView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            VStack(spacing: 0) {
+            Group {
                 if store.cards.isEmpty {
                     HomeCardEmptyView()
                 } else {
@@ -40,32 +40,27 @@ struct HomeCardView: View {
 
     @ViewBuilder
     private func contentScrollView() -> some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
-                    VStack(spacing: 0) {
-                        LKCard(
-                            aiStatus: getStatus(item.aiStatus ?? .failure),
-                            progress: 0.4,
-                            title: item.title,
-                            description: item.description,
-                            thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
-                            tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                            category: folderClient.getFolderName(folderId: item.folderId) ?? "",
-                            timeSince: item.createdAt.timeAgo(),
-                            isFavorite: item.isFavorite ?? false,
-                            bookMarkAction: { store.send(.bookMarkButtonTapped(postId: item.id, isFavorite: !(item.isFavorite ?? true))) },
-                            showModalAction: { store.send(.showModalButtonTapped(postId: item.id, folderId: item.folderId), animation: .easeInOut) }
-                        )
-                        .onTapGesture {
-                            store.send(.cardTapped(item: item))
-                        }
-                        .onAppear {
-                            if index != 0, index % 9 == 0, !store.fetchedAllCards {
-                                store.send(.updatePage)
-                            }
-                        }
-                    }
+        ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
+            LKCard(
+                aiStatus: getStatus(item.aiStatus ?? .failure),
+                progress: 0.4,
+                title: item.title,
+                description: item.description,
+                thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
+                tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                category: folderClient.getFolderName(folderId: item.folderId) ?? "",
+                timeSince: item.createdAt.timeAgo(),
+                isFavorite: item.isFavorite ?? false,
+                bookMarkAction: { store.send(.bookMarkButtonTapped(postId: item.id, isFavorite: !(item.isFavorite ?? true))) },
+                showModalAction: { store.send(.showModalButtonTapped(postId: item.id, folderId: item.folderId), animation: .easeInOut) }
+            )
+            .onTapGesture {
+                store.send(.cardTapped(item: item))
+            }
+            .onAppear {
+                debugPrint("LKCard: \(index) loaded")
+                if index != 0, index % 9 == 0, !store.fetchedAllCards {
+                    store.send(.updatePage)
                 }
             }
         }

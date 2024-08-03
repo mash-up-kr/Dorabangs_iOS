@@ -27,7 +27,7 @@ public struct HomeView: View {
         WithPerceptionTracking {
             ZStack(alignment: .top) {
                 ScrollView {
-                    VStack(spacing: 0) {
+                    LazyVStack(spacing: 0) {
                         Spacer()
                             .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
 

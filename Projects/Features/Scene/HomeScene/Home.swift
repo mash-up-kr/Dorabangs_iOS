@@ -304,7 +304,7 @@ private extension Home {
             cardList.append(contentsOf: cardListModel.cards)
             page += 1
         }
-        
+
         await send(.setCardList(cardList, folderType))
     }
 
