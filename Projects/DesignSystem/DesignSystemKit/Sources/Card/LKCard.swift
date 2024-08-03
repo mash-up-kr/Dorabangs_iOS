@@ -112,7 +112,7 @@ private struct MajorContentView: View {
     let description: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 4) {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
