@@ -15,7 +15,7 @@ public struct HomeTab {
     public struct State: Equatable {
         private(set) var tabs: [Folder]
         fileprivate(set) var selectedIndex: Int
-        fileprivate(set) var selectedFolderId: String?
+        fileprivate(set) var selectedFolderId: String = "all"
 
         public init(tabs: [Folder]) {
             self.tabs = tabs

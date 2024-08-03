@@ -31,29 +31,31 @@ public struct HomeView: View {
                         Spacer()
                             .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
 
-                        if let bannerList = store.banner?.bannerList, bannerList.count > 0 {
-                            ACarousel(
-                                bannerList,
-                                id: \.self,
-                                index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
-                                spacing: 0,
-                                headspace: 0,
-                                sidesScaling: 1,
-                                isWrap: false,
-                                autoScroll: .active(TimeInterval(8))
-                            ) { item in
-                                HomeBannerView(banner: item) {
-                                    store.send(.bannerButtonTapped(item.bannerType))
+                        if let selectedFolderId = store.tabs?.selectedFolderId, selectedFolderId == "all" {
+                            if let bannerList = store.banner?.bannerList, bannerList.count > 0 {
+                                ACarousel(
+                                    bannerList,
+                                    id: \.self,
+                                    index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
+                                    spacing: 0,
+                                    headspace: 0,
+                                    sidesScaling: 1,
+                                    isWrap: false,
+                                    autoScroll: .active(TimeInterval(8))
+                                ) { item in
+                                    HomeBannerView(banner: item) {
+                                        store.send(.bannerButtonTapped(item.bannerType))
+                                    }
                                 }
+                                .frame(height: 340)
                             }
-                            .frame(height: 340)
-                        }
-                        if let store = store.scope(state: \.banner, action: \.banner) {
-                            WithPerceptionTracking {
-                                HomeBannerPageControlView(store: store)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 40)
-                                    .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                            if let store = store.scope(state: \.banner, action: \.banner) {
+                                WithPerceptionTracking {
+                                    HomeBannerPageControlView(store: store)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 40)
+                                        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                                }
                             }
                         }
 
