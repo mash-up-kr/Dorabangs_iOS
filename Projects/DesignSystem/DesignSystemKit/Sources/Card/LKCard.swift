@@ -263,7 +263,7 @@ private struct SummarizingView: View {
                         bundle: bundle ?? .main
                     )
                 )
-                .looping()
+                .playing(loopMode: .loop)
                 .frame(width: 254, height: 100)
 
                 Spacer()
