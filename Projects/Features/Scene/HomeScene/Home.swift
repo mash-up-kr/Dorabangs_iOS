@@ -102,6 +102,10 @@ public struct Home {
                     let unreadLinkCount = try await unreadLinkCountResponse
                     let cardList = try await cardListResponse
 
+                    for card in cardList {
+                        if card.aiStatus == .inProgress {}
+                    }
+
                     await send(.setFolderList(folderList))
                     await send(.setAILinkCount(aiLinkCount))
                     await send(.setUnReadLinkCount(unreadLinkCount))
@@ -205,6 +209,7 @@ public struct Home {
                 if folderId == "all" {
                     return .run { send in
                         await send(.isLoadingChanged(isLoading: true))
+                        await send(.cards(.fetchCards(1)))
                         try await handleCardList(send: send, folderId: "", folderType: .all)
                         await send(.isLoadingChanged(isLoading: false))
                     }
@@ -283,15 +288,24 @@ public struct Home {
 
 private extension Home {
     private func handleCardList(send: Send<Home.Action>, folderId: String, folderType: FolderType) async throws {
-        let cardListModel = try await folderAPIClient.getFolderPosts(
-            folderId,
-            nil,
-            nil,
-            nil,
-            nil
-        )
+        var cardList: [Card] = []
+        var page = 1
+        var hasNext = true
 
-        await send(.setCardList(cardListModel.cards, folderType))
+        while hasNext {
+            let cardListModel = try await folderAPIClient.getFolderPosts(
+                folderId,
+                page,
+                nil,
+                nil,
+                nil
+            )
+            hasNext = cardListModel.hasNext
+            cardList.append(contentsOf: cardListModel.cards)
+            page += 1
+        }
+        
+        await send(.setCardList(cardList, folderType))
     }
 
     private func fetchAllCardList(send: Send<Home.Action>) async throws {
