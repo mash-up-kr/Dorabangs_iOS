@@ -15,7 +15,6 @@ import Services
 public struct Home {
     @ObservableState
     public struct State: Equatable {
-        public var cardList: [String] = []
         public static let initialState = State()
         var selectedBannerType: HomeBannerType = .ai
         var bannerIndex: Int = 0
@@ -211,7 +210,6 @@ public struct Home {
                 if folderId == "all" {
                     return .run { send in
                         await send(.isLoadingChanged(isLoading: true))
-                        await send(.cards(.fetchCards(1)))
                         try await handleCardList(send: send, folderId: "", folderType: .all)
                         await send(.isLoadingChanged(isLoading: false))
                     }
@@ -246,7 +244,6 @@ public struct Home {
             case let .cards(.fetchCards(page)):
                 return .run { [state] send in
                     if state.morePagingNeeded {
-                        await send(.isLoadingChanged(isLoading: true))
                         async let cardListResponse = try postAPIClient.getPosts(
                             page: page,
                             limit: nil,
@@ -261,8 +258,6 @@ public struct Home {
                         } else {
                             await send(.updatePagingCardList(cardList))
                         }
-
-                        await send(.isLoadingChanged(isLoading: false))
                     }
                 }
 
