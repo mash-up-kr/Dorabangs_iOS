@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import Lottie
 import SwiftUI
 
 public enum LKCardAIStatus {
@@ -62,9 +63,7 @@ public struct LKCard<Thumbnail: View>: View {
                 thumbnail: thumbnailImage
             )
 
-            if aiStatus == .inProgress {
-                ProgressBarView(progress: progress)
-            } else if aiStatus == .success {
+            if aiStatus == .success {
                 TagsView(tags: tags)
             }
 
@@ -143,18 +142,6 @@ private struct CardThumbnailView<Thumbnail: View>: View {
                 .cornerRadius(4, corners: .allCorners)
 
             Spacer()
-        }
-    }
-}
-
-private struct ProgressBarView: View {
-    let progress: CGFloat
-
-    var body: some View {
-        VStack {
-            Spacer()
-                .frame(height: 16)
-            LKCardProgressBar(progress: progress).frame(height: 4)
         }
     }
 }
@@ -250,6 +237,8 @@ private struct ActionButtons: View {
 }
 
 private struct SummarizingView: View {
+    private let bundle = Bundle(identifier: "com.mashup.dorabangs.designSystemKit")
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 4) {
@@ -268,16 +257,17 @@ private struct SummarizingView: View {
                 .frame(height: 12)
 
             HStack(spacing: 0) {
-                LKDescriptionSkeletonView()
-                    .frame(width: 254, height: 56)
+                LottieView(
+                    animation: .named(
+                        JSONFiles.Skeleton.jsonName,
+                        bundle: bundle ?? .main
+                    )
+                )
+                .looping()
+                .frame(width: 254, height: 100)
+
                 Spacer()
             }
-
-            Spacer()
-                .frame(height: 8)
-
-            LKKeywordSkeletonView()
-                .frame(width: 172, height: 26)
         }
     }
 }
@@ -291,7 +281,7 @@ private struct CategorySummarizingView: View {
 
 #Preview {
     LKCard<ThumbnailView>(
-        aiStatus: .success,
+        aiStatus: .inProgress,
         progress: 0.3,
         title: "에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주 에스파 '슈퍼노바', 올해 멜론 주간 차트 최장 1위…'쇠맛' 흥행 질주",
         description: "사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb 사건은 다가와 아 오 에 거세게 커져가 아 오 에 That tick, that tick, tick bomb That tick, that tick, tick bomb",
