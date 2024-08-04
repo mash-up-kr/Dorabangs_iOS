@@ -20,5 +20,6 @@ public struct LoadingIndicator: View {
             )
         )
         .playing(loopMode: .loop)
+        .backgroundBehavior(.pauseAndRestore)
     }
 }
