@@ -85,8 +85,6 @@ public struct Home {
             switch action {
             case .onAppear:
                 return .run { send in
-                    await send(.isLoadingChanged(isLoading: true))
-
                     async let folderListResponse = try folderAPIClient.getFolders()
                     async let aiClassificationLinkCountResponse = try aiClassificationAPIClient.getAIClassificationCount()
                     async let unreadLinkCountResponse = try postAPIClient.getPostsCount(isRead: false)
@@ -97,10 +95,13 @@ public struct Home {
                         favorite: nil
                     )
 
-                    let folderList = try await folderListResponse.toFolderList
-                    let aiLinkCount = try await aiClassificationLinkCountResponse
-                    let unreadLinkCount = try await unreadLinkCountResponse
-                    let cardList = try await cardListResponse
+                    await send(.isLoadingChanged(isLoading: true))
+                    let (folderList, aiLinkCount, unreadLinkCount, cardList) = try await (
+                        folderListResponse.toFolderList,
+                        aiClassificationLinkCountResponse,
+                        unreadLinkCountResponse,
+                        cardListResponse
+                    )
 
                     await send(.setFolderList(folderList))
                     await send(.setAILinkCount(aiLinkCount))
@@ -108,7 +109,6 @@ public struct Home {
                     await send(.updateBannerList(aiLinkCount, unreadLinkCount))
                     await send(.banner(.updateBannerList(aiLinkCount, unreadLinkCount)))
                     await send(.setCardList(cardList, .all))
-
                     await send(.isLoadingChanged(isLoading: false))
 
                     let summarizingCardIdList: [String] = cardList.filter { $0.aiStatus == .inProgress }.map(\.id)
@@ -204,27 +204,13 @@ public struct Home {
                 return .none
 
             case let .tabs(.tabSelected(index)):
-                return .none
-
-            case let .tabs(.setSelectedFolderId(folderId: folderId)):
-                if folderId == "all" {
-                    return .run { send in
-                        await send(.isLoadingChanged(isLoading: true))
-                        try await handleCardList(send: send, folderId: "", folderType: .all)
-                        await send(.isLoadingChanged(isLoading: false))
-                    }
-                } else if folderId == "favorite" {
-                    return .run { send in
-                        await send(.isLoadingChanged(isLoading: true))
-                        try await handleCardList(send: send, folderId: "", folderType: .favorite)
-                        await send(.isLoadingChanged(isLoading: false))
-                    }
-                } else {
-                    return .run { send in
-                        await send(.isLoadingChanged(isLoading: true))
-                        try await handleCardList(send: send, folderId: folderId, folderType: .custom)
-                        await send(.isLoadingChanged(isLoading: false))
-                    }
+                guard let tabs = state.tabs else { return .none }
+                state.cards = nil
+                let folderId = tabs.selectedFolderId
+                return .run { send in
+                    await send(.isLoadingChanged(isLoading: true))
+                    try await handleCardList(send: send, folderId: folderId)
+                    await send(.isLoadingChanged(isLoading: false))
                 }
 
             case let .cards(.cardTapped(item)):
@@ -253,8 +239,8 @@ public struct Home {
 
                         let cardList = try await cardListResponse
                         if cardList.count == 0 {
-                            async let _ = send(.setMorePagingStatus(false))
-                            async let _ = send(.cards(.setFetchedAllCardsStatus(true)))
+                            await send(.setMorePagingStatus(false))
+                            await send(.cards(.setFetchedAllCardsStatus(true)))
                         } else {
                             await send(.updatePagingCardList(cardList))
                         }
@@ -284,25 +270,14 @@ public struct Home {
 }
 
 private extension Home {
-    private func handleCardList(send: Send<Home.Action>, folderId: String, folderType: FolderType) async throws {
-        var cardList: [Card] = []
-        var page = 1
-        var hasNext = true
-
-        while hasNext {
-            let cardListModel = try await folderAPIClient.getFolderPosts(
-                folderId,
-                page,
-                nil,
-                nil,
-                nil
-            )
-            hasNext = cardListModel.hasNext
-            cardList.append(contentsOf: cardListModel.cards)
-            page += 1
+    private func handleCardList(send: Send<Home.Action>, folderId: String) async throws {
+        if folderId == "all" {
+            try await send(.setCardList(postAPIClient.getPosts(page: 1, limit: nil, order: nil, favorite: false), .all))
+        } else if folderId == "favorite" {
+            try await send(.setCardList(postAPIClient.getPosts(page: 1, limit: nil, order: nil, favorite: true), .favorite))
+        } else {
+            try await send(.setCardList(folderAPIClient.getFolderPosts(folderId, 1, nil, nil, nil).cards, .custom))
         }
-
-        await send(.setCardList(cardList, folderType))
     }
 
     private func fetchAllCardList(send: Send<Home.Action>) async throws {

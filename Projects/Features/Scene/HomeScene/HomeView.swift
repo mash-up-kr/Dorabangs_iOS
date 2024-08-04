@@ -39,6 +39,10 @@ public struct HomeView: View {
                             HomeCardView(store: store)
                         }
                     }
+                    .applyIf(store.isLoading) { _ in
+                        LoadingIndicator()
+                            .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 60)
+                    }
                 }
                 .zIndex(1)
                 .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
@@ -56,9 +60,6 @@ public struct HomeView: View {
             .navigationBarHidden(true)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .applyIf(store.isLoading, apply: { view in
-                view.overlay { LoadingIndicator() }
-            })
             .onAppear {
                 store.send(.onAppear)
             }

@@ -25,8 +25,6 @@ public struct HomeTab {
 
     public enum Action {
         case tabSelected(at: Int)
-
-        case setSelectedFolderId(folderId: String)
     }
 
     public var body: some ReducerOf<Self> {
@@ -34,13 +32,7 @@ public struct HomeTab {
             switch action {
             case let .tabSelected(selectedIndex):
                 state.selectedIndex = selectedIndex
-                let folderId = state.tabs[selectedIndex].id
-                return .run { send in
-                    await send(.setSelectedFolderId(folderId: folderId))
-                }
-
-            case let .setSelectedFolderId(folderId: folderId):
-                state.selectedFolderId = folderId
+                state.selectedFolderId = state.tabs[selectedIndex].id
                 return .none
             }
         }
