@@ -31,8 +31,8 @@ public struct HomeView: View {
                         Spacer()
                             .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
 
-                        if let selectedFolderId = store.tabs?.selectedFolderId, selectedFolderId == "all" {
-                            bannerView
+                        if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
+                            HomeBannerCarousel(store: store)
                         }
 
                         if let store = store.scope(state: \.cards, action: \.cards) {
@@ -67,10 +67,28 @@ public struct HomeView: View {
     }
 
     @ViewBuilder
-    private var bannerView: some View {
-        if let bannerList = store.banner?.bannerList, !bannerList.isEmpty {
+    private var topBarView: some View {
+        VStack(spacing: 0) {
+            LKTopLogoBar {
+                store.send(.addLinkButtonTapped)
+            }
+            .frame(height: Constant.LKTopLogoBarHeight)
+
+            if let store = store.scope(state: \.tabs, action: \.tabs) {
+                HomeTabView(store: store)
+                    .frame(height: Constant.LKTopScrollViewHeight)
+            }
+        }
+    }
+}
+
+struct HomeBannerCarousel: View {
+    @Perception.Bindable var store: StoreOf<HomeBannerPageControl>
+
+    var body: some View {
+        WithPerceptionTracking {
             ACarousel(
-                bannerList,
+                store.bannerList,
                 id: \.self,
                 index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
                 spacing: 0,
@@ -83,34 +101,15 @@ public struct HomeView: View {
                     store.send(.bannerButtonTapped(item.bannerType))
                 }
             }
-            .onChange(of: store.bannerIndex) { playBannerLottie(with: bannerList[$0].bannerType) }
-            .onAppear { playBannerLottie(with: bannerList[store.bannerIndex].bannerType) }
+            .onChange(of: store.bannerIndex) { playBannerLottie(with: store.bannerList[$0].bannerType) }
+            .onAppear { playBannerLottie(with: store.bannerList[store.bannerIndex].bannerType) }
             .onDisappear { stopBannerLottie() }
             .frame(height: 340)
 
-            if let store = store.scope(state: \.banner, action: \.banner) {
-                WithPerceptionTracking {
-                    HomeBannerPageControlView(store: store)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 40)
-                        .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var topBarView: some View {
-        VStack(spacing: 0) {
-            LKTopLogoBar {
-                store.send(.addLinkButtonTapped)
-            }
-            .frame(height: Constant.LKTopLogoBarHeight)
-
-            if let store = store.scope(state: \.tabs, action: \.tabs) {
-                HomeTabView(store: store)
-                    .frame(height: Constant.LKTopScrollViewHeight)
-            }
+            HomeBannerPageControlView(store: store)
+                .frame(maxWidth: .infinity)
+                .frame(height: 40)
+                .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         }
     }
 }

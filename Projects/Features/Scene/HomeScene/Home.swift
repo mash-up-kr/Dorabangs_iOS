@@ -38,8 +38,6 @@ public struct Home {
 
         // MARK: Inner Business
         case updateBannerList(Int, Int)
-        case updateBannerPageIndicator(Int)
-        case updateBannerType(HomeBannerType)
         case updateCardList
         case updatePagingCardList([Card])
         case isLoadingChanged(isLoading: Bool)
@@ -107,7 +105,6 @@ public struct Home {
                     await send(.setAILinkCount(aiLinkCount))
                     await send(.setUnReadLinkCount(unreadLinkCount))
                     await send(.updateBannerList(aiLinkCount, unreadLinkCount))
-                    await send(.banner(.updateBannerList(aiLinkCount, unreadLinkCount)))
                     await send(.setCardList(cardList, .all))
                     await send(.isLoadingChanged(isLoading: false))
 
@@ -121,27 +118,10 @@ public struct Home {
                 state.banner = HomeBannerPageControl.State(aiLinkCount: aiLinkCount, unreadLinkCount: unreadLinkCount)
                 return .none
 
-            case let .updateBannerPageIndicator(index):
-                state.bannerIndex = index
-
-                if let bannerList = state.banner?.bannerList {
-                    let selectedBannerType = bannerList[index].bannerType
-                    return .send(.banner(.set(\.selectedBannerType, selectedBannerType)))
-                }
-                return .none
-
-            case let .updateBannerType(bannerType):
-                state.selectedBannerType = bannerType
-                return .none
-
             case .updateCardList:
                 return .run { send in
                     try await fetchAllCardList(send: send)
                 }
-
-            case let .updatePagingCardList(cardList):
-                state.cards?.cards.append(contentsOf: cardList)
-                return .none
 
             case let .isLoadingChanged(isLoading: isLoading):
                 state.isLoading = isLoading
@@ -193,7 +173,7 @@ public struct Home {
                 // TODO: 링크 추가 버튼 탭 동작 구현
                 return .none
 
-            case let .bannerButtonTapped(bannerType):
+            case let .banner(.bannerButtonTapped(bannerType)):
                 if bannerType == .ai {
                     return .send(.routeToAIClassificationScreen)
                 } else if bannerType == .onboarding {
@@ -242,7 +222,7 @@ public struct Home {
                             await send(.setMorePagingStatus(false))
                             await send(.cards(.setFetchedAllCardsStatus(true)))
                         } else {
-                            await send(.updatePagingCardList(cardList))
+                            await send(.cards(.addItems(items: cardList)))
                         }
                     }
                 }

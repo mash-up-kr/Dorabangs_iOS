@@ -74,6 +74,10 @@ public struct HomeCard {
             case let .fetchCards(page):
                 return .none
 
+            case let .addItems(items):
+                state.cards.append(contentsOf: items)
+                return .none
+
             case let .setFetchedAllCardsStatus(fetchedAllCards):
                 state.fetchedAllCards = fetchedAllCards
                 return .none

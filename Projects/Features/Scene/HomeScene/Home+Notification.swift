@@ -13,7 +13,7 @@ extension Notification.Name {
     static let stopBannerLottie = Notification.Name("stopBannerLottie")
 }
 
-extension HomeView {
+extension HomeBannerCarousel {
     func playBannerLottie(with type: HomeBannerType) {
         NotificationCenter.default.post(name: .playBannerLottie, object: nil, userInfo: ["type": type])
     }
