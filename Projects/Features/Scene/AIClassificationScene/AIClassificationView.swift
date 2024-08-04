@@ -24,13 +24,20 @@ public struct AIClassificationView: View {
 
     public var body: some View {
         WithPerceptionTracking {
-            GeometryReader { _ in
+            GeometryReader { geometry in
                 WithPerceptionTracking {
                     ZStack(alignment: .top) {
-                        if let store = store.scope(state: \.cards, action: \.cards) {
-                            AIClassificationCardView(store: store)
-                                .zIndex(1)
+                        Group {
+                            if let store = store.scope(state: \.cards, action: \.cards) {
+                                AIClassificationCardView(store: store)
+                                    .zIndex(1)
+                            }
                         }
+                        .applyIf(store.isLoading) { _ in
+                            LoadingIndicator()
+                                .frame(height: geometry.size.height)
+                        }
+
                         VStack(spacing: 0) {
                             LKTextMiddleTopBar(
                                 title: "AI 분류",
@@ -54,9 +61,6 @@ public struct AIClassificationView: View {
                         .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
                     }
                 }
-            }
-            .applyIf(store.isLoading) { view in
-                view.overlay { LoadingIndicator() }
             }
             .onAppear {
                 store.send(.onAppear)
