@@ -82,6 +82,9 @@ public struct HomeView: View {
                     store.send(.bannerButtonTapped(item.bannerType))
                 }
             }
+            .onChange(of: store.bannerIndex) { playBannerLottie(with: bannerList[$0].bannerType) }
+            .onAppear { playBannerLottie(with: bannerList[store.bannerIndex].bannerType) }
+            .onDisappear { stopBannerLottie() }
             .frame(height: 340)
 
             if let store = store.scope(state: \.banner, action: \.banner) {

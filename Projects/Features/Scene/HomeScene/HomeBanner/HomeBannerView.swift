@@ -14,6 +14,7 @@ public struct HomeBannerView: View {
     private let banner: HomeBanner
     private let action: () -> Void
     private let bundle = Bundle(identifier: "com.mashup.dorabangs.designSystemKit")
+    @State private var isAnimating = false
 
     public init(
         banner: HomeBanner,
@@ -31,7 +32,18 @@ public struct HomeBannerView: View {
                     bundle: bundle ?? .main
                 )
             )
-            .playing(loopMode: .playOnce)
+            .backgroundBehavior(.pauseAndRestore)
+            .configure { view in
+                isAnimating ? view.play() : view.stop()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .playBannerLottie)) { notification in
+                if let type = notification.userInfo?["type"] as? HomeBannerType {
+                    isAnimating = (type == banner.bannerType)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .stopBannerLottie)) { _ in
+                isAnimating = false
+            }
             .frame(width: 250, height: 212)
 
             HomeBannerMessageView(
@@ -47,7 +59,7 @@ public struct HomeBannerView: View {
             Spacer()
                 .frame(height: 24)
         }
-        .frame(width: 390, height: 340)
+        .frame(width: UIScreen.main.bounds.width, height: 340)
         .background(DesignSystemKitAsset.Colors.gradient6)
         .background(.white.opacity(0.5))
     }
