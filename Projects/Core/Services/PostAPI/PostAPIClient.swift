@@ -42,8 +42,8 @@ public extension DependencyValues {
 
 extension PostAPIClient: DependencyKey {
     public static var liveValue: PostAPIClient = .init(
-        getPosts: { page, _, _, _ in
-            let api = PostAPI.getPosts(page: page ?? 1)
+        getPosts: { page, limit, order, favorite in
+            let api = PostAPI.getPosts(page: page ?? 1, limit: limit, order: order, favorite: favorite)
             let responseDTO: GetPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
             return cardList

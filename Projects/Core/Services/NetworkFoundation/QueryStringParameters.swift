@@ -40,6 +40,11 @@ public enum QueryStringParameters {
 
     // 딕셔너리에서 nil 값을 필터링하는 함수
     func filterNilValues(from dictionary: [String: Any?]?) -> [String: Any] {
-        dictionary?.compactMapValues { $0 } ?? [:]
+        dictionary?.compactMapValues { value in
+            if let boolValue = value as? Bool {
+                return boolValue ? "true" : "false"
+            }
+            return value
+        } ?? [:]
     }
 }
