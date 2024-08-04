@@ -18,27 +18,31 @@ struct AIClassificationTabView: View {
     }
 
     var body: some View {
-        WithPerceptionTracking {
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 8) {
-                    ForEach(store.folders.indices, id: \.self) { index in
-                        WithPerceptionTracking {
-                            LKTopTabView(
-                                folderType: TopFolderType(string: store.folders[index].type.toString) ?? .custom,
-                                isSelected: store.selectedFolderIndex == index,
-                                title: store.folders[index].name,
-                                count: "\(store.folders[index].postCount)"
-                            )
-                            .frame(height: 36)
-                            .onTapGesture {
-                                store.send(.selectedFolderIndexChanged(selectedFolderIndex: index))
+        ScrollViewReader { proxy in
+            WithPerceptionTracking {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack(spacing: 8) {
+                        ForEach(store.folders.indices, id: \.self) { index in
+                            WithPerceptionTracking {
+                                LKTopTabView(
+                                    folderType: TopFolderType(string: store.folders[index].type.toString) ?? .custom,
+                                    isSelected: store.selectedFolderIndex == index,
+                                    title: store.folders[index].name,
+                                    count: "\(store.folders[index].postCount)"
+                                )
+                                .id(index)
+                                .frame(height: 36)
+                                .onTapGesture {
+                                    store.send(.selectedFolderIndexChanged(selectedFolderIndex: index))
+                                    withAnimation { proxy.scrollTo(index) }
+                                }
                             }
                         }
                     }
+                    .padding(EdgeInsets(top: 8, leading: 20, bottom: 12, trailing: 20))
                 }
-                .padding(EdgeInsets(top: 8, leading: 20, bottom: 12, trailing: 20))
+                .frame(height: 56)
             }
-            .frame(height: 56)
         }
     }
 }
