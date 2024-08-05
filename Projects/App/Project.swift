@@ -1,12 +1,12 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let debugConfig = Path.relativeToRoot("Projects/ConfigurationFiles/debug.xcconfig")
-let releaseConfig = Path.relativeToRoot("Projects/ConfigurationFiles/release.xcconfig")
-let sharedConfig = Path.relativeToRoot("Projects/ConfigurationFiles/shared.xcconfig")
-let shareExtensionDebugConfig = Path.relativeToRoot("Projects/ConfigurationFiles/debug-ShareExtension.xcconfig")
-let shareExtensionReleaseConfig = Path.relativeToRoot("Projects/ConfigurationFiles/release-ShareExtension.xcconfig")
-let shareExtensionSharedConfig = Path.relativeToRoot("Projects/ConfigurationFiles/shared-ShareExtension.xcconfig")
+let debugConfig = Path.relativeToRoot("Projects/App/ConfigurationFiles/debug.xcconfig")
+let releaseConfig = Path.relativeToRoot("Projects/App/ConfigurationFiles/release.xcconfig")
+let sharedConfig = Path.relativeToRoot("Projects/App/ConfigurationFiles/shared.xcconfig")
+let shareExtensionDebugConfig = Path.relativeToRoot("Projects/App/ConfigurationFiles/debug-ShareExtension.xcconfig")
+let shareExtensionReleaseConfig = Path.relativeToRoot("Projects/App/ConfigurationFiles/release-ShareExtension.xcconfig")
+let shareExtensionSharedConfig = Path.relativeToRoot("Projects/App/ConfigurationFiles/shared-ShareExtension.xcconfig")
 
 let project = Project.make(
     name: "App",
