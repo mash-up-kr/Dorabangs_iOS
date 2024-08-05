@@ -14,7 +14,7 @@ ENABLE_NS_ASSERTIONS = YES
 
 SWIFT_COMPILATION_MODE = singlefile
 
-BUNDLE_NAME = [DEV]링킷
+BUNDLE_NAME = [DEV]Linkit
 
 PROVISIONING_PROFILE_SPECIFIER = Development com.mashup.dorabangs-dev
 

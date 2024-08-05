@@ -14,7 +14,7 @@ ENABLE_NS_ASSERTIONS = NO
 
 SWIFT_COMPILATION_MODE = wholemodule
 
-BUNDLE_NAME = 링킷
+BUNDLE_NAME = Linkit
 
 PROVISIONING_PROFILE_SPECIFIER = Distribution com.mashup.dorabangs
 
