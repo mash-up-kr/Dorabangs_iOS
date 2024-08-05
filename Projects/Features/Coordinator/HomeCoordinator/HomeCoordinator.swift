@@ -128,6 +128,11 @@ public extension HomeCoordinator {
             state.routes.goBack()
             return .none
 
+        case .routeToHomeScreen:
+            state.routes.goBack()
+            let toastAction = Home.Action.overlayComponent(.presentToast(toastMessage: "링크를 저장했어요"))
+            return .send(.router(.routeAction(id: 0, action: .home(toastAction))))
+
         default:
             return .none
         }
