@@ -26,25 +26,20 @@ public struct HomeBannerView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            LottieView(
-                animation: .named(
-                    banner.bannerType == .ai ? JSONFiles.Ai.jsonName : JSONFiles.Unread.jsonName,
-                    bundle: bundle ?? .main
-                )
-            )
-            .backgroundBehavior(.pauseAndRestore)
-            .configure { view in
-                isAnimating ? view.play() : view.stop()
-            }
-            .onReceive(NotificationCenter.default.publisher(for: .playBannerLottie)) { notification in
-                if let type = notification.userInfo?["type"] as? HomeBannerType {
-                    isAnimating = (type == banner.bannerType)
+            LottieView(animation: .named(lotteFileName, bundle: bundle ?? .main))
+                .backgroundBehavior(.pauseAndRestore)
+                .configure { view in
+                    isAnimating ? view.play() : view.stop()
                 }
-            }
-            .onReceive(NotificationCenter.default.publisher(for: .stopBannerLottie)) { _ in
-                isAnimating = false
-            }
-            .frame(width: 250, height: 212)
+                .onReceive(NotificationCenter.default.publisher(for: .playBannerLottie)) { notification in
+                    if let type = notification.userInfo?["type"] as? HomeBannerType {
+                        isAnimating = (type == banner.bannerType)
+                    }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .stopBannerLottie)) { _ in
+                    isAnimating = false
+                }
+                .frame(width: 250, height: 212)
 
             HomeBannerMessageView(
                 prefix: banner.prefix,
@@ -62,6 +57,17 @@ public struct HomeBannerView: View {
         .frame(width: UIScreen.main.bounds.width, height: 340)
         .background(DesignSystemKitAsset.Colors.gradient6)
         .background(.white.opacity(0.5))
+    }
+
+    var lotteFileName: String {
+        switch banner.bannerType {
+        case .ai:
+            JSONFiles.Ai.jsonName
+        case .onboarding:
+            JSONFiles.Tutorials.jsonName
+        case .unread:
+            JSONFiles.Unread.jsonName
+        }
     }
 }
 
