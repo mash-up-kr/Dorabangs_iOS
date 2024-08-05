@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import Common
 import ComposableArchitecture
 import DesignSystemKit
 import SwiftUI
@@ -24,16 +25,18 @@ struct HomeTabView: View {
                     LazyHStack(spacing: 8) {
                         ForEach(store.tabs.indices, id: \.self) { index in
                             WithPerceptionTracking {
-                                LKTopTabView(
-                                    folderType: TopFolderType(string: store.tabs[index].type.toString) ?? .custom,
-                                    isSelected: store.selectedIndex == index,
-                                    title: store.tabs[index].name
-                                )
-                                .id(index)
-                                .frame(height: 36)
-                                .onTapGesture {
-                                    store.send(.tabSelected(at: index))
-                                    withAnimation { proxy.scrollTo(index) }
+                                if let tab = store.tabs[safe: index] {
+                                    LKTopTabView(
+                                        folderType: TopFolderType(string: tab.type.toString) ?? .custom,
+                                        isSelected: store.selectedIndex == index,
+                                        title: tab.name
+                                    )
+                                    .id(index)
+                                    .frame(height: 36)
+                                    .onTapGesture {
+                                        store.send(.tabSelected(at: index))
+                                        withAnimation { proxy.scrollTo(index) }
+                                    }
                                 }
                             }
                         }

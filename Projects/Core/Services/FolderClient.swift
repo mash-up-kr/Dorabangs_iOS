@@ -44,9 +44,7 @@ extension FolderClient: DependencyKey {
                 return userFolder.list
             },
             setFolderList: { folderList in
-                for folder in folderList {
-                    userFolder.list[folder.key] = folder.value
-                }
+                userFolder.list = folderList
                 return !userFolder.list.isEmpty
             },
             getFolderName: { folderId in
