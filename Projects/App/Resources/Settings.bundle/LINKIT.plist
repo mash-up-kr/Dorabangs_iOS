@@ -52,6 +52,22 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>LINKIT/Kingfisher</string>
+			<key>Title</key>
+			<string>Kingfisher (7.12.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>LINKIT/Lottie</string>
+			<key>Title</key>
+			<string>Lottie (4.5.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>LINKIT/swift-case-paths</string>
 			<key>Title</key>
 			<string>swift-case-paths (1.4.2)</string>

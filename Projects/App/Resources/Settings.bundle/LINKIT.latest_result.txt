@@ -8,6 +8,10 @@ name: FlowStacks, nameSpecified: FlowStacks, owner: johnpatrickmorgan, version: 
 
 name: KeychainAccess, nameSpecified: KeychainAccess, owner: kishikawakatsumi, version: 4.0.0, source: https://github.com/kishikawakatsumi/KeychainAccess
 
+name: Kingfisher, nameSpecified: Kingfisher, owner: Wei Wang, version: 7.12.0, source: https://github.com/onevcat/Kingfisher
+
+name: Lottie, nameSpecified: Lottie, owner: Airbnb, version: 4.5.0, source: https://github.com/airbnb/lottie-ios
+
 name: swift-case-paths, nameSpecified: swift-case-paths, owner: pointfreeco, version: 1.4.2, source: https://github.com/pointfreeco/swift-case-paths
 
 name: swift-clocks, nameSpecified: swift-clocks, owner: pointfreeco, version: 1.0.2, source: https://github.com/pointfreeco/swift-clocks
