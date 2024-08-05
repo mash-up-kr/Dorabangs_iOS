@@ -38,7 +38,10 @@ public struct SaveURLCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<SaveURLScreen>)
+        /// 뒤로가기 버튼을 누른 경우
         case routeToPreviousScreen
+        /// 저장이 완료되어 홈으로 이동하는 경우
+        case routeToHomeScreen
     }
 
     public init() {}
@@ -63,7 +66,7 @@ public struct SaveURLCoordinator {
 
             case .router(.routeAction(id: _, action: .selectFolder(.routeToHomeScreen))):
                 state.routes.goBackToRoot()
-                return .send(.routeToPreviousScreen)
+                return .send(.routeToHomeScreen)
 
             case .router(.routeAction(id: _, action: .selectFolder(.routeToCreateNewFolderScreen(let url)))):
                 state.routes.push(.createNewFolder(.init(sourceView: .saveURLScene(url: url))))
@@ -75,7 +78,7 @@ public struct SaveURLCoordinator {
 
             case .router(.routeAction(id: _, action: .createNewFolder(.routeToHomeScreen))):
                 state.routes.goBackToRoot()
-                return .send(.routeToPreviousScreen)
+                return .send(.routeToHomeScreen)
 
             default:
                 return .none
