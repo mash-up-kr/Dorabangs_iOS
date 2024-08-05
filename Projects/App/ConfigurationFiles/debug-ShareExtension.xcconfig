@@ -1,0 +1,16 @@
+//
+//  debug-ShareExtension.xcconfig
+//  App
+//
+//  Created by 김영균 on 7/1/24.
+//  Copyright © 2024 mashup.dorabangs. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "./shared-ShareExtension.xcconfig"
+
+PROVISIONING_PROFILE_SPECIFIER = Development com.mashup.dorabangs-dev.share
+
+CODE_SIGN_IDENTITY = Apple Development: YoungGyun Kim (N9J5978KH3)

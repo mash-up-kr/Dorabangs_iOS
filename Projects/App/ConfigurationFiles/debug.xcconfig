@@ -1,0 +1,23 @@
+//
+//  debug.xcconfig
+//  Manifests
+//
+//  Created by 김영균 on 6/13/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "./shared.xcconfig"
+
+ENABLE_NS_ASSERTIONS = YES
+
+SWIFT_COMPILATION_MODE = singlefile
+
+BUNDLE_NAME = [DEV]Linkit
+
+PROVISIONING_PROFILE_SPECIFIER = Development com.mashup.dorabangs-dev
+
+CODE_SIGN_IDENTITY = Apple Development: YoungGyun Kim (N9J5978KH3)
+
+ASSETCATALOG_COMPILER_APPICON_NAME = DevAppIcon
