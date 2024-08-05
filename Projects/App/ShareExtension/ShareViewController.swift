@@ -130,7 +130,7 @@ private extension ShareViewController {
     func showLoadingIndicator() {
         addChild(loadingIndicator)
         loadingIndicator.view.frame = view.frame
-        loadingIndicator.view.backgroundColor = .clear
+        loadingIndicator.view.backgroundColor = .black.withAlphaComponent(0.01)
         view.addSubview(loadingIndicator.view)
         loadingIndicator.didMove(toParent: self)
     }
@@ -180,7 +180,7 @@ private extension ShareViewController {
 
     func setDescriptionLabelAttributes() {
         descriptionLabel.text = "나중에 읽을 링크에 저장했어요!"
-        descriptionLabel.font = UIFont.nanumSquareNeo(size: 18, weight: 600)
+        descriptionLabel.font = UIFont.nanumSquareNeo(size: 16, weight: 500)
         descriptionLabel.textColor = DesignSystemKitAsset.Colors.white.color
     }
 
@@ -188,7 +188,7 @@ private extension ShareViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = DesignSystemKitAsset.Colors.white.color
         var container = AttributeContainer()
-        container.font = UIFont.nanumSquareNeo(size: 18, weight: 600)
+        container.font = UIFont.nanumSquareNeo(size: 16, weight: 500)
         configuration.attributedTitle = AttributedString("편집", attributes: container)
         editButton.configuration = configuration
         editButton.addTarget(self, action: #selector(editButtonDidTapped), for: .touchUpInside)
