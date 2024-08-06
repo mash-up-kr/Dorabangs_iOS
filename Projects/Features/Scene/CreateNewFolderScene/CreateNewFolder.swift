@@ -25,6 +25,8 @@ public struct CreateNewFolder {
         var isTextFieldWarned: Bool = false
         var isSaveButtonDisabled: Bool = true
         var sourceView: SourceView
+        /// 로딩 인디케이터 표시 여부
+        var isLoading: Bool = false
 
         public init(sourceView: SourceView) {
             self.sourceView = sourceView
@@ -38,16 +40,22 @@ public struct CreateNewFolder {
 
         case isTextFieldWarnedChanged(Bool)
         case isSaveButtonDisabledChanged(Bool)
+        case isLoadingChanged(Bool)
 
         case routeToPreviousScreen
         case routeToHomeScreen
         case routeToStorageBoxScene
     }
 
+    enum ActionID: Hashable {
+        case debounceSaveButton
+    }
+
     public init() {}
 
     @Dependency(\.folderAPIClient) var folderAPIClient
     @Dependency(\.postAPIClient) var postAPIClient
+    @Dependency(\.mainQueue) var mainQueue
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -62,12 +70,16 @@ public struct CreateNewFolder {
                 return .none
 
             case .saveButtonTapped:
+                state.isLoading = true
                 return .run { [newFolderName = state.newFolderName, sourceView = state.sourceView] send in
                     guard let createdFolder = try await folderAPIClient
                         .postFolders([newFolderName])
                         .first(where: { $0.name == newFolderName })
-                    else { return }
-
+                    else {
+                        await send(.isLoadingChanged(false))
+                        return
+                    }
+                    await send(.isLoadingChanged(false))
                     switch sourceView {
                     case .homeScene:
                         await send(.routeToHomeScreen)
@@ -82,7 +94,9 @@ public struct CreateNewFolder {
                 } catch: { _, send in
                     await send(.isTextFieldWarnedChanged(true))
                     await send(.isSaveButtonDisabledChanged(true))
+                    await send(.isLoadingChanged(false))
                 }
+                .debounce(id: ActionID.debounceSaveButton, for: .milliseconds(500), scheduler: mainQueue)
 
             case let .isTextFieldWarnedChanged(isTextFieldWarned):
                 state.isTextFieldWarned = isTextFieldWarned
@@ -90,6 +104,10 @@ public struct CreateNewFolder {
 
             case let .isSaveButtonDisabledChanged(isSaveButtonDisabled):
                 state.isSaveButtonDisabled = isSaveButtonDisabled
+                return .none
+
+            case let .isLoadingChanged(isLoading):
+                state.isLoading = isLoading
                 return .none
 
             default:

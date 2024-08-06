@@ -29,10 +29,11 @@ public struct SelectFolderView: View {
 
                 Spacer().frame(height: 28)
 
-                URLMetadataView(store: store)
-                    .padding(.horizontal, 20)
+                VStack(spacing: 0) {
+                    URLMetadataView(store: store)
+                        .padding(.horizontal, 20)
 
-                Spacer().frame(height: 20)
+                    Spacer().frame(height: 20)
 
                     FolderListView(
                         folders: store.folders,
@@ -40,14 +41,20 @@ public struct SelectFolderView: View {
                         onSelectNewFolder: { store.send(.createFolderButtonTapped) }
                     )
 
-                Spacer()
+                    Spacer()
 
-                RoundedButton(
-                    title: "저장",
-                    isDisabled: store.isSaveButtonDisabled,
-                    action: { store.send(.saveButtonTapped) }
-                )
-                .padding(20)
+                    RoundedButton(
+                        title: "저장",
+                        isDisabled: store.isSaveButtonDisabled,
+                        action: { store.send(.saveButtonTapped) }
+                    )
+                    .padding(20)
+                }
+                .applyIf(store.isLoading, apply: { view in
+                    view
+                        .disabled(store.isLoading)
+                        .overlay(LoadingIndicator())
+                })
             }
             .onAppear {
                 store.send(.onAppear)

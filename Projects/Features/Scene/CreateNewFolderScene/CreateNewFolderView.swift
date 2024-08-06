@@ -26,25 +26,31 @@ public struct CreateNewFolderView: View {
                     backButtonAction: { store.send(.backButtonTapped) },
                     action: {}
                 )
+                VStack(spacing: 0) {
+                    LKTextField(
+                        text: $store.newFolderName.sending(\.folderNameChanged),
+                        fieldText: "폴더명",
+                        placeholder: "폴더명을 입력해주세요.",
+                        helperText: "같은 이름의 폴더가 있어요",
+                        textLimit: 15,
+                        isWarning: store.isTextFieldWarned
+                    )
+                    .focused($isFocused)
 
-                LKTextField(
-                    text: $store.newFolderName.sending(\.folderNameChanged),
-                    fieldText: "폴더명",
-                    placeholder: "폴더명을 입력해주세요.",
-                    helperText: "같은 이름의 폴더가 있어요",
-                    textLimit: 15,
-                    isWarning: store.isTextFieldWarned
-                )
-                .focused($isFocused)
+                    RoundedButton(
+                        title: "저장",
+                        isDisabled: store.isSaveButtonDisabled,
+                        action: { store.send(.saveButtonTapped) }
+                    )
+                    .padding(20)
 
-                RoundedButton(
-                    title: "저장",
-                    isDisabled: store.isSaveButtonDisabled,
-                    action: { store.send(.saveButtonTapped) }
-                )
-                .padding(20)
-
-                Spacer()
+                    Spacer()
+                }
+                .applyIf(store.isLoading, apply: { view in
+                    view
+                        .disabled(store.isLoading)
+                        .overlay(LoadingIndicator())
+                })
             }
             .navigationBarHidden(true)
             .navigationTitle("")
