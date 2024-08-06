@@ -35,7 +35,7 @@ public struct SelectFolder {
         // MARK: View Action
         case onAppear
         case backButtonTapped
-        case folderSelected(Int)
+        case folderSelected(Int?)
         case saveButtonTapped
         case createFolderButtonTapped
 
@@ -90,6 +90,10 @@ public struct SelectFolder {
 
             case let .fetchFoldersResult(.success(foldersModel)):
                 state.folders = foldersModel.defaultFolders.filter { !$0.id.isEmpty } + foldersModel.customFolders.filter { !$0.id.isEmpty }
+                if let defaultIndex = state.folders.firstIndex(where: { $0.type == .default }) {
+                    state.selectedFolderIndex = defaultIndex
+                    state.isSaveButtonDisabled = false
+                }
                 return .none
 
             case .fetchFoldersResult(.failure):

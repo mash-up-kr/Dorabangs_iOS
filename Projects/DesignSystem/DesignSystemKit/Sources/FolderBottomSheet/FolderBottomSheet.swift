@@ -53,12 +53,7 @@ public struct FolderBottomSheet: View {
                         .padding(.horizontal, 16)
                         .frame(height: 52)
 
-                    FolderList(
-                        folders: folders,
-                        onSelect: { index in
-                            selectedIndex = index
-                        }
-                    )
+                    FolderList(folders: folders, selectedIndex: $selectedIndex)
                 }
             }
 
