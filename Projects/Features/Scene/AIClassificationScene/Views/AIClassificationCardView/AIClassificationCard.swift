@@ -29,11 +29,15 @@ public struct AIClassificationCard {
             selectedFolderId: String,
             cardList: CardListModel
         ) {
-            sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
+            let sections = OrderedDictionary(uniqueKeysWithValues: folders.map { ($0.id, $0) })
+            self.sections = sections
             self.selectedFolderId = selectedFolderId
             pageModel = AIClassificationCardPageModel(hasNext: cardList.hasNext, currentPage: 1)
             let groupedItems = Dictionary(grouping: cardList.cards) { $0.folderId }
-            items = OrderedDictionary(uniqueKeysWithValues: groupedItems.map { ($0.key, $0.value) })
+            items = OrderedDictionary(uniqueKeysWithValues: sections.compactMap { section in
+                guard let cards = groupedItems[section.key] else { return nil }
+                return (section.key, cards)
+            })
         }
     }
 
