@@ -10,12 +10,11 @@ import SwiftUI
 
 public struct FolderList: View {
     let folders: [String]
-    @State var selectedIndex: Int?
-    var onSelect: (Int) -> Void
+    @Binding var selectedIndex: Int?
 
-    public init(folders: [String], onSelect: @escaping (Int) -> Void) {
+    public init(folders: [String], selectedIndex: Binding<Int?>) {
         self.folders = folders
-        self.onSelect = onSelect
+        _selectedIndex = selectedIndex
     }
 
     public var body: some View {
@@ -33,7 +32,6 @@ public struct FolderList: View {
                     .frame(height: 52)
                     .onTapGesture {
                         selectedIndex = index
-                        onSelect(index)
                     }
             }
         }
