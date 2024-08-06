@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct ChangeFolderNameView: View {
@@ -22,23 +23,23 @@ public struct ChangeFolderNameView: View {
         WithPerceptionTracking {
             VStack(spacing: 24) {
                 LKTextMiddleTopBar(
-                    title: "폴더 이름 변경",
+                    title: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewNavigationTitle,
                     backButtonAction: { store.send(.backButtonTapped) },
                     action: {}
                 )
 
                 LKTextField(
                     text: $store.newFolderName.sending(\.folderNameChanged),
-                    fieldText: "폴더명",
-                    placeholder: "폴더명을 입력해주세요.",
-                    helperText: "같은 이름의 폴더가 있어요",
+                    fieldText: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldName,
+                    placeholder: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldPlaceholder,
+                    helperText: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldHelperText,
                     textLimit: 15,
                     isWarning: store.isTextFieldWarned
                 )
                 .focused($isFocused)
 
                 RoundedButton(
-                    title: "저장",
+                    title: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewSaveButtonTitle,
                     isDisabled: store.isSaveButtonDisabled,
                     action: { store.send(.saveButtonTapped) }
                 )

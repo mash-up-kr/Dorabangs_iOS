@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LocalizationKit
 
 public extension Date {
     func timeAgo() -> String {
@@ -18,11 +19,11 @@ public extension Date {
 
         switch day {
         case 0:
-            return "오늘"
+            return LocalizationKitStrings.Common.today
         case 1:
-            return "어제"
+            return LocalizationKitStrings.Common.yesterday
         default:
-            return "\(day)일 전"
+            return LocalizationKitStrings.Common.daysAgo(day)
         }
     }
 }

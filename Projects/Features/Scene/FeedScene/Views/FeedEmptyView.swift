@@ -7,6 +7,7 @@
 //
 
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 struct FeedEmptyView: View {
@@ -15,7 +16,7 @@ struct FeedEmptyView: View {
             DesignSystemKitAsset.Icons.icEmpty.swiftUIImage
                 .frame(width: 40, height: 40)
 
-            Text("아직 생성된 게시글이 없어요")
+            Text(LocalizationKitStrings.FeedScene.feedEmptyViewDescription)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                 .frame(maxWidth: .infinity)

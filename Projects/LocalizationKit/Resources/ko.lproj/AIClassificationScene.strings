@@ -1,0 +1,18 @@
+// MARK: - AIClassificationCardEmptyView
+"ai_cassification_card_empty_view_description" = "분류한 링크를 모두 확인했어요!";
+
+// MARK: - AIClassificationCardSectionHeaderView
+"classified_links_count" = "분류한 링크%d개";
+
+"move_all_button_title" = "모두 이동";
+
+// MARK: - AIClassificationCardSectionItemView
+"move_to_folder_button_title" = "%@(으)로 옮기기"; // Folder name
+
+// MARK: - AIClassificationCardView
+"go_to_home_button_title" = "홈으로 이동";
+
+"go_to_folder_button_title" = "%@(으)로 이동"; // Folder name
+
+// MARK: - AIClassificationView
+"ai_classification_view_navigation_title" = "AI 분류";

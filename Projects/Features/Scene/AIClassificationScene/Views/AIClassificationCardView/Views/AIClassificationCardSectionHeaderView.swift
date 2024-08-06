@@ -7,6 +7,7 @@
 //
 
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 struct AIClassificationCardSectionHeaderView: View {
@@ -23,14 +24,14 @@ struct AIClassificationCardSectionHeaderView: View {
 
             Spacer().frame(height: 4)
 
-            Text("분류한 링크\(count)개")
+            Text(LocalizationKitStrings.AIClassificationScene.classifiedLinksCount(count))
                 .font(weight: .medium, semantic: .caption1)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
 
             Spacer().frame(height: 20)
 
             Button(action: action) {
-                Text("모두 이동")
+                Text(LocalizationKitStrings.AIClassificationScene.moveAllButtonTitle)
                     .padding(.horizontal, 30)
                     .padding(.vertical, 8)
                     .font(weight: .medium, semantic: .caption3)

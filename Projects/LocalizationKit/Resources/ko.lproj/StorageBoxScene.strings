@@ -1,0 +1,21 @@
+// MARK: - EditFolderPopupModifier
+"delete_folder_action_sheet_item_title" = "폴더 삭제";
+
+"rename_folder_action_sheet_item_title" = "폴더 이름 변경";
+
+// MARK: - StorageBox
+"delete_completed_toast_message" = "삭제 완료했어요.";
+
+"folder_name_changed_toast_message" = "폴더 이름을 변경했어요.";
+
+// MARK: - StorageBoxView
+"storagebox_view_navigation_title" = "보관함";
+
+"delete_folder_modal_title" = "폴더 삭제";
+
+"delete_folder_modal_description" = "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?";
+
+"delete_folder_modal_left_button_title" = "취소";
+
+"delete_folder_modal_right_button_title" = "삭제";
+

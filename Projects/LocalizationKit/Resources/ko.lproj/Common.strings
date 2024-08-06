@@ -1,0 +1,26 @@
+// MARK: - Common
+"home" = "홈";
+
+"storage" = "보관함";
+
+"all" = "전체";
+
+"bookmarks" = "즐겨찾기";
+
+"read_later_link" = "나중에 읽을 링크";
+
+"saved_to_read_later" = "나중에 읽을 링크에 저장했어요!";
+
+"edit" = "편집";
+
+"link_saved" = "링크를 저장했어요";
+
+"folder_moved_toast_message" = "%@(으)로 이동했어요."; // Folder name
+
+"folder_created_toast_message" = "폴더를 추가했어요.";
+
+"today" = "오늘";
+
+"yesterday" = "어제";
+
+"days_ago" = "%@일 전"; // Number of days

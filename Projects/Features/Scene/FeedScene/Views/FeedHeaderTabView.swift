@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct FeedHeaderTabView: View {
@@ -25,7 +26,7 @@ public struct FeedHeaderTabView: View {
     public var body: some View {
         ZStack(alignment: .bottom) {
             HStack(alignment: .center, spacing: 0) {
-                FeedHeaderTabItemView(title: "전체", isSelected: selectedType == .all, onTap: {
+                FeedHeaderTabItemView(title: LocalizationKitStrings.Common.all, isSelected: selectedType == .all, onTap: {
                     select(.all)
                     selectedType = .all
                 })
@@ -35,7 +36,7 @@ public struct FeedHeaderTabView: View {
                     .foregroundStyle(DesignSystemKitAsset.Colors.g2.swiftUIColor)
                     .frame(width: 1, height: 12)
 
-                FeedHeaderTabItemView(title: "읽지 않은", isSelected: selectedType == .unread, onTap: {
+                FeedHeaderTabItemView(title: LocalizationKitStrings.FeedScene.unreadTab, isSelected: selectedType == .unread, onTap: {
                     select(.unread)
                     selectedType = .unread
                 })

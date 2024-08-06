@@ -54,7 +54,8 @@ let project = Project.make(
             entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Prod-ShareExtension.entitlements")),
             dependencies: [
                 .designSystem,
-                .core(.service)
+                .core(.service),
+                .localizationKit
             ],
             settings: .settings(
                 configurations: [.release(name: .release, xcconfig: shareExtensionReleaseConfig)]
@@ -70,7 +71,8 @@ let project = Project.make(
             entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Dev-ShareExtension.entitlements")),
             dependencies: [
                 .designSystem,
-                .core(.service)
+                .core(.service),
+                .localizationKit
             ],
             settings: .settings(
                 configurations: [.debug(name: .debug, xcconfig: shareExtensionDebugConfig)]

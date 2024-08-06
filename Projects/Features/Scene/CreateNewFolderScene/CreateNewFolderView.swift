@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct CreateNewFolderView: View {
@@ -22,23 +23,23 @@ public struct CreateNewFolderView: View {
         WithPerceptionTracking {
             VStack(spacing: 24) {
                 LKTextMiddleTopBar(
-                    title: "새 폴더 추가",
+                    title: LocalizationKitStrings.CreateNewFolderScene.createNewFolderViewNavigationTitle,
                     backButtonAction: { store.send(.backButtonTapped) },
                     action: {}
                 )
                 VStack(spacing: 0) {
                     LKTextField(
                         text: $store.newFolderName.sending(\.folderNameChanged),
-                        fieldText: "폴더명",
-                        placeholder: "폴더명을 입력해주세요.",
-                        helperText: "같은 이름의 폴더가 있어요",
+                        fieldText: LocalizationKitStrings.CreateNewFolderScene.createNewFolderViewTextFieldName,
+                        placeholder: LocalizationKitStrings.CreateNewFolderScene.createNewFolderViewTextFieldPlaceholder,
+                        helperText: LocalizationKitStrings.CreateNewFolderScene.createNewFolderViewTextFieldHelperText,
                         textLimit: 15,
                         isWarning: store.isTextFieldWarned
                     )
                     .focused($isFocused)
 
                     RoundedButton(
-                        title: "저장",
+                        title: LocalizationKitStrings.CreateNewFolderScene.createNewFolderViewSaveButtonTitle,
                         isDisabled: store.isSaveButtonDisabled,
                         action: { store.send(.saveButtonTapped) }
                     )

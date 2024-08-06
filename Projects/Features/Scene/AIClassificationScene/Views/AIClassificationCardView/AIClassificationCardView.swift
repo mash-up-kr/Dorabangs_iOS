@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import Models
 import SwiftUI
 
@@ -34,11 +35,11 @@ struct AIClassificationCardView: View {
     @ViewBuilder
     private func emptyView() -> some View {
         if store.selectedFolderId == Folder.ID.all {
-            AIClassificationCardEmptyView(title: "홈으로 이동") {
+            AIClassificationCardEmptyView(title: LocalizationKitStrings.AIClassificationScene.goToHomeButtonTitle) {
                 store.send(.routeToHomeScreen)
             }
         } else if let selectedSection = store.sections[store.selectedFolderId] {
-            AIClassificationCardEmptyView(title: "\(selectedSection.name)(으)로 이동") {
+            AIClassificationCardEmptyView(title: LocalizationKitStrings.AIClassificationScene.goToFolderButtonTitle(selectedSection.name)) {
                 store.send(.routeToFeedScreen(selectedSection))
             }
         }

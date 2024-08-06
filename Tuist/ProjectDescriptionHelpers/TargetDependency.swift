@@ -7,6 +7,7 @@ public enum Module {
 	case scene(Scene)
 	case spm(SPM)
 	case shareExtension(ShareExtension)
+	case localizationKit
 }
 
 public enum Core: String {
@@ -76,6 +77,9 @@ extension Module {
 		
 		case .shareExtension(let shareExtension):
 			return .target(name: shareExtension.rawValue)
+			
+		case .localizationKit:
+			return .project(target: "LocalizationKit", path: .relativeToRoot("Projects/LocalizationKit"))
 		}
 	}
 }

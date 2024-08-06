@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import LocalizationKit
 import SwiftUI
 
 public struct FolderBottomSheet: View {
@@ -39,7 +40,7 @@ public struct FolderBottomSheet: View {
             DragIndicator()
                 .padding(.top, 6)
 
-            Text("폴더 이동")
+            Text(LocalizationKitStrings.DesignsSystemKit.moveFolder)
                 .font(weight: .bold, semantic: .base2)
                 .frame(height: 56)
                 .frame(minWidth: 0, maxWidth: .infinity)
@@ -58,7 +59,7 @@ public struct FolderBottomSheet: View {
             }
 
             RoundedButton(
-                title: "완료",
+                title: LocalizationKitStrings.DesignsSystemKit.completed,
                 isDisabled: selectedIndex == nil,
                 action: {
                     dismissView()

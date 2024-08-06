@@ -9,6 +9,7 @@
 import ComposableArchitecture
 import DesignSystemKit
 import HomeCoordinator
+import LocalizationKit
 import StorageBoxCoordinator
 import SwiftUI
 
@@ -53,13 +54,13 @@ public struct TabCoordinatorView: View {
             tabItems: [
                 LKTabBarItem(
                     tag: TabCoordinator.Tab.home,
-                    title: "홈",
+                    title: LocalizationKitStrings.Common.home,
                     image: DesignSystemKitAsset.Icons.icHomeDefault.swiftUIImage,
                     selectedImage: DesignSystemKitAsset.Icons.icHomeActive.swiftUIImage
                 ),
                 LKTabBarItem(
                     tag: TabCoordinator.Tab.storageBox,
-                    title: "보관함",
+                    title: LocalizationKitStrings.Common.storage,
                     image: DesignSystemKitAsset.Icons.icFolderDefault.swiftUIImage,
                     selectedImage: DesignSystemKitAsset.Icons.icFolderActive.swiftUIImage
                 )

@@ -1,0 +1,10 @@
+// MARK: - CreateNewFolderView
+"create_new_folder_view_navigation_title" = "새 폴더 추가";
+
+"create_new_folder_view_textField_name" = "폴더명";
+
+"create_new_folder_view_textField_placeholder" = "폴더명을 입력해주세요.";
+
+"create_new_folder_view_textField_helper_text" = "같은 이름의 폴더가 있어요";
+
+"create_new_folder_view_save_button_title" = "저장";

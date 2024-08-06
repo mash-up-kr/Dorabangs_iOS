@@ -1,0 +1,10 @@
+// MARK: - SaveURLView
+"save_url_view_navigation_title" = "Save Link";
+
+"save_url_view_url_field_title" = "Link";
+
+"save_url_view_url_field_placeholder" = "Enter URL";
+
+"save_url_view_url_field_helper_text" = "Please enter a valid link.";
+
+"save_url_view_save_button_title" = "Save";

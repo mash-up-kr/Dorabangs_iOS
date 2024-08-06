@@ -9,6 +9,7 @@
 import Common
 import DesignSystemKit
 import Kingfisher
+import LocalizationKit
 import Models
 import SwiftUI
 
@@ -28,9 +29,9 @@ struct AIClassificationCardSectionItemView: View {
                         description: item.description,
                         thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
                         tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                        category: "나중에 읽을 링크",
+                        category: LocalizationKitStrings.Common.readLaterLink,
                         timeSince: item.createdAt.timeAgo(),
-                        buttonTitle: "\(section.name)(으)로 옮기기",
+                        buttonTitle: LocalizationKitStrings.AIClassificationScene.moveToFolderButtonTitle(section.name),
                         deleteAction: { deleteAction(section, item) },
                         moveToFolderAction: { moveToFolderAction(section, item) }
                     )

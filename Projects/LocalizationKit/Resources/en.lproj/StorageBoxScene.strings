@@ -1,0 +1,20 @@
+// MARK: - EditFolderPopupModifier
+"delete_folder_action_sheet_item_title" = "Delete Folder";
+
+"rename_folder_action_sheet_item_title" = "Rename Folder";
+
+// MARK: - StorageBox
+"delete_completed_toast_message" = "Deletion completed.";
+
+"folder_name_changed_toast_message" = "Folder name changed.";
+
+// MARK: - StorageBoxView
+"storagebox_view_navigation_title" = "Storage Box";
+
+"delete_folder_modal_title" = "Delete Folder";
+
+"delete_folder_modal_description" = "Are you sure you want to delete the folder?\nAll data will be permanently deleted and cannot be recovered.";
+
+"delete_folder_modal_left_button_title" = "Cancel";
+
+"delete_folder_modal_right_button_title" = "Delete";

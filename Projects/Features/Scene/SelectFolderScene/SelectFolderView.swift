@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import Models
 import SwiftUI
 
@@ -22,7 +23,7 @@ public struct SelectFolderView: View {
         WithPerceptionTracking {
             VStack(spacing: 0) {
                 LKTextMiddleTopBar(
-                    title: "링크 저장",
+                    title: LocalizationKitStrings.SelectFolderScene.selectFolderViewNavigationTitle,
                     backButtonAction: { store.send(.backButtonTapped) },
                     action: {}
                 )
@@ -44,7 +45,7 @@ public struct SelectFolderView: View {
                     Spacer()
 
                     RoundedButton(
-                        title: "저장",
+                        title: LocalizationKitStrings.SelectFolderScene.selectFolderViewSaveButtonTitle,
                         isDisabled: store.isSaveButtonDisabled,
                         action: { store.send(.saveButtonTapped) }
                     )

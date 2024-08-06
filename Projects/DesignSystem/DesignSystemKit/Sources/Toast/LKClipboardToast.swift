@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import LocalizationKit
 import SwiftUI
 
 public struct LKClipboardToast: View {
@@ -35,7 +36,7 @@ public struct LKClipboardToast: View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 0) {
-                    Text("클립보드에 복사한 링크 저장")
+                    Text(LocalizationKitStrings.DesignsSystemKit.saveCopiedLink)
                         .font(weight: .medium, semantic: .caption1)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                         .onTapGesture(perform: saveAction)

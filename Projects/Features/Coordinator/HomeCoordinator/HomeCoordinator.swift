@@ -12,6 +12,7 @@ import CreateNewFolder
 import FeedCoordinator
 import Foundation
 import Home
+import LocalizationKit
 import Models
 import SaveURLCoordinator
 import SaveURLVideoGuide
@@ -130,7 +131,7 @@ public extension HomeCoordinator {
 
         case .routeToHomeScreen:
             state.routes.goBack()
-            let toastAction = Home.Action.overlayComponent(.presentToast(toastMessage: "링크를 저장했어요"))
+            let toastAction = Home.Action.overlayComponent(.presentToast(toastMessage: LocalizationKitStrings.Common.linkSaved))
             return .send(.router(.routeAction(id: 0, action: .home(toastAction))))
 
         default:
@@ -148,7 +149,7 @@ public extension HomeCoordinator {
         case .routeToHomeScreen:
             guard let folderName = state.routes.last?.screen.createNewFolder.map(\.newFolderName) else { return .none }
             state.routes.goBack()
-            let action = HomeScreen.Action.home(.overlayComponent(.presentToast(toastMessage: "\(folderName)(으)로 이동했어요.")))
+            let action = HomeScreen.Action.home(.overlayComponent(.presentToast(toastMessage: LocalizationKitStrings.Common.folderMovedToastMessage(folderName))))
             return .send(.router(.routeAction(id: 0, action: action)))
 
         default:

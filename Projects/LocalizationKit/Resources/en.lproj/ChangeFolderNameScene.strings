@@ -1,0 +1,10 @@
+// MARK: - ChangeFolderNameView
+"change_folder_name_view_navigation_title" = "Rename Folder";
+
+"change_folder_name_view_textField_name" = "Folder Name";
+
+"change_folder_name_view_textField_placeholder" = "Enter folder name";
+
+"change_folder_name_view_textField_helper_text" = "A folder with the same name already exists";
+
+"change_folder_name_view_save_button_title" = "Save";

@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import LocalizationKit
 import SwiftUI
 
 public struct LKClassificationCard<Thumbnail: View>: View {
@@ -96,7 +97,7 @@ public struct LKClassificationCard<Thumbnail: View>: View {
                     .frame(width: 14, height: 14)
 
                 // TODO: Constants로 변경~
-                Text("주요 내용")
+                Text(LocalizationKitStrings.DesignsSystemKit.summary)
                     .font(weight: .medium, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
 

@@ -1,0 +1,34 @@
+// MARK: - HomeCardEmptyView
+"home_card_empty_view_description" = "No posts have been created";
+
+// MARK: - HomeBannerType
+"ai_banner_prefix" = "AI classified";
+
+"unread_banner_prefix" = "Unread";
+
+"onboaring_banner_prefix" = "How to save links\nin 3 seconds";
+
+"link_count" = "%d links ";
+
+"available" = "are available";
+
+"ai_and_unread_button_title" = "Check It Out";
+
+"onboarding_button_title" = "Setting up";
+
+// MARK: - HomeOverlayComponent
+"delete_post_action_sheet_item_title" = "Delete Post";
+
+"move_post_action_sheet_item_title" = "Move Folder";
+
+"delete_card_modal_title" = "Delete Link";
+
+"delete_card_modal_description" = "Once you delete a link, you cannot recover it.\nAre you sure you want to delete it?";
+
+"delete_card_modal_left_button_title" = "Cancel";
+
+"delete_card_modal_right_button_title" = "Delete";
+
+"delete_card_toast_message" = "Link deleted";
+
+"move_card_toast_message" = "Moved to %@";

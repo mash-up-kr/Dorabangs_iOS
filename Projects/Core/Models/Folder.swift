@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LocalizationKit
 
 public struct FoldersModel: Hashable {
     public var defaultFolders: [Folder]
@@ -84,5 +85,25 @@ public extension Folder {
 public extension FoldersModel {
     var toFolderList: [Folder] {
         defaultFolders + customFolders
+    }
+}
+
+public extension Folder {
+    var toLocalized: Folder {
+        switch type {
+        case .custom: self
+        case .default: Folder(id: id, name: localizedName, type: type, postCount: postCount)
+        case .all: Folder(id: id, name: localizedName, type: type, postCount: postCount)
+        case .favorite: Folder(id: id, name: localizedName, type: type, postCount: postCount)
+        }
+    }
+
+    var localizedName: String {
+        switch type {
+        case .custom: name
+        case .default: LocalizationKitStrings.Common.readLaterLink
+        case .all: LocalizationKitStrings.Common.all
+        case .favorite: LocalizationKitStrings.Common.bookmarks
+        }
     }
 }

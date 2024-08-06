@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct OnboardingView: View {
@@ -22,13 +23,13 @@ public struct OnboardingView: View {
             VStack(spacing: 0) {
                 Spacer().frame(height: 53)
 
-                Text("주로 어떤 링크를 저장하시나요?")
+                Text(LocalizationKitStrings.Onboarding.onboardingViewTitle)
                     .font(weight: .extrabold, semantic: .subtitle1)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
 
                 Spacer().frame(height: 8)
 
-                Text("1개 이상 선택해주세요")
+                Text(LocalizationKitStrings.Onboarding.onboardingViewDescription)
                     .font(weight: .regular, semantic: .caption3)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
 
@@ -41,7 +42,10 @@ public struct OnboardingView: View {
                 }
                 .padding(.horizontal, 24)
 
-                RoundedButton(title: "완료", isDisabled: store.isCompleteButtonDisabled) {
+                RoundedButton(
+                    title: LocalizationKitStrings.Onboarding.onboardingViewCompleteButtonTitle,
+                    isDisabled: store.isCompleteButtonDisabled
+                ) {
                     store.send(.completeButtonTapped)
                 }
                 .padding(20)

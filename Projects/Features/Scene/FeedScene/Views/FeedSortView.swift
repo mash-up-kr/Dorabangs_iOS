@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct FeedSortView: View {
@@ -26,15 +27,24 @@ public struct FeedSortView: View {
     public var body: some View {
         HStack(alignment: .center, spacing: 16) {
             Spacer()
-            FeedSortItemView(image: DesignSystemKitAsset.Icons.icDirectionDownEnabled.swiftUIImage, title: "최신순", isSelected: selectedType == .latest, onTap: {
-                onSort(.latest)
-                selectedType = .latest
-
-            })
-            FeedSortItemView(image: DesignSystemKitAsset.Icons.icDirectionUpEnabled.swiftUIImage, title: "과거순", isSelected: selectedType == .past, onTap: {
-                onSort(.past)
-                selectedType = .past
-            })
+            FeedSortItemView(
+                image: DesignSystemKitAsset.Icons.icDirectionDownEnabled.swiftUIImage,
+                title: LocalizationKitStrings.FeedScene.latestSortTab,
+                isSelected: selectedType == .latest,
+                onTap: {
+                    onSort(.latest)
+                    selectedType = .latest
+                }
+            )
+            FeedSortItemView(
+                image: DesignSystemKitAsset.Icons.icDirectionUpEnabled.swiftUIImage,
+                title: LocalizationKitStrings.FeedScene.pastSortTab,
+                isSelected: selectedType == .past,
+                onTap: {
+                    onSort(.past)
+                    selectedType = .past
+                }
+            )
             .padding(.trailing, 20)
         }
         .frame(height: 54)

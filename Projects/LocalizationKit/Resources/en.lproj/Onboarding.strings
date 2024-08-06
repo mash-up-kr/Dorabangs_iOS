@@ -1,0 +1,6 @@
+// MARK: - OnboardingView
+"onboarding_view_title" = "What links do you usually save?";
+
+"onboarding_view_description" = "Select at least one.";
+
+"onboarding_view_complete_button_title" = "Complete";

@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct SaveURLView: View {
@@ -22,23 +23,23 @@ public struct SaveURLView: View {
         WithPerceptionTracking {
             VStack(spacing: 24) {
                 LKTextMiddleTopBar(
-                    title: "링크 저장",
+                    title: LocalizationKitStrings.SaveURLScene.saveUrlViewNavigationTitle,
                     backButtonAction: { store.send(.backButtonTapped) },
                     action: {}
                 )
 
                 VStack(spacing: 0) { LKTextField(
                     text: $store.urlString.sending(\.textFieldChanged),
-                    fieldText: "링크",
-                    placeholder: "URL을 입력해주세요",
-                    helperText: "유효한 링크를 입력해주세요.",
+                    fieldText: LocalizationKitStrings.SaveURLScene.saveUrlViewUrlFieldTitle,
+                    placeholder: LocalizationKitStrings.SaveURLScene.saveUrlViewUrlFieldPlaceholder,
+                    helperText: LocalizationKitStrings.SaveURLScene.saveUrlViewUrlFieldHelperText,
                     isWarning: store.isTextFieldWarned
                 )
                 .focused($isFocused)
                 .keyboardType(.URL)
 
                 RoundedButton(
-                    title: "저장",
+                    title: LocalizationKitStrings.SaveURLScene.saveUrlViewSaveButtonTitle,
                     isDisabled: store.isSaveButtonDisabled,
                     action: { store.send(.saveButtonTapped) }
                 )

@@ -1,0 +1,6 @@
+// MARK: - OnboardingView
+"onboarding_view_title" = "주로 어떤 링크를 저장하시나요?";
+
+"onboarding_view_description" = "1개 이상 선택해주세요";
+
+"onboarding_view_complete_button_title" = "완료";

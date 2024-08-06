@@ -1,0 +1,26 @@
+// MARK: - Common
+"home" = "Home";
+
+"storage" = "Storage";
+
+"all" = "All";
+
+"bookmarks" = "Bookmarks";
+
+"read_later_link" = "Read Later Links";
+
+"saved_to_read_later" = "Saved to read later!";
+
+"edit" = "Edit";
+
+"link_saved" = "Link Saved";
+
+"folder_moved_toast_message" = "Moved to %@."; // Folder name
+
+"folder_created_toast_message" = "Folder created.";
+
+"today" = "Today";
+
+"yesterday" = "Yesterday";
+
+"days_ago" = "%@ days ago"; // Number of days

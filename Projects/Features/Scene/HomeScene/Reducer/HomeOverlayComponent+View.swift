@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 extension View {
@@ -18,7 +19,7 @@ extension View {
             isPresented: $store.isCardActionSheetPresented.projectedValue,
             items: [
                 LKActionItem(
-                    title: "링크 삭제",
+                    title: LocalizationKitStrings.HomeScene.deletePostActionSheetItemTitle,
                     image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage,
                     style: .destructive,
                     action: {
@@ -27,7 +28,7 @@ extension View {
                     }
                 ),
                 LKActionItem(
-                    title: "폴더 이동",
+                    title: LocalizationKitStrings.HomeScene.movePostActionSheetItemTitle,
                     image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage,
                     style: .default,
                     action: {
@@ -46,17 +47,17 @@ extension View {
             isPresented: $store.isDeleteCardModalPresented.projectedValue,
             content: {
                 LKModal(
-                    title: "링크 삭제",
-                    content: "한 번 삭제한 링크는 다시 복구할 수 없어요.\n그래도 삭제하시겠어요?",
-                    leftButtonTitle: "취소",
+                    title: LocalizationKitStrings.HomeScene.deleteCardModalTitle,
+                    content: LocalizationKitStrings.HomeScene.deleteCardModalDescription,
+                    leftButtonTitle: LocalizationKitStrings.HomeScene.deleteCardModalLeftButtonTitle,
                     leftButtonAction: {
                         store.send(.set(\.isDeleteCardModalPresented, false))
                         store.send(.set(\.isCardActionSheetPresented, true))
                     },
-                    rightButtonTitle: "삭제",
+                    rightButtonTitle: LocalizationKitStrings.HomeScene.deleteCardModalRightButtonTitle,
                     rightButtonAction: {
                         store.send(.set(\.isDeleteCardModalPresented, false))
-                        store.send(.presentToast(toastMessage: "삭제 완료했어요."))
+                        store.send(.presentToast(toastMessage: LocalizationKitStrings.HomeScene.deleteCardToastMessage))
                         store.send(.deleteButtonTapped)
                     }
                 )

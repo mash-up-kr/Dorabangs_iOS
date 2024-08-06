@@ -14,6 +14,8 @@ extension Project {
 			organizationName: "mashup.dorabangs",
 			options: .options(
 				automaticSchemesOptions: .disabled,
+				defaultKnownRegions: ["en", "ko"],
+				developmentRegion: "ko",
 				textSettings: .textSettings(usesTabs: false, indentWidth: 4, tabWidth: 4)
 			),
 			packages: packages,

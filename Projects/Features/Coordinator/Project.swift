@@ -27,7 +27,8 @@ let project = Project.make(
                 .coordinator(.storageBox),
                 .scene(.setting),
                 .spm(.tcaCoordinators),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
@@ -43,7 +44,8 @@ let project = Project.make(
                 .coordinator(.aiClassification),
                 .coordinator(.feed),
                 .coordinator(.saveURL),
-                .spm(.tcaCoordinators)
+                .spm(.tcaCoordinators),
+                .localizationKit
             ]
         ),
         .make(
@@ -57,7 +59,8 @@ let project = Project.make(
                 .coordinator(.feed),
                 .coordinator(.saveURL),
                 .scene(.changeFolderName),
-                .scene(.createNewFolder)
+                .scene(.createNewFolder),
+                .localizationKit
             ]
         ),
         .make(

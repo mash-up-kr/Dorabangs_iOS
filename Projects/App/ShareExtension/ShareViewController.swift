@@ -6,6 +6,7 @@
 //
 
 import DesignSystemKit
+import LocalizationKit
 import Services
 import SwiftUI
 import UIKit
@@ -179,7 +180,7 @@ private extension ShareViewController {
     }
 
     func setDescriptionLabelAttributes() {
-        descriptionLabel.text = "나중에 읽을 링크에 저장했어요!"
+        descriptionLabel.text = LocalizationKitStrings.Common.savedToReadLater
         descriptionLabel.font = UIFont.nanumSquareNeo(size: 16, weight: 500)
         descriptionLabel.textColor = DesignSystemKitAsset.Colors.white.color
     }
@@ -189,7 +190,7 @@ private extension ShareViewController {
         configuration.baseForegroundColor = DesignSystemKitAsset.Colors.white.color
         var container = AttributeContainer()
         container.font = UIFont.nanumSquareNeo(size: 16, weight: 500)
-        configuration.attributedTitle = AttributedString("편집", attributes: container)
+        configuration.attributedTitle = AttributedString(LocalizationKitStrings.Common.edit, attributes: container)
         editButton.configuration = configuration
         editButton.addTarget(self, action: #selector(editButtonDidTapped), for: .touchUpInside)
     }

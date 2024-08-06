@@ -39,21 +39,21 @@ extension FolderAPIClient: DependencyKey {
         getFolder: { folderId in
             let api = FolderAPI.getFolder(folderId: folderId)
             let responseDTO: FolderDTO = try await Provider().request(api)
-            let folder = responseDTO.toDomain
+            let folder = responseDTO.toDomain.toLocalized
             return folder
         },
         getFolders: {
             let api = FolderAPI.getFolders
             let responseDTO: GetFolderResponseDTO = try await Provider().request(api)
-            let defaultFolders = responseDTO.defaultFolders.map(\.toDomain)
-            let customFolders = responseDTO.customFolders.map(\.toDomain)
+            let defaultFolders = responseDTO.defaultFolders.map(\.toDomain.toLocalized)
+            let customFolders = responseDTO.customFolders.map(\.toDomain.toLocalized)
             let folderModel = FoldersModel(defaultFolders: defaultFolders, customFolders: customFolders)
             return folderModel
         },
         postFolders: { folders in
             let api = FolderAPI.postFolders(folders: folders)
             let responseDTO: PostFolderResponseDTO = try await Provider().request(api)
-            return responseDTO.list.map(\.toDomain)
+            return responseDTO.list.map(\.toDomain.toLocalized)
         },
         getFolderPosts: { folderId, page, limit, order, isRead in
             let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, order: order, isRead: isRead)
@@ -68,7 +68,7 @@ extension FolderAPIClient: DependencyKey {
         patchFolder: { folderId, newName in
             let api = FolderAPI.patchFolder(folderId: folderId, newName: newName)
             let responseDTO: FolderDTO = try await Provider().request(api)
-            let patchedFolder = responseDTO.toDomain
+            let patchedFolder = responseDTO.toDomain.toLocalized
             return patchedFolder
         }
     )

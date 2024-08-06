@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct FeedHeaderView: View {
@@ -34,7 +35,7 @@ public struct FeedHeaderView: View {
                     .font(weight: .bold, semantic: .base2)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                     .frame(height: 24)
-                Text("\(linkCount) 게시물")
+                Text(LocalizationKitStrings.FeedScene.postCounts(linkCount))
                     .font(weight: .medium, semantic: .caption1)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
                     .frame(height: 22)

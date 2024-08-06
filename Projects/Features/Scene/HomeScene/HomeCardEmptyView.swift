@@ -7,6 +7,7 @@
 //
 
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 struct HomeCardEmptyView: View {
@@ -17,7 +18,7 @@ struct HomeCardEmptyView: View {
             DesignSystemKitAsset.Icons.icEmpty.swiftUIImage
                 .frame(width: 40, height: 40)
 
-            Text("생성된 게시글이 없어요")
+            Text(LocalizationKitStrings.HomeScene.homeCardEmptyViewDescription)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                 .frame(maxWidth: .infinity)

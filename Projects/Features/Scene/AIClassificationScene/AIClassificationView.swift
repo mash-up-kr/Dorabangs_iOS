@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct AIClassificationView: View {
@@ -40,7 +41,7 @@ public struct AIClassificationView: View {
 
                         VStack(spacing: 0) {
                             LKTextMiddleTopBar(
-                                title: "AI 분류",
+                                title: LocalizationKitStrings.AIClassificationScene.aiClassificationViewNavigationTitle,
                                 backButtonAction: { store.send(.backButtonTapped) },
                                 action: {}
                             )

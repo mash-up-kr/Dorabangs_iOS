@@ -10,6 +10,7 @@ import ComposableArchitecture
 import CreateNewFolder
 import FeedCoordinator
 import Foundation
+import LocalizationKit
 import SaveURLCoordinator
 import StorageBox
 import TCACoordinators
@@ -98,7 +99,7 @@ extension StorageBoxCoordinator {
         switch action {
         case .routeToStorageBoxScene:
             state.routes.goBack()
-            let showToast = StorageBox.Action.showToast(message: "폴더를 추가했어요.")
+            let showToast = StorageBox.Action.showToast(message: LocalizationKitStrings.Common.folderCreatedToastMessage)
             return .send(.router(.routeAction(id: 0, action: .storageBox(showToast))))
 
         default:

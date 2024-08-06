@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import LocalizationKit
 import SwiftUI
 
 public struct LKTextFieldPopup: View {
@@ -71,7 +72,7 @@ public struct LKTextFieldPopup: View {
 
             HStack(spacing: 8) {
                 RoundedCornersButton(
-                    title: "닫기",
+                    title: LocalizationKitStrings.DesignsSystemKit.close,
                     style: .solidGray,
                     action: onCancel
                 )

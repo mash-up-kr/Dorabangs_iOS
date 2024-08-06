@@ -7,6 +7,7 @@
 //
 
 import DesignSystemKit
+import LocalizationKit
 import Lottie
 import SwiftUI
 
@@ -89,11 +90,11 @@ private struct HomeBannerMessageView: View {
 
             if let count, count > 0 {
                 HStack(spacing: 0) {
-                    Text("\(count)개 ")
+                    Text(LocalizationKitStrings.HomeScene.linkCount(count))
                         .font(weight: .heavy, semantic: .subtitle2)
                         .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
 
-                    Text("있어요")
+                    Text(LocalizationKitStrings.HomeScene.available)
                         .font(weight: .heavy, semantic: .subtitle2)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
                 }

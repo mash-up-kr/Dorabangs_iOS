@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LocalizationKit
 
 public enum HomeBannerType: Int {
     case ai = 0
@@ -16,20 +17,20 @@ public enum HomeBannerType: Int {
     var prefix: String {
         switch self {
         case .ai:
-            "AI로 분류한 링크가"
+            LocalizationKitStrings.HomeScene.aiBannerPrefix
         case .unread:
-            "아직 읽지 않은 링크가"
+            LocalizationKitStrings.HomeScene.unreadBannerPrefix
         case .onboarding:
-            "3초만에 링크를\n저장하는 방법이에요"
+            LocalizationKitStrings.HomeScene.onboaringBannerPrefix
         }
     }
 
     var buttonTitle: String {
         switch self {
         case .ai, .unread:
-            "확인하기"
+            LocalizationKitStrings.HomeScene.aiAndUnreadButtonTitle
         case .onboarding:
-            "설정하기"
+            LocalizationKitStrings.HomeScene.onboardingButtonTitle
         }
     }
 }

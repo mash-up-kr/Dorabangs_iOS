@@ -7,6 +7,7 @@
 //
 
 import DesignSystemKit
+import LocalizationKit
 import Models
 import SwiftUI
 
@@ -23,10 +24,21 @@ public struct EditFolderPopupModifier: ViewModifier {
 
     public func body(content: Content) -> some View {
         content
-            .actionSheet(isPresented: $isPresented, items: [.init(title: "폴더 삭제", image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(), style: .destructive, action: {
-                onSelect(0)
-            }), .init(title: "폴더 이름 변경", image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(), action: {
-                onSelect(1)
-            })])
+            .actionSheet(
+                isPresented: $isPresented,
+                items: [
+                    .init(
+                        title: LocalizationKitStrings.StorageBoxScene.deleteFolderActionSheetItemTitle,
+                        image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(),
+                        style: .destructive,
+                        action: { onSelect(0) }
+                    ),
+                    .init(
+                        title: LocalizationKitStrings.StorageBoxScene.renameFolderActionSheetItemTitle,
+                        image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(),
+                        action: { onSelect(1) }
+                    )
+                ]
+            )
     }
 }

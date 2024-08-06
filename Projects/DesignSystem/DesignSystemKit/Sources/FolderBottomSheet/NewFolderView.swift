@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import LocalizationKit
 import SwiftUI
 
 public struct NewFolderView: View {
@@ -20,7 +21,7 @@ public struct NewFolderView: View {
                 .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
                 .frame(width: 24, height: 24)
 
-            Text("새 폴더 추가")
+            Text(LocalizationKitStrings.DesignsSystemKit.addNewFolder)
                 .font(weight: .regular, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
 

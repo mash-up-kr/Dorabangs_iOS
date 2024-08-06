@@ -1,0 +1,10 @@
+// MARK: - SaveURLView
+"save_url_view_navigation_title" = "링크 저장";
+
+"save_url_view_url_field_title" = "링크";
+
+"save_url_view_url_field_placeholder" = "URL을 입력해주세요";
+
+"save_url_view_url_field_helper_text" = "유효한 링크를 입력해주세요.";
+
+"save_url_view_save_button_title" = "저장";

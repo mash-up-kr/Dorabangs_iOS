@@ -10,6 +10,7 @@ import Common
 import ComposableArchitecture
 import DesignSystemKit
 import Kingfisher
+import LocalizationKit
 import Models
 import SwiftUI
 
@@ -108,7 +109,7 @@ public struct FeedView: View {
                     store.send(.tapRemoveButton)
                 })
             })
-            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: "폴더 이름을 변경했어요.", isEmbedTabbar: false)
+            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
         }
     }
 
@@ -132,11 +133,14 @@ extension View {
     }
 
     func removeFolderPopup(onCancel: @escaping () -> Void, onRemove: @escaping () -> Void) -> some View {
-        LKModal(title: "폴더 삭제", content: "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?", leftButtonTitle: "취소", leftButtonAction: {
-            onCancel()
-        }, rightButtonTitle: "삭제", rightButtonAction: {
-            onRemove()
-        })
+        LKModal(
+            title: LocalizationKitStrings.FeedScene.deleteFolderModalTitle,
+            content: LocalizationKitStrings.FeedScene.deleteFolderModalDescription,
+            leftButtonTitle: LocalizationKitStrings.FeedScene.deleteFolderModalLeftButtonTitle,
+            leftButtonAction: { onCancel() },
+            rightButtonTitle: LocalizationKitStrings.FeedScene.deleteFolderModalRightButtonTitle,
+            rightButtonAction: { onRemove() }
+        )
     }
 }
 
@@ -153,11 +157,21 @@ public struct EditFolderPopupModifier: ViewModifier {
 
     public func body(content: Content) -> some View {
         content
-            .actionSheet(isPresented: $isPresented, items: [.init(title: "폴더 삭제", image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(), action: {
-                onSelect(0)
-            }), .init(title: "폴더 이름 변경", image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(), action: {
-                onSelect(1)
-            })])
+            .actionSheet(
+                isPresented: $isPresented,
+                items: [
+                    .init(
+                        title: LocalizationKitStrings.FeedScene.deleteFolderActionSheetItemTitle,
+                        image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(),
+                        action: { onSelect(0) }
+                    ),
+                    .init(
+                        title: LocalizationKitStrings.FeedScene.renameFolderActionSheetItemTitle,
+                        image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(),
+                        action: { onSelect(1) }
+                    )
+                ]
+            )
     }
 }
 

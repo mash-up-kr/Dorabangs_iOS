@@ -9,6 +9,7 @@
 import AVKit
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 public struct SaveURLVideoGuideView: View {
@@ -33,20 +34,20 @@ public struct SaveURLVideoGuideView: View {
                 )
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("링크를 간편하게 저장할 수 있는")
+                    Text(LocalizationKitStrings.SaveURLVideoGuideScene.easyLinkSaving)
                         .font(weight: .bold, semantic: .subtitle1)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
 
-                    Text("방법이에요")
+                    Text(LocalizationKitStrings.SaveURLVideoGuideScene.wayToSave)
                         .font(weight: .bold, semantic: .subtitle1)
                         .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                 }
                 .padding(EdgeInsets(top: 12, leading: 20, bottom: 0, trailing: 20))
 
                 VStack(alignment: .leading, spacing: 8) {
-                    StepDescriptionView(step: 1, description: "설정하기 버튼을 눌러 공유 메뉴를 열어주세요")
-                    StepDescriptionView(step: 2, description: "앱 리스트에서 더보기를 눌러요")
-                    StepDescriptionView(step: 3, description: "편집을 눌러 “Linkit”을 찾은 후 + 를 눌러주세요")
+                    StepDescriptionView(step: 1, description: LocalizationKitStrings.SaveURLVideoGuideScene.step1Description)
+                    StepDescriptionView(step: 2, description: LocalizationKitStrings.SaveURLVideoGuideScene.step2Description)
+                    StepDescriptionView(step: 3, description: LocalizationKitStrings.SaveURLVideoGuideScene.step3Description)
                 }
                 .padding(EdgeInsets(top: 18, leading: 20, bottom: 20, trailing: 20))
 
@@ -56,7 +57,7 @@ public struct SaveURLVideoGuideView: View {
 
                 Spacer()
 
-                RoundedButton(title: "설정하기", action: { store.send(.settingButtonTapped) })
+                RoundedButton(title: LocalizationKitStrings.SaveURLVideoGuideScene.settingButton, action: { store.send(.settingButtonTapped) })
                     .padding(20)
             }
             .activitySheet(

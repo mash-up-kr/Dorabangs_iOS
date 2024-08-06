@@ -9,14 +9,14 @@ let project = Project.make(
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.common",
             sources: ["Common/**"],
-            dependencies: []
+            dependencies: [.localizationKit]
         ),
         .make(
             name: "Models",
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.models",
             sources: ["Models/**"],
-            dependencies: []
+            dependencies: [.localizationKit]
         ),
         .make(
             name: "Services",

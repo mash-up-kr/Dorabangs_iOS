@@ -1,0 +1,28 @@
+// MARK: - FeedEmptyView
+"feed_empty_view_description" = "No posts yet";
+
+// MARK: - FeedHeaderTabView
+"unread_tab" = "Unread";
+
+// MARK: - FeedHeaderView
+"post_counts" = "%d posts";
+
+// MARK: - FeedSortView
+"latest_sort_tab" = "Latest";
+
+"past_sort_tab" = "Past";
+
+// MARK: - FeedView
+"toast_message_folder_name_changed" = "Folder name changed";
+
+"delete_folder_modal_title" = "Delete Folder";
+
+"delete_folder_modal_description" = "Are you sure you want to delete the folder?\nAll data will be permanently deleted and cannot be recovered.";
+
+"delete_folder_modal_left_button_title" = "Cancel";
+
+"delete_folder_modal_right_button_title" = "Delete";
+
+"delete_folder_action_sheet_item_title" = "Delete Folder";
+
+"rename_folder_action_sheet_item_title" = "Rename Folder";

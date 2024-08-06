@@ -17,7 +17,8 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .spm(.lottie),
                 .spm(.kingfisher),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
@@ -41,7 +42,8 @@ let project = Project.make(
                 .core(.service),
                 .spm(.composableArchitecture),
                 .designSystem,
-                .core(.model)
+                .core(.model),
+                .localizationKit
             ]
         ),
         .make(
@@ -54,7 +56,8 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .spm(.kingfisher),
                 .designSystem,
-                .core(.model)
+                .core(.model),
+                .localizationKit
             ]
         ),
         .make(
@@ -76,7 +79,8 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem,
                 .core(.service),
-                .core(.model)
+                .core(.model),
+                .localizationKit
             ]
         ),
         .make(
@@ -88,7 +92,8 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem,
                 .core(.service),
-                .core(.model)
+                .core(.model),
+                .localizationKit
             ]
         ),
         .make(
@@ -100,7 +105,8 @@ let project = Project.make(
                 .spm(.composableArchitecture),
                 .designSystem,
                 .core(.service),
-                .core(.model)
+                .core(.model),
+                .localizationKit
             ]
         ),
         .make(
@@ -111,7 +117,8 @@ let project = Project.make(
             dependencies: [
                 .spm(.composableArchitecture),
                 .core(.service),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
@@ -123,7 +130,8 @@ let project = Project.make(
                 .core(.service),
                 .core(.model),
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
@@ -137,7 +145,8 @@ let project = Project.make(
                 .core(.service),
                 .spm(.composableArchitecture),
                 .spm(.kingfisher),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
@@ -158,7 +167,8 @@ let project = Project.make(
             sources: ["SaveURLVideoGuideScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         )
     ]

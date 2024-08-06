@@ -1,0 +1,28 @@
+// MARK: - FeedEmptyView
+"feed_empty_view_description" = "아직 생성된 게시글이 없어요";
+
+// MARK: - FeedHeaderTabView
+"unread_tab" = "읽지않은";
+
+// MARK: - FeedHeaderView
+"post_counts" = "%d 게시물";
+
+// MARK: - FeedSortView
+"latest_sort_tab" = "최신순";
+
+"past_sort_tab" = "과거순";
+
+// MARK: - FeedView
+"toast_message_folder_name_changed" = "폴더 이름을 변경했어요.";
+
+"delete_folder_modal_title" = "폴더 삭제";
+
+"delete_folder_modal_description" = "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?";
+
+"delete_folder_modal_left_button_title" = "취소";
+
+"delete_folder_modal_right_button_title" = "삭제";
+
+"delete_folder_action_sheet_item_title" = "폴더 삭제";
+
+"rename_folder_action_sheet_item_title" = "폴더 이름 변경";

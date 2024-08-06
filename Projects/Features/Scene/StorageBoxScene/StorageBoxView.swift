@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import Models
 import SwiftUI
 
@@ -22,7 +23,7 @@ public struct StorageBoxView: View {
         WithPerceptionTracking {
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
-                    Text("보관함")
+                    Text(LocalizationKitStrings.StorageBoxScene.storageboxViewNavigationTitle)
                         .font(weight: .bold, semantic: .base1)
 
                     Spacer()
@@ -83,10 +84,13 @@ extension View {
     }
 
     func removeFolderPopup(onCancel: @escaping () -> Void, onRemove: @escaping () -> Void) -> some View {
-        LKModal(title: "폴더 삭제", content: "폴더를 삭제하면 모든 데이터가 영구적으로\n삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?", leftButtonTitle: "취소", leftButtonAction: {
-            onCancel()
-        }, rightButtonTitle: "삭제", rightButtonAction: {
-            onRemove()
-        })
+        LKModal(
+            title: LocalizationKitStrings.StorageBoxScene.deleteFolderModalTitle,
+            content: LocalizationKitStrings.StorageBoxScene.deleteFolderModalDescription,
+            leftButtonTitle: LocalizationKitStrings.StorageBoxScene.deleteFolderModalLeftButtonTitle,
+            leftButtonAction: { onCancel() },
+            rightButtonTitle: LocalizationKitStrings.StorageBoxScene.deleteFolderModalRightButtonTitle,
+            rightButtonAction: { onRemove() }
+        )
     }
 }

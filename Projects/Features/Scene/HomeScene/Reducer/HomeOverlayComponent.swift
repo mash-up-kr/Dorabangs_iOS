@@ -7,6 +7,7 @@
 //
 
 import ComposableArchitecture
+import LocalizationKit
 import Services
 
 @Reducer
@@ -71,7 +72,7 @@ public struct HomeOverlayComponent {
                 return .run { [state] send in
                     try await postAPIClient.movePostFolder(postId: state.postId ?? "", folderId: folderId ?? "")
                     await send(.set(\.isSelectFolderBottomSheetPresented, false))
-                    await send(.presentToast(toastMessage: "\(folder ?? "")(으)로 이동했어요."))
+                    await send(.presentToast(toastMessage: LocalizationKitStrings.HomeScene.moveCardToastMessage(folder ?? "")))
                     await send(.cardMoved)
                 }
 

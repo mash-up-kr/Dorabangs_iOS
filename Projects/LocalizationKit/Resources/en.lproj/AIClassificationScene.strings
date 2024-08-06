@@ -1,0 +1,18 @@
+// MARK: - AIClassificationCardEmptyView
+"ai_cassification_card_empty_view_description" = "All Links Reviewed";
+
+// MARK: - AIClassificationCardSectionHeaderView
+"classified_links_count" = "Classified links: %d";
+
+"move_all_button_title" = "Move All";
+
+// MARK: - AIClassificationCardSectionItemView
+"move_to_folder_button_title" = "Move to %@"; // Folder name
+
+// MARK: - AIClassificationCardView
+"go_to_home_button_title" = "Go to Home";
+
+"go_to_folder_button_title" = "Go to %@"; // Folder name
+
+// MARK: - AIClassificationView
+"ai_classification_view_navigation_title" = "AI Classification";

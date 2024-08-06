@@ -9,8 +9,11 @@ extension Target {
 		productName: String? = nil,
 		bundleId: String,
 		deploymentTargets: DeploymentTargets? = .iOS("15.0"),
-		infoPlist: InfoPlist? = .default,
-		sources: SourceFilesList,
+		infoPlist: InfoPlist? = .extendingDefault(with: [
+			"CFBundleLocalizations": ["ko", "en"],
+			"CFBundleAllowMixedLocalizations": "YES"
+		]),
+		sources: SourceFilesList? = nil,
 		resources: ResourceFileElements? = nil,
 		copyFiles: [CopyFilesAction]? = nil,
 		headers: Headers? = nil,

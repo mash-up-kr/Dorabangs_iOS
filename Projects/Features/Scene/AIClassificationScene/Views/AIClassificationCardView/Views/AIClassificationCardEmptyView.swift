@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 
 struct AIClassificationCardEmptyView: View {
@@ -30,7 +31,7 @@ struct AIClassificationCardEmptyView: View {
                     .scaledToFit()
                     .frame(width: 252, height: 252)
 
-                Text("분류한 링크를 모두 확인했어요!")
+                Text(LocalizationKitStrings.AIClassificationScene.aiCassificationCardEmptyViewDescription)
                     .font(weight: .medium, semantic: .base1)
                     .multilineTextAlignment(.center)
                     .foregroundColor(DesignSystemKitAsset.Colors.g7.swiftUIColor)

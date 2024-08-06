@@ -38,7 +38,8 @@ let project = Project.make(
             sources: ["DesignSystemKit/Sources/**"],
             resources: ["DesignSystemKit/Resources/**"],
             dependencies: [
-                .spm(.lottie)
+                .spm(.lottie),
+                .localizationKit
             ]
         )
     ],

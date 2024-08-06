@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import LocalizationKit
 import Lottie
 import SwiftUI
 
@@ -117,14 +118,14 @@ private struct MajorContentView: View {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
 
-                Text("주요 내용")
+                Text(LocalizationKitStrings.DesignsSystemKit.summary)
                     .font(weight: .medium, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
 
                 Spacer()
             }
             .frame(height: 14)
-            
+
             Spacer()
                 .frame(height: 12)
 
@@ -134,7 +135,7 @@ private struct MajorContentView: View {
                     .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
                     .lineLimit(3)
                     .frame(width: 254)
-                
+
                 Spacer()
             }
         }
@@ -254,7 +255,7 @@ private struct SummarizingView: View {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
 
-                Text("요약 중")
+                Text(LocalizationKitStrings.DesignsSystemKit.summarizing)
                     .font(weight: .medium, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
 

@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Foundation
+import LocalizationKit
 import Models
 import Services
 
@@ -113,7 +114,7 @@ public struct StorageBox {
                 state.editingID = nil
                 state.editFolderPopupIsPresented = false
                 state.removeFolderPopupIsPresented = false
-                return .send(.showToast(message: "삭제 완료했어요."))
+                return .send(.showToast(message: LocalizationKitStrings.StorageBoxScene.deleteCompletedToastMessage))
             case .cancelRemoveFolder:
                 state.editFolderPopupIsPresented = true
                 state.removeFolderPopupIsPresented = false
@@ -137,7 +138,7 @@ public struct StorageBox {
                     state.customFolders[patchedFolderIndex] = patchedFolder
                 }
                 state.editFolderPopupIsPresented = false
-                return .send(.showToast(message: "폴더 이름을 변경했어요."))
+                return .send(.showToast(message: LocalizationKitStrings.StorageBoxScene.folderNameChangedToastMessage))
             case .routeToChangeFolderName:
                 return .none
             case .routeToCreateNewFolderScene:
