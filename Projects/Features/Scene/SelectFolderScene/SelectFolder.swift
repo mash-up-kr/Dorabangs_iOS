@@ -25,6 +25,8 @@ public struct SelectFolder {
         var selectedFolderIndex: Int?
         /// 저장 버튼 비활성화 여부
         var isSaveButtonDisabled: Bool = true
+        /// 로딩 인디케이터 표시 여부
+        var isLoading: Bool = false
 
         public init(saveURL: URL) {
             self.saveURL = saveURL
@@ -38,6 +40,7 @@ public struct SelectFolder {
         case folderSelected(Int?)
         case saveButtonTapped
         case createFolderButtonTapped
+        case isLoadingChanged(Bool)
 
         // MARK: Inner Business
         case fetchFolders
@@ -51,11 +54,16 @@ public struct SelectFolder {
         case routeToCreateNewFolderScreen(url: URL)
     }
 
+    enum ActionID: Hashable {
+        case debounceSaveButton
+    }
+
     public init() {}
 
     @Dependency(\.folderAPIClient) var folderAPIClient
     @Dependency(\.postAPIClient) var postAPIClient
     @Dependency(\.urlMetadataClient) var urlMetadataClient
+    @Dependency(\.mainQueue) var mainQueue
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -73,15 +81,22 @@ public struct SelectFolder {
 
             case .saveButtonTapped:
                 guard let folderIndex = state.selectedFolderIndex else { return .none }
+                state.isLoading = true
                 return .run { [folder = state.folders[folderIndex], url = state.saveURL] send in
                     try await postAPIClient.postPosts(folderId: folder.id, url: url)
+                    await send(.isLoadingChanged(false))
                     await send(.routeToHomeScreen)
                 } catch: { _, _ in
                     // TODO: error handling
                 }
+                .debounce(id: ActionID.debounceSaveButton, for: .milliseconds(500), scheduler: mainQueue)
 
             case .createFolderButtonTapped:
                 return .send(.routeToCreateNewFolderScreen(url: state.saveURL))
+
+            case let .isLoadingChanged(isLoading):
+                state.isLoading = isLoading
+                return .none
 
             case .fetchFolders:
                 return .run { send in

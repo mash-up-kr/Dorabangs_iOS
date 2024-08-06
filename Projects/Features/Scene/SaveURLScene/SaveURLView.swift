@@ -27,7 +27,7 @@ public struct SaveURLView: View {
                     action: {}
                 )
 
-                LKTextField(
+                VStack(spacing: 0) { LKTextField(
                     text: $store.urlString.sending(\.textFieldChanged),
                     fieldText: "링크",
                     placeholder: "URL을 입력해주세요",
@@ -45,6 +45,12 @@ public struct SaveURLView: View {
                 .padding(20)
 
                 Spacer()
+                }
+                .applyIf(store.isLoading, apply: { view in
+                    view
+                        .disabled(store.isLoading)
+                        .overlay(LoadingIndicator())
+                })
             }
             .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
             .navigationBarHidden(true)

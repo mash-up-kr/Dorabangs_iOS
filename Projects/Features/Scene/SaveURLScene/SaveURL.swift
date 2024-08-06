@@ -26,6 +26,8 @@ public struct SaveURL {
         var isTextFieldWarned: Bool = false
         /// 클립보드 토스트 상태
         var clipboardToast = ClipboardToastFeature.State()
+        /// 로딩 인디케이터 표시 여부
+        var isLoading: Bool = false
 
         public init(urlString: String) {
             self.urlString = urlString
@@ -40,6 +42,7 @@ public struct SaveURL {
         case saveButtonTapped
         case textFieldChanged(String)
         case isTextFieldWarnedChanged(Bool)
+        case isLoadingChanged(Bool)
 
         // MARK: Child Action
         case clipboardToast(ClipboardToastFeature.Action)
@@ -49,9 +52,14 @@ public struct SaveURL {
         case routeToSelectFolderScreen(saveURL: URL)
     }
 
+    enum ActionID: Hashable {
+        case debounceSaveButton
+    }
+
     public init() {}
 
     @Dependency(\.linkAPIClient) var linkAPIClient
+    @Dependency(\.mainQueue) var mainQueue
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.clipboardToast, action: \.clipboardToast) {
@@ -68,13 +76,17 @@ public struct SaveURL {
                 return .send(.routeToPreviousScreen)
 
             case .saveButtonTapped:
+                state.isLoading = true
                 return .run { [urlString = state.urlString] send in
                     if let url = addHTTPSIfNeeded(urlString: urlString), try await linkAPIClient.getValidation(url.absoluteString) {
+                        await send(.isLoadingChanged(false))
                         await send(.routeToSelectFolderScreen(saveURL: url))
                     } else {
                         await send(.isTextFieldWarnedChanged(true))
+                        await send(.isLoadingChanged(false))
                     }
                 }
+                .debounce(id: ActionID.debounceSaveButton, for: .milliseconds(500), scheduler: mainQueue)
 
             case let .textFieldChanged(text):
                 return textFieldChanged(&state, text: text)
@@ -82,6 +94,10 @@ public struct SaveURL {
             case let .isTextFieldWarnedChanged(isWarned):
                 state.isTextFieldWarned = isWarned
                 state.isSaveButtonDisabled = isWarned
+                return .none
+
+            case let .isLoadingChanged(isLoading):
+                state.isLoading = isLoading
                 return .none
 
             case let .clipboardToast(.pasteURLStringToTextField(urlString)):
