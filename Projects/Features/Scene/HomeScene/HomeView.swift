@@ -45,9 +45,6 @@ public struct HomeView: View {
                     }
                 }
                 .zIndex(1)
-                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
-                .background(.ultraThinMaterial)
-                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
 
                 topBarView
                     .zIndex(2)
@@ -118,21 +115,23 @@ private struct HomeBackgroundView: View {
     fileprivate init() {}
 
     fileprivate var body: some View {
-        ZStack {
-            DesignSystemKitAsset.Colors.white.swiftUIColor
-                .opacity(1)
-                .edgesIgnoringSafeArea(.all)
-
-            GeometryReader { _ in
-                Circle()
-                    .fill(
-                        Color(red: 191 / 255, green: 221 / 255, blue: 252 / 255, opacity: 0.5)
+        GeometryReader { _ in
+            Rectangle()
+                .foregroundColor(.clear)
+                .frame(width: 357, height: 357)
+                .background(
+                    EllipticalGradient(
+                        stops: [
+                            Gradient.Stop(color: Color(red: 0.75, green: 0.87, blue: 0.99), location: 0.00),
+                            Gradient.Stop(color: Color(red: 0.75, green: 0.87, blue: 0.99).opacity(0), location: 1.00)
+                        ],
+                        center: UnitPoint(x: 0.5, y: 0.5)
                     )
-                    .frame(width: 357, height: 357)
-                    .blur(radius: 96)
-                    .offset(x: -40, y: 28)
-            }
+                )
+                .cornerRadius(357, corners: .allCorners)
+                .offset(x: -40, y: 28)
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
