@@ -88,7 +88,7 @@ private struct HeaderView<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
 
     var body: some View {
-        HStack(alignment: .top, spacing: 13) {
+        HStack(alignment: .top, spacing: 16) {
             VStack(alignment: .leading, spacing: 12) {
                 Text(title ?? "")
                     .font(weight: .bold, semantic: .caption3)
@@ -112,7 +112,7 @@ private struct MajorContentView: View {
     let description: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 4) {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
@@ -123,11 +123,20 @@ private struct MajorContentView: View {
 
                 Spacer()
             }
+            .frame(height: 14)
+            
+            Spacer()
+                .frame(height: 12)
 
-            Text(description ?? "")
-                .font(weight: .regular, semantic: .caption1)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
-                .lineLimit(3)
+            HStack(spacing: 0) {
+                Text(description ?? "")
+                    .font(weight: .regular, semantic: .caption1)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
+                    .lineLimit(3)
+                    .frame(width: 254)
+                
+                Spacer()
+            }
         }
     }
 }
@@ -264,18 +273,11 @@ private struct SummarizingView: View {
                     )
                 )
                 .playing(loopMode: .loop)
-                .frame(width: 254, height: 100)
+                .frame(width: 254, height: 102)
 
                 Spacer()
             }
         }
-    }
-}
-
-private struct CategorySummarizingView: View {
-    var body: some View {
-        HStack(spacing: 0) {}
-            .padding(.trailing, 5)
     }
 }
 

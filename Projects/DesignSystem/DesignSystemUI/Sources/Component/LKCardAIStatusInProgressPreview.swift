@@ -18,12 +18,13 @@ struct LKCardAIStatusInProgressPreview: View {
     @State private var category: String = "Category"
     @State private var timeSince: String = "1일 전"
     @State private var isFavorite: Bool = false
+    @State private var isSummarizing: Bool = false
 
     var body: some View {
         ComponentPreview(
             component: {
                 LKCard<ThumbnailView>(
-                    aiStatus: aiStatus,
+                    aiStatus: isSummarizing ? .inProgress : .success,
                     progress: progress,
                     title: title,
                     description: description,
@@ -41,7 +42,8 @@ struct LKCardAIStatusInProgressPreview: View {
                 .textField(description: "주요 내용", text: $description),
                 .textField(description: "카테고리", text: $category),
                 .textField(description: "저장 기간", text: $timeSince),
-                .toggle(description: "북마크 저장", isOn: $isFavorite)
+                .toggle(description: "북마크 저장", isOn: $isFavorite),
+                .toggle(description: "요약 중", isOn: $isSummarizing)
             ]
         )
         .navigationBarTitle("LKCard")
