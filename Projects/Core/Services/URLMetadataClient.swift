@@ -14,7 +14,7 @@ import Models
 import UniformTypeIdentifiers
 
 @DependencyClient
-public struct URLMetadataClient {
+public struct URLMetadataClient: Sendable {
     public var fetchMetadata: @Sendable (URL) async throws -> URLMetadata
 }
 

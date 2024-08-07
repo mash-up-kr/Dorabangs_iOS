@@ -11,7 +11,7 @@ import DependenciesMacros
 import Foundation
 
 // MARK: - Interface
-public struct OnboardingClient {
+public struct OnboardingClient: Sendable {
     public var getKeywords: @Sendable () async throws -> [String]
 }
 

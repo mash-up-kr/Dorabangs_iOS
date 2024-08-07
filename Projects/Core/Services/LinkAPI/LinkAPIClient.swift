@@ -12,7 +12,7 @@ import Foundation
 import Models
 
 @DependencyClient
-public struct LinkAPIClient {
+public struct LinkAPIClient: Sendable {
     public var getValidation: @Sendable (_ link: String) async throws -> Bool
 }
 

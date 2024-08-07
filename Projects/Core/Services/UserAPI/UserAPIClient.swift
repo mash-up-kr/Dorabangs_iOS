@@ -11,7 +11,7 @@ import DependenciesMacros
 import Foundation
 
 @DependencyClient
-public struct UserAPIClient {
+public struct UserAPIClient: Sendable {
     public var postUsers: @Sendable (_ deviceToken: String) async throws -> String
 }
 

@@ -12,7 +12,7 @@ import Foundation
 import Models
 
 @DependencyClient
-public struct AIClassificationAPIClient {
+public struct AIClassificationAPIClient: Sendable {
     public var getFolders: @Sendable () async throws -> (totalCounts: Int, folders: [Folder])
     public var getPosts: @Sendable (_ folderId: String?, _ page: Int) async throws -> CardListModel
     public var getAIClassificationCount: @Sendable () async throws -> Int

@@ -12,7 +12,7 @@ import Foundation
 import Models
 
 @DependencyClient
-public struct PostAPIClient {
+public struct PostAPIClient: Sendable {
     public var getPosts: @Sendable (
         _ page: Int?,
         _ limit: Int?,
@@ -20,7 +20,7 @@ public struct PostAPIClient {
         _ favorite: Bool?
     ) async throws -> [Card]
     public var getPostsCount: @Sendable (_ isRead: Bool) async throws -> Int
-    public var postPosts: (_ folderId: String, _ url: URL) async throws -> Void
+    public var postPosts: @Sendable (_ folderId: String, _ url: URL) async throws -> Void
     /// Post 북마크 여부
     public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Card
     /// Post 읽음 처리

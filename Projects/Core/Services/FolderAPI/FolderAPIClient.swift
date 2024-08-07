@@ -12,7 +12,7 @@ import Foundation
 import Models
 
 @DependencyClient
-public struct FolderAPIClient {
+public struct FolderAPIClient: Sendable {
     public var getFolder: @Sendable (String) async throws -> Folder
     public var getFolders: @Sendable () async throws -> FoldersModel
     public var postFolders: @Sendable ([String]) async throws -> [Folder]
