@@ -153,9 +153,19 @@ public struct Home {
                         receivedFolderList[index].id = "favorite"
                     }
                 }
-                state.tabs = HomeTab.State(tabs: receivedFolderList)
+                // "all"과 "favorite" 폴더를 필터링하여 상단에 유지
+                let fixedFolders = receivedFolderList.filter { $0.id == "all" || $0.id == "favorite" }
 
-                let folderDictionary: [String: String] = receivedFolderList.reduce(into: [String: String]()) { dict, folder in
+                // 나머지 폴더들 필터링 후 postCount에 따라 정렬
+                let sortedFolders = receivedFolderList
+                    .filter { $0.id != "all" && $0.id != "favorite" }
+                    .sorted { $0.postCount > $1.postCount }
+                
+                // 최종 리스트: 고정된 폴더 + 정렬된 폴더
+                let finalFolders = fixedFolders + sortedFolders
+                state.tabs = HomeTab.State(tabs: finalFolders)
+
+                let folderDictionary: [String: String] = finalFolders.reduce(into: [String: String]()) { dict, folder in
                     dict[folder.id] = folder.name
                 }
                 folderClient.setFolderList(folderDictionary) // TODO: 실패했을 경우 처리 필요
