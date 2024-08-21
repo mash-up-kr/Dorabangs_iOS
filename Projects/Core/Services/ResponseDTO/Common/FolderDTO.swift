@@ -37,7 +37,8 @@ extension FolderDTO {
             id: id ?? "",
             name: name,
             type: FolderType(type: type) ?? .default,
-            postCount: postCount ?? 0
+            postCount: postCount ?? 0,
+            createdAt: createdAt
         )
     }
 }

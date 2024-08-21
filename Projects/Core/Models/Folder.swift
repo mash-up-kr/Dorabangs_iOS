@@ -26,17 +26,26 @@ public struct Folder: Hashable {
     public var name: String
     public let type: FolderType
     public var postCount: Int
+    public var createdAt: String?
+    // createdAt을 Date로 변환하는 computed property
+    public var creationDate: Date? {
+        guard let createdAt = createdAt else { return nil }
+        let dateFormatter = ISO8601DateFormatter()
+        return dateFormatter.date(from: createdAt)
+    }
 
     public init(
         id: String,
         name: String,
         type: FolderType,
-        postCount: Int
+        postCount: Int,
+        createdAt: String? = nil
     ) {
         self.id = id
         self.name = name
         self.type = type
         self.postCount = postCount
+        self.createdAt = createdAt
     }
 }
 
@@ -92,9 +101,9 @@ public extension Folder {
     var toLocalized: Folder {
         switch type {
         case .custom: self
-        case .default: Folder(id: id, name: localizedName, type: type, postCount: postCount)
-        case .all: Folder(id: id, name: localizedName, type: type, postCount: postCount)
-        case .favorite: Folder(id: id, name: localizedName, type: type, postCount: postCount)
+        case .default: Folder(id: id, name: localizedName, type: type, postCount: postCount, createdAt: createdAt)
+        case .all: Folder(id: id, name: localizedName, type: type, postCount: postCount, createdAt: createdAt)
+        case .favorite: Folder(id: id, name: localizedName, type: type, postCount: postCount, createdAt: createdAt)
         }
     }
 

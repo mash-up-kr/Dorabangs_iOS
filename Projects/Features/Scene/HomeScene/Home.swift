@@ -159,7 +159,17 @@ public struct Home {
                 // 나머지 폴더들 필터링 후 postCount에 따라 정렬
                 let sortedFolders = receivedFolderList
                     .filter { $0.id != "all" && $0.id != "favorite" }
-                    .sorted { $0.postCount > $1.postCount }
+                    .sorted {
+                        // postCount 비교
+                        if $0.postCount != $1.postCount {
+                            return $0.postCount > $1.postCount
+                        }
+                        // postCount가 동일한 경우, createdAt 비교
+                        if let date0 = $0.creationDate, let date1 = $1.creationDate {
+                            return date0 < date1
+                        }
+                        return false
+                    }
                 
                 // 최종 리스트: 고정된 폴더 + 정렬된 폴더
                 let finalFolders = fixedFolders + sortedFolders
