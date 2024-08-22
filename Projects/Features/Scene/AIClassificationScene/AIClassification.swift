@@ -56,7 +56,7 @@ public struct AIClassification {
                     async let postsResponse = try aiClassificationAPIClient.getPosts(folderId: nil, page: 1)
                     let (customFolders, totalCounts, cardListModel) = try await (folderResponse.folders, folderResponse.totalCounts, postsResponse)
 
-                    let allFolder = Folder(id: Folder.ID.all, name: "전체", type: .all, postCount: totalCounts)
+                    let allFolder = Folder(id: Folder.ID.all, name: "전체", type: .all, postCount: totalCounts).toLocalized
                     let folders = [allFolder] + customFolders
 
                     await send(.tabsChanged(.init(folders: folders, selectedFolderIndex: 0)))

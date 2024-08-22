@@ -33,7 +33,7 @@ extension AIClassificationAPIClient: DependencyKey {
         getFolders: {
             let api = AIClassificationAPI.getFolders
             let responseDTO: GetAIClassificationFolderResponseDTO = try await Provider().request(api)
-            return (totalCounts: responseDTO.totalCounts, folders: responseDTO.list.map(\.toDomain))
+            return (totalCounts: responseDTO.totalCounts, folders: responseDTO.list.map(\.toDomain.toLocalized))
         },
         getPosts: { folderId, page in
             let api = AIClassificationAPI.getPosts(folderId: folderId, page: page)
