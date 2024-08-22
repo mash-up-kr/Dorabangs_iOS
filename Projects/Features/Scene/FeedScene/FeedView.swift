@@ -16,6 +16,7 @@ import SwiftUI
 
 public struct FeedView: View {
     @Perception.Bindable private var store: StoreOf<Feed>
+    @State private var scrollOffset: CGPoint = .zero
 
     public init(store: StoreOf<Feed>) {
         self.store = store
@@ -25,7 +26,7 @@ public struct FeedView: View {
         WithPerceptionTracking {
             VStack {
                 LKTextMiddleTopBar(
-                    title: store.currentFolder.name,
+                    title: scrollOffset.y > 0 ? store.currentFolder.name : "",
                     backButtonAction: { store.send(.backButtonTapped) },
                     rightButtomImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
 
@@ -35,7 +36,7 @@ public struct FeedView: View {
                     }
                 )
 
-                ScrollView {
+                OffsetObservableScrollView(scrollOffset: $scrollOffset) { _ in
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         FeedHeaderView(
                             folderName: store.currentFolder.name,
