@@ -35,7 +35,7 @@ public struct FeedSortItemView: View {
                 .font(weight: .medium, semantic: .caption1)
                 .foregroundStyle(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
         }
-        .frame(height: 22)
+        .frame(height: 24)
         .onTapGesture {
             onTap()
         }
