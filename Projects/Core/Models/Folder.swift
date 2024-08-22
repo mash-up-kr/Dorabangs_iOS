@@ -29,7 +29,7 @@ public struct Folder: Hashable {
     public var createdAt: String?
     // createdAt을 Date로 변환하는 computed property
     public var creationDate: Date? {
-        guard let createdAt = createdAt else { return nil }
+        guard let createdAt else { return nil }
         let dateFormatter = ISO8601DateFormatter()
         return dateFormatter.date(from: createdAt)
     }

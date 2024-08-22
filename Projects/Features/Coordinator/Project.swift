@@ -25,7 +25,6 @@ let project = Project.make(
                 .core(.model),
                 .coordinator(.home),
                 .coordinator(.storageBox),
-                .scene(.setting),
                 .spm(.tcaCoordinators),
                 .designSystem,
                 .localizationKit

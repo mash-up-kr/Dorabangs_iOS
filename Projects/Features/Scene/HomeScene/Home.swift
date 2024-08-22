@@ -44,7 +44,7 @@ public struct Home {
         case isLoadingChanged(isLoading: Bool)
         case fetchSummarizingCard([String])
         case updateNavigationStatus(Bool)
-        
+
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
         case setCardList([Card], FolderType)
@@ -128,7 +128,7 @@ public struct Home {
             case let .isLoadingChanged(isLoading: isLoading):
                 state.isLoading = isLoading
                 return .none
-                
+
             case let .updateNavigationStatus(isPushed):
                 state.isNavigationPushed = isPushed
                 return .none
@@ -176,7 +176,7 @@ public struct Home {
                         }
                         return false
                     }
-                
+
                 // 최종 리스트: 고정된 폴더 + 정렬된 폴더
                 let finalFolders = fixedFolders + sortedFolders
                 state.tabs = HomeTab.State(tabs: finalFolders)
@@ -201,7 +201,7 @@ public struct Home {
 
             case let .banner(.bannerButtonTapped(bannerType)):
                 state.isNavigationPushed = true
-                
+
                 if bannerType == .ai {
                     return .send(.routeToAIClassificationScreen)
                 } else if bannerType == .onboarding {

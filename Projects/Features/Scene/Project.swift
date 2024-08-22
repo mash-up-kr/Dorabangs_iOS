@@ -150,17 +150,6 @@ let project = Project.make(
             ]
         ),
         .make(
-            name: "Setting",
-            product: .staticLibrary,
-            bundleId: "com.mashup.dorabangs.setting",
-            sources: ["SettingScene/**"],
-            dependencies: [
-                .core(.service),
-                .spm(.composableArchitecture),
-                .designSystem
-            ]
-        ),
-        .make(
             name: "SaveURLVideoGuide",
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.saveURLVideoGuide",
