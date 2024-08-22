@@ -22,6 +22,7 @@ public struct Home {
         var unreadLinkCount = 0
         var isLoading: Bool = false
         var morePagingNeeded: Bool = true
+        var isNavigationPushed: Bool = false
 
         var tabs: HomeTab.State?
         var banner: HomeBannerPageControl.State?
@@ -42,7 +43,8 @@ public struct Home {
         case updatePagingCardList([Card])
         case isLoadingChanged(isLoading: Bool)
         case fetchSummarizingCard([String])
-
+        case updateNavigationStatus(Bool)
+        
         case setAILinkCount(Int)
         case setUnReadLinkCount(Int)
         case setCardList([Card], FolderType)
@@ -126,6 +128,10 @@ public struct Home {
             case let .isLoadingChanged(isLoading: isLoading):
                 state.isLoading = isLoading
                 return .none
+                
+            case let .updateNavigationStatus(isPushed):
+                state.isNavigationPushed = isPushed
+                return .none
 
             case let .setAILinkCount(count):
                 state.aiLinkCount = count
@@ -194,6 +200,8 @@ public struct Home {
                 return .none
 
             case let .banner(.bannerButtonTapped(bannerType)):
+                state.isNavigationPushed = true
+                
                 if bannerType == .ai {
                     return .send(.routeToAIClassificationScreen)
                 } else if bannerType == .onboarding {
@@ -215,6 +223,7 @@ public struct Home {
 
             case let .cards(.cardTapped(item)):
                 guard let url = URL(string: item.urlString) else { return .none }
+                state.isNavigationPushed = true
                 return .send(.routeToWebScreen(url))
 
             case let .cards(.showModalButtonTapped(postId: postId, folderId: folderId)):

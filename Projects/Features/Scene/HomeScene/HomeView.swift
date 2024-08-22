@@ -58,7 +58,10 @@ public struct HomeView: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                store.send(.onAppear)
+                if !store.isNavigationPushed {
+                    store.send(.onAppear)
+                    store.send(.updateNavigationStatus(false))
+                }
             }
         }
     }
