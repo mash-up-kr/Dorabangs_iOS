@@ -60,6 +60,7 @@ public struct HomeView: View {
             .onAppear {
                 if !store.isNavigationPushed {
                     store.send(.onAppear)
+                } else {
                     store.send(.updateNavigationStatus(false))
                 }
             }
