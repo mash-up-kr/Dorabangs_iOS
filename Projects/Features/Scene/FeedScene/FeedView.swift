@@ -163,6 +163,7 @@ public struct EditFolderPopupModifier: ViewModifier {
                     .init(
                         title: LocalizationKitStrings.FeedScene.deleteFolderActionSheetItemTitle,
                         image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(),
+                        style: .destructive,
                         action: { onSelect(0) }
                     ),
                     .init(
