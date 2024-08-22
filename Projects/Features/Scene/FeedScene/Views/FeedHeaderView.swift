@@ -34,7 +34,7 @@ public struct FeedHeaderView: View {
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(folderName)
-                    .font(weight: .bold, semantic: .base2)
+                    .font(weight: .bold, semantic: .subtitle2)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                     .frame(height: 24)
                 Text(LocalizationKitStrings.FeedScene.postCounts(linkCount))
