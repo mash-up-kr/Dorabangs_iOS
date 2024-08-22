@@ -43,7 +43,7 @@ public struct HomeOverlayComponent {
         case cardMoved
 
         // MARK: Navigaiton Action
-        case routeToCreateNewFolderScreen
+        case routeToCreateNewFolderScreen(postId: String)
     }
 
     @Dependency(\.postAPIClient) var postAPIClient
@@ -63,7 +63,7 @@ public struct HomeOverlayComponent {
                 return .none
 
             case .createNewFolderButtonTapped:
-                return .send(.routeToCreateNewFolderScreen)
+                return .send(.routeToCreateNewFolderScreen(postId: state.postId ?? ""))
 
             case let .selectFolderCompleted(folder):
                 let folderList = UserFolder.shared.list

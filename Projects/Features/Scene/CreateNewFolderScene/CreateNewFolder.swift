@@ -27,9 +27,12 @@ public struct CreateNewFolder {
         var sourceView: SourceView
         /// 로딩 인디케이터 표시 여부
         var isLoading: Bool = false
+        /// 새 폴더 만들면서 포스트 이동시킬 경우 필요한 postId
+        var postId: String?
 
-        public init(sourceView: SourceView) {
+        public init(sourceView: SourceView, postId: String? = nil) {
             self.sourceView = sourceView
+            self.postId = postId
         }
     }
 
@@ -71,7 +74,7 @@ public struct CreateNewFolder {
 
             case .saveButtonTapped:
                 state.isLoading = true
-                return .run { [newFolderName = state.newFolderName, sourceView = state.sourceView] send in
+                return .run { [newFolderName = state.newFolderName, sourceView = state.sourceView, postId = state.postId ?? ""] send in
                     guard let createdFolder = try await folderAPIClient
                         .postFolders([newFolderName])
                         .first(where: { $0.name == newFolderName })
@@ -82,6 +85,7 @@ public struct CreateNewFolder {
                     await send(.isLoadingChanged(false))
                     switch sourceView {
                     case .homeScene:
+                        try await postAPIClient.movePostFolder(postId: postId, folderId: createdFolder.id)
                         await send(.routeToHomeScreen)
 
                     case let .saveURLScene(url):
