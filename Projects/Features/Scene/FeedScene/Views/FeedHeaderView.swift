@@ -13,16 +13,18 @@ import SwiftUI
 
 public struct FeedHeaderView: View {
     var folderName: String = ""
+    var folderIcon: Image
     var linkCount: Int = 0
 
-    public init(folderName: String, linkCount: Int) {
+    public init(folderName: String, folderIcon: Image, linkCount: Int) {
         self.folderName = folderName
+        self.folderIcon = folderIcon
         self.linkCount = linkCount
     }
 
     public var body: some View {
         HStack(alignment: .center) {
-            DesignSystemKitAsset.Images.imgAllBig.swiftUIImage
+            folderIcon
                 .frame(width: 52, height: 52)
                 .scaledToFill()
                 .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)

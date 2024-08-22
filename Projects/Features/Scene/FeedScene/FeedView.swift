@@ -37,7 +37,11 @@ public struct FeedView: View {
 
                 ScrollView {
                     LazyVStack(pinnedViews: .sectionHeaders) {
-                        FeedHeaderView(folderName: store.currentFolder.name, linkCount: store.currentFolder.postCount)
+                        FeedHeaderView(
+                            folderName: store.currentFolder.name,
+                            folderIcon: folderIcon(store.currentFolder.type),
+                            linkCount: store.currentFolder.postCount
+                        )
 
                         Section {
                             LazyVStack(spacing: 0) {
@@ -121,6 +125,19 @@ public struct FeedView: View {
             .failure
         case .inProgress:
             .inProgress
+        }
+    }
+    
+    private func folderIcon(_ folderType: FolderType) -> Image {
+        switch folderType {
+        case .custom:
+            DesignSystemKitAsset.Images.imgFolderBig.swiftUIImage
+        case .default:
+            DesignSystemKitAsset.Images.imgPinBig.swiftUIImage
+        case .all:
+            DesignSystemKitAsset.Images.imgAllBig.swiftUIImage
+        case .favorite:
+            DesignSystemKitAsset.Images.imgBookmarkBig.swiftUIImage
         }
     }
 }
