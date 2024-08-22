@@ -35,65 +35,22 @@ public struct FeedView: View {
                         store.send(.tapMore, animation: .default)
                     }
                 )
-
-                OffsetObservableScrollView(scrollOffset: $scrollOffset) { _ in
-                    LazyVStack(pinnedViews: .sectionHeaders) {
-                        FeedHeaderView(
-                            folderName: store.currentFolder.name,
-                            folderIcon: folderIcon(store.currentFolder.type),
-                            linkCount: store.currentFolder.postCount
-                        )
-
-                        Section {
-                            LazyVStack(spacing: 0) {
-                                FeedSortView(onSort: { sortType in
-                                    switch sortType {
-                                    case .latest:
-                                        store.send(.tapSortLatest)
-                                    case .past:
-                                        store.send(.tapSortPast)
-                                    }
-                                })
-
-                                ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
-                                    VStack(spacing: 0) {
-                                        LKCard(
-                                            aiStatus: getStatus(item.aiStatus ?? .failure),
-                                            progress: 0.4,
-                                            title: item.title,
-                                            description: item.description,
-                                            thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
-                                            tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                                            category: item.category ?? store.currentFolder.name,
-                                            timeSince: item.createdAt.timeAgo(),
-                                            isFavorite: item.isFavorite ?? false,
-                                            bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                                            showModalAction: { store.send(.showModalButtonTapped(index)) }
-                                        )
-                                        .onTapGesture {
-                                            store.send(.tapCard(item: item))
-                                        }
-                                    }
-                                }
-                                .hidden(store.currentFolder.postCount == 0)
-
-                                FeedEmptyView()
-                                    .frame(height: 400)
-                                    .hidden(store.currentFolder.postCount != 0)
-                            }
-                        } header: {
-                            VStack(spacing: 0) {
-                                FeedHeaderTabView(select: { selectType in
-                                    switch selectType {
-                                    case .all:
-                                        store.send(.tapAllType)
-                                    case .unread:
-                                        store.send(.tapUnreadType)
-                                    }
-                                })
+                if store.currentFolder.postCount == 0 {
+                    FeedEmptyContentView(
+                        folderName: store.currentFolder.name,
+                        folderIcon: folderIcon(store.currentFolder.type),
+                        linkCount: store.currentFolder.postCount,
+                        onSelectTab: { selectType in
+                            switch selectType {
+                            case .all:
+                                store.send(.tapAllType)
+                            case .unread:
+                                store.send(.tapUnreadType)
                             }
                         }
-                    }
+                    )
+                } else {
+                    FeedContentView(scrollOffset: $scrollOffset, store: store)
                 }
             }
             .navigationBarHidden(true)
@@ -115,30 +72,6 @@ public struct FeedView: View {
                 })
             })
             .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
-        }
-    }
-
-    private func getStatus(_ aiStatus: AIStatus) -> LKCardAIStatus {
-        switch aiStatus {
-        case .success:
-            .success
-        case .failure:
-            .failure
-        case .inProgress:
-            .inProgress
-        }
-    }
-    
-    private func folderIcon(_ folderType: FolderType) -> Image {
-        switch folderType {
-        case .custom:
-            DesignSystemKitAsset.Images.imgFolderBig.swiftUIImage
-        case .default:
-            DesignSystemKitAsset.Images.imgPinBig.swiftUIImage
-        case .all:
-            DesignSystemKitAsset.Images.imgAllBig.swiftUIImage
-        case .favorite:
-            DesignSystemKitAsset.Images.imgBookmarkBig.swiftUIImage
         }
     }
 }
@@ -191,6 +124,117 @@ public struct EditFolderPopupModifier: ViewModifier {
                     )
                 ]
             )
+    }
+}
+
+private func folderIcon(_ folderType: FolderType) -> Image {
+    switch folderType {
+    case .custom:
+        DesignSystemKitAsset.Images.imgFolderBig.swiftUIImage
+    case .default:
+        DesignSystemKitAsset.Images.imgPinBig.swiftUIImage
+    case .all:
+        DesignSystemKitAsset.Images.imgAllBig.swiftUIImage
+    case .favorite:
+        DesignSystemKitAsset.Images.imgBookmarkBig.swiftUIImage
+    }
+}
+
+struct FeedContentView: View {
+    @Binding var scrollOffset: CGPoint
+    var store: StoreOf<Feed>
+
+    var body: some View {
+        OffsetObservableScrollView(scrollOffset: $scrollOffset) { _ in
+            LazyVStack(pinnedViews: .sectionHeaders) {
+                FeedHeaderView(
+                    folderName: store.currentFolder.name,
+                    folderIcon: folderIcon(store.currentFolder.type),
+                    linkCount: store.currentFolder.postCount
+                )
+
+                Section {
+                    LazyVStack(spacing: 0) {
+                        FeedSortView(onSort: { sortType in
+                            switch sortType {
+                            case .latest:
+                                store.send(.tapSortLatest)
+                            case .past:
+                                store.send(.tapSortPast)
+                            }
+                        })
+
+                        ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
+                            VStack(spacing: 0) {
+                                LKCard(
+                                    aiStatus: getStatus(item.aiStatus ?? .failure),
+                                    progress: 0.4,
+                                    title: item.title,
+                                    description: item.description,
+                                    thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
+                                    tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                                    category: item.category ?? store.currentFolder.name,
+                                    timeSince: item.createdAt.timeAgo(),
+                                    isFavorite: item.isFavorite ?? false,
+                                    bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
+                                    showModalAction: { store.send(.showModalButtonTapped(index)) }
+                                )
+                                .onTapGesture {
+                                    store.send(.tapCard(item: item))
+                                }
+                            }
+                        }
+                    }
+                } header: {
+                    VStack(spacing: 0) {
+                        FeedHeaderTabView(select: { selectType in
+                            switch selectType {
+                            case .all:
+                                store.send(.tapAllType)
+                            case .unread:
+                                store.send(.tapUnreadType)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
+
+    private func getStatus(_ aiStatus: AIStatus) -> LKCardAIStatus {
+        switch aiStatus {
+        case .success:
+            .success
+        case .failure:
+            .failure
+        case .inProgress:
+            .inProgress
+        }
+    }
+}
+
+struct FeedEmptyContentView: View {
+    let folderName: String
+    let folderIcon: Image
+    let linkCount: Int
+    var onSelectTab: (FeedHeaderTabView.FeedViewTypd) -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            FeedHeaderView(
+                folderName: folderName,
+                folderIcon: folderIcon,
+                linkCount: linkCount
+            )
+
+            FeedHeaderTabView(select: onSelectTab)
+
+            Spacer()
+
+            FeedEmptyView()
+
+            Spacer()
+        }
     }
 }
 
