@@ -73,7 +73,8 @@ struct AIClassificationCardView: View {
                                 store.send(.moveToFolderButtonTapped(section: section, item: item))
                             },
                             fetchNextPageIfPossible: { item in
-                                store.send(.fetchNextPageIfPossible(item: item))
+                                guard store.pageModel.hasNext, store.state.isLastItem(item) else { return }
+                                store.send(.fetchNextPage)
                             }
                         )
                     }

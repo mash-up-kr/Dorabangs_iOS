@@ -39,6 +39,11 @@ public struct AIClassificationCard {
                 return (section.key, cards)
             })
         }
+
+        func isLastItem(_ item: Card) -> Bool {
+            guard let lastItem = items.values.last?.last else { return false }
+            return lastItem.id == item.id
+        }
     }
 
     public enum Action {
@@ -51,8 +56,8 @@ public struct AIClassificationCard {
         case moveToFolderButtonTapped(section: Folder, item: Card)
 
         // MARK: Inner Business Actions
-        /// 가능하면 다음 페이지의 카드를 가져옵니다.
-        case fetchNextPageIfPossible(item: Card)
+        /// 다음 페이지의 카드를 가져옵니다.
+        case fetchNextPage
         /// 현재 항목에 AI 분류 카드 목록을 추가합니다.
         case appendAIClassificationCards(cards: [Card])
         /// 섹션이 변경되었을 때 발생합니다.
@@ -122,8 +127,7 @@ public struct AIClassificationCard {
                     }
                 )
 
-            case let .fetchNextPageIfPossible(item):
-                guard state.pageModel.hasNext, let lastItem = state.items.values.last?.last, lastItem.id == item.id else { return .none }
+            case .fetchNextPage:
                 state.pageModel.currentPage += 1
                 let folderId = state.selectedFolderId == Folder.ID.all ? nil : state.selectedFolderId
                 return .run { [currentPage = state.pageModel.currentPage] send in
