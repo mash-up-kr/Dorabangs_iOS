@@ -102,6 +102,10 @@ extension StorageBoxCoordinator {
             let showToast = StorageBox.Action.showToast(message: LocalizationKitStrings.Common.folderCreatedToastMessage)
             return .send(.router(.routeAction(id: 0, action: .storageBox(showToast))))
 
+        case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
         default:
             return .none
         }
