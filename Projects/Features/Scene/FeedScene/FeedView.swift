@@ -59,7 +59,7 @@ public struct FeedView: View {
                                             description: item.description,
                                             thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
                                             tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                                            category: store.currentFolder.name,
+                                            category: item.category ?? store.currentFolder.name,
                                             timeSince: item.createdAt.timeAgo(),
                                             isFavorite: item.isFavorite ?? false,
                                             bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },

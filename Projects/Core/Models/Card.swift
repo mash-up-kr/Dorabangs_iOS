@@ -27,7 +27,7 @@ public struct Card: Hashable {
     public let thumbnail: String?
     public let title: String
     public let description: String?
-    public let category: String?
+    public var category: String?
     public let createdAt: Date
     public var isFavorite: Bool?
     public let keywords: [Keyword]?
@@ -58,5 +58,13 @@ public struct Card: Hashable {
         self.isFavorite = isFavorite
         self.keywords = keywords
         self.aiStatus = aiStatus
+    }
+}
+
+public extension Card {
+    func categorized(as category: String) -> Card {
+        var newCard = self
+        newCard.category = category
+        return newCard
     }
 }

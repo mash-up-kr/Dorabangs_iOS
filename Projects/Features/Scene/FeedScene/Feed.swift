@@ -74,6 +74,7 @@ public struct Feed {
 
     @Dependency(\.folderAPIClient) var folderAPIClient
     @Dependency(\.postAPIClient) var postAPIClient
+    @Dependency(\.folderClient) var folderClient
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -109,10 +110,11 @@ public struct Feed {
                     }))
                 }
             case let .fetchPostListResult(.success(resultModel)):
+                let cards = resultModel.cards.map { $0.categorized(as: folderClient.getFolderName(folderId: $0.folderId) ?? "") }
                 if state.pageModel.currentPage == 1 {
-                    state.cards = resultModel.cards
+                    state.cards = cards
                 } else {
-                    state.cards.append(contentsOf: resultModel.cards)
+                    state.cards.append(contentsOf: cards)
                 }
                 state.pageModel.currentPage += 1
                 state.pageModel.isLast = !resultModel.hasNext
@@ -151,7 +153,7 @@ public struct Feed {
                 return .none
             case let .changedFolderName(newName):
                 // TODO: - 통신탄 결과로 수정해야함~
-//                state.title = newName
+                //                state.title = newName
                 state.toastPopupIsPresented = true
                 return .none
             case .showRemoveFolderPopup:
