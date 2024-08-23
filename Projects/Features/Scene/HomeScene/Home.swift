@@ -224,8 +224,16 @@ public struct Home {
             case let .cards(.cardTapped(item)):
                 guard let url = URL(string: item.urlString) else { return .none }
                 state.isNavigationPushed = true
-                return .send(.routeToWebScreen(url))
 
+                return .run { send in
+                    await send(.routeToWebScreen(url))
+                    
+                    if item.readAt == nil {
+                        try await postAPIClient.readPost(item.id)
+                        
+                    }
+                }
+                
             case let .cards(.showModalButtonTapped(postId: postId, folderId: folderId)):
                 var folderList = UserFolder.shared.list
                 folderList.removeValue(forKey: "all")

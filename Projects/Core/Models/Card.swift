@@ -29,6 +29,7 @@ public struct Card: Hashable {
     public let description: String?
     public var category: String?
     public let createdAt: Date
+    public let readAt: Date?
     public var isFavorite: Bool?
     public let keywords: [Keyword]?
     public let aiStatus: AIStatus?
@@ -42,6 +43,7 @@ public struct Card: Hashable {
         description: String? = nil,
         category: String? = nil,
         createdAt: Date,
+        readAt: Date?,
         isFavorite: Bool? = nil,
         keywords: [Keyword]? = nil,
         thumbnailImageUrl _: String? = nil,
@@ -55,6 +57,7 @@ public struct Card: Hashable {
         self.description = description
         self.category = category
         self.createdAt = createdAt
+        self.readAt = readAt
         self.isFavorite = isFavorite
         self.keywords = keywords
         self.aiStatus = aiStatus
