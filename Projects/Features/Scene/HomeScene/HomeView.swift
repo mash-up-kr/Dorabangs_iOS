@@ -43,6 +43,7 @@ public struct HomeView: View {
                         LoadingIndicator()
                             .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 60)
                     }
+                    .padding(.bottom, 60)
                 }
                 .zIndex(1)
 
