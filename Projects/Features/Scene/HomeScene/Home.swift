@@ -227,13 +227,12 @@ public struct Home {
 
                 return .run { send in
                     await send(.routeToWebScreen(url))
-                    
+
                     if item.readAt == nil {
                         try await postAPIClient.readPost(item.id)
-                        
                     }
                 }
-                
+
             case let .cards(.showModalButtonTapped(postId: postId, folderId: folderId)):
                 var folderList = UserFolder.shared.list
                 folderList.removeValue(forKey: "all")
@@ -293,7 +292,7 @@ private extension Home {
         } else if folderId == "favorite" {
             try await send(.setCardList(postAPIClient.getPosts(page: 1, limit: nil, order: nil, favorite: true), .favorite))
         } else {
-            try await send(.setCardList(folderAPIClient.getFolderPosts(folderId, 1, nil, nil, nil).cards, .custom))
+            try await send(.setCardList(folderAPIClient.getFolderPosts(folderId, 1, nil, nil, nil, nil).cards, .custom))
         }
     }
 

@@ -12,14 +12,14 @@ import SwiftUI
 
 public struct StorageBoxSection: View {
     let storageBoxList: [Folder]
-    let onSelect: (String) -> Void
-    let onEdit: (String) -> Void
+    let onSelect: (String, FolderType) -> Void
+    let onEdit: (String, FolderType) -> Void
     let moreIcon: Image
 
     public init(
         storageBoxList: [Folder],
-        onSelect: @escaping (String) -> Void,
-        onEdit: @escaping (String) -> Void,
+        onSelect: @escaping (String, FolderType) -> Void,
+        onEdit: @escaping (String, FolderType) -> Void,
         moreIcon: Image
     ) {
         self.storageBoxList = storageBoxList
@@ -39,8 +39,8 @@ public struct StorageBoxSection: View {
                 }
                 StorageBoxItem(
                     model: storageBoxList[index],
-                    onMove: { onSelect(storageBoxList[index].id) },
-                    onEdit: { onEdit(storageBoxList[index].id) },
+                    onMove: { onSelect(storageBoxList[index].id, storageBoxList[index].type) },
+                    onEdit: { onEdit(storageBoxList[index].id, storageBoxList[index].type) },
                     moreIcon: moreIcon
                 )
             }

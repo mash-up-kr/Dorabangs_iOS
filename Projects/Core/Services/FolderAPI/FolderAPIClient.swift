@@ -21,7 +21,8 @@ public struct FolderAPIClient: Sendable {
         _ page: Int?,
         _ limit: Int?,
         _ order: String?,
-        _ isRead: Bool?
+        _ isRead: Bool?,
+        _ isFavorite: Bool?
     ) async throws -> CardListModel
     public var deleteFolder: @Sendable (String) async throws -> Void
     public var patchFolder: @Sendable (String, String) async throws -> Folder
@@ -55,8 +56,8 @@ extension FolderAPIClient: DependencyKey {
             let responseDTO: PostFolderResponseDTO = try await Provider().request(api)
             return responseDTO.list.map(\.toDomain.toLocalized)
         },
-        getFolderPosts: { folderId, page, limit, order, isRead in
-            let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, order: order, isRead: isRead)
+        getFolderPosts: { folderId, page, limit, order, isRead, isFavorite in
+            let api = FolderAPI.getFolderPosts(folderId: folderId, page: page, limit: limit, order: order, isRead: isRead, isFavorite: isFavorite)
             let responseDTO: GetFolderPostsResponseDTO = try await Provider().request(api)
             let cardList = responseDTO.list.map(\.toDomain)
             return CardListModel(hasNext: responseDTO.metadata.hasNext, total: responseDTO.metadata.total, cards: cardList)

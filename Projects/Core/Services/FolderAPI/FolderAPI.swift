@@ -15,7 +15,7 @@ enum FolderAPI: APIRepresentable {
     /// 폴더 리스트 조회
     case getFolders
     case postFolders(folders: [String])
-    case getFolderPosts(folderId: String, page: Int?, limit: Int?, order: String?, isRead: Bool?)
+    case getFolderPosts(folderId: String, page: Int?, limit: Int?, order: String?, isRead: Bool?, isFavorite: Bool?)
     case deleteFolder(folderId: String)
     case patchFolder(folderId: String, newName: String)
 }
@@ -27,7 +27,7 @@ extension FolderAPI {
             "/folders/\(folderId)"
         case .getFolders, .postFolders:
             "/folders"
-        case let .getFolderPosts(folderId, _, _, _, _):
+        case let .getFolderPosts(folderId, _, _, _, _, _):
             // 전체, 즐겨찾기 탭은 folderId가 빈 문자열이다.
             folderId.isEmpty ? "/posts" : "/folders/\(folderId)/posts"
         case let .deleteFolder(folderId), let .patchFolder(folderId, _):
@@ -52,11 +52,12 @@ extension FolderAPI {
 
     var queryString: QueryStringParameters? {
         switch self {
-        case let .getFolderPosts(_, page, limit, order, isRead):
+        case let .getFolderPosts(_, page, limit, order, isRead, isFavorite):
             .dictionary(["page": page,
                          "limit": limit,
                          "order": order,
-                         "isRead": isRead])
+                         "isRead": isRead,
+                         "favorite": isFavorite])
         default:
             nil
         }

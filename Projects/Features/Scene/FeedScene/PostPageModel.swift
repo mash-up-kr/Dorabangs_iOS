@@ -14,6 +14,7 @@ public struct PostPageModel: Equatable {
     var isRead: Bool?
     var isLast: Bool
     var isLoading: Bool
+    var isFavorite: Bool
 
     enum Order: String {
         case ASC = "asc"
@@ -26,6 +27,7 @@ public struct PostPageModel: Equatable {
         isRead = nil
         isLast = false
         isLoading = false
+        isFavorite = false
     }
 
     public func canLoadingMore() -> Bool {

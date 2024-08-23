@@ -43,20 +43,20 @@ public struct StorageBoxView: View {
                     VStack(spacing: 20) {
                         StorageBoxSection(
                             storageBoxList: store.defaultFolders,
-                            onSelect: { index in
-                                store.send(.storageBoxTapped(section: 0, folderID: index), animation: .default)
+                            onSelect: { folderID, type in
+                                store.send(.storageBoxTapped(section: 0, folderID: folderID, folderType: type), animation: .default)
                             },
-                            onEdit: { index in
-                                store.send(.storageBoxTapped(section: 0, folderID: index), animation: .default)
+                            onEdit: { folderID, type in
+                                store.send(.storageBoxTapped(section: 0, folderID: folderID, folderType: type), animation: .default)
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icChevronRightMedium.swiftUIImage
                         )
                         StorageBoxSection(
                             storageBoxList: store.customFolders,
-                            onSelect: { folderID in
-                                store.send(.storageBoxTapped(section: 1, folderID: folderID), animation: .default)
+                            onSelect: { folderID, type in
+                                store.send(.storageBoxTapped(section: 1, folderID: folderID, folderType: type), animation: .default)
                             },
-                            onEdit: { folderID in
+                            onEdit: { folderID, _ in
                                 store.send(.onEdit(folderID: folderID), animation: .default)
                             },
                             moreIcon: DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage

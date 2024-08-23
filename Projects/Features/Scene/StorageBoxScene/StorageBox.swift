@@ -38,7 +38,7 @@ public struct StorageBox {
     public enum Action: BindableAction {
         // MARK: View Action
         case onAppear
-        case storageBoxTapped(section: Int, folderID: String)
+        case storageBoxTapped(section: Int, folderID: String, folderType: FolderType)
         case onEdit(folderID: String)
         case tapNewFolderButton
         case cancelRemoveFolder
@@ -82,10 +82,21 @@ public struct StorageBox {
                 return .none
             case .fetchFoldersResult(.failure):
                 return .none
-            case let .storageBoxTapped(section, folderID):
-                // TODO: - 여기 타이틀 안가지고 가도됨, id만 넘기기
-                if let folder = (section == 0) ? (state.defaultFolders.first(where: { $0.id == folderID })) : (state.customFolders.first(where: { $0.id == folderID })) {
-                    return .send(.routeToFeed(folder))
+            case let .storageBoxTapped(section, folderID, folderType):
+                if section == 0 {
+                    if folderID.isEmpty {
+                        if let folder = state.defaultFolders.first(where: { $0.type == folderType }) {
+                            return .send(.routeToFeed(folder))
+                        }
+                    } else {
+                        if let folder = state.defaultFolders.first(where: { $0.id == folderID }) {
+                            return .send(.routeToFeed(folder))
+                        }
+                    }
+                } else {
+                    if let folder = state.customFolders.first(where: { $0.id == folderID }) {
+                        return .send(.routeToFeed(folder))
+                    }
                 }
                 return .none
             case let .onEdit(folderID):

@@ -83,6 +83,7 @@ public struct Feed {
             case .onAppear:
                 return .merge(.send(.fetchFolderInfo(state.currentFolder.id)), .send(.onAppearList))
             case .onAppearList:
+                state.pageModel.isFavorite = (state.currentFolder.type == .favorite)
                 if state.pageModel.canLoadingMore() {
                     state.pageModel.isLoading = true
                     return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
@@ -106,7 +107,8 @@ public struct Feed {
                                                            pageModel.currentPage,
                                                            10,
                                                            pageModel.order.rawValue,
-                                                           pageModel.isRead)
+                                                           pageModel.isRead,
+                                                           pageModel.isFavorite)
                     }))
                 }
             case let .fetchPostListResult(.success(resultModel)):
