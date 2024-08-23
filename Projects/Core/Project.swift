@@ -9,7 +9,11 @@ let project = Project.make(
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.common",
             sources: ["Common/**"],
-            dependencies: [.localizationKit]
+            dependencies: [
+                .localizationKit,
+                .spm(.firebaseAnalytics),
+                .spm(.firebaseCrashlytics)
+            ]
         ),
         .make(
             name: "Models",

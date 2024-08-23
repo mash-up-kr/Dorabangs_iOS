@@ -12,7 +12,9 @@ import PackageDescription
 			"TCACoordinators": .framework,
 			"KeychainAccess": .framework,
 			"Kingfisher": .framework,
-			"Lottie": .framework
+			"Lottie": .framework,
+			"FirebaseAnalytics" : .staticLibrary,
+			"FirebaseCrashlytics" : .staticLibrary
         ]
     )
 #endif
@@ -26,6 +28,7 @@ let package = Package(
         .package(url: "https://github.com/JWAutumn/ACarousel", exact: "0.2.0"),
 		.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", exact: "4.0.0"),
 		.package(url: "https://github.com/onevcat/Kingfisher", from: "7.0.0"),
-        .package(url: "https://github.com/airbnb/lottie-ios", exact: "4.5.0")
+        .package(url: "https://github.com/airbnb/lottie-ios", exact: "4.5.0"),
+		.package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.0.0")
     ]
 )

@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [[ "${CONFIGURATION}" != "Debug" ]]; then
+    exit 0
+fi
+
 if [[ "$(uname -m)" == arm64 ]]; then
     export PATH="/opt/homebrew/bin:$PATH"
 fi

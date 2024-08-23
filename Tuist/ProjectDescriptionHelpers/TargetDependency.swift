@@ -49,6 +49,8 @@ public enum SPM: String {
 	case keychainAccess = "KeychainAccess"
 	case kingfisher = "Kingfisher"
 	case lottie = "Lottie"
+	case firebaseAnalytics = "FirebaseAnalytics"
+	case firebaseCrashlytics = "FirebaseCrashlytics"
 }
 
 public enum ShareExtension: String {

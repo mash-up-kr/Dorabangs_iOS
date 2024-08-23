@@ -19,6 +19,7 @@ let project = Project.make(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Prod-Dorabangs.entitlements")),
+            scripts: [.copyGoogleServiceInfoPlistScript, .uploadDsymsScript],
             dependencies: [
                 .coordinator(.app),
                 .shareExtension(.prod)
@@ -36,6 +37,7 @@ let project = Project.make(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             entitlements: .file(path: .relativeToRoot("Projects/App/Entitlements/Dev-Dorabangs.entitlements")),
+            scripts: [.copyGoogleServiceInfoPlistScript, .uploadDsymsScript],
             dependencies: [
                 .coordinator(.app),
                 .shareExtension(.dev)
@@ -79,5 +81,10 @@ let project = Project.make(
             )
         )
     ],
-    additionalFiles: [.glob(pattern: sharedConfig), .glob(pattern: shareExtensionSharedConfig)]
+    additionalFiles: [
+        .glob(pattern: sharedConfig),
+        .glob(pattern: shareExtensionSharedConfig),
+        .glob(pattern: .plist.googleServiceInfoDebug),
+        .glob(pattern: .plist.googleServiceInfoRelease)
+    ]
 )
