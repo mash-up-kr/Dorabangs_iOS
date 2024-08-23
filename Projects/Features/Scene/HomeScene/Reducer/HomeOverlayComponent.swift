@@ -81,6 +81,11 @@ public struct HomeOverlayComponent {
                     try await postAPIClient.deletePost(postId: postId ?? "")
                     await send(.cardDeleted)
                 }
+                
+            case .cardDeleted:
+                return .run { send in
+                    await send(.presentToast(toastMessage: LocalizationKitStrings.HomeScene.deleteCardToastMessage))
+                }
 
             default:
                 return .none

@@ -56,9 +56,8 @@ extension View {
                     },
                     rightButtonTitle: LocalizationKitStrings.HomeScene.deleteCardModalRightButtonTitle,
                     rightButtonAction: {
-                        store.send(.set(\.isDeleteCardModalPresented, false))
-                        store.send(.presentToast(toastMessage: LocalizationKitStrings.HomeScene.deleteCardToastMessage))
                         store.send(.deleteButtonTapped)
+                        store.send(.set(\.isDeleteCardModalPresented, false))
                     }
                 )
             }
