@@ -159,12 +159,12 @@ public struct Home {
                         receivedFolderList[index].id = "favorite"
                     }
                 }
-                // "all"과 "favorite" 폴더를 필터링하여 상단에 유지
-                let fixedFolders = receivedFolderList.filter { $0.id == "all" || $0.id == "favorite" }
+                // "all", "favorite", "default" 폴더를 필터링하여 상단에 유지
+                let fixedFolders = receivedFolderList.filter { $0.id == "all" || $0.id == "favorite" || $0.type == .default }
 
                 // 나머지 폴더들 필터링 후 postCount에 따라 정렬
                 let sortedFolders = receivedFolderList
-                    .filter { $0.id != "all" && $0.id != "favorite" }
+                    .filter { $0.id != "all" && $0.id != "favorite" && $0.type != .default }
                     .sorted {
                         // postCount 비교
                         if $0.postCount != $1.postCount {
