@@ -1,16 +1,40 @@
+name: abseil-cpp-binary, nameSpecified: abseil, owner: google, version: 1.2024011602.0, source: https://github.com/google/abseil-cpp-binary
+
 name: ACarousel, nameSpecified: ACarousel, owner: JWAutumn, version: 0.2.0, source: https://github.com/JWAutumn/ACarousel
 
 name: Alamofire, nameSpecified: Alamofire, owner: Alamofire, version: 5.9.1, source: https://github.com/Alamofire/Alamofire
 
+name: app-check, nameSpecified: AppCheck, owner: google, version: 11.0.1, source: https://github.com/google/app-check
+
 name: combine-schedulers, nameSpecified: combine-schedulers, owner: pointfreeco, version: 1.0.0, source: https://github.com/pointfreeco/combine-schedulers
+
+name: firebase-ios-sdk, nameSpecified: Firebase, owner: firebase, version: 11.1.0, source: https://github.com/firebase/firebase-ios-sdk
 
 name: FlowStacks, nameSpecified: FlowStacks, owner: johnpatrickmorgan, version: 0.4.1, source: https://github.com/johnpatrickmorgan/FlowStacks
 
+name: GoogleAppMeasurement, nameSpecified: GoogleAppMeasurement, owner: google, version: 11.1.0, source: https://github.com/google/GoogleAppMeasurement
+
+name: GoogleDataTransport, nameSpecified: GoogleDataTransport, owner: google, version: 10.1.0, source: https://github.com/google/GoogleDataTransport
+
+name: GoogleUtilities, nameSpecified: GoogleUtilities, owner: google, version: 8.0.2, source: https://github.com/google/GoogleUtilities
+
+name: grpc-binary, nameSpecified: gRPC, owner: google, version: 1.65.1, source: https://github.com/google/grpc-binary
+
+name: gtm-session-fetcher, nameSpecified: gtm-session-fetcher, owner: google, version: 3.5.0, source: https://github.com/google/gtm-session-fetcher
+
+name: interop-ios-for-google-sdks, nameSpecified: InteropForGoogle, owner: google, version: 100.0.0, source: https://github.com/google/interop-ios-for-google-sdks
+
 name: KeychainAccess, nameSpecified: KeychainAccess, owner: kishikawakatsumi, version: 4.0.0, source: https://github.com/kishikawakatsumi/KeychainAccess
 
-name: Kingfisher, nameSpecified: Kingfisher, owner: Wei Wang, version: 7.12.0, source: https://github.com/onevcat/Kingfisher
+name: Kingfisher, nameSpecified: Kingfisher, owner: onevcat, version: 7.12.0, source: https://github.com/onevcat/Kingfisher
 
-name: Lottie, nameSpecified: Lottie, owner: Airbnb, version: 4.5.0, source: https://github.com/airbnb/lottie-ios
+name: leveldb, nameSpecified: leveldb, owner: firebase, version: 1.22.5, source: https://github.com/firebase/leveldb
+
+name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.5.0, source: https://github.com/airbnb/lottie-ios
+
+name: nanopb, nameSpecified: nanopb, owner: firebase, version: 2.30910.0, source: https://github.com/firebase/nanopb
+
+name: promises, nameSpecified: Promises, owner: google, version: 2.4.0, source: https://github.com/google/promises
 
 name: swift-case-paths, nameSpecified: swift-case-paths, owner: pointfreeco, version: 1.4.2, source: https://github.com/pointfreeco/swift-case-paths
 
@@ -29,6 +53,8 @@ name: swift-dependencies, nameSpecified: swift-dependencies, owner: pointfreeco,
 name: swift-identified-collections, nameSpecified: swift-identified-collections, owner: pointfreeco, version: 1.0.2, source: https://github.com/pointfreeco/swift-identified-collections
 
 name: swift-perception, nameSpecified: swift-perception, owner: pointfreeco, version: 1.2.3, source: https://github.com/pointfreeco/swift-perception
+
+name: swift-protobuf, nameSpecified: SwiftProtobuf, owner: apple, version: 1.27.1, source: https://github.com/apple/swift-protobuf
 
 name: swift-syntax, nameSpecified: swift-syntax, owner: apple, version: 510.0.2, source: https://github.com/apple/swift-syntax
 
