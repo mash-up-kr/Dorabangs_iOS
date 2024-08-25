@@ -75,7 +75,7 @@ private extension ShareViewController {
 
     func loadSharedURL() async -> URL? {
         let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem
-        let itemProvider = extensionItem?.attachments?.first
+        let itemProvider = extensionItem?.attachments?.first { $0.hasItemConformingToTypeIdentifier("public.url") }
         guard let itemProvider, itemProvider.hasItemConformingToTypeIdentifier("public.url") else {
             return nil
         }
