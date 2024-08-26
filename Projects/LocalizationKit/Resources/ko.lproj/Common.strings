@@ -11,7 +11,11 @@
 
 "saved_to_read_later" = "나중에 읽을 링크에 저장했어요!";
 
+"failed_to_read_later" = "저장에 실패했어요.";
+
 "edit" = "편집";
+
+"close" = "닫기";
 
 "link_saved" = "링크를 저장했어요";
 

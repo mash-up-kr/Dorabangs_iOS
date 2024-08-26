@@ -11,7 +11,11 @@
 
 "saved_to_read_later" = "Saved to read later!";
 
+"failed_to_read_later" = "Failed to save to read later!";
+
 "edit" = "Edit";
+
+"close" = "Close";
 
 "link_saved" = "Link Saved";
 

@@ -14,9 +14,10 @@ import UIKit
 final class ShareViewController: UIViewController {
     private let stackView = UIStackView()
     private let descriptionLabel = UILabel()
-    private let editButton = UIButton()
+    private let actionButton = UIButton()
     private let divider = UIView()
     private let loadingIndicator = UIHostingController(rootView: LoadingIndicator())
+
     private var url: URL?
     private var postId: String?
 
@@ -37,19 +38,32 @@ final class ShareViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureGesture()
+        loadData()
+    }
 
+    private func configureGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideStackView(_:)))
         view.addGestureRecognizer(tapGesture)
+    }
 
+    private func loadData() {
         Task { [weak self] in
             guard let self else { return }
-            await MainActor.run { self.showLoadingIndicator() }
-            guard let url = await loadSharedURL() else { return }
-            await MainActor.run { self.url = url }
-            await saveURL(url)
-            await MainActor.run {
-                self.hideLoadingIndicator()
-                self.showSaveMessage()
+            do {
+                await MainActor.run { self.showLoadingIndicator() }
+                let url = try await loadSharedURL()
+                await MainActor.run { self.url = url }
+                try await saveURL(url)
+                await MainActor.run {
+                    self.hideLoadingIndicator()
+                    self.configureView(with: .success)
+                }
+            } catch {
+                await MainActor.run {
+                    self.hideLoadingIndicator()
+                    self.configureView(with: .failure)
+                }
             }
         }
     }
@@ -57,6 +71,7 @@ final class ShareViewController: UIViewController {
 
 // 출처: https://forums.swift.org/t/how-to-use-non-sendable-type-in-async-reducer-code/62069/6
 extension NSItemProvider: @unchecked Sendable {}
+
 private extension ShareViewController {
     @objc
     func didTapOutsideStackView(_ sender: UITapGestureRecognizer) {
@@ -66,31 +81,48 @@ private extension ShareViewController {
         }
     }
 
-    func saveURL(_ url: URL) async {
-        do {
-            let folders = try await folderAPIClient.getFolders()
-            // defaultFolder: 나중에 읽을 링크 폴더
-            guard let defaultFolder = folders.defaultFolders.first(where: { $0.type == .default }) else { return }
-            let card = try await postAPIClient.postPosts(defaultFolder.id, url)
-            DispatchQueue.main.async { [weak self] in
-                self?.postId = card.id
-            }
-        } catch {}
+    func saveURL(_ url: URL) async throws {
+        let folders = try await folderAPIClient.getFolders()
+        guard let defaultFolder = folders.defaultFolders.first(where: { $0.type == .default }) else { return }
+        let card = try await postAPIClient.postPosts(defaultFolder.id, url)
+        await MainActor.run { self.postId = card.id }
     }
 
-    func loadSharedURL() async -> URL? {
-        let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem
-        let itemProvider = extensionItem?.attachments?.first { $0.hasItemConformingToTypeIdentifier("public.url") }
-        guard let itemProvider, itemProvider.hasItemConformingToTypeIdentifier("public.url") else {
-            return nil
+    func loadSharedURL() async throws -> URL {
+        guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
+              let url = try await extractURL(from: extensionItem)
+        else {
+            throw NSError(domain: "ShareViewController", code: 0, userInfo: nil)
         }
-        return try? await itemProvider.loadItem(forTypeIdentifier: "public.url") as? URL
+        return url
+    }
+
+    func extractURL(from item: NSExtensionItem) async throws -> URL? {
+        if let urlProvider = item.attachments?.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }),
+           let url = try await urlProvider.loadItem(forTypeIdentifier: "public.url") as? URL
+        {
+            return url
+        }
+
+        if let textProvider = item.attachments?.first(where: { $0.hasItemConformingToTypeIdentifier("public.plain-text") }),
+           let text = try await textProvider.loadItem(forTypeIdentifier: "public.plain-text") as? String,
+           let url = URL(string: text)
+        {
+            return url
+        }
+
+        return nil
     }
 
     @objc
     func editButtonDidTapped() {
         guard let url, let postId, let appURL = URL(string: "dorabangs://?url=\(url.absoluteString)&postId=\(postId)") else { return }
         open(url: appURL)
+        extensionContext?.completeRequest(returningItems: nil)
+    }
+
+    @objc
+    func closeButtonDidTapped() {
         extensionContext?.completeRequest(returningItems: nil)
     }
 
@@ -112,15 +144,7 @@ private extension ShareViewController {
     private func openURL(_: URL) {}
 }
 
-// MARK: - View Methods
-
 private extension ShareViewController {
-    func showSaveMessage() {
-        setViewHierarchies()
-        setViewConstraints()
-        setViewAttributes()
-    }
-
     func showLoadingIndicator() {
         addChild(loadingIndicator)
         loadingIndicator.view.frame = view.frame
@@ -135,14 +159,23 @@ private extension ShareViewController {
         loadingIndicator.removeFromParent()
     }
 
-    func setViewHierarchies() {
+    func configureView(with state: ViewState) {
+        configureViewHierarchies()
+        configureViewConstraints()
+        configureStackView()
+        configureDescriptionLabel(for: state)
+        configureActionButton(for: state)
+        configureDivider()
+    }
+
+    func configureViewHierarchies() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(descriptionLabel)
         stackView.addArrangedSubview(divider)
-        stackView.addArrangedSubview(editButton)
+        stackView.addArrangedSubview(actionButton)
     }
 
-    func setViewConstraints() {
+    func configureViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
@@ -152,15 +185,7 @@ private extension ShareViewController {
         ])
     }
 
-    func setViewAttributes() {
-        view.backgroundColor = DesignSystemKitAsset.Colors.white.color.withAlphaComponent(0.01)
-        setStackViewAttributes()
-        setDescriptionLabelAttributes()
-        setEditButtonAttributes()
-        setDividerAttributes()
-    }
-
-    func setStackViewAttributes() {
+    func configureStackView() {
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
@@ -172,23 +197,44 @@ private extension ShareViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setDescriptionLabelAttributes() {
-        descriptionLabel.text = LocalizationKitStrings.Common.savedToReadLater
+    func configureDescriptionLabel(for state: ViewState) {
+        descriptionLabel.text = state == .success ? LocalizationKitStrings.Common.savedToReadLater : LocalizationKitStrings.Common.failedToReadLater
         descriptionLabel.font = UIFont.nanumSquareNeo(size: 16, weight: 500)
         descriptionLabel.textColor = DesignSystemKitAsset.Colors.white.color
     }
 
-    func setEditButtonAttributes() {
+    func configureActionButton(for state: ViewState) {
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = DesignSystemKitAsset.Colors.white.color
         var container = AttributeContainer()
         container.font = UIFont.nanumSquareNeo(size: 16, weight: 500)
-        configuration.attributedTitle = AttributedString(LocalizationKitStrings.Common.edit, attributes: container)
-        editButton.configuration = configuration
-        editButton.addTarget(self, action: #selector(editButtonDidTapped), for: .touchUpInside)
+        configuration.attributedTitle = AttributedString(state.actionTitle, attributes: container)
+        actionButton.configuration = configuration
+        actionButton.removeTarget(nil, action: nil, for: .allEvents)
+        actionButton.addTarget(self, action: state.actionSelector, for: .touchUpInside)
     }
 
-    func setDividerAttributes() {
+    func configureDivider() {
         divider.backgroundColor = DesignSystemKitAsset.Colors.white.color
+    }
+}
+
+private extension ShareViewController {
+    enum ViewState {
+        case success, failure
+
+        var actionTitle: String {
+            switch self {
+            case .success: LocalizationKitStrings.Common.edit
+            case .failure: LocalizationKitStrings.Common.close
+            }
+        }
+
+        var actionSelector: Selector {
+            switch self {
+            case .success: #selector(ShareViewController.editButtonDidTapped)
+            case .failure: #selector(ShareViewController.closeButtonDidTapped)
+            }
+        }
     }
 }
