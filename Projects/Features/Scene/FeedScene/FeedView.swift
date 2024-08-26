@@ -57,6 +57,13 @@ public struct FeedView: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { store.send(.onAppear) }
+            .cardActionPopup(isPresented: $store.cardActionSheetPresented.projectedValue, onSelect: { index in
+                if index == 0 {
+                    store.send(.tapRemoveCard, animation: .default)
+                } else {
+                    store.send(.tapMoveCard, animation: .default)
+                }
+            })
             .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
                 if index == 0 {
                     store.send(.showRemoveFolderPopup, animation: .default)
@@ -71,6 +78,14 @@ public struct FeedView: View {
                     store.send(.tapRemoveButton)
                 })
             })
+            .modal(isPresented: $store.editCardPopupIsPresented.projectedValue,
+                   content: {
+                       removeCardPopup(onRemove: {
+                           store.send(.removeCard, animation: .default)
+                       }, onCancel: {
+                           store.send(.cancelRemoveCard, animation: .default)
+                       })
+                   })
             .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
         }
     }
@@ -83,10 +98,27 @@ extension View {
         }))
     }
 
+    func cardActionPopup(isPresented: Binding<Bool>, onSelect: @escaping (Int) -> Void) -> some View {
+        modifier(CardActionPopupModifier(isPresented: isPresented, onSelect: { index in
+            onSelect(index)
+        }))
+    }
+
     func removeFolderPopup(onCancel: @escaping () -> Void, onRemove: @escaping () -> Void) -> some View {
         LKModal(
             title: LocalizationKitStrings.FeedScene.deleteFolderModalTitle,
             content: LocalizationKitStrings.FeedScene.deleteFolderModalDescription,
+            leftButtonTitle: LocalizationKitStrings.FeedScene.deleteFolderModalLeftButtonTitle,
+            leftButtonAction: { onCancel() },
+            rightButtonTitle: LocalizationKitStrings.FeedScene.deleteFolderModalRightButtonTitle,
+            rightButtonAction: { onRemove() }
+        )
+    }
+
+    func removeCardPopup(onRemove: @escaping () -> Void, onCancel: @escaping () -> Void) -> some View {
+        LKModal(
+            title: LocalizationKitStrings.HomeScene.deleteCardModalTitle,
+            content: LocalizationKitStrings.HomeScene.deleteCardModalDescription,
             leftButtonTitle: LocalizationKitStrings.FeedScene.deleteFolderModalLeftButtonTitle,
             leftButtonAction: { onCancel() },
             rightButtonTitle: LocalizationKitStrings.FeedScene.deleteFolderModalRightButtonTitle,
@@ -119,6 +151,38 @@ public struct EditFolderPopupModifier: ViewModifier {
                     ),
                     .init(
                         title: LocalizationKitStrings.FeedScene.renameFolderActionSheetItemTitle,
+                        image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(),
+                        action: { onSelect(1) }
+                    )
+                ]
+            )
+    }
+}
+
+public struct CardActionPopupModifier: ViewModifier {
+    @Binding var isPresented: Bool
+    let onSelect: (Int) -> Void
+
+    public init(isPresented: Binding<Bool>,
+                onSelect: @escaping (Int) -> Void)
+    {
+        _isPresented = isPresented
+        self.onSelect = onSelect
+    }
+
+    public func body(content: Content) -> some View {
+        content
+            .actionSheet(
+                isPresented: $isPresented,
+                items: [
+                    .init(
+                        title: LocalizationKitStrings.HomeScene.deleteCardModalTitle,
+                        image: DesignSystemKitAsset.Icons.icDelete.swiftUIImage.resizable(),
+                        style: .destructive,
+                        action: { onSelect(0) }
+                    ),
+                    .init(
+                        title: LocalizationKitStrings.HomeScene.movePostActionSheetItemTitle,
                         image: DesignSystemKitAsset.Icons.icNameEdit.swiftUIImage.resizable(),
                         action: { onSelect(1) }
                     )
@@ -177,7 +241,7 @@ struct FeedContentView: View {
                                     timeSince: item.createdAt.timeAgo(),
                                     isFavorite: item.isFavorite ?? false,
                                     bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                                    showModalAction: { store.send(.showModalButtonTapped(index)) }
+                                    showModalAction: { store.send(.showModalButtonTapped(postId: item.id, folderId: item.folderId), animation: .default) }
                                 )
                                 .onTapGesture {
                                     store.send(.tapCard(item: item))

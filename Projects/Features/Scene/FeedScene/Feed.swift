@@ -22,6 +22,9 @@ public struct Feed {
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
         public var toastPopupIsPresented: Bool = false
+        public var cardActionSheetPresented: Bool = false
+        public var editCardPopupIsPresented: Bool = false
+        public var editingPostId: String?
 
         public init(currentFolder: Folder) {
             self.currentFolder = currentFolder
@@ -50,6 +53,11 @@ public struct Feed {
         case readCard(String)
         case readCardResult(Result<Card, Error>)
 
+        case tapRemoveCard
+        case tapMoveCard
+        case removeCard
+        case cancelRemoveCard
+
         case tapChangeFolderName
 
         case showRemoveFolderPopup
@@ -58,13 +66,15 @@ public struct Feed {
         case removeFolderResult
         case cancelRemoveFolder
 
+        case removeCardResult
+
         case routeToChangeFolderName(String)
         case changedFolderName(Folder)
 
         case bookMarkButtonTapped(Int)
         case changeBookMarkStatus(Card)
         case updatedPostResult(Result<Card, Error>)
-        case showModalButtonTapped(Int)
+        case showModalButtonTapped(postId: String, folderId: String)
 
         case routeToWebScreen(URL)
         case binding(BindingAction<State>)
@@ -201,8 +211,34 @@ public struct Feed {
                     state.cards[index] = updatedPost
                 }
                 return .none
-            case let .showModalButtonTapped(index):
-                // TODO: 카드 > 모달 버튼 탭 동작 구현
+            case let .showModalButtonTapped(postId, folderId):
+                state.cardActionSheetPresented = true
+                state.editingPostId = postId
+                return .none
+            case .tapRemoveCard:
+                state.editCardPopupIsPresented = true
+                return .none
+            case .tapMoveCard:
+                print("==== move")
+                return .none
+            case .removeCard:
+                if let editingPostId = state.editingPostId {
+                    return .run { send in
+                        try await postAPIClient.deletePost(postId: editingPostId)
+                        await send(.removeCardResult)
+                    } catch: { _, _ in
+                        // TODO: Handle error
+                    }
+                }
+                return .none
+            case .removeCardResult:
+                state.editCardPopupIsPresented = false
+                state.cardActionSheetPresented = false
+                state.editingPostId = nil
+                return .send(.fetchFolderInfo(state.currentFolder.id))
+            case .cancelRemoveCard:
+                state.editCardPopupIsPresented = false
+                state.editingPostId = nil
                 return .none
             case .binding:
                 return .none
