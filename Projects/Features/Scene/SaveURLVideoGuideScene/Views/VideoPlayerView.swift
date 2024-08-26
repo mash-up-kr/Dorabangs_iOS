@@ -21,9 +21,23 @@ struct VideoLoopPlayerView: View {
 
     var body: some View {
         VideoPlayerView(player: player)
-            .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { _ in
-                player.seek(to: .zero)
-                player.play()
+            .onAppear {
+                NotificationCenter.default.addObserver(
+                    forName: AVPlayerItem.didPlayToEndTimeNotification,
+                    object: player.currentItem,
+                    queue: .main
+                ) { _ in
+                    player.seek(to: .zero) { _ in
+                        player.play()
+                    }
+                }
+            }
+            .onDisappear {
+                NotificationCenter.default.removeObserver(
+                    self,
+                    name: AVPlayerItem.didPlayToEndTimeNotification,
+                    object: player.currentItem
+                )
             }
     }
 }
