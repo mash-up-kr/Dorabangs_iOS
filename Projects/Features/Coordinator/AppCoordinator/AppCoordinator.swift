@@ -36,7 +36,7 @@ public struct AppCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<AppScreen>)
-        case saveURL(URL)
+        case saveURL(postId: String, url: URL)
         case routeToSettingScreen
     }
 
@@ -57,9 +57,9 @@ public struct AppCoordinator {
                 state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
                 return .none
 
-            case let .saveURL(url):
+            case let .saveURL(postId, url):
                 state.routes = [.root(.tabCoordinator(.initialState), embedInNavigationView: true)]
-                return .send(.router(.routeAction(id: 0, action: .tabCoordinator(.deeplink(url)))))
+                return .send(.router(.routeAction(id: 0, action: .tabCoordinator(.deeplink(postId: postId, url: url)))))
 
             default:
                 return .none

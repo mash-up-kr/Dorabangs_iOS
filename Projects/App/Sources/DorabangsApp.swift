@@ -30,9 +30,12 @@ struct DorabangsApp: App {
                 .onOpenURL { url in
                     let urlcomponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
                     let queryItems = urlcomponents?.queryItems
-                    if let urlString = queryItems?.first(where: { $0.name == "url" })?.value, let url = URL(string: urlString) {
+                    if let urlString = queryItems?.first(where: { $0.name == "url" })?.value,
+                       let url = URL(string: urlString),
+                       let postId = queryItems?.first(where: { $0.name == "postId" })?.value
+                    {
                         AnalyticsManager.log(event: ShareExtensionEvent(name: .edit_saved_url))
-                        store.send(.saveURL(url))
+                        store.send(.saveURL(postId: postId, url: url))
                     }
                 }
         }

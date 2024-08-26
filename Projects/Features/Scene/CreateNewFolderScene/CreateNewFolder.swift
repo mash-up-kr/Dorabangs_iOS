@@ -18,6 +18,7 @@ public struct CreateNewFolder {
         public enum SourceView: Equatable {
             case homeScene
             case saveURLScene(url: URL)
+            case changeFolder
             case storageBox
         }
 
@@ -89,7 +90,11 @@ public struct CreateNewFolder {
                         await send(.routeToHomeScreen)
 
                     case let .saveURLScene(url):
-                        try await postAPIClient.postPosts(folderId: createdFolder.id, url: url)
+                        _ = try await postAPIClient.postPosts(folderId: createdFolder.id, url: url)
+                        await send(.routeToHomeScreen)
+
+                    case .changeFolder:
+                        try await postAPIClient.movePostFolder(postId: postId, folderId: createdFolder.id)
                         await send(.routeToHomeScreen)
 
                     case .storageBox:

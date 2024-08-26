@@ -24,6 +24,7 @@ public enum Coordinator: String {
     case feed = "FeedCoordinator"
 	case saveURL = "SaveURLCoordinator"
 	case aiClassification = "AIClassificationCoordinator"
+	case changeFolder = "ChangeFolderCoordinator"
 }
 
 public enum Scene: String {
@@ -39,6 +40,7 @@ public enum Scene: String {
     case changeFolderName = "ChangeFolderName"
 	case aiClassification = "AIClassification"
 	case saveURLVideoGuide = "SaveURLVideoGuide"
+	case changeFolder = "ChangeFolder"
 }
 
 public enum SPM: String {

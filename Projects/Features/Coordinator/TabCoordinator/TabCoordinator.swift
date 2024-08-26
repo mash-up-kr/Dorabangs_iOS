@@ -48,7 +48,7 @@ public struct TabCoordinator {
         case clipboardToast(ClipboardToastFeature.Action)
         case tabSelected(Tab)
 
-        case deeplink(URL)
+        case deeplink(postId: String, url: URL)
         case clipboardURLChanged(URL)
     }
 
@@ -81,12 +81,12 @@ public struct TabCoordinator {
                     .reduce(into: &state.clipboardToast, action: .presentToast(url))
                     .map(Action.clipboardToast)
 
-            case let .deeplink(url):
-                return routeToSaveURLCoordinator(state: &state, with: url)
+            case let .deeplink(postId, url):
+                return routeToChangeFolderScene(state: &state, postId: postId, url: url)
 
             case .clipboardToast(.saveButtonTapped):
                 guard let url = URL(string: state.clipboardToast.shared.urlString) else { return .none }
-                return routeToSaveURLCoordinator(state: &state, with: url)
+                return routeToSelectFolderScene(state: &state, with: url)
 
             default:
                 return .none
@@ -96,16 +96,30 @@ public struct TabCoordinator {
 }
 
 extension TabCoordinator {
-    func routeToSaveURLCoordinator(state: inout State, with url: URL) -> Effect<Action> {
+    func routeToSelectFolderScene(state: inout State, with url: URL) -> Effect<Action> {
         switch state.selectedTab {
         case .home:
             HomeCoordinator()
-                .reduce(into: &state.home, action: .routeToSaveURLCoordinator(url: url))
+                .reduce(into: &state.home, action: .routeToSaveURLCoordinator(.selectFolder(.init(saveURL: url))))
                 .map(Action.home)
 
         case .storageBox:
             StorageBoxCoordinator()
-                .reduce(into: &state.storageBox, action: .routeToSaveURLCoordinator(url: url))
+                .reduce(into: &state.storageBox, action: .routeToSaveURLCoordinator(.selectFolder(.init(saveURL: url))))
+                .map(Action.storageBox)
+        }
+    }
+
+    func routeToChangeFolderScene(state: inout State, postId: String, url: URL) -> Effect<Action> {
+        switch state.selectedTab {
+        case .home:
+            HomeCoordinator()
+                .reduce(into: &state.home, action: .routeToSaveURLCoordinator(.changeFolder(.init(postId: postId, url: url))))
+                .map(Action.home)
+
+        case .storageBox:
+            StorageBoxCoordinator()
+                .reduce(into: &state.storageBox, action: .routeToSaveURLCoordinator(.changeFolder(.init(postId: postId, url: url))))
                 .map(Action.storageBox)
         }
     }

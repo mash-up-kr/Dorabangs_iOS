@@ -159,6 +159,19 @@ let project = Project.make(
                 .designSystem,
                 .localizationKit
             ]
+        ),
+        .make(
+            name: "ChangeFolder",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.changeFolder",
+            sources: ["ChangeFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.service),
+                .core(.model),
+                .localizationKit
+            ]
         )
     ]
 )

@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import ChangeFolder
 import ComposableArchitecture
 import CreateNewFolder
 import Foundation
@@ -18,6 +19,7 @@ public enum SaveURLScreen {
     case createNewFolder(CreateNewFolder)
     case saveURL(SaveURL)
     case selectFolder(SelectFolder)
+    case changeFolder(ChangeFolder)
 }
 
 @Reducer
@@ -79,6 +81,17 @@ public struct SaveURLCoordinator {
             case .router(.routeAction(id: _, action: .createNewFolder(.routeToHomeScreen))):
                 state.routes.goBackToRoot()
                 return .send(.routeToHomeScreen)
+
+            case .router(.routeAction(id: _, action: .changeFolder(.routeToPreviousScreen))):
+                return .send(.routeToPreviousScreen)
+
+            case .router(.routeAction(id: _, action: .changeFolder(.routeToHomeScreen))):
+                state.routes.goBackToRoot()
+                return .send(.routeToHomeScreen)
+
+            case .router(.routeAction(id: _, action: .changeFolder(.routeToCreateNewFolderScreen(let postId)))):
+                state.routes.push(.createNewFolder(.init(sourceView: .changeFolder, postId: postId)))
+                return .none
 
             default:
                 return .none

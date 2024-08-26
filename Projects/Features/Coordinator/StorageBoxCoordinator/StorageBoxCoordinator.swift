@@ -38,7 +38,7 @@ public struct StorageBoxCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<StorageBoxScreen>)
-        case routeToSaveURLCoordinator(url: URL)
+        case routeToSaveURLCoordinator(SaveURLScreen.State)
     }
 
     public init() {}
@@ -72,8 +72,9 @@ public struct StorageBoxCoordinator {
                 return handleCreateNewFolderSceneAction(into: &state, action: action)
             case let .router(.routeAction(id: _, action: .saveURLCoordinator(action))):
                 return handleSaveURLCoordinatorAction(into: &state, action: action)
-            case let .routeToSaveURLCoordinator(url):
-                state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: url)))
+            case let .routeToSaveURLCoordinator(screen):
+                let routes: [Route<SaveURLScreen.State>] = [.root(screen, embedInNavigationView: true)]
+                state.routes.push(.saveURLCoordinator(.init(routes: routes)))
                 return .none
             default:
                 return .none

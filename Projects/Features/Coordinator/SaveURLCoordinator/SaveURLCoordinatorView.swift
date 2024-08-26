@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import ChangeFolder
 import ComposableArchitecture
 import CreateNewFolder
 import SaveURL
@@ -37,6 +38,12 @@ public struct SaveURLCoordinatorView: View {
 
             case let .selectFolder(store):
                 SelectFolderView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+
+            case let .changeFolder(store):
+                ChangeFolderView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

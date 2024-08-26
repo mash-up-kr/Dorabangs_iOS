@@ -44,7 +44,7 @@ public struct HomeCoordinator {
 
     public enum Action {
         case router(IndexedRouterActionOf<HomeScreen>)
-        case routeToSaveURLCoordinator(url: URL)
+        case routeToSaveURLCoordinator(SaveURLScreen.State)
     }
 
     public init() {}
@@ -73,8 +73,9 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .web(action))):
                 return handleWebAction(into: &state, action: action)
 
-            case let .routeToSaveURLCoordinator(url):
-                state.routes.push(.saveURLCoordinator(.init(routeToSelectFolder: url)))
+            case let .routeToSaveURLCoordinator(screen):
+                let routes: [Route<SaveURLScreen.State>] = [.root(screen, embedInNavigationView: true)]
+                state.routes.push(.saveURLCoordinator(.init(routes: routes)))
                 return .none
 
             default:

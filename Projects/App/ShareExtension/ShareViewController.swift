@@ -18,6 +18,7 @@ final class ShareViewController: UIViewController {
     private let divider = UIView()
     private let loadingIndicator = UIHostingController(rootView: LoadingIndicator())
     private var url: URL?
+    private var postId: String?
 
     private let folderAPIClient: FolderAPIClient
     private let postAPIClient: PostAPIClient
@@ -41,13 +42,14 @@ final class ShareViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
 
         Task { [weak self] in
-            DispatchQueue.main.async { self?.showLoadingIndicator() }
-            guard let url = await self?.loadSharedURL() else { return }
-            DispatchQueue.main.async { self?.url = url }
-            await self?.saveURL(url)
-            DispatchQueue.main.async {
-                self?.hideLoadingIndicator()
-                self?.showSaveMessage()
+            guard let self else { return }
+            await MainActor.run { self.showLoadingIndicator() }
+            guard let url = await loadSharedURL() else { return }
+            await MainActor.run { self.url = url }
+            await saveURL(url)
+            await MainActor.run {
+                self.hideLoadingIndicator()
+                self.showSaveMessage()
             }
         }
     }
@@ -69,7 +71,10 @@ private extension ShareViewController {
             let folders = try await folderAPIClient.getFolders()
             // defaultFolder: 나중에 읽을 링크 폴더
             guard let defaultFolder = folders.defaultFolders.first(where: { $0.type == .default }) else { return }
-            try await postAPIClient.postPosts(defaultFolder.id, url)
+            let card = try await postAPIClient.postPosts(defaultFolder.id, url)
+            DispatchQueue.main.async { [weak self] in
+                self?.postId = card.id
+            }
         } catch {}
     }
 
@@ -84,21 +89,9 @@ private extension ShareViewController {
 
     @objc
     func editButtonDidTapped() {
-        if let url, let appURL = URL(string: "dorabangs://?url=\(url.absoluteString)") {
-            open(url: appURL)
-            extensionContext?.completeRequest(returningItems: nil)
-        } else {
-            Task { [weak self] in
-                guard
-                    let url = await self?.loadSharedURL(),
-                    let appURL = URL(string: "dorabangs://?url=\(url.absoluteString)")
-                else {
-                    return
-                }
-                self?.open(url: appURL)
-                self?.extensionContext?.completeRequest(returningItems: nil)
-            }
-        }
+        guard let url, let postId, let appURL = URL(string: "dorabangs://?url=\(url.absoluteString)&postId=\(postId)") else { return }
+        open(url: appURL)
+        extensionContext?.completeRequest(returningItems: nil)
     }
 
     // 출처 : https://liman.io/blog/open-url-share-extension-swiftui

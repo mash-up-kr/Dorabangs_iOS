@@ -20,7 +20,7 @@ public struct PostAPIClient: Sendable {
         _ favorite: Bool?
     ) async throws -> [Card]
     public var getPostsCount: @Sendable (_ isRead: Bool) async throws -> Int
-    public var postPosts: @Sendable (_ folderId: String, _ url: URL) async throws -> Void
+    public var postPosts: @Sendable (_ folderId: String, _ url: URL) async throws -> Card
     /// Post 북마크 여부
     public var isFavoritePost: @Sendable (_ postId: String, _ isFavorite: Bool) async throws -> Card
     /// Post 읽음 처리
@@ -56,6 +56,7 @@ extension PostAPIClient: DependencyKey {
         postPosts: { folderId, url in
             let api = PostAPI.postCard(folderId: folderId, urlString: url.absoluteString)
             let responseDTO: CardDTO = try await Provider().request(api)
+            return responseDTO.toDomain
         },
         isFavoritePost: { postId, isFavorite in
             let api = PostAPI.patchPost(postId: postId, isFavorite: isFavorite)
