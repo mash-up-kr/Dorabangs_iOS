@@ -21,39 +21,37 @@ struct AIClassificationCardEmptyView: View {
     }
 
     var body: some View {
-        WithPerceptionTracking {
-            VStack(spacing: 0) {
-                Spacer().frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight + 77)
+        VStack(spacing: 0) {
+            Spacer().frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight + 77)
 
-                DesignSystemKitAsset.Images.sample
-                    .swiftUIImage
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 252, height: 252)
+            DesignSystemKitAsset.Images.sample
+                .swiftUIImage
+                .resizable()
+                .scaledToFit()
+                .frame(width: 252, height: 252)
 
-                Text(LocalizationKitStrings.AIClassificationScene.aiCassificationCardEmptyViewDescription)
-                    .font(weight: .medium, semantic: .base1)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(DesignSystemKitAsset.Colors.g7.swiftUIColor)
+            Text(LocalizationKitStrings.AIClassificationScene.aiCassificationCardEmptyViewDescription)
+                .font(weight: .medium, semantic: .base1)
+                .multilineTextAlignment(.center)
+                .foregroundColor(DesignSystemKitAsset.Colors.g7.swiftUIColor)
 
-                Spacer()
-                    .frame(height: 16)
+            Spacer()
+                .frame(height: 16)
 
-                Button(action: action) {
-                    Text(title)
-                        .padding(.horizontal, 30)
-                        .padding(.vertical, 8)
-                        .frame(height: 38)
-                        .font(weight: .medium, semantic: .caption1)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.white.swiftUIColor)
-                        .background(DesignSystemKitAsset.Colors.g9.swiftUIColor)
-                        .cornerRadius(99.9, corners: .allCorners)
-                }
-                .buttonStyle(.plain)
-                .frame(height: 38)
-
-                Spacer()
+            Button(action: action) {
+                Text(title)
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 8)
+                    .frame(height: 38)
+                    .font(weight: .medium, semantic: .caption1)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                    .background(DesignSystemKitAsset.Colors.g9.swiftUIColor)
+                    .cornerRadius(99.9, corners: .allCorners)
             }
+            .buttonStyle(.plain)
+            .frame(height: 38)
+
+            Spacer()
         }
     }
 }

@@ -20,31 +20,29 @@ struct HomeTabView: View {
 
     var body: some View {
         ScrollViewReader { proxy in
-            WithPerceptionTracking {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 8) {
-                        ForEach(store.tabs.indices, id: \.self) { index in
-                            WithPerceptionTracking {
-                                if let tab = store.tabs[safe: index] {
-                                    LKTopTabView(
-                                        folderType: TopFolderType(string: tab.type.toString) ?? .custom,
-                                        isSelected: store.selectedIndex == index,
-                                        title: tab.name
-                                    )
-                                    .id(index)
-                                    .frame(height: 36)
-                                    .onTapGesture {
-                                        store.send(.tabSelected(at: index))
-                                        withAnimation { proxy.scrollTo(index) }
-                                    }
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 8) {
+                    ForEach(store.tabs.indices, id: \.self) { index in
+                        WithPerceptionTracking {
+                            if let tab = store.tabs[safe: index] {
+                                LKTopTabView(
+                                    folderType: TopFolderType(string: tab.type.toString) ?? .custom,
+                                    isSelected: store.selectedIndex == index,
+                                    title: tab.name
+                                )
+                                .id(index)
+                                .frame(height: 36)
+                                .onTapGesture {
+                                    store.send(.tabSelected(at: index))
+                                    withAnimation { proxy.scrollTo(index) }
                                 }
                             }
                         }
                     }
-                    .padding(EdgeInsets(top: 8, leading: 20, bottom: 12, trailing: 20))
                 }
-                .frame(height: 56)
+                .padding(EdgeInsets(top: 8, leading: 20, bottom: 12, trailing: 20))
             }
+            .frame(height: 56)
         }
     }
 }

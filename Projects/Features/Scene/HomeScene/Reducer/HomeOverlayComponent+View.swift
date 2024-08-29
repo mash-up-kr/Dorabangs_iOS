@@ -14,7 +14,7 @@ import SwiftUI
 extension View {
     @ViewBuilder
     func cardActionSheet(store: StoreOf<HomeOverlayComponent>) -> some View {
-        @Perception.Bindable var store = store
+        @Bindable var store = store
         actionSheet(
             isPresented: $store.isCardActionSheetPresented.projectedValue,
             items: [
@@ -42,7 +42,7 @@ extension View {
 
     @ViewBuilder
     func deleteCardModal(store: StoreOf<HomeOverlayComponent>) -> some View {
-        @Perception.Bindable var store = store
+        @Bindable var store = store
         modal(
             isPresented: $store.isDeleteCardModalPresented.projectedValue,
             content: {
@@ -66,7 +66,7 @@ extension View {
 
     @ViewBuilder
     func selectFolderBottomSheet(store: StoreOf<HomeOverlayComponent>) -> some View {
-        @Perception.Bindable var store = store
+        @Bindable var store = store
         bottomSheet(
             isPresented: $store.isSelectFolderBottomSheetPresented.projectedValue,
             folders: Array(store.folderList.values),
@@ -80,7 +80,7 @@ extension View {
 
     @ViewBuilder
     func toast(store: StoreOf<HomeOverlayComponent>) -> some View {
-        @Perception.Bindable var store = store
+        @Bindable var store = store
         toast(
             isPresented: $store.isToastPresented.projectedValue,
             type: .info,

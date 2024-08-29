@@ -13,53 +13,51 @@ import Models
 import SwiftUI
 
 public struct ChangeFolderView: View {
-    @Perception.Bindable private var store: StoreOf<ChangeFolder>
+    @Bindable private var store: StoreOf<ChangeFolder>
 
     public init(store: StoreOf<ChangeFolder>) {
         self.store = store
     }
 
     public var body: some View {
-        WithPerceptionTracking {
+        VStack(spacing: 0) {
+            LKTextMiddleTopBar(
+                title: LocalizationKitStrings.SelectFolderScene.selectFolderViewNavigationTitle,
+                backButtonAction: { store.send(.backButtonTapped) },
+                action: {}
+            )
+
+            Spacer().frame(height: 28)
+
             VStack(spacing: 0) {
-                LKTextMiddleTopBar(
-                    title: LocalizationKitStrings.SelectFolderScene.selectFolderViewNavigationTitle,
-                    backButtonAction: { store.send(.backButtonTapped) },
-                    action: {}
+                URLMetadataView(store: store)
+                    .padding(.horizontal, 20)
+
+                Spacer().frame(height: 20)
+
+                FolderListView(
+                    folders: store.folders,
+                    selectedIndex: $store.selectedFolderIndex.sending(\.folderSelected),
+                    onSelectNewFolder: { store.send(.createFolderButtonTapped) }
                 )
 
-                Spacer().frame(height: 28)
+                Spacer()
 
-                VStack(spacing: 0) {
-                    URLMetadataView(store: store)
-                        .padding(.horizontal, 20)
-
-                    Spacer().frame(height: 20)
-
-                    FolderListView(
-                        folders: store.folders,
-                        selectedIndex: $store.selectedFolderIndex.sending(\.folderSelected),
-                        onSelectNewFolder: { store.send(.createFolderButtonTapped) }
-                    )
-
-                    Spacer()
-
-                    RoundedButton(
-                        title: LocalizationKitStrings.SelectFolderScene.selectFolderViewSaveButtonTitle,
-                        isDisabled: store.isSaveButtonDisabled,
-                        action: { store.send(.saveButtonTapped) }
-                    )
-                    .padding(20)
-                }
-                .applyIf(store.isLoading) { view in
-                    view
-                        .disabled(store.isLoading)
-                        .overlay(LoadingIndicator())
-                }
+                RoundedButton(
+                    title: LocalizationKitStrings.SelectFolderScene.selectFolderViewSaveButtonTitle,
+                    isDisabled: store.isSaveButtonDisabled,
+                    action: { store.send(.saveButtonTapped) }
+                )
+                .padding(20)
             }
-            .onAppear {
-                store.send(.onAppear)
+            .applyIf(store.isLoading) { view in
+                view
+                    .disabled(store.isLoading)
+                    .overlay(LoadingIndicator())
             }
+        }
+        .onAppear {
+            store.send(.onAppear)
         }
     }
 }

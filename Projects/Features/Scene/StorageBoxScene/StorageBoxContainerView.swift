@@ -10,7 +10,7 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct StorageBoxContainerView<Content: View>: View {
-    @Perception.Bindable private var store: StoreOf<StorageBox>
+    @Bindable private var store: StoreOf<StorageBox>
     private let tabbar: () -> Content
 
     public init(
@@ -22,29 +22,27 @@ public struct StorageBoxContainerView<Content: View>: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            ZStack(alignment: .bottom) {
-                StorageBoxView(store: store)
-                tabbar()
-            }
-            .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
-                if index == 0 {
-                    store.send(.showRemoveFolderPopup, animation: .default)
-                } else {
-                    store.send(.tapChangeFolderName)
-                }
-            })
-            .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
-                removeFolderPopup(onCancel: {
-                    store.send(.cancelRemoveFolder, animation: .default)
-                }, onRemove: {
-                    store.send(.tapRemoveFolderButton)
-                })
-            })
-            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: store.toastMessage, isEmbedTabbar: true)
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
+        ZStack(alignment: .bottom) {
+            StorageBoxView(store: store)
+            tabbar()
         }
+        .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
+            if index == 0 {
+                store.send(.showRemoveFolderPopup, animation: .default)
+            } else {
+                store.send(.tapChangeFolderName)
+            }
+        })
+        .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+            removeFolderPopup(onCancel: {
+                store.send(.cancelRemoveFolder, animation: .default)
+            }, onRemove: {
+                store.send(.tapRemoveFolderButton)
+            })
+        })
+        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: store.toastMessage, isEmbedTabbar: true)
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

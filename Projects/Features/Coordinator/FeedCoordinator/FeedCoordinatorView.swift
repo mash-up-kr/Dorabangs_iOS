@@ -22,25 +22,23 @@ public struct FeedCoordinatorView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-                switch screen.case {
-                case let .feed(store):
-                    FeedView(store: store)
-                        .navigationBarHidden(true)
-                        .navigationTitle("")
-                        .navigationBarTitleDisplayMode(.inline)
-                case let .changeFolderName(store):
-                    ChangeFolderNameView(store: store)
-                        .navigationBarHidden(true)
-                        .navigationTitle("")
-                        .navigationBarTitleDisplayMode(.inline)
-                case let .web(store):
-                    WebView(store: store)
-                        .navigationBarHidden(true)
-                        .navigationTitle("")
-                        .navigationBarTitleDisplayMode(.inline)
-                }
+        TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
+            switch screen.case {
+            case let .feed(store):
+                FeedView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+            case let .changeFolderName(store):
+                ChangeFolderNameView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+            case let .web(store):
+                WebView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

@@ -12,7 +12,7 @@ import DesignSystemKit
 import SwiftUI
 
 public struct HomeView: View {
-    @Perception.Bindable private var store: StoreOf<Home>
+    @Bindable private var store: StoreOf<Home>
 
     enum Constant {
         static let LKTopLogoBarHeight: CGFloat = 48
@@ -24,46 +24,44 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            ZStack(alignment: .top) {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        Spacer()
-                            .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
+        ZStack(alignment: .top) {
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
 
-                        if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
-                            HomeBannerCarousel(store: store)
-                        }
+                    if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
+                        HomeBannerCarousel(store: store)
+                    }
 
-                        if let store = store.scope(state: \.cards, action: \.cards) {
-                            HomeCardView(store: store)
-                        }
+                    if let store = store.scope(state: \.cards, action: \.cards) {
+                        HomeCardView(store: store)
                     }
-                    .applyIf(store.isLoading) { _ in
-                        LoadingIndicator()
-                            .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 60)
-                    }
-                    .padding(.bottom, 60)
                 }
-                .zIndex(1)
-
-                topBarView
-                    .zIndex(2)
-                    .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
-                    .background(.ultraThinMaterial)
-                    .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
+                .applyIf(store.isLoading) { _ in
+                    LoadingIndicator()
+                        .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 60)
+                }
+                .padding(.bottom, 60)
             }
-            .padding(.bottom, 60)
-            .homeBackgroundView()
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                if !store.isNavigationPushed {
-                    store.send(.onAppear)
-                } else {
-                    store.send(.updateNavigationStatus(false))
-                }
+            .zIndex(1)
+
+            topBarView
+                .zIndex(2)
+                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
+                .background(.ultraThinMaterial)
+                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
+        }
+        .padding(.bottom, 60)
+        .homeBackgroundView()
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            if !store.isNavigationPushed {
+                store.send(.onAppear)
+            } else {
+                store.send(.updateNavigationStatus(false))
             }
         }
     }
@@ -85,34 +83,34 @@ public struct HomeView: View {
 }
 
 struct HomeBannerCarousel: View {
-    @Perception.Bindable var store: StoreOf<HomeBannerPageControl>
+    @Bindable var store: StoreOf<HomeBannerPageControl>
 
     var body: some View {
-        WithPerceptionTracking {
-            ACarousel(
-                store.bannerList,
-                id: \.self,
-                index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
-                spacing: 0,
-                headspace: 0,
-                sidesScaling: 1,
-                isWrap: false,
-                autoScroll: .active(TimeInterval(8))
-            ) { item in
-                HomeBannerView(banner: item) {
-                    store.send(.bannerButtonTapped(item.bannerType))
-                }
+        ACarousel(
+            store.bannerList,
+            id: \.self,
+            index: $store.bannerIndex.sending(\.updateBannerPageIndicator),
+            spacing: 0,
+            headspace: 0,
+            sidesScaling: 1,
+            isWrap: false,
+            autoScroll: .active(TimeInterval(8))
+        ) { item in
+            HomeBannerView(banner: item) {
+                store.send(.bannerButtonTapped(item.bannerType))
             }
-            .onChange(of: store.bannerIndex) { playBannerLottie(with: store.bannerList[$0].bannerType) }
-            .onAppear { playBannerLottie(with: store.bannerList[store.bannerIndex].bannerType) }
-            .onDisappear { stopBannerLottie() }
-            .frame(height: 340)
-
-            HomeBannerPageControlView(store: store)
-                .frame(maxWidth: .infinity)
-                .frame(height: 40)
-                .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         }
+        .onChange(of: store.bannerIndex) { _, newValue in
+            playBannerLottie(with: store.bannerList[newValue].bannerType)
+        }
+        .onAppear { playBannerLottie(with: store.bannerList[store.bannerIndex].bannerType) }
+        .onDisappear { stopBannerLottie() }
+        .frame(height: 340)
+
+        HomeBannerPageControlView(store: store)
+            .frame(maxWidth: .infinity)
+            .frame(height: 40)
+            .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
 }
 

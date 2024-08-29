@@ -21,22 +21,20 @@ public struct SplashView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            LottieView(animation: .named(JSONFiles.Splash.jsonName, bundle: bundle ?? .main))
-                .playing(loopMode: .repeat(1))
-                .animationDidFinish { _ in
-                    store.send(.isAnimationFinishedChanged(true))
+        LottieView(animation: .named(JSONFiles.Splash.jsonName, bundle: bundle ?? .main))
+            .playing(loopMode: .repeat(1))
+            .animationDidFinish { _ in
+                store.send(.isAnimationFinishedChanged(true))
+            }
+            .frame(width: 126, height: 126)
+            .onAppear { store.send(.onAppear) }
+            .onReceive(
+                Publishers.CombineLatest(store.publisher.isAccessTokenSet, store.publisher.isAnimationFinished)
+                    .filter { $0.0 && $0.1 },
+                perform: { _ in
+                    store.send(.handleRouting)
                 }
-                .frame(width: 126, height: 126)
-                .onAppear { store.send(.onAppear) }
-                .onReceive(
-                    Publishers.CombineLatest(store.publisher.isAccessTokenSet, store.publisher.isAnimationFinished)
-                        .filter { $0.0 && $0.1 },
-                    perform: { _ in
-                        store.send(.handleRouting)
-                    }
-                )
-        }
+            )
     }
 
     func handleRouting() {}

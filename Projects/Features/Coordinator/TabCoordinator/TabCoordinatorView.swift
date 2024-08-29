@@ -14,7 +14,7 @@ import StorageBoxCoordinator
 import SwiftUI
 
 public struct TabCoordinatorView: View {
-    @Perception.Bindable private var store: StoreOf<TabCoordinator>
+    @Bindable private var store: StoreOf<TabCoordinator>
     @Environment(\.scenePhase) private var scenePhase
 
     public init(store: StoreOf<TabCoordinator>) {
@@ -22,29 +22,27 @@ public struct TabCoordinatorView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
-                HomeCoordinatorView(store: store.scope(state: \.home, action: \.home), tabbar: tabbar)
-                    .tag(TabCoordinator.Tab.home)
-                    .navigationBarHidden(true)
-                    .navigationTitle("")
-                    .navigationBarTitleDisplayMode(.inline)
+        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
+            HomeCoordinatorView(store: store.scope(state: \.home, action: \.home), tabbar: tabbar)
+                .tag(TabCoordinator.Tab.home)
+                .navigationBarHidden(true)
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.inline)
 
-                StorageBoxCoordinatorView(store: store.scope(state: \.storageBox, action: \.storageBox), tabbar: tabbar)
-                    .tag(TabCoordinator.Tab.storageBox)
-                    .navigationBarHidden(true)
-                    .navigationTitle("")
-                    .navigationBarTitleDisplayMode(.inline)
-            }
-            .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
-            .onAppear {
-                UITabBar.appearance().isHidden = true
-                checkClipboardURL()
-            }
-            .onChange(of: scenePhase) { newValue in
-                guard newValue == .active else { return }
-                checkClipboardURL()
-            }
+            StorageBoxCoordinatorView(store: store.scope(state: \.storageBox, action: \.storageBox), tabbar: tabbar)
+                .tag(TabCoordinator.Tab.storageBox)
+                .navigationBarHidden(true)
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.inline)
+        }
+        .clipboardToast(store: store.scope(state: \.clipboardToast, action: \.clipboardToast))
+        .onAppear {
+            UITabBar.appearance().isHidden = true
+            checkClipboardURL()
+        }
+        .onChange(of: scenePhase) { _, newValue in
+            guard newValue == .active else { return }
+            checkClipboardURL()
         }
     }
 
@@ -79,7 +77,7 @@ public struct TabCoordinatorView: View {
 extension View {
     @ViewBuilder
     func clipboardToast(store: StoreOf<ClipboardToastFeature>) -> some View {
-        @Perception.Bindable var store = store
+        @Bindable var store = store
         clipboardToast(
             isPresented: $store.isPresented.sending(\.isPresentedChanged),
             urlString: store.shared.urlString,

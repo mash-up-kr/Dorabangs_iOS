@@ -25,18 +25,16 @@ public struct HomeContainerView<Content: View>: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            ZStack(alignment: .bottom) {
-                HomeView(store: store)
-                tabbar()
-            }
-            .cardActionSheet(store: overlayComponent)
-            .deleteCardModal(store: overlayComponent)
-            .selectFolderBottomSheet(store: overlayComponent)
-            .toast(store: overlayComponent)
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
+        ZStack(alignment: .bottom) {
+            HomeView(store: store)
+            tabbar()
         }
+        .cardActionSheet(store: overlayComponent)
+        .deleteCardModal(store: overlayComponent)
+        .selectFolderBottomSheet(store: overlayComponent)
+        .toast(store: overlayComponent)
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

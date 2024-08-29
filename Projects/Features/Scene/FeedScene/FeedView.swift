@@ -15,7 +15,7 @@ import Models
 import SwiftUI
 
 public struct FeedView: View {
-    @Perception.Bindable private var store: StoreOf<Feed>
+    @Bindable private var store: StoreOf<Feed>
     @State private var scrollOffset: CGPoint = .zero
 
     public init(store: StoreOf<Feed>) {
@@ -23,71 +23,69 @@ public struct FeedView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            VStack {
-                LKTextMiddleTopBar(
-                    title: scrollOffset.y > 0 ? store.currentFolder.name : "",
-                    backButtonAction: { store.send(.backButtonTapped) },
-                    rightButtomImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
+        VStack {
+            LKTextMiddleTopBar(
+                title: scrollOffset.y > 0 ? store.currentFolder.name : "",
+                backButtonAction: { store.send(.backButtonTapped) },
+                rightButtomImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
 
-                    rightButtonEnabled: true,
-                    action: {
-                        store.send(.tapMore, animation: .default)
+                rightButtonEnabled: true,
+                action: {
+                    store.send(.tapMore, animation: .default)
+                }
+            )
+            if store.currentFolder.postCount == 0 {
+                FeedEmptyContentView(
+                    folderName: store.currentFolder.name,
+                    folderIcon: folderIcon(store.currentFolder.type),
+                    linkCount: store.currentFolder.postCount,
+                    onSelectTab: { selectType in
+                        switch selectType {
+                        case .all:
+                            store.send(.tapAllType)
+                        case .unread:
+                            store.send(.tapUnreadType)
+                        }
                     }
                 )
-                if store.currentFolder.postCount == 0 {
-                    FeedEmptyContentView(
-                        folderName: store.currentFolder.name,
-                        folderIcon: folderIcon(store.currentFolder.type),
-                        linkCount: store.currentFolder.postCount,
-                        onSelectTab: { selectType in
-                            switch selectType {
-                            case .all:
-                                store.send(.tapAllType)
-                            case .unread:
-                                store.send(.tapUnreadType)
-                            }
-                        }
-                    )
-                } else {
-                    FeedContentView(scrollOffset: $scrollOffset, store: store)
-                }
+            } else {
+                FeedContentView(scrollOffset: $scrollOffset, store: store)
             }
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear { store.send(.onAppear) }
-            .cardActionPopup(isPresented: $store.cardActionSheetPresented.projectedValue, onSelect: { index in
-                if index == 0 {
-                    store.send(.tapRemoveCard, animation: .default)
-                } else {
-                    store.send(.tapMoveCard, animation: .default)
-                }
-            })
-            .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
-                if index == 0 {
-                    store.send(.showRemoveFolderPopup, animation: .default)
-                } else {
-                    store.send(.tapChangeFolderName)
-                }
-            })
-            .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
-                removeFolderPopup(onCancel: {
-                    store.send(.cancelRemoveFolder, animation: .default)
-                }, onRemove: {
-                    store.send(.tapRemoveButton)
-                })
-            })
-            .modal(isPresented: $store.editCardPopupIsPresented.projectedValue,
-                   content: {
-                       removeCardPopup(onRemove: {
-                           store.send(.removeCard, animation: .default)
-                       }, onCancel: {
-                           store.send(.cancelRemoveCard, animation: .default)
-                       })
-                   })
-            .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
         }
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear { store.send(.onAppear) }
+        .cardActionPopup(isPresented: $store.cardActionSheetPresented.projectedValue, onSelect: { index in
+            if index == 0 {
+                store.send(.tapRemoveCard, animation: .default)
+            } else {
+                store.send(.tapMoveCard, animation: .default)
+            }
+        })
+        .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
+            if index == 0 {
+                store.send(.showRemoveFolderPopup, animation: .default)
+            } else {
+                store.send(.tapChangeFolderName)
+            }
+        })
+        .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
+            removeFolderPopup(onCancel: {
+                store.send(.cancelRemoveFolder, animation: .default)
+            }, onRemove: {
+                store.send(.tapRemoveButton)
+            })
+        })
+        .modal(isPresented: $store.editCardPopupIsPresented.projectedValue,
+               content: {
+                   removeCardPopup(onRemove: {
+                       store.send(.removeCard, animation: .default)
+                   }, onCancel: {
+                       store.send(.cancelRemoveCard, animation: .default)
+                   })
+               })
+        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
     }
 }
 

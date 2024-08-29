@@ -19,19 +19,17 @@ public struct WebView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            VStack(spacing: 0) {
-                LKTextMiddleTopBar(
-                    title: "",
-                    backButtonAction: { store.send(.backButtonTapped) },
-                    action: {}
-                )
-                UIWebView(url: store.url)
-            }
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
+        VStack(spacing: 0) {
+            LKTextMiddleTopBar(
+                title: "",
+                backButtonAction: { store.send(.backButtonTapped) },
+                action: {}
+            )
+            UIWebView(url: store.url)
         }
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

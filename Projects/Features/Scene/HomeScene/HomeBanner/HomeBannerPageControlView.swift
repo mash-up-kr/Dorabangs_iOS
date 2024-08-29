@@ -11,23 +11,19 @@ import DesignSystemKit
 import SwiftUI
 
 public struct HomeBannerPageControlView: View {
-    @Perception.Bindable private var store: StoreOf<HomeBannerPageControl>
+    @Bindable private var store: StoreOf<HomeBannerPageControl>
 
     public init(store: StoreOf<HomeBannerPageControl>) {
         self.store = store
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            HStack(spacing: 6) {
-                ForEach(store.bannerList, id: \.self) { banner in
-                    WithPerceptionTracking {
-                        PageControlComponentView(
-                            currentBannerType: banner.bannerType,
-                            isCurrentIndex: banner.bannerType == store.selectedBannerType
-                        )
-                    }
-                }
+        HStack(spacing: 6) {
+            ForEach(store.bannerList, id: \.self) { banner in
+                PageControlComponentView(
+                    currentBannerType: banner.bannerType,
+                    isCurrentIndex: banner.bannerType == store.selectedBannerType
+                )
             }
         }
         .padding(.horizontal, 8)

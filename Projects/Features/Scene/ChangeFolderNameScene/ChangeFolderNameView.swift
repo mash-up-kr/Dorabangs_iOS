@@ -12,7 +12,7 @@ import LocalizationKit
 import SwiftUI
 
 public struct ChangeFolderNameView: View {
-    @Perception.Bindable private var store: StoreOf<ChangeFolderName>
+    @Bindable private var store: StoreOf<ChangeFolderName>
     @FocusState private var isFocused: Bool
 
     public init(store: StoreOf<ChangeFolderName>) {
@@ -20,39 +20,37 @@ public struct ChangeFolderNameView: View {
     }
 
     public var body: some View {
-        WithPerceptionTracking {
-            VStack(spacing: 24) {
-                LKTextMiddleTopBar(
-                    title: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewNavigationTitle,
-                    backButtonAction: { store.send(.backButtonTapped) },
-                    action: {}
-                )
+        VStack(spacing: 24) {
+            LKTextMiddleTopBar(
+                title: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewNavigationTitle,
+                backButtonAction: { store.send(.backButtonTapped) },
+                action: {}
+            )
 
-                LKTextField(
-                    text: $store.newFolderName.sending(\.folderNameChanged),
-                    fieldText: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldName,
-                    placeholder: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldPlaceholder,
-                    helperText: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldHelperText,
-                    textLimit: 15,
-                    isWarning: store.isTextFieldWarned
-                )
-                .focused($isFocused)
+            LKTextField(
+                text: $store.newFolderName.sending(\.folderNameChanged),
+                fieldText: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldName,
+                placeholder: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldPlaceholder,
+                helperText: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewTextFieldHelperText,
+                textLimit: 15,
+                isWarning: store.isTextFieldWarned
+            )
+            .focused($isFocused)
 
-                RoundedButton(
-                    title: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewSaveButtonTitle,
-                    isDisabled: store.isSaveButtonDisabled,
-                    action: { store.send(.saveButtonTapped) }
-                )
-                .padding(20)
+            RoundedButton(
+                title: LocalizationKitStrings.ChangeFolderNameScene.changeFolderNameViewSaveButtonTitle,
+                isDisabled: store.isSaveButtonDisabled,
+                action: { store.send(.saveButtonTapped) }
+            )
+            .padding(20)
 
-                Spacer()
-            }
-            .navigationBarHidden(true)
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                isFocused = true
-            }
+            Spacer()
+        }
+        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            isFocused = true
         }
     }
 }

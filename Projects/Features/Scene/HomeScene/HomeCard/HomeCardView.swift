@@ -24,17 +24,15 @@ struct HomeCardView: View {
     @Dependency(\.folderClient) var folderClient
 
     var body: some View {
-        WithPerceptionTracking {
-            Group {
-                if store.cards.isEmpty {
-                    HomeCardEmptyView()
-                } else {
-                    contentScrollView()
-                }
+        Group {
+            if store.cards.isEmpty {
+                HomeCardEmptyView()
+            } else {
+                contentScrollView()
             }
-            .onAppear {
-                store.send(.onAppear)
-            }
+        }
+        .onAppear {
+            store.send(.onAppear)
         }
     }
 
