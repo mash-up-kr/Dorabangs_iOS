@@ -31,5 +31,6 @@ public struct LKTopLogoBar: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+        .frame(height: 48)
     }
 }

@@ -24,7 +24,7 @@ public struct LKTextLeftTopBar: View {
     }
 
     public var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 8) {
             Image(.icChevronLeftBig)
                 .frame(width: 24, height: 24)
 
@@ -37,13 +37,13 @@ public struct LKTextLeftTopBar: View {
 
             if let rightButtonEnabled, rightButtonEnabled {
                 Button(action: action) {
-                    // TODO: ... 버튼으로 변경
-                    Text("..")
+                    DesignSystemKitAsset.Icons.icMoreBlack.swiftUIImage
                 }
                 .frame(width: 24, height: 24)
             }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+        .frame(height: 48)
     }
 }

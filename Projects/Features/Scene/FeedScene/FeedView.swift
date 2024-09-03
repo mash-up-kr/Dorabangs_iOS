@@ -27,8 +27,7 @@ public struct FeedView: View {
             LKTextMiddleTopBar(
                 title: scrollOffset.y > 0 ? store.currentFolder.name : "",
                 backButtonAction: { store.send(.backButtonTapped) },
-                rightButtomImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
-
+                rightButtonImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
                 rightButtonEnabled: true,
                 action: {
                     store.send(.tapMore, animation: .default)

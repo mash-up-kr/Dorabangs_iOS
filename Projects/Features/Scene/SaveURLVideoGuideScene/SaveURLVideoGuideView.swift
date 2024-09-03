@@ -24,13 +24,7 @@ public struct SaveURLVideoGuideView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            LKTextMiddleTopBar(
-                title: "",
-                backButtonAction: { store.send(.backButtonTapped) },
-                rightButtomImage: nil,
-                rightButtonEnabled: nil,
-                action: {}
-            )
+            LKTextMiddleTopBar(backButtonAction: { store.send(.backButtonTapped) })
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(LocalizationKitStrings.SaveURLVideoGuideScene.easyLinkSaving)
