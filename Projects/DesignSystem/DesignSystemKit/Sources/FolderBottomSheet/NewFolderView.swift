@@ -18,12 +18,12 @@ public struct NewFolderView: View {
                 .swiftUIImage
                 .resizable()
                 .renderingMode(.template)
-                .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
                 .frame(width: 24, height: 24)
 
             Text(LocalizationKitStrings.DesignsSystemKit.addNewFolder)
                 .font(weight: .regular, semantic: .caption3)
-                .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
 
             Spacer()
         }

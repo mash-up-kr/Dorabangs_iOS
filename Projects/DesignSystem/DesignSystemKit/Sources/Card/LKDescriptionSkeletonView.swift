@@ -11,7 +11,7 @@ import SwiftUI
 struct LKDescriptionSkeletonView: View {
     @State private var animate = false
 
-    private let primaryColor = DesignSystemKitAsset.Colors.primary.swiftUIColor
+    private let primaryColor = DesignSystemKitAsset.Colors.primary500.swiftUIColor
     private let containerColor = DesignSystemKitAsset.Colors.white.swiftUIColor
 
     var body: some View {

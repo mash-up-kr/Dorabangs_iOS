@@ -92,7 +92,7 @@ private struct HomeBannerMessageView: View {
                 HStack(spacing: 0) {
                     Text(LocalizationKitStrings.HomeScene.linkCount(count))
                         .font(weight: .heavy, semantic: .subtitle2)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
+                        .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
 
                     Text(LocalizationKitStrings.HomeScene.available)
                         .font(weight: .heavy, semantic: .subtitle2)

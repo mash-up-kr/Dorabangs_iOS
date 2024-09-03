@@ -42,7 +42,7 @@ struct LKSkeletonLine: View {
 
 #Preview {
     LKSkeletonLine(
-        primaryColor: DesignSystemKitAsset.Colors.primary.swiftUIColor,
+        primaryColor: DesignSystemKitAsset.Colors.primary500.swiftUIColor,
         containerColor: DesignSystemKitAsset.Colors.white.swiftUIColor,
         animate: .constant(false)
     )

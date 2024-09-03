@@ -20,24 +20,26 @@ public extension DesignSystemKitAsset.Colors {
         endPoint: UnitPoint(x: -0.03, y: -0.07)
     )
 
-    static let gradient2 = LinearGradient(
+    static let gradient2 = AngularGradient(
         stops: [
-            Gradient.Stop(color: Color(red: 1, green: 0.96, blue: 0.98), location: 0.00),
-            Gradient.Stop(color: Color(red: 0.96, green: 0.96, blue: 1), location: 0.50),
-            Gradient.Stop(color: Color(red: 0.95, green: 0.98, blue: 1), location: 1.00)
+            Gradient.Stop(color: Color(red: 0.96, green: 0.98, blue: 1), location: 0.25),
+            Gradient.Stop(color: Color(red: 0.98, green: 0.98, blue: 1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.98, green: 0.98, blue: 1), location: 0.75),
+            Gradient.Stop(color: Color(red: 0.98, green: 0.98, blue: 1), location: 1.00)
         ],
-        startPoint: UnitPoint(x: 1, y: 1),
-        endPoint: UnitPoint(x: -0.03, y: -0.07)
+        center: UnitPoint(x: 0.5, y: 0.5),
+        angle: Angle(degrees: 45)
     )
 
-    static let gradient3 = LinearGradient(
+    static let gradient3 = AngularGradient(
         stops: [
-            Gradient.Stop(color: Color(red: 1, green: 0.92, blue: 0.96), location: 0.00),
-            Gradient.Stop(color: Color(red: 0.97, green: 0.97, blue: 1), location: 0.50),
-            Gradient.Stop(color: Color(red: 0.89, green: 0.93, blue: 1), location: 1.00)
+            Gradient.Stop(color: Color(red: 0.92, green: 0.95, blue: 1), location: 0.25),
+            Gradient.Stop(color: Color(red: 0.93, green: 0.95, blue: 1), location: 0.50),
+            Gradient.Stop(color: Color(red: 0.93, green: 0.94, blue: 1), location: 0.75),
+            Gradient.Stop(color: Color(red: 0.93, green: 0.94, blue: 1), location: 1.00)
         ],
-        startPoint: UnitPoint(x: 1, y: 1),
-        endPoint: UnitPoint(x: -0.03, y: -0.07)
+        center: UnitPoint(x: 0.5, y: 0.5),
+        angle: Angle(degrees: 45)
     )
 
     static let gradient4 = LinearGradient(
@@ -76,9 +78,9 @@ public extension DesignSystemKitAsset.Colors {
     static let extendGray: [DesignSystemKitColors] = [
         Self.g1, Self.g2, Self.g3, Self.g4, Self.g5, Self.g6, Self.g7, Self.g8, Self.g9
     ]
-    static let opacity: [DesignSystemKitColors] = [Self.dimmed]
-    static let various: [DesignSystemKitColors] = [Self.alert, Self.primary]
-    static let gradient: [LinearGradient] = [Self.gradient1, Self.gradient2, Self.gradient3, Self.gradient4, Self.gradient5]
+    static let opacity: [DesignSystemKitColors] = [Self.dimmed, Self.surfaceBlack]
+    static let various: [DesignSystemKitColors] = [Self.alert, Self.primary100, Self.primary500]
+    static let gradient: [any ShapeStyle] = [Self.gradient1, Self.gradient2, Self.gradient3, Self.gradient4, Self.gradient5]
 }
 
 extension DesignSystemKitColors: Hashable {
