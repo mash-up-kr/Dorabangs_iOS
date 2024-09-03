@@ -48,10 +48,7 @@ public struct AIClassificationView: View {
                     if let store = store.scope(state: \.tabs, action: \.tabs) {
                         AIClassificationTabView(store: store)
                             .frame(height: Constant.AIClassificationTabViewHeight)
-                            .overlay {
-                                RoundedBottomBorder()
-                                    .stroke(DesignSystemKitAsset.Colors.g1.swiftUIColor, lineWidth: 1)
-                            }
+                            .dividerLine(edge: .bottom)
                     }
                 }
                 .zIndex(2)
@@ -66,16 +63,5 @@ public struct AIClassificationView: View {
         .navigationBarHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-// 상단 탭 뷰의 하단의 일직선
-private struct RoundedBottomBorder: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-
-        path.move(to: CGPoint(x: 0, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-        return path
     }
 }
