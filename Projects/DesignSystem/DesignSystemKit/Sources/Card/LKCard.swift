@@ -89,22 +89,23 @@ private struct HeaderView<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
 
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            VStack(alignment: .leading, spacing: 12) {
+        HStack(alignment: .top, spacing: 24) {
+            VStack(alignment: .leading, spacing: 10) {
                 Text(title ?? "")
                     .font(weight: .bold, semantic: .caption3)
                     .lineLimit(2)
 
-                if aiStatus == .inProgress {
-                    SummarizingView()
-                } else {
+                switch aiStatus {
+                case .success:
                     MajorContentView(description: description)
+                case .inProgress:
+                    SummarizingView()
+                case .failure:
+                    EmptyView()
                 }
             }
 
-            VStack(spacing: 0) {
-                CardThumbnailView(thumbnail: thumbnail)
-            }
+            CardThumbnailView(thumbnail: thumbnail)
         }
     }
 }
@@ -113,8 +114,8 @@ private struct MajorContentView: View {
     let description: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 4) {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 2) {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
 
@@ -126,18 +127,10 @@ private struct MajorContentView: View {
             }
             .frame(height: 14)
 
-            Spacer()
-                .frame(height: 12)
-
-            HStack(spacing: 0) {
-                Text(description ?? "")
-                    .font(weight: .regular, semantic: .caption1)
-                    .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
-                    .lineLimit(3)
-                    .frame(width: 254)
-
-                Spacer()
-            }
+            Text(description ?? "")
+                .font(weight: .regular, semantic: .s)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
+                .lineLimit(3)
         }
     }
 }
@@ -160,15 +153,16 @@ private struct TagsView: View {
     let tags: [String]
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Spacer()
                 .frame(height: 12)
+
             HStack(spacing: 12) {
                 ForEach(tags, id: \.self) { tag in
                     LKTag(tag)
                 }
                 Spacer()
-            }.frame(height: 24)
+            }.frame(height: 26)
         }
     }
 }
@@ -182,11 +176,11 @@ private struct FooterView: View {
     let showModalAction: () -> Void
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Spacer()
                 .frame(height: 12)
 
-            HStack {
+            HStack(spacing: 0) {
                 CategoryInfoView(
                     category: category,
                     timeSince: timeSince
@@ -214,14 +208,11 @@ private struct CategoryInfoView: View {
         HStack(spacing: 8) {
             Text(category)
                 .font(weight: .regular, semantic: .xs)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-
-            Image(.icEclipse)
-                .frame(width: 2, height: 2)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
 
             Text(timeSince)
                 .font(weight: .regular, semantic: .xs)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
         }
     }
 }
@@ -251,7 +242,7 @@ private struct SummarizingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 4) {
+            HStack(spacing: 2) {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
 
@@ -264,7 +255,7 @@ private struct SummarizingView: View {
             .frame(height: 14)
 
             Spacer()
-                .frame(height: 12)
+                .frame(height: 10)
 
             HStack(spacing: 0) {
                 LottieView(
@@ -274,7 +265,7 @@ private struct SummarizingView: View {
                     )
                 )
                 .playing(loopMode: .loop)
-                .frame(width: 254, height: 102)
+                .frame(height: 100)
 
                 Spacer()
             }
