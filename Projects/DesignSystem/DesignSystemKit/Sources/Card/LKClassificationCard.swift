@@ -43,29 +43,17 @@ public struct LKClassificationCard<Thumbnail: View>: View {
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 12) {
             closeButton
-
-            Spacer()
-                .frame(height: 20)
 
             HStack(spacing: 16) {
                 content
                 thumbnail
             }
 
-            Spacer()
-                .frame(height: 12)
-
             tag
 
-            Spacer()
-                .frame(height: 12)
-
             categoryAndTimeSince
-
-            Spacer()
-                .frame(height: 20)
 
             moveToFolderButton
         }
@@ -87,16 +75,15 @@ public struct LKClassificationCard<Thumbnail: View>: View {
     }
 
     var content: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             Text(title ?? "")
                 .font(weight: .bold, semantic: .caption3)
                 .lineLimit(2)
 
-            HStack(spacing: 4) {
+            HStack(spacing: 2) {
                 Image(.icAi)
                     .frame(width: 14, height: 14)
 
-                // TODO: Constants로 변경~
                 Text(LocalizationKitStrings.DesignsSystemKit.summary)
                     .font(weight: .medium, semantic: .xs)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
@@ -105,7 +92,7 @@ public struct LKClassificationCard<Thumbnail: View>: View {
             }
 
             Text(description ?? "")
-                .font(weight: .regular, semantic: .caption1)
+                .font(weight: .regular, semantic: .s)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
                 .lineLimit(3)
         }
@@ -129,20 +116,18 @@ public struct LKClassificationCard<Thumbnail: View>: View {
 
             Spacer()
         }
+        .frame(height: 26)
     }
 
     var categoryAndTimeSince: some View {
         HStack(spacing: 8) {
             Text(category ?? "")
                 .font(weight: .regular, semantic: .xs)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
-
-            Image(.icEclipse)
-                .frame(width: 2, height: 2)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
 
             Text(timeSince ?? "")
                 .font(weight: .regular, semantic: .xs)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
 
             Spacer()
         }
@@ -152,10 +137,10 @@ public struct LKClassificationCard<Thumbnail: View>: View {
         Button(action: moveToFolderAction) {
             Text(buttonTitle)
                 .font(weight: .medium, semantic: .caption1)
-                .foregroundStyle(DesignSystemKitAsset.Colors.gradient5)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
                 .padding(.vertical, 7)
                 .frame(maxWidth: .infinity)
-                .background(DesignSystemKitAsset.Colors.gradient1)
+                .background(DesignSystemKitAsset.Colors.primary100.swiftUIColor)
                 .cornerRadius(99, corners: .allCorners)
         }
     }
