@@ -244,6 +244,8 @@ struct FeedContentView: View {
                                 .onTapGesture {
                                     store.send(.tapCard(item: item))
                                 }
+
+                                LKDivider()
                             }
                         }
                     }
