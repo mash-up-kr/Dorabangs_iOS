@@ -23,7 +23,6 @@ struct AIClassificationTabView: View {
                 LazyHStack(spacing: 8) {
                     ForEach(store.folders.indices, id: \.self) { index in
                         LKTopTabView(
-                            folderType: TopFolderType(string: store.folders[index].type.toString) ?? .custom,
                             isSelected: store.selectedFolderIndex == index,
                             title: store.folders[index].name,
                             count: "\(store.folders[index].postCount)"

@@ -9,45 +9,32 @@
 import SwiftUI
 
 public struct LKTopTabView: View {
-    private var folderType: TopFolderType
+    private var icon: Image?
     private var isSelected: Bool
     private let title: String
     private let count: String?
 
     public init(
-        folderType: TopFolderType,
+        icon: Image? = nil,
         isSelected: Bool,
         title: String,
         count: String? = nil
     ) {
-        self.folderType = folderType
+        self.icon = icon
         self.isSelected = isSelected
         self.title = title
         self.count = count
     }
 
     public var body: some View {
-        HStack(spacing: 2) {
-            if folderType == .all {
-                DesignSystemKitAsset.Images.imgAllSmall.swiftUIImage
-                    .frame(width: 24, height: 24)
-            } else if folderType == .default {
-                DesignSystemKitAsset.Images.imgPinSmall.swiftUIImage
-                    .frame(width: 24, height: 24)
-            } else if folderType == .favorite {
-                DesignSystemKitAsset.Images.imgBookmarkSmall.swiftUIImage
-                    .frame(width: 24, height: 24)
-            }
-
-            if folderType != .custom {
-                Spacer()
-                    .frame(width: 2)
-            }
+        HStack(spacing: 4) {
+            icon
+                .frame(width: 24, height: 24)
 
             Text(title)
                 .font(weight: .medium, semantic: .caption1)
                 .foregroundStyle(
-                    isSelected ? DesignSystemKitAsset.Colors.white.swiftUIColor : DesignSystemKitAsset.Colors.g6.swiftUIColor
+                    isSelected ? DesignSystemKitAsset.Colors.g1.swiftUIColor : DesignSystemKitAsset.Colors.g7.swiftUIColor
                 )
 
             if let count {
@@ -58,10 +45,12 @@ public struct LKTopTabView: View {
                     )
             }
         }
+        .frame(height: 24)
         .padding(.horizontal, 12)
-        .padding(.vertical, 7)
+        .padding(.vertical, 6)
+        .frame(height: 36)
         .background(
-            isSelected ? DesignSystemKitAsset.Colors.g8.swiftUIColor : DesignSystemKitAsset.Colors.white.swiftUIColor
+            isSelected ? DesignSystemKitAsset.Colors.g8.swiftUIColor : DesignSystemKitAsset.Colors.g1.swiftUIColor
         )
         .border(
             isSelected ? DesignSystemKitAsset.Colors.g8.swiftUIColor : DesignSystemKitAsset.Colors.g2.swiftUIColor,
@@ -72,7 +61,6 @@ public struct LKTopTabView: View {
 
 #Preview {
     LKTopTabView(
-        folderType: .favorite,
         isSelected: true,
         title: "나중에 읽을 링크",
         count: "99+"

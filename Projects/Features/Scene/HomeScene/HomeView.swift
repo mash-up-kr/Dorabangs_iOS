@@ -50,6 +50,7 @@ public struct HomeView: View {
                 .zIndex(2)
                 .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
                 .background(.ultraThinMaterial)
+                .overlay { BottomBorder().stroke(DesignSystemKitAsset.Colors.g2.swiftUIColor, lineWidth: 1) }
                 .shadow(color: DesignSystemKitAsset.Colors.primary500.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
         }
         .padding(.bottom, 60)
@@ -144,5 +145,16 @@ private extension View {
             HomeBackgroundView()
             self
         }
+    }
+}
+
+// 상단 탭 뷰의 하단 일직선
+private struct BottomBorder: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+
+        path.move(to: CGPoint(x: 0, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        return path
     }
 }
