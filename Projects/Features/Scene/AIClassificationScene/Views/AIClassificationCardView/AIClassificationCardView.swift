@@ -46,12 +46,6 @@ struct AIClassificationCardView: View {
     @ViewBuilder
     private func contentScrollView() -> some View {
         List {
-            Spacer()
-                .frame(height: Constant.LKTextMiddleTopBarHeight + Constant.AIClassificationTabViewHeight)
-                .buttonStyle(.plain)
-                .listRowInsets(.init())
-                .listRowSeparator(.hidden)
-
             ForEach(store.items.keys.elements, id: \.self) { folderId in
                 if let section = store.sections[folderId], let items = store.items[folderId] {
                     AIClassificationCardSectionHeaderView(

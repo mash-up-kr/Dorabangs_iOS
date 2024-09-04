@@ -28,7 +28,7 @@ struct AIClassificationCardSectionHeaderView: View {
                 .font(weight: .medium, semantic: .caption1)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
 
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 12)
 
             Button(action: action) {
                 Text(LocalizationKitStrings.AIClassificationScene.moveAllButtonTitle)
@@ -42,7 +42,7 @@ struct AIClassificationCardSectionHeaderView: View {
             }
             .buttonStyle(.plain)
         }
-        .padding(.vertical, 32)
-        .background(DesignSystemKitAsset.Colors.gradient2)
+        .padding(.vertical, 48)
+        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
     }
 }
