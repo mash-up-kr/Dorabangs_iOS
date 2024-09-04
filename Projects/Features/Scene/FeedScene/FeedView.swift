@@ -30,7 +30,7 @@ public struct FeedView: View {
                 rightButtonImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
                 rightButtonEnabled: true,
                 action: {
-                    store.send(.tapMore, animation: .default)
+                    store.send(.tapMore, animation: .easeInOut)
                 }
             )
             if store.currentFolder.postCount == 0 {
@@ -57,21 +57,21 @@ public struct FeedView: View {
         .onAppear { store.send(.onAppear) }
         .cardActionPopup(isPresented: $store.cardActionSheetPresented.projectedValue, onSelect: { index in
             if index == 0 {
-                store.send(.tapRemoveCard, animation: .default)
+                store.send(.tapRemoveCard)
             } else {
-                store.send(.tapMoveCard, animation: .default)
+                store.send(.tapMoveCard)
             }
         })
         .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
             if index == 0 {
-                store.send(.showRemoveFolderPopup, animation: .default)
+                store.send(.showRemoveFolderPopup)
             } else {
                 store.send(.tapChangeFolderName)
             }
         })
         .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
             removeFolderPopup(onCancel: {
-                store.send(.cancelRemoveFolder, animation: .default)
+                store.send(.cancelRemoveFolder)
             }, onRemove: {
                 store.send(.tapRemoveButton)
             })
@@ -79,9 +79,9 @@ public struct FeedView: View {
         .modal(isPresented: $store.editCardPopupIsPresented.projectedValue,
                content: {
                    removeCardPopup(onRemove: {
-                       store.send(.removeCard, animation: .default)
+                       store.send(.removeCard)
                    }, onCancel: {
-                       store.send(.cancelRemoveCard, animation: .default)
+                       store.send(.cancelRemoveCard)
                    })
                })
         .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
