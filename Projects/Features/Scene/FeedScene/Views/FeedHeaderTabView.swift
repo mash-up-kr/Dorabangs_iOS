@@ -47,9 +47,7 @@ public struct FeedHeaderTabView: View {
             .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
             .frame(height: 48)
 
-            Divider()
-                .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
-                .frame(height: 1)
+            LKDivider()
         }
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
         .frame(height: 48)

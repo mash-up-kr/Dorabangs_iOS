@@ -83,9 +83,7 @@ private struct ActionList: View {
         VStack(spacing: 0) {
             ForEach(items.indices, id: \.self) { index in
                 if index > 0 {
-                    Divider()
-                        .frame(height: 0.5)
-                        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
+                    LKDivider()
                         .padding(.horizontal, 16)
                 }
 
