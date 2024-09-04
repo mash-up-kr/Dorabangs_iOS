@@ -28,7 +28,7 @@ public struct HomeBannerPageControlView: View {
         }
         .padding(.horizontal, 8)
         .frame(height: 16)
-        .background(DesignSystemKitAsset.Colors.gradient1)
+        .background(DesignSystemKitAsset.Colors.gradient3)
         .cornerRadius(50, corners: .allCorners)
     }
 }

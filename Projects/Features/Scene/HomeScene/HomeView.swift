@@ -32,10 +32,12 @@ public struct HomeView: View {
 
                     if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
                         HomeBannerCarousel(store: store)
+                            .padding(.top, 16)
                     }
 
                     if let store = store.scope(state: \.cards, action: \.cards) {
                         HomeCardView(store: store)
+                            .padding(.top, 16)
                     }
                 }
                 .applyIf(store.isLoading) { _ in
@@ -54,7 +56,6 @@ public struct HomeView: View {
                 .shadow(color: DesignSystemKitAsset.Colors.primary500.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
         }
         .padding(.bottom, 60)
-        .homeBackgroundView()
         .navigationBarHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -100,50 +101,20 @@ struct HomeBannerCarousel: View {
             HomeBannerView(banner: item) {
                 store.send(.bannerButtonTapped(item.bannerType))
             }
+            .frame(width: UIScreen.main.bounds.width - 40, height: 334)
+            .cornerRadius(20, corners: .allCorners)
         }
         .onChange(of: store.bannerIndex) { _, newValue in
             playBannerLottie(with: store.bannerList[newValue].bannerType)
         }
         .onAppear { playBannerLottie(with: store.bannerList[store.bannerIndex].bannerType) }
         .onDisappear { stopBannerLottie() }
-        .frame(height: 340)
-
-        HomeBannerPageControlView(store: store)
-            .frame(maxWidth: .infinity)
-            .frame(height: 40)
-            .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-    }
-}
-
-private struct HomeBackgroundView: View {
-    fileprivate init() {}
-
-    fileprivate var body: some View {
-        GeometryReader { _ in
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 357, height: 357)
-                .background(
-                    EllipticalGradient(
-                        stops: [
-                            Gradient.Stop(color: Color(red: 0.75, green: 0.87, blue: 0.99), location: 0.00),
-                            Gradient.Stop(color: Color(red: 0.75, green: 0.87, blue: 0.99).opacity(0), location: 1.00)
-                        ],
-                        center: UnitPoint(x: 0.5, y: 0.5)
-                    )
-                )
-                .cornerRadius(357, corners: .allCorners)
-                .offset(x: -40, y: 28)
-        }
-        .edgesIgnoringSafeArea(.all)
-    }
-}
-
-private extension View {
-    func homeBackgroundView() -> some View {
-        ZStack {
-            HomeBackgroundView()
-            self
+        .frame(height: 334)
+        .overlay {
+            GeometryReader { geometry in
+                HomeBannerPageControlView(store: store)
+                    .position(x: geometry.size.width - 60, y: 20)
+            }
         }
     }
 }

@@ -40,12 +40,13 @@ public struct HomeBannerView: View {
                 .onReceive(NotificationCenter.default.publisher(for: .stopBannerLottie)) { _ in
                     isAnimating = false
                 }
-                .frame(width: 250, height: 212)
+                .frame(width: 270, height: 210)
 
             HomeBannerMessageView(
                 prefix: banner.prefix,
                 count: banner.count
             )
+            .frame(height: 56)
 
             Spacer()
                 .frame(height: 12)
@@ -55,9 +56,8 @@ public struct HomeBannerView: View {
             Spacer()
                 .frame(height: 24)
         }
-        .frame(width: UIScreen.main.bounds.width, height: 340)
-        .background(DesignSystemKitAsset.Colors.gradient6)
-        .background(.white.opacity(0.5))
+        .frame(maxWidth: .infinity)
+        .background(DesignSystemKitAsset.Colors.gradient2)
     }
 
     var lotteFileName: String {
@@ -92,7 +92,7 @@ private struct HomeBannerMessageView: View {
                 HStack(spacing: 0) {
                     Text(LocalizationKitStrings.HomeScene.linkCount(count))
                         .font(weight: .heavy, semantic: .subtitle2)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
+                        .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
 
                     Text(LocalizationKitStrings.HomeScene.available)
                         .font(weight: .heavy, semantic: .subtitle2)
