@@ -59,6 +59,7 @@ public struct Feed {
         case tapMoveFolder(folderID: String?)
         case fetchFolders
         case fetchFoldersResult(Result<FoldersModel, Error>)
+        case movedFolderResult(folderName: String?)
 
         case tapRemoveCard
         case tapMoveCard
@@ -223,9 +224,23 @@ public struct Feed {
             case .tapCreateNewFolder:
                 print("==== create new folder")
                 return .none
-            case let .tapMoveFolder(folderID):
-                print("==== move : \(folderID)")
+            case let .tapMoveFolder(folderName):
+                if let editingPostId = state.editingPostId, let folderId = state.folders.first(where: { $0.name == folderName })?.id {
+                    return .run { send in
+                        try await postAPIClient.movePostFolder(postId: editingPostId, folderId: folderId)
+                        await send(.movedFolderResult(folderName: folderName))
+                    }
+                }
                 return .none
+            case let .movedFolderResult(folderName):
+                if let editingPostId = state.editingPostId {
+                    state.cards.removeAll(where: { $0.id == editingPostId })
+                }
+                state.editingPostId = nil
+                state.folderBottomSheetIsPresent = false
+                state.toastMessage = LocalizationKitStrings.HomeScene.moveCardToastMessage(folderName ?? "")
+                state.toastPopupIsPresented = true
+                return .send(.fetchFolderInfo(state.currentFolder.id))
             case .fetchFolders:
                 return .run { send in
                     await send(.fetchFoldersResult(Result { try await
