@@ -224,6 +224,7 @@ struct FeedContentView: View {
                                 store.send(.tapSortPast)
                             }
                         })
+                        .dividerLine(edge: .bottom)
 
                         ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
                             VStack(spacing: 0) {

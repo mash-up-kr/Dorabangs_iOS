@@ -47,7 +47,7 @@ public struct FeedSortView: View {
             )
             .padding(.trailing, 20)
         }
-        .frame(height: 54)
+        .frame(height: 44)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
 }
