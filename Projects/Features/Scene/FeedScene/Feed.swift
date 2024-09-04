@@ -19,6 +19,7 @@ public struct Feed {
         public var currentFolder: Folder
         public var pageModel = PostPageModel()
         public var cards: [Card] = []
+        public var folders: [Folder] = []
 
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
@@ -27,6 +28,7 @@ public struct Feed {
         public var editCardPopupIsPresented: Bool = false
         public var editingPostId: String?
         public var toastMessage: String = ""
+        public var folderBottomSheetIsPresent = false
 
         public init(currentFolder: Folder) {
             self.currentFolder = currentFolder
@@ -53,6 +55,10 @@ public struct Feed {
         case tapSortPast
         case tapCard(item: Card)
         case readCard(String)
+        case tapCreateNewFolder
+        case tapMoveFolder(folderID: String?)
+        case fetchFolders
+        case fetchFoldersResult(Result<FoldersModel, Error>)
 
         case tapRemoveCard
         case tapMoveCard
@@ -214,6 +220,24 @@ public struct Feed {
                         try await postAPIClient.readPost(postId)
                     }))
                 }
+            case .tapCreateNewFolder:
+                print("==== create new folder")
+                return .none
+            case let .tapMoveFolder(folderID):
+                print("==== move : \(folderID)")
+                return .none
+            case .fetchFolders:
+                return .run { send in
+                    await send(.fetchFoldersResult(Result { try await
+                            folderAPIClient.getFolders()
+                    }))
+                }
+            case let .fetchFoldersResult(.success(foldersModel)):
+                state.folders = foldersModel.defaultFolders + foldersModel.customFolders
+                let currentFolderId = state.currentFolder.id
+                state.folders.removeAll(where: { $0.id == currentFolderId })
+                state.folderBottomSheetIsPresent = true
+                return .none
             case let .bookMarkButtonTapped(index):
                 return .send(.changeBookMarkStatus(state.cards[index]))
             case let .changeBookMarkStatus(post):
@@ -240,8 +264,8 @@ public struct Feed {
                 state.editCardPopupIsPresented = true
                 return .none
             case .tapMoveCard:
-                print("==== move")
-                return .none
+                state.cardActionSheetPresented = false
+                return .send(.fetchFolders, animation: .default)
             case .removeCard:
                 if let editingPostId = state.editingPostId {
                     return .run { send in

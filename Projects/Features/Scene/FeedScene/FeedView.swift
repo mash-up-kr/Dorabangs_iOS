@@ -85,6 +85,14 @@ public struct FeedView: View {
                        store.send(.cancelRemoveCard, animation: .default)
                    })
                })
+        .bottomSheet(
+            isPresented: $store.folderBottomSheetIsPresent.projectedValue,
+            folders: store.folders.map(\.name),
+            onSelectNewFolder: {
+                store.send(.tapCreateNewFolder)
+            },
+            onComplete: { store.send(.tapMoveFolder(folderID: $0)) }
+        )
         .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: store.toastMessage, isEmbedTabbar: false)
     }
 }
