@@ -45,7 +45,7 @@ private struct PageControlComponentView: View {
     fileprivate var body: some View {
         if currentBannerType == .ai {
             if isCurrentIndex {
-                DesignSystemKitAsset.Icons.icStarFill.swiftUIImage
+                DesignSystemKitAsset.Icons.icStarBlack.swiftUIImage
                     .frame(width: 8, height: 8)
             } else {
                 DesignSystemKitAsset.Icons.icStar.swiftUIImage

@@ -66,7 +66,7 @@ public struct LKClassificationCard<Thumbnail: View>: View {
             Spacer()
 
             Button(action: deleteAction) {
-                Image(.icCloseCircle)
+                Image(.icClose)
                     .font(weight: .medium, semantic: .caption1)
                     .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
             }

@@ -24,7 +24,7 @@ public struct LKActionSheet: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            DragIndicator()
+            DragIndicator(type: .dark)
                 .padding(.top, 12)
 
             ActionList(items: items)
@@ -63,15 +63,31 @@ public struct LKActionSheet: View {
 }
 
 public struct DragIndicator: View {
+    public enum ColorType { case dark, light }
+    private let type: ColorType
+
+    public init(type: ColorType = .dark) {
+        self.type = type
+    }
+
     public var body: some View {
         HStack {
             Spacer()
 
-            DesignSystemKitAsset.Icons.icPin.swiftUIImage
+            type.image
                 .resizable()
                 .frame(width: 36, height: 5)
 
             Spacer()
+        }
+    }
+}
+
+extension DragIndicator.ColorType {
+    var image: Image {
+        switch self {
+        case .dark: DesignSystemKitAsset.Icons.icHandlerDark.swiftUIImage
+        case .light: DesignSystemKitAsset.Icons.icHandlerLight.swiftUIImage
         }
     }
 }

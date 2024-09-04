@@ -37,7 +37,7 @@ public struct FolderBottomSheet: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            DragIndicator()
+            DragIndicator(type: .light)
                 .padding(.top, 12)
 
             Text(LocalizationKitStrings.DesignsSystemKit.moveFolder)

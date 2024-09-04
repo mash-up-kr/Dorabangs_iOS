@@ -41,7 +41,8 @@ public struct LKClipboardToast: View {
                         .foregroundStyle(DesignSystemKitAsset.Colors.g1.swiftUIColor)
                         .onTapGesture(perform: saveAction)
 
-                    DesignSystemKitAsset.Icons.icChevronRightSmallWhite.swiftUIImage
+                    DesignSystemKitAsset.Icons.icChevronRightSmallWhite
+                        .swiftUIImage
                         .frame(width: 20, height: 20)
                 }
                 .frame(height: 24)
@@ -58,7 +59,7 @@ public struct LKClipboardToast: View {
                 .frame(height: 42)
             }
 
-            Image(.icCloseCircle)
+            Image(.icCloseWhite)
                 .resizable()
                 .frame(width: 24, height: 24)
                 .onTapGesture(perform: closeAction)
