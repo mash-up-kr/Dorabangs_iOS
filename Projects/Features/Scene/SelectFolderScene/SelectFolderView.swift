@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import Common
 import ComposableArchitecture
 import DesignSystemKit
 import LocalizationKit
@@ -52,7 +53,7 @@ public struct SelectFolderView: View {
                     .overlay(LoadingIndicator())
             })
         }
-        .onAppear {
+        .onViewDidLoad {
             store.send(.onAppear)
         }
     }
