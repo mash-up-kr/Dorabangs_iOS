@@ -25,14 +25,14 @@ public struct LKActionSheet: View {
     public var body: some View {
         VStack(spacing: 0) {
             DragIndicator()
-                .padding(.top, 6)
+                .padding(.top, 12)
 
             ActionList(items: items)
                 .padding(.top, 19)
                 .padding(.horizontal, 16)
         }
         .frame(height: actionSheetHeight, alignment: .top)
-        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
+        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
         .cornerRadius(16, corners: [.topLeft, .topRight])
         .shadow(
             color: DesignSystemKitAsset.Colors.topShadow.swiftUIColor,
