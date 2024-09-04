@@ -23,17 +23,11 @@ public struct SelectFolderView: View {
         VStack(spacing: 0) {
             LKTextMiddleTopBar(
                 title: LocalizationKitStrings.SelectFolderScene.selectFolderViewNavigationTitle,
-                backButtonAction: { store.send(.backButtonTapped) },
-                action: {}
+                backButtonAction: { store.send(.backButtonTapped) }
             )
-
-            Spacer().frame(height: 28)
 
             VStack(spacing: 0) {
                 URLMetadataView(store: store)
-                    .padding(.horizontal, 20)
-
-                Spacer().frame(height: 20)
 
                 FolderListView(
                     folders: store.folders,
@@ -75,10 +69,12 @@ private struct URLMetadataView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            thumbnailView
             descriptionView
+            thumbnailView
         }
-        .cornerRadius(12, corners: .allCorners)
+        .padding(.all, 20)
+        .frame(height: 120)
+        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
     }
 
     var thumbnailView: some View {
@@ -93,31 +89,29 @@ private struct URLMetadataView: View {
             }
         }
         .aspectRatio(contentMode: .fit)
-        .frame(width: 88, height: 88)
+        .frame(width: 80, height: 80)
+        .cornerRadius(4, corners: .allCorners)
     }
 
     var descriptionView: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 16) {
             Text(title ?? "")
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
                 .font(weight: .bold, semantic: .caption3)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
-
-            Spacer()
+                .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
+                .frame(height: 44)
 
             Text(urlString ?? "")
                 .lineLimit(1)
                 .truncationMode(.tail)
-                .font(weight: .medium, semantic: .s)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
+                .font(weight: .regular, semantic: .s)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+                .frame(height: 20)
         }
-        .padding(.vertical, 10)
-        .padding(.horizontal, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 88)
-        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
+        .frame(height: 80)
     }
 }
 
