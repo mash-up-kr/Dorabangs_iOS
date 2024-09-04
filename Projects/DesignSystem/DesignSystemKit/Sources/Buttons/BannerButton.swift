@@ -21,16 +21,17 @@ public struct BannerButton: View {
         Button(action: action) {
             HStack(spacing: 0) {
                 Text(title)
-                    .font(weight: .bold, semantic: .caption1)
-                    .foregroundStyle(DesignSystemKitAsset.Colors.g7.swiftUIColor)
+                    .font(weight: .medium, semantic: .caption1)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g1.swiftUIColor)
 
-                Image(.icChevronRightSmallBlack)
-                    .frame(width: 12, height: 12)
+                Image(.icChevronRightSmallWhite)
+                    .frame(width: 16, height: 16)
             }
-            .padding(.horizontal, 20)
+            .padding(.leading, 16)
+            .padding(.trailing, 12)
             .padding(.vertical, 8)
-            .frame(height: 38, alignment: .center)
-            .background(DesignSystemKitAsset.Colors.gradient3)
+            .frame(height: 32, alignment: .center)
+            .background(DesignSystemKitAsset.Colors.g7.swiftUIColor)
             .cornerRadius(50, corners: .allCorners)
         }
     }
