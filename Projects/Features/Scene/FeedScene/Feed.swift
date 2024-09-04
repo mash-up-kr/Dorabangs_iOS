@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Foundation
+import LocalizationKit
 import Models
 import Services
 
@@ -25,6 +26,7 @@ public struct Feed {
         public var cardActionSheetPresented: Bool = false
         public var editCardPopupIsPresented: Bool = false
         public var editingPostId: String?
+        public var toastMessage: String = ""
 
         public init(currentFolder: Folder) {
             self.currentFolder = currentFolder
@@ -178,9 +180,8 @@ public struct Feed {
                 return .send(.routeToChangeFolderName(state.currentFolder.id))
             case let .routeToChangeFolderName(currentFolderId):
                 return .none
-            case let .changedFolderName(newName):
-                // TODO: - 통신탄 결과로 수정해야함~
-                //                state.title = newName
+            case .changedFolderName:
+                state.toastMessage = LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged
                 state.toastPopupIsPresented = true
                 return .none
             case .showRemoveFolderPopup:
@@ -252,9 +253,14 @@ public struct Feed {
                 }
                 return .none
             case .removeCardResult:
+                if let editingPostId = state.editingPostId {
+                    state.cards.removeAll(where: { $0.id == editingPostId })
+                }
                 state.editCardPopupIsPresented = false
                 state.cardActionSheetPresented = false
                 state.editingPostId = nil
+                state.toastMessage = LocalizationKitStrings.StorageBoxScene.deleteCompletedToastMessage
+                state.toastPopupIsPresented = true
                 return .send(.fetchFolderInfo(state.currentFolder.id))
             case .cancelRemoveCard:
                 state.editCardPopupIsPresented = false

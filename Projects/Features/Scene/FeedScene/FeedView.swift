@@ -85,7 +85,7 @@ public struct FeedView: View {
                        store.send(.cancelRemoveCard, animation: .default)
                    })
                })
-        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
+        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: store.toastMessage, isEmbedTabbar: false)
     }
 }
 
