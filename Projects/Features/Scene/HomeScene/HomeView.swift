@@ -43,6 +43,15 @@ public struct HomeView: View {
                     }
                     .padding(.bottom, 60)
                 }
+                .applyIf(store.isaddLinkButtonShowed) { view in
+                    view
+                        .overlay(alignment: .bottomTrailing, content: {
+                            AddLinkFloatingActionButton {
+                                store.send(.addLinkButtonTapped)
+                            }
+                            .offset(x: -20, y: -20)
+                        })
+                }
                 .applyIf(store.isLoading) { _ in
                     LoadingIndicator()
                 }
@@ -64,10 +73,8 @@ public struct HomeView: View {
     @ViewBuilder
     private var topBarView: some View {
         VStack(spacing: 0) {
-            LKTopLogoBar {
-                store.send(.addLinkButtonTapped)
-            }
-            .frame(height: Constant.LKTopLogoBarHeight)
+            LKTopLogoBar()
+                .frame(height: Constant.LKTopLogoBarHeight)
 
             if let store = store.scope(state: \.tabs, action: \.tabs) {
                 HomeTabView(store: store)
@@ -108,6 +115,26 @@ struct HomeBannerCarousel: View {
                 HomeBannerPageControlView(store: store)
                     .position(x: geometry.size.width - 60, y: 20)
             }
+        }
+    }
+}
+
+struct AddLinkFloatingActionButton: View {
+    var action: () -> Void
+
+    public var body: some View {
+        Button(action: action) {
+            DesignSystemKitAsset.Icons.icAdd
+                .swiftUIImage
+                .resizable()
+                .renderingMode(.template)
+                .foregroundColor(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                .frame(width: 32, height: 32)
+                .padding(.all, 14)
+                .frame(width: 60, height: 60, alignment: .center)
+                .background(DesignSystemKitAsset.Colors.surfaceBlack.swiftUIColor)
+                .cornerRadius(99, corners: .allCorners)
+                .dropShadow()
         }
     }
 }

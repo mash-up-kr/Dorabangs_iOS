@@ -9,11 +9,7 @@
 import SwiftUI
 
 public struct LKTopLogoBar: View {
-    private let action: () -> Void
-
-    public init(action: @escaping () -> Void) {
-        self.action = action
-    }
+    public init() {}
 
     public var body: some View {
         HStack(spacing: 0) {
@@ -23,11 +19,6 @@ public struct LKTopLogoBar: View {
                 .frame(height: 22)
 
             Spacer()
-
-            Button(action: action) {
-                Image(.icAddLink)
-                    .frame(width: 24, height: 24)
-            }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)

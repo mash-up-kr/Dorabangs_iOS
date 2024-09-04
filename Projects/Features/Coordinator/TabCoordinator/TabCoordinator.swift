@@ -77,9 +77,21 @@ public struct TabCoordinator {
                 return .none
 
             case let .clipboardURLChanged(url):
-                return ClipboardToastFeature()
-                    .reduce(into: &state.clipboardToast, action: .presentToast(url))
-                    .map(Action.clipboardToast)
+                switch state.selectedTab {
+                case .home:
+                    return Effect.concatenate(
+                        HomeCoordinator()
+                            .reduce(into: &state.home, action: .router(.routeAction(id: 0, action: .home(.setIsAddLinkButtonShowed(false)))))
+                            .map(Action.home),
+                        ClipboardToastFeature()
+                            .reduce(into: &state.clipboardToast, action: .presentToast(url))
+                            .map(Action.clipboardToast)
+                    )
+                case .storageBox:
+                    return ClipboardToastFeature()
+                        .reduce(into: &state.clipboardToast, action: .presentToast(url))
+                        .map(Action.clipboardToast)
+                }
 
             case let .deeplink(postId, url):
                 return routeToChangeFolderScene(state: &state, postId: postId, url: url)
@@ -87,6 +99,13 @@ public struct TabCoordinator {
             case .clipboardToast(.saveButtonTapped):
                 guard let url = URL(string: state.clipboardToast.shared.urlString) else { return .none }
                 return routeToSelectFolderScene(state: &state, with: url)
+
+            case let .clipboardToast(.isPresentedChanged(isPresented)):
+                guard state.selectedTab == .home else { return .none }
+                let isAddLinkButtonShowed = !isPresented
+                return HomeCoordinator()
+                    .reduce(into: &state.home, action: .router(.routeAction(id: 0, action: .home(.setIsAddLinkButtonShowed(isAddLinkButtonShowed)))))
+                    .map(Action.home)
 
             default:
                 return .none

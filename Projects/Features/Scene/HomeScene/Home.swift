@@ -23,6 +23,7 @@ public struct Home {
         var isLoading: Bool = false
         var morePagingNeeded: Bool = true
         var isNavigationPushed: Bool = false
+        var isaddLinkButtonShowed: Bool = true
 
         var tabs: HomeTab.State?
         var banner: HomeBannerPageControl.State?
@@ -50,6 +51,7 @@ public struct Home {
         case setCardList([Card], FolderType)
         case setFolderList([Folder])
         case setMorePagingStatus(Bool)
+        case setIsAddLinkButtonShowed(Bool)
         case showErrorToast
 
         // MARK: User Action
@@ -189,6 +191,10 @@ public struct Home {
 
             case let .setMorePagingStatus(morePagingNeeded):
                 state.morePagingNeeded = morePagingNeeded
+                return .none
+
+            case let .setIsAddLinkButtonShowed(isShowed):
+                state.isaddLinkButtonShowed = isShowed
                 return .none
 
             case .showErrorToast:
