@@ -248,9 +248,9 @@ public struct Feed {
                     }))
                 }
             case let .fetchFoldersResult(.success(foldersModel)):
-                state.folders = foldersModel.defaultFolders + foldersModel.customFolders
                 let currentFolderId = state.currentFolder.id
-                state.folders.removeAll(where: { $0.id == currentFolderId })
+                state.folders = foldersModel.defaultFolders + foldersModel.customFolders
+                state.folders.removeAll(where: { $0.type == .all || $0.type == .favorite || $0.id == currentFolderId })
                 state.folderBottomSheetIsPresent = true
                 return .none
             case let .bookMarkButtonTapped(index):
