@@ -51,7 +51,6 @@ public struct Feed {
         case tapSortPast
         case tapCard(item: Card)
         case readCard(String)
-        case readCardResult(Result<Card, Error>)
 
         case tapRemoveCard
         case tapMoveCard
@@ -139,25 +138,41 @@ public struct Feed {
                 state.editFolderPopupIsPresented = true
                 return .none
             case .tapAllType:
-                state.pageModel.isLoading = true
-                state.pageModel.currentPage = 1
-                state.pageModel.isRead = nil
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.currentPage = 1
+                    state.pageModel.isRead = nil
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapUnreadType:
-                state.pageModel.isLoading = true
-                state.pageModel.currentPage = 1
-                state.pageModel.isRead = false
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.currentPage = 1
+                    state.pageModel.isRead = false
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapSortLatest:
-                state.pageModel.isLoading = true
-                state.pageModel.order = .DESC
-                state.pageModel.currentPage = 1
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.order = .DESC
+                    state.pageModel.currentPage = 1
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapSortPast:
-                state.pageModel.isLoading = true
-                state.pageModel.order = .ASC
-                state.pageModel.currentPage = 1
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.order = .ASC
+                    state.pageModel.currentPage = 1
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapChangeFolderName:
                 state.editFolderPopupIsPresented = false
                 return .send(.routeToChangeFolderName(state.currentFolder.id))
@@ -208,7 +223,12 @@ public struct Feed {
                 }
             case let .updatedPostResult(.success(updatedPost)):
                 if let index = state.cards.firstIndex(where: { $0.id == updatedPost.id }) {
-                    state.cards[index] = updatedPost
+                    if state.pageModel.isRead == false, updatedPost.readAt != nil {
+                        // 읽지 않은 카드 목록에서 읽은 카드 삭제
+                        state.cards.removeAll(where: { $0.id == updatedPost.id })
+                    } else {
+                        state.cards[index] = updatedPost
+                    }
                 }
                 return .none
             case let .showModalButtonTapped(postId, folderId):
