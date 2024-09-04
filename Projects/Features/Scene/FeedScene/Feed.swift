@@ -60,6 +60,7 @@ public struct Feed {
         case fetchFolders
         case fetchFoldersResult(Result<FoldersModel, Error>)
         case movedFolderResult(folderName: String?)
+        case routeToCreateNewFolderScene(postId: String)
 
         case tapRemoveCard
         case tapMoveCard
@@ -222,7 +223,9 @@ public struct Feed {
                     }))
                 }
             case .tapCreateNewFolder:
-                print("==== create new folder")
+                if let editingPostId = state.editingPostId {
+                    return .send(.routeToCreateNewFolderScene(postId: editingPostId))
+                }
                 return .none
             case let .tapMoveFolder(folderName):
                 if let editingPostId = state.editingPostId, let folderId = state.folders.first(where: { $0.name == folderName })?.id {

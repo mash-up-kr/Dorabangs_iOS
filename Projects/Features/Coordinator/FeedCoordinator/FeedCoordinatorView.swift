@@ -8,6 +8,7 @@
 
 import ChangeFolderName
 import ComposableArchitecture
+import CreateNewFolder
 import Feed
 import StorageBox
 import SwiftUI
@@ -36,6 +37,11 @@ public struct FeedCoordinatorView: View {
                     .navigationBarTitleDisplayMode(.inline)
             case let .web(store):
                 WebView(store: store)
+                    .navigationBarHidden(true)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+            case let .createNewFolder(store):
+                CreateNewFolderView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

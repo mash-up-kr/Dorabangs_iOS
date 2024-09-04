@@ -72,6 +72,7 @@ let project = Project.make(
                 .scene(.feed),
                 .spm(.tcaCoordinators),
                 .scene(.changeFolderName),
+                .scene(.createNewFolder),
                 .scene(.web)
             ]
         ),

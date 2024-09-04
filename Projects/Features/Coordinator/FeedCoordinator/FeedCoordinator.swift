@@ -8,6 +8,7 @@
 
 import ChangeFolderName
 import ComposableArchitecture
+import CreateNewFolder
 import Feed
 import Models
 import TCACoordinators
@@ -18,6 +19,7 @@ public enum FeedScreen {
     case feed(Feed)
     case changeFolderName(ChangeFolderName)
     case web(Web)
+    case createNewFolder(CreateNewFolder)
 }
 
 @Reducer
@@ -57,6 +59,10 @@ public struct FeedCoordinator {
             case .router(.routeAction(id: _, action: .web(.routeToPreviousScreen))):
                 state.routes.goBack()
                 return .none
+            case .router(.routeAction(id: _, action: .createNewFolder(.routeToFeedScene))):
+                guard let folderName = state.routes.last?.screen.createNewFolder.map(\.newFolderName) else { return .none }
+                state.routes.goBack()
+                return .send(.router(.routeAction(id: 0, action: .feed(.movedFolderResult(folderName: folderName)))))
             default:
                 return .none
             }
@@ -72,6 +78,9 @@ public extension FeedCoordinator {
             return .send(.routeToPreviousScreen)
         case let .routeToChangeFolderName(folderId):
             state.routes.push(.changeFolderName(.init(folderID: folderId, folders: [])))
+            return .none
+        case let .routeToCreateNewFolderScene(postId):
+            state.routes.push(.createNewFolder(.init(sourceView: .feed, postId: postId)))
             return .none
         case .removeFolderResult:
             return .send(.routeToPreviousScreen)
