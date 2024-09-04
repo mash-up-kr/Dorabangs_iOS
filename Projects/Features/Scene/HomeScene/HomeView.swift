@@ -24,36 +24,29 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
+        GeometryReader { _ in
+            VStack(spacing: 0) {
+                topBarView
+                    .dividerLine(edge: .bottom)
 
-                    if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
-                        HomeBannerCarousel(store: store)
-                            .padding(.top, 16)
-                    }
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
+                            HomeBannerCarousel(store: store)
+                                .padding(.top, 16)
+                        }
 
-                    if let store = store.scope(state: \.cards, action: \.cards) {
-                        HomeCardView(store: store)
-                            .padding(.top, 16)
+                        if let store = store.scope(state: \.cards, action: \.cards) {
+                            HomeCardView(store: store)
+                                .padding(.top, 16)
+                        }
                     }
+                    .padding(.bottom, 60)
                 }
                 .applyIf(store.isLoading) { _ in
                     LoadingIndicator()
-                        .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 60)
                 }
-                .padding(.bottom, 60)
             }
-            .zIndex(1)
-
-            topBarView
-                .zIndex(2)
-                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
-                .background(.ultraThinMaterial)
-                .dividerLine(edge: .bottom)
-                .shadow(color: DesignSystemKitAsset.Colors.primary500.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
         }
         .padding(.bottom, 60)
         .navigationBarHidden(true)
