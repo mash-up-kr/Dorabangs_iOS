@@ -29,6 +29,8 @@ public struct SelectFolderView: View {
             VStack(spacing: 0) {
                 URLMetadataView(store: store)
 
+                LKDivider()
+
                 FolderListView(
                     folders: store.folders,
                     selectedIndex: $store.selectedFolderIndex.sending(\.folderSelected),
@@ -125,8 +127,10 @@ private struct FolderListView: View {
             VStack(spacing: 0) {
                 NewFolderView()
                     .background(Rectangle().fill(Color.clear).contentShape(.rect))
+                    .padding(.horizontal, 20)
                     .onTapGesture(perform: onSelectNewFolder)
-                    .padding(.horizontal, 16)
+
+                LKDivider()
 
                 FolderList(folders: folders.map(\.name), selectedIndex: $selectedIndex)
             }
