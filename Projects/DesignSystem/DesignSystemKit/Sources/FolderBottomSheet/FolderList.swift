@@ -19,20 +19,17 @@ public struct FolderList: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            ForEach(folders.indices, id: \.self) {
-                index in
-                Divider()
-                    .frame(height: 0.5)
-                    .background(DesignSystemKitAsset.Colors.g3.swiftUIColor)
-                    .padding(.horizontal, 16)
-
+            ForEach(folders.indices, id: \.self) { index in
                 FolderView(title: folders[index], isSelected: selectedIndex == index)
                     .background(Rectangle().fill(Color.clear).contentShape(.rect))
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 20)
                     .frame(height: 52)
+                    .background(selectedIndex == index ? DesignSystemKitAsset.Colors.g1.swiftUIColor : DesignSystemKitAsset.Colors.white.swiftUIColor)
                     .onTapGesture {
                         selectedIndex = index
                     }
+
+                LKDivider()
             }
         }
     }
