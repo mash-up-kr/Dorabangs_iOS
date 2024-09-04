@@ -17,7 +17,7 @@
 
 "delete_folder_modal_title" = "폴더 삭제";
 
-"delete_folder_modal_description" = "폴더를 삭제하면 모든 데이터가 영구적으로 삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?";
+"delete_folder_modal_description" = "폴더를 삭제하면 모든 데이터가 영구적으로\n삭제되어 복구할 수 없어요.\n그래도 삭제하시겠어요?";
 
 "delete_folder_modal_left_button_title" = "취소";
 
