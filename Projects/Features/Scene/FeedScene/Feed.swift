@@ -29,9 +29,14 @@ public struct Feed {
         public var editingPostId: String?
         public var toastMessage: String = ""
         public var folderBottomSheetIsPresent = false
+        public var feedViewType: FeedViewType
 
-        public init(currentFolder: Folder) {
+        public init(
+            currentFolder: Folder,
+            feedViewType: FeedViewType = .all
+        ) {
             self.currentFolder = currentFolder
+            self.feedViewType = feedViewType
         }
     }
 
@@ -100,7 +105,11 @@ public struct Feed {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .merge(.send(.fetchFolderInfo(state.currentFolder.id)), .send(.onAppearList))
+                if state.feedViewType == .unread {
+                    return .send(.tapUnreadType)
+                } else {
+                    return .merge(.send(.fetchFolderInfo(state.currentFolder.id)), .send(.onAppearList))
+                }
             case .onAppearList:
                 state.pageModel.isFavorite = (state.currentFolder.type == .favorite)
                 if state.pageModel.canLoadingMore() {

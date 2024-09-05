@@ -46,7 +46,8 @@ public struct FeedView: View {
                         case .unread:
                             store.send(.tapUnreadType)
                         }
-                    }
+                    },
+                    feedViewType: $store.feedViewType
                 )
             } else {
                 FeedContentView(scrollOffset: $scrollOffset, store: store)
@@ -212,7 +213,7 @@ private func folderIcon(_ folderType: FolderType) -> Image {
 
 struct FeedContentView: View {
     @Binding var scrollOffset: CGPoint
-    var store: StoreOf<Feed>
+    @Bindable var store: StoreOf<Feed>
 
     var body: some View {
         OffsetObservableScrollView(scrollOffset: $scrollOffset) { _ in
@@ -257,14 +258,18 @@ struct FeedContentView: View {
                     }
                 } header: {
                     VStack(spacing: 0) {
-                        FeedHeaderTabView(select: { selectType in
-                            switch selectType {
-                            case .all:
-                                store.send(.tapAllType)
-                            case .unread:
-                                store.send(.tapUnreadType)
-                            }
-                        })
+                        FeedHeaderTabView(
+                            select: {
+                                selectedType in
+                                switch selectedType {
+                                case .all:
+                                    store.send(.tapAllType)
+                                case .unread:
+                                    store.send(.tapUnreadType)
+                                }
+                            },
+                            selectedType: $store.feedViewType
+                        )
                     }
                 }
             }
@@ -287,7 +292,8 @@ struct FeedEmptyContentView: View {
     let folderName: String
     let folderIcon: Image
     let linkCount: Int
-    var onSelectTab: (FeedHeaderTabView.FeedViewTypd) -> Void
+    var onSelectTab: (FeedViewType) -> Void
+    @Binding var feedViewType: FeedViewType
 
     var body: some View {
         VStack(spacing: 0) {
@@ -297,7 +303,10 @@ struct FeedEmptyContentView: View {
                 linkCount: linkCount
             )
 
-            FeedHeaderTabView(select: onSelectTab)
+            FeedHeaderTabView(
+                select: onSelectTab,
+                selectedType: $feedViewType
+            )
 
             Spacer()
 

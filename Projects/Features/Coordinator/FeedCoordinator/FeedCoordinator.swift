@@ -32,8 +32,16 @@ public struct FeedCoordinator {
             self.routes = routes
         }
 
-        public init(_ folder: Folder) {
-            routes = [.root(.feed(.init(currentFolder: folder)), embedInNavigationView: true)]
+        public init(_ folder: Folder, feedViewType: FeedViewType = .all) {
+            routes = [.root(
+                .feed(
+                    .init(
+                        currentFolder: folder,
+                        feedViewType: feedViewType
+                    )
+                ),
+                embedInNavigationView: true
+            )]
         }
     }
 

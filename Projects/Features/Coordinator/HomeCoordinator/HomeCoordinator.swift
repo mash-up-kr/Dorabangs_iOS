@@ -107,8 +107,8 @@ public extension HomeCoordinator {
             state.routes.push(.aiClassificationCoordinator(.initialState))
             return .none
 
-        case .routeToUnreadFeed:
-            state.routes.push(.feedCoordinator(.init(Folder(id: "", name: "", type: .all, postCount: 6))))
+        case let .routeToUnreadFeed(folder):
+            state.routes.push(.feedCoordinator(.init(folder, feedViewType: .unread)))
             return .none
 
         case .routeToSaveURLVideoGuideScreen:
