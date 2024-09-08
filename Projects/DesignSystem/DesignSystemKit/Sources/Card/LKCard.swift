@@ -93,6 +93,7 @@ private struct HeaderView<Thumbnail: View>: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text(title ?? "")
                     .font(weight: .bold, semantic: .caption3)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g9.swiftUIColor)
                     .lineLimit(2)
 
                 switch aiStatus {
