@@ -7,6 +7,8 @@
 // MARK: - FeedHeaderView
 "post_counts" = "%d 게시물";
 
+"post_counts_reversed" = "게시물 %d";
+
 // MARK: - FeedSortView
 "latest_sort_tab" = "최신순";
 

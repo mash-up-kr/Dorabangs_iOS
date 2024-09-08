@@ -216,14 +216,17 @@ struct FeedContentView: View {
 
                 Section {
                     LazyVStack(spacing: 0) {
-                        FeedSortView(onSort: { sortType in
-                            switch sortType {
-                            case .latest:
-                                store.send(.tapSortLatest)
-                            case .past:
-                                store.send(.tapSortPast)
+                        FeedSortView(
+                            postCounts: store.currentFolder.postCount,
+                            onSort: { sortType in
+                                switch sortType {
+                                case .latest:
+                                    store.send(.tapSortLatest)
+                                case .past:
+                                    store.send(.tapSortPast)
+                                }
                             }
-                        })
+                        )
                         .dividerLine(edge: .bottom)
 
                         ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
