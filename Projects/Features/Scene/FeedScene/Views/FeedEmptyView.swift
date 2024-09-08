@@ -13,6 +13,8 @@ import SwiftUI
 struct FeedEmptyView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
+            Spacer()
+
             DesignSystemKitAsset.Icons.icEmpty.swiftUIImage
                 .frame(width: 40, height: 40)
 
@@ -20,6 +22,8 @@ struct FeedEmptyView: View {
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
                 .frame(maxWidth: .infinity)
+
+            Spacer()
         }
         .frame(alignment: .center)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)

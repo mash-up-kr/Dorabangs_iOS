@@ -16,16 +16,15 @@ import SwiftUI
 
 public struct FeedView: View {
     @Bindable private var store: StoreOf<Feed>
-    @State private var scrollOffset: CGPoint = .zero
 
     public init(store: StoreOf<Feed>) {
         self.store = store
     }
 
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             LKTextMiddleTopBar(
-                title: scrollOffset.y > 0 ? store.currentFolder.name : "",
+                title: store.currentFolder.name,
                 backButtonAction: { store.send(.backButtonTapped) },
                 rightButtonImage: (store.currentFolder.type == .custom) ? DesignSystemKitAsset.Icons.icMoreGray.swiftUIImage : nil,
                 rightButtonEnabled: true,
@@ -33,22 +32,21 @@ public struct FeedView: View {
                     store.send(.tapMore, animation: .easeInOut)
                 }
             )
+            FeedHeaderTabView(select: { selectType in
+                switch selectType {
+                case .all:
+                    store.send(.tapAllType)
+                case .unread:
+                    store.send(.tapUnreadType)
+                }
+            })
+
+            LKDivider()
+
             if store.currentFolder.postCount == 0 {
-                FeedEmptyContentView(
-                    folderName: store.currentFolder.name,
-                    folderIcon: folderIcon(store.currentFolder.type),
-                    linkCount: store.currentFolder.postCount,
-                    onSelectTab: { selectType in
-                        switch selectType {
-                        case .all:
-                            store.send(.tapAllType)
-                        case .unread:
-                            store.send(.tapUnreadType)
-                        }
-                    }
-                )
+                FeedEmptyView()
             } else {
-                FeedContentView(scrollOffset: $scrollOffset, store: store)
+                FeedContentView(store: store)
             }
         }
         .navigationBarHidden(true)
@@ -202,66 +200,45 @@ private func folderIcon(_ folderType: FolderType) -> Image {
 }
 
 struct FeedContentView: View {
-    @Binding var scrollOffset: CGPoint
     var store: StoreOf<Feed>
 
     var body: some View {
-        OffsetObservableScrollView(scrollOffset: $scrollOffset) { _ in
-            LazyVStack(pinnedViews: .sectionHeaders) {
-                FeedHeaderView(
-                    folderName: store.currentFolder.name,
-                    folderIcon: folderIcon(store.currentFolder.type),
-                    linkCount: store.currentFolder.postCount
-                )
-
-                Section {
-                    LazyVStack(spacing: 0) {
-                        FeedSortView(
-                            postCounts: store.currentFolder.postCount,
-                            onSort: { sortType in
-                                switch sortType {
-                                case .latest:
-                                    store.send(.tapSortLatest)
-                                case .past:
-                                    store.send(.tapSortPast)
-                                }
-                            }
-                        )
-                        .dividerLine(edge: .bottom)
-
-                        ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
-                            VStack(spacing: 0) {
-                                LKCard(
-                                    aiStatus: getStatus(item.aiStatus ?? .failure),
-                                    progress: 0.4,
-                                    title: item.title,
-                                    description: item.description,
-                                    thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
-                                    tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
-                                    category: item.category ?? store.currentFolder.name,
-                                    timeSince: item.createdAt.timeAgo(),
-                                    isFavorite: item.isFavorite ?? false,
-                                    bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
-                                    showModalAction: { store.send(.showModalButtonTapped(postId: item.id, folderId: item.folderId), animation: .default) }
-                                )
-                                .onTapGesture {
-                                    store.send(.tapCard(item: item))
-                                }
-
-                                LKDivider()
-                            }
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                FeedSortView(
+                    postCounts: store.currentFolder.postCount,
+                    onSort: { sortType in
+                        switch sortType {
+                        case .latest:
+                            store.send(.tapSortLatest)
+                        case .past:
+                            store.send(.tapSortPast)
                         }
                     }
-                } header: {
+                )
+
+                LKDivider()
+
+                ForEach(Array(store.cards.enumerated()), id: \.offset) { index, item in
                     VStack(spacing: 0) {
-                        FeedHeaderTabView(select: { selectType in
-                            switch selectType {
-                            case .all:
-                                store.send(.tapAllType)
-                            case .unread:
-                                store.send(.tapUnreadType)
-                            }
-                        })
+                        LKCard(
+                            aiStatus: getStatus(item.aiStatus ?? .failure),
+                            progress: 0.4,
+                            title: item.title,
+                            description: item.description,
+                            thumbnailImage: { ThumbnailImage(urlString: item.thumbnail) },
+                            tags: Array((item.keywords ?? []).prefix(3).map(\.name)),
+                            category: item.category ?? store.currentFolder.name,
+                            timeSince: item.createdAt.timeAgo(),
+                            isFavorite: item.isFavorite ?? false,
+                            bookMarkAction: { store.send(.bookMarkButtonTapped(index)) },
+                            showModalAction: { store.send(.showModalButtonTapped(postId: item.id, folderId: item.folderId), animation: .easeInOut) }
+                        )
+                        .onTapGesture {
+                            store.send(.tapCard(item: item))
+                        }
+
+                        LKDivider()
                     }
                 }
             }
@@ -276,31 +253,6 @@ struct FeedContentView: View {
             .failure
         case .inProgress:
             .inProgress
-        }
-    }
-}
-
-struct FeedEmptyContentView: View {
-    let folderName: String
-    let folderIcon: Image
-    let linkCount: Int
-    var onSelectTab: (FeedHeaderTabView.FeedViewTypd) -> Void
-
-    var body: some View {
-        VStack(spacing: 0) {
-            FeedHeaderView(
-                folderName: folderName,
-                folderIcon: folderIcon,
-                linkCount: linkCount
-            )
-
-            FeedHeaderTabView(select: onSelectTab)
-
-            Spacer()
-
-            FeedEmptyView()
-
-            Spacer()
         }
     }
 }
