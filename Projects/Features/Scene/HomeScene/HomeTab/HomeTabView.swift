@@ -42,7 +42,7 @@ struct HomeTabView: View {
                 .padding(EdgeInsets(top: 4, leading: 20, bottom: 12, trailing: 20))
             }
             .frame(height: 52)
-            .shadow(color: Color(red: 0.4, green: 0.44, blue: 1).opacity(0.01), blur: 12, x: 0, y: 4)
+            .tabShadow()
         }
     }
 }
