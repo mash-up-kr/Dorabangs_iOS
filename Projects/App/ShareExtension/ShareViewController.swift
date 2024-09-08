@@ -38,6 +38,7 @@ final class ShareViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black.withAlphaComponent(0.01)
         configureGesture()
         loadData()
     }
