@@ -11,16 +11,17 @@ import DesignSystemKit
 import LocalizationKit
 import SwiftUI
 
+public enum FeedViewType {
+    case all, unread
+}
+
 public struct FeedHeaderTabView: View {
-    public enum FeedViewTypd {
-        case all, unread
-    }
+    public let select: (FeedViewType) -> Void
+    @Binding var selectedType: FeedViewType
 
-    let select: (FeedViewTypd) -> Void
-    @State var selectedType: FeedViewTypd = .all
-
-    public init(select: @escaping (FeedViewTypd) -> Void) {
+    public init(select: @escaping (FeedViewType) -> Void, selectedType: Binding<FeedViewType>) {
         self.select = select
+        _selectedType = selectedType
     }
 
     public var body: some View {

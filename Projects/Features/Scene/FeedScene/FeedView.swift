@@ -32,14 +32,17 @@ public struct FeedView: View {
                     store.send(.tapMore, animation: .easeInOut)
                 }
             )
-            FeedHeaderTabView(select: { selectType in
-                switch selectType {
-                case .all:
-                    store.send(.tapAllType)
-                case .unread:
-                    store.send(.tapUnreadType)
-                }
-            })
+            FeedHeaderTabView(
+                select: { selectType in
+                    switch selectType {
+                    case .all:
+                        store.send(.tapAllType)
+                    case .unread:
+                        store.send(.tapUnreadType)
+                    }
+                },
+                selectedType: $store.feedViewType
+            )
 
             LKDivider()
 
@@ -82,7 +85,15 @@ public struct FeedView: View {
                        store.send(.cancelRemoveCard)
                    })
                })
-        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged, isEmbedTabbar: false)
+        .bottomSheet(
+            isPresented: $store.folderBottomSheetIsPresent.projectedValue,
+            folders: store.folders.map(\.name),
+            onSelectNewFolder: {
+                store.send(.tapCreateNewFolder)
+            },
+            onComplete: { store.send(.tapMoveFolder(folderID: $0)) }
+        )
+        .toast(isPresented: $store.toastPopupIsPresented, type: .info, message: store.toastMessage, isEmbedTabbar: false)
     }
 }
 

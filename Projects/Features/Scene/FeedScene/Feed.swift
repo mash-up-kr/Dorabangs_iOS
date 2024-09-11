@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Foundation
+import LocalizationKit
 import Models
 import Services
 
@@ -18,6 +19,7 @@ public struct Feed {
         public var currentFolder: Folder
         public var pageModel = PostPageModel()
         public var cards: [Card] = []
+        public var folders: [Folder] = []
 
         public var editFolderPopupIsPresented: Bool = false
         public var removeFolderPopupIsPresented: Bool = false
@@ -25,9 +27,16 @@ public struct Feed {
         public var cardActionSheetPresented: Bool = false
         public var editCardPopupIsPresented: Bool = false
         public var editingPostId: String?
+        public var toastMessage: String = ""
+        public var folderBottomSheetIsPresent = false
+        public var feedViewType: FeedViewType
 
-        public init(currentFolder: Folder) {
+        public init(
+            currentFolder: Folder,
+            feedViewType: FeedViewType = .all
+        ) {
             self.currentFolder = currentFolder
+            self.feedViewType = feedViewType
         }
     }
 
@@ -51,7 +60,12 @@ public struct Feed {
         case tapSortPast
         case tapCard(item: Card)
         case readCard(String)
-        case readCardResult(Result<Card, Error>)
+        case tapCreateNewFolder
+        case tapMoveFolder(folderID: String?)
+        case fetchFolders
+        case fetchFoldersResult(Result<FoldersModel, Error>)
+        case movedFolderResult(folderName: String?)
+        case routeToCreateNewFolderScene(postId: String)
 
         case tapRemoveCard
         case tapMoveCard
@@ -91,7 +105,11 @@ public struct Feed {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .merge(.send(.fetchFolderInfo(state.currentFolder.id)), .send(.onAppearList))
+                if state.feedViewType == .unread {
+                    return .send(.tapUnreadType)
+                } else {
+                    return .merge(.send(.fetchFolderInfo(state.currentFolder.id)), .send(.onAppearList))
+                }
             case .onAppearList:
                 state.pageModel.isFavorite = (state.currentFolder.type == .favorite)
                 if state.pageModel.canLoadingMore() {
@@ -139,33 +157,48 @@ public struct Feed {
                 state.editFolderPopupIsPresented = true
                 return .none
             case .tapAllType:
-                state.pageModel.isLoading = true
-                state.pageModel.currentPage = 1
-                state.pageModel.isRead = nil
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.currentPage = 1
+                    state.pageModel.isRead = nil
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapUnreadType:
-                state.pageModel.isLoading = true
-                state.pageModel.currentPage = 1
-                state.pageModel.isRead = false
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.currentPage = 1
+                    state.pageModel.isRead = false
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapSortLatest:
-                state.pageModel.isLoading = true
-                state.pageModel.order = .DESC
-                state.pageModel.currentPage = 1
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.order = .DESC
+                    state.pageModel.currentPage = 1
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapSortPast:
-                state.pageModel.isLoading = true
-                state.pageModel.order = .ASC
-                state.pageModel.currentPage = 1
-                return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                if state.pageModel.isLoading == false {
+                    state.pageModel.isLoading = true
+                    state.pageModel.order = .ASC
+                    state.pageModel.currentPage = 1
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case .tapChangeFolderName:
                 state.editFolderPopupIsPresented = false
                 return .send(.routeToChangeFolderName(state.currentFolder.id))
             case let .routeToChangeFolderName(currentFolderId):
                 return .none
-            case let .changedFolderName(newName):
-                // TODO: - 통신탄 결과로 수정해야함~
-                //                state.title = newName
+            case .changedFolderName:
+                state.toastMessage = LocalizationKitStrings.FeedScene.toastMessageFolderNameChanged
                 state.toastPopupIsPresented = true
                 return .none
             case .showRemoveFolderPopup:
@@ -198,6 +231,40 @@ public struct Feed {
                         try await postAPIClient.readPost(postId)
                     }))
                 }
+            case .tapCreateNewFolder:
+                if let editingPostId = state.editingPostId {
+                    return .send(.routeToCreateNewFolderScene(postId: editingPostId))
+                }
+                return .none
+            case let .tapMoveFolder(folderName):
+                if let editingPostId = state.editingPostId, let folderId = state.folders.first(where: { $0.name == folderName })?.id {
+                    return .run { send in
+                        try await postAPIClient.movePostFolder(postId: editingPostId, folderId: folderId)
+                        await send(.movedFolderResult(folderName: folderName))
+                    }
+                }
+                return .none
+            case let .movedFolderResult(folderName):
+                if let editingPostId = state.editingPostId {
+                    state.cards.removeAll(where: { $0.id == editingPostId })
+                }
+                state.editingPostId = nil
+                state.folderBottomSheetIsPresent = false
+                state.toastMessage = LocalizationKitStrings.HomeScene.moveCardToastMessage(folderName ?? "")
+                state.toastPopupIsPresented = true
+                return .send(.fetchFolderInfo(state.currentFolder.id))
+            case .fetchFolders:
+                return .run { send in
+                    await send(.fetchFoldersResult(Result { try await
+                            folderAPIClient.getFolders()
+                    }))
+                }
+            case let .fetchFoldersResult(.success(foldersModel)):
+                let currentFolderId = state.currentFolder.id
+                state.folders = foldersModel.defaultFolders + foldersModel.customFolders
+                state.folders.removeAll(where: { $0.type == .all || $0.type == .favorite || $0.id == currentFolderId })
+                state.folderBottomSheetIsPresent = true
+                return .none
             case let .bookMarkButtonTapped(index):
                 return .send(.changeBookMarkStatus(state.cards[index]))
             case let .changeBookMarkStatus(post):
@@ -208,7 +275,12 @@ public struct Feed {
                 }
             case let .updatedPostResult(.success(updatedPost)):
                 if let index = state.cards.firstIndex(where: { $0.id == updatedPost.id }) {
-                    state.cards[index] = updatedPost
+                    if state.pageModel.isRead == false, updatedPost.readAt != nil {
+                        // 읽지 않은 카드 목록에서 읽은 카드 삭제
+                        state.cards.removeAll(where: { $0.id == updatedPost.id })
+                    } else {
+                        state.cards[index] = updatedPost
+                    }
                 }
                 return .none
             case let .showModalButtonTapped(postId, folderId):
@@ -219,8 +291,8 @@ public struct Feed {
                 state.editCardPopupIsPresented = true
                 return .none
             case .tapMoveCard:
-                print("==== move")
-                return .none
+                state.cardActionSheetPresented = false
+                return .send(.fetchFolders, animation: .default)
             case .removeCard:
                 if let editingPostId = state.editingPostId {
                     return .run { send in
@@ -232,9 +304,14 @@ public struct Feed {
                 }
                 return .none
             case .removeCardResult:
+                if let editingPostId = state.editingPostId {
+                    state.cards.removeAll(where: { $0.id == editingPostId })
+                }
                 state.editCardPopupIsPresented = false
                 state.cardActionSheetPresented = false
                 state.editingPostId = nil
+                state.toastMessage = LocalizationKitStrings.StorageBoxScene.deleteCompletedToastMessage
+                state.toastPopupIsPresented = true
                 return .send(.fetchFolderInfo(state.currentFolder.id))
             case .cancelRemoveCard:
                 state.editCardPopupIsPresented = false

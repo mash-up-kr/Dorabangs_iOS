@@ -20,6 +20,7 @@ public struct CreateNewFolder {
             case saveURLScene(url: URL)
             case changeFolder
             case storageBox
+            case feed
         }
 
         public fileprivate(set) var newFolderName: String = ""
@@ -49,6 +50,7 @@ public struct CreateNewFolder {
         case routeToPreviousScreen
         case routeToHomeScreen
         case routeToStorageBoxScene
+        case routeToFeedScene
     }
 
     enum ActionID: Hashable {
@@ -99,6 +101,10 @@ public struct CreateNewFolder {
 
                     case .storageBox:
                         await send(.routeToStorageBoxScene)
+
+                    case .feed:
+                        try await postAPIClient.movePostFolder(postId: postId, folderId: createdFolder.id)
+                        await send(.routeToFeedScene)
                     }
                 } catch: { _, send in
                     await send(.isTextFieldWarnedChanged(true))

@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import Foundation
+import LocalizationKit
 import Models
 import Services
 
@@ -67,7 +68,7 @@ public struct Home {
         // MARK: Navigation Action
         case routeToSelectFolder(URL)
         case routeToAIClassificationScreen
-        case routeToUnreadFeed
+        case routeToUnreadFeed(Folder)
         case routeToWebScreen(URL)
         case routeToSaveURLVideoGuideScreen
     }
@@ -213,9 +214,9 @@ public struct Home {
                 } else if bannerType == .onboarding {
                     return .send(.routeToSaveURLVideoGuideScreen)
                 } else {
-                    return .send(.routeToUnreadFeed)
+                    let folder = Folder(id: "", name: LocalizationKitStrings.Common.readLaterLink, type: .default, postCount: state.unreadLinkCount)
+                    return .send(.routeToUnreadFeed(folder))
                 }
-                return .none
 
             case let .tabs(.tabSelected(index)):
                 guard let tabs = state.tabs else { return .none }
