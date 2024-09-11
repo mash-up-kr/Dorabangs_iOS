@@ -56,7 +56,6 @@ public struct LKClipboardToast: View {
 
                     Spacer()
                 }
-                .frame(height: 42)
             }
 
             Image(.icCloseWhite)
