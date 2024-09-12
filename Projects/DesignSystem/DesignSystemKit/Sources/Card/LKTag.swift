@@ -23,7 +23,7 @@ public struct LKTag: View {
             .padding(.vertical, 6)
             .frame(height: 24)
             .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-            .border(DesignSystemKitAsset.Colors.g3.swiftUIColor, width: 0.5)
+            .border(DesignSystemKitAsset.Colors.g3.swiftUIColor, width: 1)
             .lineLimit(1)
     }
 }

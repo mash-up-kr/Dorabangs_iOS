@@ -26,7 +26,6 @@ struct HomeTabView: View {
                         WithPerceptionTracking {
                             if let tab = store.tabs[safe: index] {
                                 LKTopTabView(
-                                    folderType: TopFolderType(string: tab.type.toString) ?? .custom,
                                     isSelected: store.selectedIndex == index,
                                     title: tab.name
                                 )
@@ -40,9 +39,10 @@ struct HomeTabView: View {
                         }
                     }
                 }
-                .padding(EdgeInsets(top: 8, leading: 20, bottom: 12, trailing: 20))
+                .padding(EdgeInsets(top: 4, leading: 20, bottom: 12, trailing: 20))
             }
-            .frame(height: 56)
+            .frame(height: 52)
+            .tabShadow()
         }
     }
 }

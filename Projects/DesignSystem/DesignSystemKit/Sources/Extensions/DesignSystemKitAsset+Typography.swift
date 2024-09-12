@@ -50,7 +50,14 @@ public extension DesignSystemKitAsset.Typography {
         case _26 = 26.0
         case _24 = 24.0
         case _22 = 22.0
+        case _21 = 21.0
         case _14 = 14.0
+    }
+
+    enum LetterSpacing: CGFloat {
+        case zero = 0
+        case _m01 = -0.1
+        case _m03 = -0.3
     }
 
     enum Semantic: String {
@@ -98,9 +105,18 @@ public extension DesignSystemKitAsset.Typography.Semantic {
         case .h5, .h6: ._38
         case .title: ._34
         case .subtitle1, .subtitle2: ._26
-        case .base1, .base2, .caption3: ._24
-        case .caption2, .caption1: ._22
-        case .s, .xs: ._14
+        case .base1, .base2: ._24
+        case .caption3, .caption2, .caption1: ._22
+        case .s: ._21
+        case .xs: ._14
+        }
+    }
+
+    var letterSpacing: DesignSystemKitAsset.Typography.LetterSpacing {
+        switch self {
+        case .title, .base2, .caption3, .caption2, .caption1: ._m03
+        case .s, .xs: ._m01
+        default: .zero
         }
     }
 }

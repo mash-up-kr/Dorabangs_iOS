@@ -28,20 +28,21 @@ struct AIClassificationCardSectionHeaderView: View {
                 .font(weight: .medium, semantic: .caption1)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
 
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 12)
 
             Button(action: action) {
                 Text(LocalizationKitStrings.AIClassificationScene.moveAllButtonTitle)
-                    .padding(.horizontal, 30)
+                    .padding(.horizontal, 24)
                     .padding(.vertical, 8)
-                    .font(weight: .medium, semantic: .caption3)
-                    .foregroundStyle(DesignSystemKitAsset.Colors.white.swiftUIColor)
-                    .background(DesignSystemKitAsset.Colors.g9.swiftUIColor)
+                    .frame(height: 36, alignment: .center)
+                    .font(weight: .medium, semantic: .caption2)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g1.swiftUIColor)
+                    .background(DesignSystemKitAsset.Colors.g8.swiftUIColor)
                     .cornerRadius(99.9, corners: .allCorners)
             }
             .buttonStyle(.plain)
         }
-        .padding(.vertical, 32)
-        .background(DesignSystemKitAsset.Colors.gradient2)
+        .padding(.vertical, 48)
+        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
     }
 }

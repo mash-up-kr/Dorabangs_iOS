@@ -38,10 +38,11 @@ public struct LKToast: View {
 
             Text(message)
                 .lineLimit(1)
-                .font(weight: .medium, semantic: .caption3)
+                .font(weight: .regular, semantic: .caption2)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g2.swiftUIColor)
         }
-        .padding(20)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 20)
         .background(DesignSystemKitAsset.Colors.dimmed80.swiftUIColor)
         .cornerRadius(999, corners: .allCorners)
         .padding(.horizontal, 30)

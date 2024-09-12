@@ -18,19 +18,19 @@ public struct LKTextMiddleTopBar: View {
     public init(
         title: String? = nil,
         backButtonAction: @escaping () -> Void = {},
-        rightButtomImage: Image? = nil,
+        rightButtonImage: Image? = nil,
         rightButtonEnabled: Bool? = false,
-        action: @escaping () -> Void
+        action: @escaping () -> Void = {}
     ) {
         self.title = title
         self.rightButtonEnabled = rightButtonEnabled
-        rightButtonImage = rightButtomImage
+        self.rightButtonImage = rightButtonImage
         self.backButtonAction = backButtonAction
         self.action = action
     }
 
     public var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 8) {
             Image(.icChevronLeftBig)
                 .frame(width: 24, height: 24)
                 .onTapGesture(perform: backButtonAction)
@@ -50,6 +50,7 @@ public struct LKTextMiddleTopBar: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+        .frame(height: 48)
         .overlay {
             if let title {
                 Text(title)

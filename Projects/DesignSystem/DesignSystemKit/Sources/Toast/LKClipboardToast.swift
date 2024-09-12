@@ -33,23 +33,24 @@ public struct LKClipboardToast: View {
     }
 
     public var body: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .top, spacing: 16) {
+            VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 0) {
                     Text(LocalizationKitStrings.DesignsSystemKit.saveCopiedLink)
-                        .font(weight: .medium, semantic: .caption1)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
+                        .font(weight: .regular, semantic: .caption1)
+                        .foregroundStyle(DesignSystemKitAsset.Colors.g1.swiftUIColor)
                         .onTapGesture(perform: saveAction)
 
-                    DesignSystemKitAsset.Icons.icChevronRightSmallWhite.swiftUIImage
+                    DesignSystemKitAsset.Icons.icChevronRightSmallWhite
+                        .swiftUIImage
                         .frame(width: 20, height: 20)
                 }
-                .frame(height: 22)
+                .frame(height: 24)
 
                 HStack(alignment: .top, spacing: 0) {
                     Text(urlString)
-                        .font(weight: .bold, semantic: .caption3)
-                        .foregroundStyle(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                        .font(weight: .regular, semantic: .caption1)
+                        .foregroundStyle(DesignSystemKitAsset.Colors.g4.swiftUIColor)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
 
@@ -57,17 +58,17 @@ public struct LKClipboardToast: View {
                 }
             }
 
-            Image(.icCloseCircle)
+            Image(.icCloseWhite)
                 .resizable()
                 .frame(width: 24, height: 24)
                 .onTapGesture(perform: closeAction)
         }
         .padding(16)
-        .background(DesignSystemKitAsset.Colors.g9.swiftUIColor)
+        .background(DesignSystemKitAsset.Colors.surfaceBlack.swiftUIColor)
         .cornerRadius(12, corners: .allCorners)
         .shadow(
-            color: DesignSystemKitAsset.Colors.black.swiftUIColor.opacity(0.26),
-            blur: 20,
+            color: Color(red: 0.15, green: 0.16, blue: 0.17).opacity(0.12),
+            blur: 32,
             x: 0,
             y: 4
         )

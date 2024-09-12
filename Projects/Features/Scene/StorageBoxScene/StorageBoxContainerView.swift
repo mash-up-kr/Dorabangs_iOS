@@ -28,14 +28,14 @@ public struct StorageBoxContainerView<Content: View>: View {
         }
         .editFolderPopup(isPresented: $store.editFolderPopupIsPresented.projectedValue, onSelect: { index in
             if index == 0 {
-                store.send(.showRemoveFolderPopup, animation: .default)
+                store.send(.showRemoveFolderPopup)
             } else {
                 store.send(.tapChangeFolderName)
             }
         })
         .modal(isPresented: $store.removeFolderPopupIsPresented.projectedValue, content: {
             removeFolderPopup(onCancel: {
-                store.send(.cancelRemoveFolder, animation: .default)
+                store.send(.cancelRemoveFolder)
             }, onRemove: {
                 store.send(.tapRemoveFolderButton)
             })

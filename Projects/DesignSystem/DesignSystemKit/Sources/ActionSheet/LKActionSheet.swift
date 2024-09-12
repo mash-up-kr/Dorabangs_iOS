@@ -24,15 +24,15 @@ public struct LKActionSheet: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            DragIndicator()
-                .padding(.top, 6)
+            DragIndicator(type: .dark)
+                .padding(.top, 12)
 
             ActionList(items: items)
                 .padding(.top, 19)
                 .padding(.horizontal, 16)
         }
         .frame(height: actionSheetHeight, alignment: .top)
-        .background(DesignSystemKitAsset.Colors.g1.swiftUIColor)
+        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
         .cornerRadius(16, corners: [.topLeft, .topRight])
         .shadow(
             color: DesignSystemKitAsset.Colors.topShadow.swiftUIColor,
@@ -63,15 +63,31 @@ public struct LKActionSheet: View {
 }
 
 public struct DragIndicator: View {
+    public enum ColorType { case dark, light }
+    private let type: ColorType
+
+    public init(type: ColorType = .dark) {
+        self.type = type
+    }
+
     public var body: some View {
         HStack {
             Spacer()
 
-            DesignSystemKitAsset.Icons.icPin.swiftUIImage
+            type.image
                 .resizable()
                 .frame(width: 36, height: 5)
 
             Spacer()
+        }
+    }
+}
+
+extension DragIndicator.ColorType {
+    var image: Image {
+        switch self {
+        case .dark: DesignSystemKitAsset.Icons.icHandlerDark.swiftUIImage
+        case .light: DesignSystemKitAsset.Icons.icHandlerLight.swiftUIImage
         }
     }
 }
@@ -83,9 +99,7 @@ private struct ActionList: View {
         VStack(spacing: 0) {
             ForEach(items.indices, id: \.self) { index in
                 if index > 0 {
-                    Divider()
-                        .frame(height: 0.5)
-                        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
+                    LKDivider()
                         .padding(.horizontal, 16)
                 }
 

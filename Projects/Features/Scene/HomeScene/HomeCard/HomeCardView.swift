@@ -61,6 +61,8 @@ struct HomeCardView: View {
                         store.send(.updatePage)
                     }
                 }
+
+                LKDivider()
             }
         }
     }

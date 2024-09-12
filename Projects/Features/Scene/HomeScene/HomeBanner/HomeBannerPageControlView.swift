@@ -28,7 +28,7 @@ public struct HomeBannerPageControlView: View {
         }
         .padding(.horizontal, 8)
         .frame(height: 16)
-        .background(DesignSystemKitAsset.Colors.gradient1)
+        .background(DesignSystemKitAsset.Colors.gradient3)
         .cornerRadius(50, corners: .allCorners)
     }
 }
@@ -45,7 +45,7 @@ private struct PageControlComponentView: View {
     fileprivate var body: some View {
         if currentBannerType == .ai {
             if isCurrentIndex {
-                DesignSystemKitAsset.Icons.icStarFill.swiftUIImage
+                DesignSystemKitAsset.Icons.icStarBlack.swiftUIImage
                     .frame(width: 8, height: 8)
             } else {
                 DesignSystemKitAsset.Icons.icStar.swiftUIImage

@@ -28,7 +28,7 @@ public struct RoundedCornersButton: View {
         static let horizontalPadding: CGFloat = 4
         static let verticalPadding: CGFloat = 14
         static let height: CGFloat = 48
-        static let cornerRadius: CGFloat = 12
+        static let cornerRadius: CGFloat = 8
     }
 
     public var body: some View {
@@ -37,7 +37,7 @@ public struct RoundedCornersButton: View {
                 .padding(.horizontal, Constant.horizontalPadding)
                 .padding(.vertical, Constant.verticalPadding)
                 .frame(maxWidth: .infinity, minHeight: Constant.height, maxHeight: Constant.height)
-                .font(weight: .medium, semantic: .base2)
+                .font(weight: .medium, semantic: .caption3)
                 .foregroundColor(foregroundColor)
                 .background(backgroundColor)
                 .cornerRadius(Constant.cornerRadius, corners: .allCorners)

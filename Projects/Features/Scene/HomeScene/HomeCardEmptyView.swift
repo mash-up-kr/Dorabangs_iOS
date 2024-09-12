@@ -15,7 +15,7 @@ struct HomeCardEmptyView: View {
         VStack(spacing: 12) {
             DesignSystemKitAsset.Icons.icEmpty.swiftUIImage
                 .frame(width: 40, height: 40)
-            
+
             Text(LocalizationKitStrings.HomeScene.homeCardEmptyViewDescription)
                 .font(weight: .medium, semantic: .caption3)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g3.swiftUIColor)
@@ -25,8 +25,7 @@ struct HomeCardEmptyView: View {
         .frame(alignment: .center)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
     }
-    
-    
+
     private func getScreenHeightExcludingSafeArea() -> CGFloat {
         // 전체 화면 높이 구하기
         let screenHeight = UIScreen.main.bounds.height
@@ -34,7 +33,7 @@ struct HomeCardEmptyView: View {
         // UIWindowScene을 통해 Safe Area Insets 구하기
         let keyWindow = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
+            .flatMap(\.windows)
             .first { $0.isKeyWindow }
 
         let safeAreaInsets = keyWindow?.safeAreaInsets ?? UIEdgeInsets.zero

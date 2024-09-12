@@ -73,7 +73,12 @@ private struct ColorRowView: View {
 
 private struct GradientRowView: View {
     let name: String
-    let gradient: LinearGradient
+    let gradient: AnyShapeStyle
+
+    init(name: String, gradient: any ShapeStyle) {
+        self.name = name
+        self.gradient = AnyShapeStyle(gradient)
+    }
 
     var body: some View {
         HStack {

@@ -24,36 +24,40 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: Constant.LKTopLogoBarHeight + Constant.LKTopScrollViewHeight)
+        GeometryReader { _ in
+            VStack(spacing: 0) {
+                topBarView
+                    .dividerLine(edge: .bottom)
 
-                    if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
-                        HomeBannerCarousel(store: store)
-                    }
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        if let tabs = store.tabs, tabs.selectedFolderId == "all", let store = store.scope(state: \.banner, action: \.banner) {
+                            HomeBannerCarousel(store: store)
+                                .padding(.top, 16)
+                        }
 
-                    if let store = store.scope(state: \.cards, action: \.cards) {
-                        HomeCardView(store: store)
+                        if let store = store.scope(state: \.cards, action: \.cards) {
+                            HomeCardView(store: store)
+                                .padding(.top, 16)
+                        }
                     }
+                    .padding(.bottom, 60)
+                }
+                .applyIf(store.isaddLinkButtonShowed) { view in
+                    view
+                        .overlay(alignment: .bottomTrailing, content: {
+                            AddLinkFloatingActionButton {
+                                store.send(.addLinkButtonTapped)
+                            }
+                            .offset(x: -20, y: -20)
+                        })
                 }
                 .applyIf(store.isLoading) { _ in
                     LoadingIndicator()
-                        .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 60)
                 }
-                .padding(.bottom, 60)
             }
-            .zIndex(1)
-
-            topBarView
-                .zIndex(2)
-                .background(DesignSystemKitAsset.Colors.white.swiftUIColor.opacity(0.7))
-                .background(.ultraThinMaterial)
-                .shadow(color: DesignSystemKitAsset.Colors.primary.swiftUIColor.opacity(0.01), blur: 8, x: 0, y: -4)
         }
         .padding(.bottom, 60)
-        .homeBackgroundView()
         .navigationBarHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -69,10 +73,8 @@ public struct HomeView: View {
     @ViewBuilder
     private var topBarView: some View {
         VStack(spacing: 0) {
-            LKTopLogoBar {
-                store.send(.addLinkButtonTapped)
-            }
-            .frame(height: Constant.LKTopLogoBarHeight)
+            LKTopLogoBar()
+                .frame(height: Constant.LKTopLogoBarHeight)
 
             if let store = store.scope(state: \.tabs, action: \.tabs) {
                 HomeTabView(store: store)
@@ -99,50 +101,40 @@ struct HomeBannerCarousel: View {
             HomeBannerView(banner: item) {
                 store.send(.bannerButtonTapped(item.bannerType))
             }
+            .frame(width: UIScreen.main.bounds.width - 40, height: 334)
+            .cornerRadius(20, corners: .allCorners)
         }
         .onChange(of: store.bannerIndex) { _, newValue in
             playBannerLottie(with: store.bannerList[newValue].bannerType)
         }
         .onAppear { playBannerLottie(with: store.bannerList[store.bannerIndex].bannerType) }
         .onDisappear { stopBannerLottie() }
-        .frame(height: 340)
-
-        HomeBannerPageControlView(store: store)
-            .frame(maxWidth: .infinity)
-            .frame(height: 40)
-            .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-    }
-}
-
-private struct HomeBackgroundView: View {
-    fileprivate init() {}
-
-    fileprivate var body: some View {
-        GeometryReader { _ in
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 357, height: 357)
-                .background(
-                    EllipticalGradient(
-                        stops: [
-                            Gradient.Stop(color: Color(red: 0.75, green: 0.87, blue: 0.99), location: 0.00),
-                            Gradient.Stop(color: Color(red: 0.75, green: 0.87, blue: 0.99).opacity(0), location: 1.00)
-                        ],
-                        center: UnitPoint(x: 0.5, y: 0.5)
-                    )
-                )
-                .cornerRadius(357, corners: .allCorners)
-                .offset(x: -40, y: 28)
+        .frame(height: 334)
+        .overlay {
+            GeometryReader { geometry in
+                HomeBannerPageControlView(store: store)
+                    .position(x: geometry.size.width - 60, y: 20)
+            }
         }
-        .edgesIgnoringSafeArea(.all)
     }
 }
 
-private extension View {
-    func homeBackgroundView() -> some View {
-        ZStack {
-            HomeBackgroundView()
-            self
+struct AddLinkFloatingActionButton: View {
+    var action: () -> Void
+
+    public var body: some View {
+        Button(action: action) {
+            DesignSystemKitAsset.Icons.icAdd
+                .swiftUIImage
+                .resizable()
+                .renderingMode(.template)
+                .foregroundColor(DesignSystemKitAsset.Colors.white.swiftUIColor)
+                .frame(width: 32, height: 32)
+                .padding(.all, 14)
+                .frame(width: 60, height: 60, alignment: .center)
+                .background(DesignSystemKitAsset.Colors.surfaceBlack.swiftUIColor)
+                .cornerRadius(99, corners: .allCorners)
+                .dropShadow()
         }
     }
 }

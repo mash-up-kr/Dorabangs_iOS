@@ -25,34 +25,24 @@ public struct FeedHeaderTabView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            HStack(alignment: .center, spacing: 0) {
-                FeedHeaderTabItemView(title: LocalizationKitStrings.Common.all, isSelected: selectedType == .all, onTap: {
+        HStack(alignment: .center, spacing: 8) {
+            LKTopTabView(isSelected: selectedType == .all, title: LocalizationKitStrings.Common.all)
+                .onTapGesture {
                     select(.all)
                     selectedType = .all
-                })
-                .frame(width: 70)
+                }
 
-                Divider()
-                    .foregroundStyle(DesignSystemKitAsset.Colors.g2.swiftUIColor)
-                    .frame(width: 1, height: 12)
-
-                FeedHeaderTabItemView(title: LocalizationKitStrings.FeedScene.unreadTab, isSelected: selectedType == .unread, onTap: {
+            LKTopTabView(isSelected: selectedType == .unread, title: LocalizationKitStrings.FeedScene.unreadTab)
+                .onTapGesture {
                     select(.unread)
                     selectedType = .unread
-                })
-                .frame(width: 98)
+                }
 
-                Spacer()
-            }
-            .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-            .frame(height: 48)
-
-            Divider()
-                .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
-                .frame(height: 1)
+            Spacer()
         }
+        .padding(EdgeInsets(top: 4, leading: 20, bottom: 12, trailing: 20))
+        .frame(height: 52)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-        .frame(height: 48)
+        .tabShadow()
     }
 }

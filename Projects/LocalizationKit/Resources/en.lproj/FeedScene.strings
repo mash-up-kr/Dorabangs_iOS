@@ -7,6 +7,8 @@
 // MARK: - FeedHeaderView
 "post_counts" = "%d posts";
 
+"post_counts_reversed" = "posts %d";
+
 // MARK: - FeedSortView
 "latest_sort_tab" = "Latest";
 

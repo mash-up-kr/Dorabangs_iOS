@@ -32,10 +32,8 @@ public struct StorageBoxSection: View {
         VStack(spacing: 0) {
             ForEach(storageBoxList.indices, id: \.self) { index in
                 if index > 0 {
-                    Divider()
-                        .frame(height: 1)
+                    LKDivider()
                         .padding(.horizontal, 12)
-                        .foregroundColor(DesignSystemKitAsset.Colors.g1.swiftUIColor)
                 }
                 StorageBoxItem(
                     model: storageBoxList[index],

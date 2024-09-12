@@ -37,22 +37,27 @@ public struct FolderBottomSheet: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            DragIndicator()
-                .padding(.top, 6)
+            DragIndicator(type: .light)
+                .padding(.top, 12)
 
             Text(LocalizationKitStrings.DesignsSystemKit.moveFolder)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
                 .font(weight: .bold, semantic: .base2)
-                .frame(height: 56)
+                .frame(height: 20)
                 .frame(minWidth: 0, maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .gesture(dragGesture)
+                .padding(.top, 18)
+                .padding(.bottom, 6)
 
             ScrollView {
                 VStack(spacing: 0) {
                     NewFolderView()
                         .onTapGesture(perform: onSelectNewFolder)
-                        .padding(.horizontal, 16)
+                        .padding(.horizontal, 20)
                         .frame(height: 52)
+
+                    LKDivider()
 
                     FolderList(folders: folders, selectedIndex: $selectedIndex)
                 }
@@ -75,10 +80,9 @@ public struct FolderBottomSheet: View {
 
             Spacer().frame(height: keywindow?.safeAreaInsets.bottom)
         }
-
         .frame(height: getMaxHeight(), alignment: .top)
         .background(DesignSystemKitAsset.Colors.white.swiftUIColor)
-        .cornerRadius(16, corners: .allCorners)
+        .cornerRadius(16, corners: [.topLeft, .topRight])
         .shadow(
             color: DesignSystemKitAsset.Colors.topShadow.swiftUIColor,
             blur: 12,

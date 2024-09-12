@@ -39,9 +39,7 @@ struct AIClassificationCardSectionItemView: View {
                 }
 
                 if item != items.last {
-                    Divider()
-                        .frame(height: 0.5)
-                        .background(DesignSystemKitAsset.Colors.g2.swiftUIColor)
+                    LKDivider()
                         .padding(.vertical, 12)
                         .padding(.horizontal, 20)
                 }

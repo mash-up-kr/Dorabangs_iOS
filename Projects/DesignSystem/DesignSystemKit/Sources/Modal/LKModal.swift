@@ -34,24 +34,24 @@ public struct LKModal: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            Spacer().frame(height: 30)
+            Spacer().frame(height: 24)
 
             Text(title)
-                .font(weight: .bold, semantic: .base1)
+                .font(weight: .bold, semantic: .base2)
                 .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
                 .padding(.horizontal, 16)
 
-            Spacer().frame(height: 8)
+            Spacer().frame(height: 4)
 
             Text(content)
                 .multilineTextAlignment(.center)
                 .frame(alignment: .center)
-                .font(weight: .medium, semantic: .caption3)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g5.swiftUIColor)
+                .font(weight: .regular, semantic: .caption2)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
 
-            Spacer().frame(height: 30)
+            Spacer().frame(height: 20)
 
-            HStack(spacing: 8) {
+            HStack(spacing: 4) {
                 RoundedCornersButton(title: leftButtonTitle, style: .solidGray, action: leftButtonAction)
                 RoundedCornersButton(title: rightButtonTitle, style: .solidBlack, action: rightButtonAction)
             }

@@ -78,6 +78,7 @@ let project = Project.make(
             dependencies: [
                 .spm(.composableArchitecture),
                 .designSystem,
+                .core(.common),
                 .core(.service),
                 .core(.model),
                 .localizationKit
@@ -91,6 +92,7 @@ let project = Project.make(
             dependencies: [
                 .spm(.composableArchitecture),
                 .designSystem,
+                .core(.common),
                 .core(.service),
                 .core(.model),
                 .localizationKit

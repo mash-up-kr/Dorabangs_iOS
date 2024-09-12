@@ -6,6 +6,7 @@
 //  Copyright © 2024 mashup.dorabangs. All rights reserved.
 //
 
+import Common
 import ComposableArchitecture
 import DesignSystemKit
 import LocalizationKit
@@ -56,7 +57,7 @@ public struct SaveURLView: View {
         .navigationBarHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
+        .onViewDidLoad {
             isFocused = true
             store.send(.onAppear)
         }

@@ -13,17 +13,10 @@ public struct NewFolderView: View {
     public init() {}
 
     public var body: some View {
-        HStack(spacing: 12) {
-            DesignSystemKitAsset.Icons.icAddFolder
-                .swiftUIImage
-                .resizable()
-                .renderingMode(.template)
-                .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
-                .frame(width: 24, height: 24)
-
+        HStack {
             Text(LocalizationKitStrings.DesignsSystemKit.addNewFolder)
                 .font(weight: .regular, semantic: .caption3)
-                .foregroundStyle(DesignSystemKitAsset.Colors.primary.swiftUIColor)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
 
             Spacer()
         }

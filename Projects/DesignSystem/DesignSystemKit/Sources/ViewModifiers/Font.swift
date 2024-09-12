@@ -29,6 +29,7 @@ private struct FontStyle: ViewModifier {
             .font(Font(font))
             .lineSpacing(semantic.lineHeight.rawValue - font.lineHeight)
             .padding(.vertical, (semantic.lineHeight.rawValue - font.lineHeight) / 2)
+            .kerning(semantic.letterSpacing.rawValue)
     }
 }
 

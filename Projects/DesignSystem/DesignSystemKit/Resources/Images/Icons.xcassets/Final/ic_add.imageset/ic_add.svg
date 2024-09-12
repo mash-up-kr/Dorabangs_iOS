@@ -1,0 +1,22 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic">
+<g id="Group 36743">
+<path id="Stroke 353" d="M15.9989 8V23.9847" stroke="url(#paint0_angular_8001_126060)" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Stroke 354" d="M24 15.9925H8" stroke="url(#paint1_angular_8001_126060)" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<radialGradient id="paint0_angular_8001_126060" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(15.9989 15.9924) rotate(82.2272) scale(8.06648 2.35803)">
+<stop offset="0.25" stop-color="#EAF2FF"/>
+<stop offset="0.5" stop-color="#EDF1FF"/>
+<stop offset="0.75" stop-color="#EEEFFF"/>
+<stop offset="1" stop-color="#ECEFFF"/>
+</radialGradient>
+<radialGradient id="paint1_angular_8001_126060" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(16 15.9925) rotate(7.76551) scale(8.07404 2.35807)">
+<stop offset="0.25" stop-color="#EAF2FF"/>
+<stop offset="0.5" stop-color="#EDF1FF"/>
+<stop offset="0.75" stop-color="#EEEFFF"/>
+<stop offset="1" stop-color="#ECEFFF"/>
+</radialGradient>
+</defs>
+</svg>

@@ -18,13 +18,10 @@ public struct FolderView: View {
     }
 
     public var body: some View {
-        HStack(spacing: 12) {
-            Image(.imgFolderSmall)
-                .resizable()
-                .frame(width: 24, height: 24)
-
+        HStack {
             Text(title)
-                .font(weight: .regular, semantic: .caption3)
+                .font(weight: isSelected ? .bold : .regular, semantic: .caption3)
+                .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
 
             Spacer()
 

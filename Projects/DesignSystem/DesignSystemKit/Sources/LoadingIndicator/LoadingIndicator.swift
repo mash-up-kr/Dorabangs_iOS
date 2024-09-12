@@ -13,13 +13,17 @@ public struct LoadingIndicator: View {
     public init() {}
 
     public var body: some View {
-        LottieView(
-            animation: .named(
-                JSONFiles.Spinner.jsonName,
-                bundle: .init(identifier: "com.mashup.dorabangs.designSystemKit") ?? .module
+        VStack {
+            Spacer()
+            LottieView(
+                animation: .named(
+                    JSONFiles.Spinner.jsonName,
+                    bundle: .init(identifier: "com.mashup.dorabangs.designSystemKit") ?? .module
+                )
             )
-        )
-        .playing(loopMode: .loop)
-        .backgroundBehavior(.pauseAndRestore)
+            .playing(loopMode: .loop)
+            .backgroundBehavior(.pauseAndRestore)
+            Spacer()
+        }
     }
 }

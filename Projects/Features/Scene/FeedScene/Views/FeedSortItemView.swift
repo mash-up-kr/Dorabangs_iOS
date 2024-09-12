@@ -24,16 +24,16 @@ public struct FeedSortItemView: View {
     }
 
     public var body: some View {
-        HStack(alignment: .center, spacing: 4) {
+        HStack(alignment: .center, spacing: 2) {
             image
                 .resizable()
                 .renderingMode(.template)
-                .foregroundColor(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
+                .foregroundColor(isSelected ? DesignSystemKitAsset.Colors.g8.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
                 .frame(width: 24, height: 24)
 
             Text(title)
-                .font(weight: .medium, semantic: .caption1)
-                .foregroundStyle(isSelected ? DesignSystemKitAsset.Colors.g9.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
+                .font(weight: .medium, semantic: .s)
+                .foregroundStyle(isSelected ? DesignSystemKitAsset.Colors.g8.swiftUIColor : DesignSystemKitAsset.Colors.g4.swiftUIColor)
         }
         .frame(height: 24)
         .onTapGesture {
