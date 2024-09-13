@@ -16,6 +16,7 @@ import UniformTypeIdentifiers
 @DependencyClient
 public struct URLMetadataClient: Sendable {
     public var fetchMetadata: @Sendable (URL) async throws -> URLMetadata
+    public var fetchOriginalURL: @Sendable (URL) async throws -> URL
 }
 
 extension URLMetadataClient: DependencyKey {
@@ -25,10 +26,15 @@ extension URLMetadataClient: DependencyKey {
             let metadata = try await metadataProvider.startFetchingMetadata(for: url)
             let thumbnailData = try await metadata.imageProvider?.loadItem(forTypeIdentifier: UTType.image.identifier) as? Data
             return URLMetadata(
-                url: url,
+                url: metadata.url ?? url,
                 thumbnail: thumbnailData,
                 title: metadata.title
             )
+        },
+        fetchOriginalURL: { @MainActor url in
+            let metadataProvider = LPMetadataProvider()
+            let metadata = try await metadataProvider.startFetchingMetadata(for: url)
+            return metadata.url ?? url
         }
     )
 }

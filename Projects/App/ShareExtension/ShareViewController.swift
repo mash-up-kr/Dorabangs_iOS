@@ -23,10 +23,12 @@ final class ShareViewController: UIViewController {
 
     private let folderAPIClient: FolderAPIClient
     private let postAPIClient: PostAPIClient
+    private let metadataClient: URLMetadataClient
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         folderAPIClient = .liveValue
         postAPIClient = .liveValue
+        metadataClient = .liveValue
         try? DesignSystemKitAsset.Typography.registerFont()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -102,14 +104,16 @@ private extension ShareViewController {
         if let urlProvider = item.attachments?.first(where: { $0.hasItemConformingToTypeIdentifier("public.url") }),
            let url = try await urlProvider.loadItem(forTypeIdentifier: "public.url") as? URL
         {
-            return url
+            let orignalURL = try await metadataClient.fetchOriginalURL(url)
+            return orignalURL
         }
 
         if let textProvider = item.attachments?.first(where: { $0.hasItemConformingToTypeIdentifier("public.plain-text") }),
            let text = try await textProvider.loadItem(forTypeIdentifier: "public.plain-text") as? String,
            let url = URL(string: text)
         {
-            return url
+            let orignalURL = try await metadataClient.fetchOriginalURL(url)
+            return orignalURL
         }
 
         return nil
