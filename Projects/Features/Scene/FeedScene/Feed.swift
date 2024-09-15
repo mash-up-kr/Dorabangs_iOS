@@ -66,6 +66,7 @@ public struct Feed {
         case fetchFoldersResult(Result<FoldersModel, Error>)
         case movedFolderResult(folderName: String?)
         case routeToCreateNewFolderScene(postId: String)
+        case fetchMorePostList
 
         case tapRemoveCard
         case tapMoveCard
@@ -127,6 +128,13 @@ public struct Feed {
                 return .none
             case .backButtonTapped:
                 return .send(.routeToPreviousScreen)
+            case .fetchMorePostList:
+                if state.pageModel.isLoading == false, !state.pageModel.isLast {
+                    state.pageModel.isLoading = true
+                    return .send(.fetchPostList(state.currentFolder.id, state.pageModel))
+                } else {
+                    return .none
+                }
             case let .fetchPostList(folderId, pageModel):
                 return .run { send in
                     await send(.fetchPostListResult(Result {
@@ -150,7 +158,7 @@ public struct Feed {
                 state.pageModel.isLast = !resultModel.hasNext
                 state.pageModel.isLoading = false
                 return .none
-            case let .fetchPostListResult(.failure(error)):
+            case .fetchPostListResult(.failure(_)):
                 state.pageModel.isLoading = false
                 return .none
             case .tapMore:

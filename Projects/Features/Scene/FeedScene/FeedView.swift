@@ -248,6 +248,11 @@ struct FeedContentView: View {
                         .onTapGesture {
                             store.send(.tapCard(item: item))
                         }
+                        .onAppear {
+                            if item == store.cards.last {
+                                store.send(.fetchMorePostList)
+                            }
+                        }
 
                         LKDivider()
                     }
