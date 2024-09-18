@@ -12,3 +12,5 @@
 "summarizing" = "요약중";
 
 "save_copied_link" = "클립보드에 복사한 링크 저장";
+
+"failed_to_summarize" = "요약에 실패했어요.";

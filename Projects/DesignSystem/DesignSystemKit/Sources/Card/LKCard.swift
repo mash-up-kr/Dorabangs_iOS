@@ -102,9 +102,11 @@ private struct HeaderView<Thumbnail: View>: View {
                 case .inProgress:
                     SummarizingView()
                 case .failure:
-                    EmptyView()
+                    FailureContentView(description: description)
                 }
             }
+
+            Spacer()
 
             CardThumbnailView(thumbnail: thumbnail)
         }
@@ -189,7 +191,7 @@ private struct FooterView: View {
 
                 Spacer()
 
-                if aiStatus == .success {
+                if aiStatus == .success || aiStatus == .failure {
                     ActionButtons(
                         isFavorite: isFavorite,
                         bookMarkAction: bookMarkAction,
@@ -271,6 +273,17 @@ private struct SummarizingView: View {
                 Spacer()
             }
         }
+    }
+}
+
+private struct FailureContentView: View {
+    var description: String?
+
+    var body: some View {
+        Text(description ?? LocalizationKitStrings.DesignsSystemKit.failedToSummarize)
+            .font(weight: .regular, semantic: .s)
+            .foregroundStyle(DesignSystemKitAsset.Colors.g6.swiftUIColor)
+            .lineLimit(3)
     }
 }
 
