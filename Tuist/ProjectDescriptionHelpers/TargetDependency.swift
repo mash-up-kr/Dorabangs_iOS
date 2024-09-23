@@ -41,6 +41,7 @@ public enum Scene: String {
 	case aiClassification = "AIClassification"
 	case saveURLVideoGuide = "SaveURLVideoGuide"
 	case changeFolder = "ChangeFolder"
+	case aiSummary = "AISummary"
 }
 
 public enum SPM: String {

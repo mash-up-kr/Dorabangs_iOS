@@ -174,6 +174,19 @@ let project = Project.make(
                 .core(.model),
                 .localizationKit
             ]
+        ),
+        .make(
+            name: "AISummary",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.aiSummary",
+            sources: ["AISummaryScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.service),
+                .core(.model),
+                .localizationKit
+            ]
         )
     ]
 )
