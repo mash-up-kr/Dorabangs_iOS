@@ -91,7 +91,7 @@ public struct Feed {
         case updatedPostResult(Result<Card, Error>)
         case showModalButtonTapped(postId: String, folderId: String)
 
-        case routeToWebScreen(URL)
+        case routeToWebScreen(url: URL, aiSummary: String?, tags: [String])
         case binding(BindingAction<State>)
     }
 
@@ -158,7 +158,7 @@ public struct Feed {
                 state.pageModel.isLast = !resultModel.hasNext
                 state.pageModel.isLoading = false
                 return .none
-            case .fetchPostListResult(.failure(_)):
+            case .fetchPostListResult(.failure):
                 state.pageModel.isLoading = false
                 return .none
             case .tapMore:
@@ -232,7 +232,8 @@ public struct Feed {
                 return .none
             case let .tapCard(item):
                 guard let url = URL(string: item.urlString) else { return .none }
-                return .merge(.send(.readCard(item.id)), .send(.routeToWebScreen(url)))
+                let tags = item.keywords?.compactMap(\.name) ?? []
+                return .merge(.send(.readCard(item.id)), .send(.routeToWebScreen(url: url, aiSummary: item.description, tags: tags)))
             case let .readCard(postId):
                 return .run { send in
                     await send(.updatedPostResult(Result {

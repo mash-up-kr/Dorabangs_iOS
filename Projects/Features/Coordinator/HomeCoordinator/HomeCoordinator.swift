@@ -17,7 +17,7 @@ import Models
 import SaveURLCoordinator
 import SaveURLVideoGuide
 import TCACoordinators
-import Web
+import WebViewCoordinator
 
 @Reducer(state: .equatable)
 public enum HomeScreen {
@@ -27,7 +27,7 @@ public enum HomeScreen {
     case aiClassificationCoordinator(AIClassificationCoordinator)
     case feedCoordinator(FeedCoordinator)
     case saveURLVideoGuide(SaveURLVideoGuide)
-    case web(Web)
+    case webViewCoordinator(WebViewCoordinator)
 }
 
 @Reducer
@@ -70,8 +70,8 @@ public struct HomeCoordinator {
             case let .router(.routeAction(id: _, action: .saveURLVideoGuide(action))):
                 return handleSaveURLVideoGuideAction(into: &state, action: action)
 
-            case let .router(.routeAction(id: _, action: .web(action))):
-                return handleWebAction(into: &state, action: action)
+            case let .router(.routeAction(id: _, action: .webViewCoordinator(action))):
+                return handleWebViewCoordinatorAction(into: &state, action: action)
 
             case let .routeToSaveURLCoordinator(screen):
                 let routes: [Route<SaveURLScreen.State>] = [.root(screen, embedInNavigationView: true)]
@@ -115,8 +115,8 @@ public extension HomeCoordinator {
             state.routes.push(.saveURLVideoGuide(.initialState))
             return .none
 
-        case let .routeToWebScreen(url):
-            state.routes.push(.web(.init(url: url)))
+        case let .routeToWebScreen(url, aiSummary, tags):
+            state.routes.push(.webViewCoordinator(.init(webScreen: .init(url: url, aiSummary: aiSummary, tags: tags))))
             return .none
 
         default:
@@ -191,7 +191,7 @@ public extension HomeCoordinator {
         }
     }
 
-    func handleWebAction(into state: inout State, action: Web.Action) -> Effect<Action> {
+    func handleWebViewCoordinatorAction(into state: inout State, action: WebViewCoordinator.Action) -> Effect<Action> {
         switch action {
         case .routeToPreviousScreen:
             state.routes.goBack()

@@ -25,6 +25,7 @@ public enum Coordinator: String {
 	case saveURL = "SaveURLCoordinator"
 	case aiClassification = "AIClassificationCoordinator"
 	case changeFolder = "ChangeFolderCoordinator"
+	case webView = "WebViewCoordinator"
 }
 
 public enum Scene: String {
