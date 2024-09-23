@@ -67,7 +67,8 @@ let project = Project.make(
             sources: ["WebScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
