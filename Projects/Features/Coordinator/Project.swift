@@ -38,8 +38,8 @@ let project = Project.make(
             dependencies: [
                 .scene(.home),
                 .scene(.createNewFolder),
-                .scene(.web),
                 .scene(.saveURLVideoGuide),
+                .coordinator(.webView),
                 .coordinator(.aiClassification),
                 .coordinator(.feed),
                 .coordinator(.saveURL),
@@ -73,7 +73,7 @@ let project = Project.make(
                 .spm(.tcaCoordinators),
                 .scene(.changeFolderName),
                 .scene(.createNewFolder),
-                .scene(.web)
+                .coordinator(.webView)
             ]
         ),
         .make(
@@ -97,6 +97,17 @@ let project = Project.make(
             dependencies: [
                 .scene(.aiClassification),
                 .coordinator(.feed),
+                .spm(.tcaCoordinators)
+            ]
+        ),
+        .make(
+            name: "WebViewCoordinator",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.webViewCoordinator",
+            sources: ["WebViewCoordinator/**"],
+            dependencies: [
+                .scene(.web),
+                .scene(.aiSummary),
                 .spm(.tcaCoordinators)
             ]
         )

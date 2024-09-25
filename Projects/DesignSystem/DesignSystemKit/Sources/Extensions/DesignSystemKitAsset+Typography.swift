@@ -70,6 +70,7 @@ public extension DesignSystemKitAsset.Typography {
         case subtitle2
         case base1
         case base2
+        case body
         case caption3
         case caption2
         case caption1
@@ -92,6 +93,7 @@ public extension DesignSystemKitAsset.Typography.Semantic {
         case .base2: ._15
         case .caption3: ._14
         case .caption2: ._13
+        case .body: ._13
         case .caption1: ._12
         case .s: ._11
         case .xs: ._10
@@ -104,7 +106,7 @@ public extension DesignSystemKitAsset.Typography.Semantic {
         case .h4: ._46
         case .h5, .h6: ._38
         case .title: ._34
-        case .subtitle1, .subtitle2: ._26
+        case .subtitle1, .subtitle2, .body: ._26
         case .base1, .base2: ._24
         case .caption3, .caption2, .caption1: ._22
         case .s: ._21
@@ -114,7 +116,7 @@ public extension DesignSystemKitAsset.Typography.Semantic {
 
     var letterSpacing: DesignSystemKitAsset.Typography.LetterSpacing {
         switch self {
-        case .title, .base2, .caption3, .caption2, .caption1: ._m03
+        case .title, .base2, .caption3, .caption2, .caption1, .body: ._m03
         case .s, .xs: ._m01
         default: .zero
         }

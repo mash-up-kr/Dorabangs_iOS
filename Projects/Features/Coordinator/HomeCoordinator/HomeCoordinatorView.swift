@@ -7,6 +7,7 @@
 //
 
 import AIClassificationCoordinator
+import AISummary
 import ComposableArchitecture
 import CreateNewFolder
 import FeedCoordinator
@@ -15,7 +16,7 @@ import SaveURLCoordinator
 import SaveURLVideoGuide
 import SwiftUI
 import TCACoordinators
-import Web
+import WebViewCoordinator
 
 public struct HomeCoordinatorView<Content: View>: View {
     private let store: StoreOf<HomeCoordinator>
@@ -68,8 +69,8 @@ public struct HomeCoordinatorView<Content: View>: View {
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
 
-            case let .web(store):
-                WebView(store: store)
+            case let .webViewCoordinator(store):
+                WebViewCoordinatorView(store: store)
                     .navigationBarHidden(true)
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)

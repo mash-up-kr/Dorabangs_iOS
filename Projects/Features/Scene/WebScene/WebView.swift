@@ -8,6 +8,7 @@
 
 import ComposableArchitecture
 import DesignSystemKit
+import LocalizationKit
 import SwiftUI
 import WebKit
 
@@ -20,16 +21,33 @@ public struct WebView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            LKTextMiddleTopBar(
-                title: "",
-                backButtonAction: { store.send(.backButtonTapped) },
-                action: {}
-            )
+            LKTopBar(leftContent: { topBarLeftButton }, rightContent: { topBarRightButton })
+
+            LKDivider()
+
             UIWebView(url: store.url)
         }
         .navigationBarHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    var topBarLeftButton: some View {
+        DesignSystemKitAsset.Icons.icChevronLeftBig.swiftUIImage
+            .frame(width: 24, height: 24)
+            .onTapGesture(perform: { store.send(.backButtonTapped) })
+    }
+
+    var topBarRightButton: some View {
+        HStack(spacing: 4) {
+            DesignSystemKitAsset.Icons.icStarMedium.swiftUIImage
+
+            Text(LocalizationKitStrings.WebScene.showSummary)
+                .foregroundStyle(DesignSystemKitAsset.Colors.primary500.swiftUIColor)
+                .font(weight: .medium, semantic: .caption2)
+        }
+        .frame(height: 20)
+        .onTapGesture(perform: { store.send(.showSummaryButtonTapped) })
     }
 }
 

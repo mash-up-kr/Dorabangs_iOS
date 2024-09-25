@@ -69,7 +69,7 @@ public struct Home {
         case routeToSelectFolder(URL)
         case routeToAIClassificationScreen
         case routeToUnreadFeed(Folder)
-        case routeToWebScreen(URL)
+        case routeToWebScreen(url: URL, aiSummary: String?, tags: [String])
         case routeToSaveURLVideoGuideScreen
     }
 
@@ -230,10 +230,11 @@ public struct Home {
 
             case let .cards(.cardTapped(item)):
                 guard let url = URL(string: item.urlString) else { return .none }
+                let tags = item.keywords?.compactMap(\.name) ?? []
                 state.isNavigationPushed = true
 
                 return .run { send in
-                    await send(.routeToWebScreen(url))
+                    await send(.routeToWebScreen(url: url, aiSummary: item.description, tags: tags))
 
                     if item.readAt == nil {
                         try await postAPIClient.readPost(item.id)

@@ -12,13 +12,13 @@ import CreateNewFolder
 import Feed
 import Models
 import TCACoordinators
-import Web
+import WebViewCoordinator
 
 @Reducer(state: .equatable)
 public enum FeedScreen {
     case feed(Feed)
     case changeFolderName(ChangeFolderName)
-    case web(Web)
+    case webViewCoordinator(WebViewCoordinator)
     case createNewFolder(CreateNewFolder)
 }
 
@@ -64,13 +64,12 @@ public struct FeedCoordinator {
             case .router(.routeAction(id: _, action: .changeFolderName(.routeToStorageBox(let patchedFolder)))):
                 state.routes.goBack()
                 return .send(.router(.routeAction(id: 0, action: .feed(.changedFolderName(patchedFolder)))))
-            case .router(.routeAction(id: _, action: .web(.routeToPreviousScreen))):
-                state.routes.goBack()
-                return .none
             case .router(.routeAction(id: _, action: .createNewFolder(.routeToFeedScene))):
                 guard let folderName = state.routes.last?.screen.createNewFolder.map(\.newFolderName) else { return .none }
                 state.routes.goBack()
                 return .send(.router(.routeAction(id: 0, action: .feed(.movedFolderResult(folderName: folderName)))))
+            case let .router(.routeAction(id: _, action: .webViewCoordinator(action))):
+                return handleWebViewCoordinatorAction(into: &state, action: action)
             default:
                 return .none
             }
@@ -92,9 +91,20 @@ public extension FeedCoordinator {
             return .none
         case .removeFolderResult:
             return .send(.routeToPreviousScreen)
-        case let .routeToWebScreen(url):
-            state.routes.push(.web(.init(url: url)))
+        case let .routeToWebScreen(url, aiSummary, tags):
+            state.routes.push(.webViewCoordinator(.init(webScreen: .init(url: url, aiSummary: aiSummary, tags: tags))))
             return .none
+        default:
+            return .none
+        }
+    }
+
+    func handleWebViewCoordinatorAction(into state: inout State, action: WebViewCoordinator.Action) -> Effect<Action> {
+        switch action {
+        case .routeToPreviousScreen:
+            state.routes.goBack()
+            return .none
+
         default:
             return .none
         }

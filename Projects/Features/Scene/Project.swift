@@ -67,7 +67,8 @@ let project = Project.make(
             sources: ["WebScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
-                .designSystem
+                .designSystem,
+                .localizationKit
             ]
         ),
         .make(
@@ -167,6 +168,19 @@ let project = Project.make(
             product: .staticLibrary,
             bundleId: "com.mashup.dorabangs.changeFolder",
             sources: ["ChangeFolderScene/**"],
+            dependencies: [
+                .spm(.composableArchitecture),
+                .designSystem,
+                .core(.service),
+                .core(.model),
+                .localizationKit
+            ]
+        ),
+        .make(
+            name: "AISummary",
+            product: .staticLibrary,
+            bundleId: "com.mashup.dorabangs.aiSummary",
+            sources: ["AISummaryScene/**"],
             dependencies: [
                 .spm(.composableArchitecture),
                 .designSystem,
