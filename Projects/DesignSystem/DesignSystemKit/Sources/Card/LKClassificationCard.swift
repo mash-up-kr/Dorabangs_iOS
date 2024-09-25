@@ -46,7 +46,7 @@ public struct LKClassificationCard<Thumbnail: View>: View {
         VStack(spacing: 12) {
             closeButton
 
-            HStack(spacing: 16) {
+            HStack(alignment: .top, spacing: 24) {
                 content
                 thumbnail
             }
@@ -99,13 +99,9 @@ public struct LKClassificationCard<Thumbnail: View>: View {
     }
 
     var thumbnail: some View {
-        VStack(spacing: 0) {
-            thumbnailImage()
-                .frame(width: 80, height: 80)
-                .cornerRadius(4, corners: .allCorners)
-
-            Spacer()
-        }
+        thumbnailImage()
+            .frame(width: 80, height: 80)
+            .cornerRadius(4, corners: .allCorners)
     }
 
     var tag: some View {

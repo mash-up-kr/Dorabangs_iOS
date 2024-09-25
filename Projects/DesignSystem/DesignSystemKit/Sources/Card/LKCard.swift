@@ -89,7 +89,7 @@ private struct HeaderView<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
 
     var body: some View {
-        HStack(alignment: .top, spacing: 24) {
+        HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 10) {
                 Text(title ?? "")
                     .font(weight: .bold, semantic: .caption3)
@@ -106,7 +106,7 @@ private struct HeaderView<Thumbnail: View>: View {
                 }
             }
 
-            Spacer()
+            Spacer(minLength: 24)
 
             CardThumbnailView(thumbnail: thumbnail)
         }
@@ -142,13 +142,9 @@ private struct CardThumbnailView<Thumbnail: View>: View {
     let thumbnail: () -> Thumbnail
 
     var body: some View {
-        VStack(spacing: 0) {
-            thumbnail()
-                .frame(width: 80, height: 80)
-                .cornerRadius(4, corners: .allCorners)
-
-            Spacer()
-        }
+        thumbnail()
+            .frame(width: 80, height: 80)
+            .cornerRadius(4, corners: .allCorners)
     }
 }
 
