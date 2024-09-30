@@ -16,11 +16,17 @@ struct AIClassificationCardSectionHeaderView: View {
     let action: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text(title)
-                .font(weight: .bold, semantic: .title)
-                .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
-                .frame(maxWidth: .infinity)
+        VStack {
+            HStack(alignment: .center, spacing: 4) {
+                DesignSystemKitAsset.Icons.icStarMedium
+                    .swiftUIImage.resizable()
+                    .frame(width: 20, height: 20)
+
+                Text(title)
+                    .font(weight: .bold, semantic: .title)
+                    .foregroundStyle(DesignSystemKitAsset.Colors.g8.swiftUIColor)
+            }
+            .frame(maxWidth: .infinity)
 
             Spacer().frame(height: 4)
 
