@@ -13,14 +13,17 @@ import SwiftUI
 struct AIClassificationCardSectionHeaderView: View {
     let title: String
     let count: Int
+    let isAIGenerated: Bool
     let action: () -> Void
 
     var body: some View {
         VStack {
             HStack(alignment: .center, spacing: 4) {
-                DesignSystemKitAsset.Icons.icStarMedium
-                    .swiftUIImage.resizable()
-                    .frame(width: 20, height: 20)
+                if isAIGenerated {
+                    DesignSystemKitAsset.Icons.icStarMedium
+                        .swiftUIImage.resizable()
+                        .frame(width: 20, height: 20)
+                }
 
                 Text(title)
                     .font(weight: .bold, semantic: .title)

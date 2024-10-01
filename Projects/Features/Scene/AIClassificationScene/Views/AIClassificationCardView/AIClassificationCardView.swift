@@ -51,6 +51,7 @@ struct AIClassificationCardView: View {
                     AIClassificationCardSectionHeaderView(
                         title: section.name,
                         count: section.postCount,
+                        isAIGenerated: section.isAIGenerated ?? false,
                         action: { store.send(.moveToAllItemsToFolderButtonTapped(section: section)) }
                     )
 

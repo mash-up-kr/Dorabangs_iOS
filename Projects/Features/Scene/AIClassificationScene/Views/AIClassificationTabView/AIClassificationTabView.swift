@@ -23,7 +23,7 @@ struct AIClassificationTabView: View {
                 LazyHStack(spacing: 8) {
                     ForEach(store.folders.indices, id: \.self) { index in
                         LKTopTabView(
-                            icon: (index == 0) ? nil : DesignSystemKitAsset.Icons.icStarMedium.swiftUIImage,
+                            icon: (store.folders[index].isAIGenerated == true) ? DesignSystemKitAsset.Icons.icStarMedium.swiftUIImage : nil,
                             isSelected: store.selectedFolderIndex == index,
                             title: store.folders[index].name,
                             count: "\(store.folders[index].postCount)"

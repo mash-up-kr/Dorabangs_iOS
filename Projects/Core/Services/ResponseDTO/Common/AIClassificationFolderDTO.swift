@@ -13,6 +13,7 @@ struct AIClassificationFolderDTO: Decodable {
     let folderName: String
     let postCount: Int
     let folderId: String
+    let isAIGenerated: Bool?
 }
 
 extension AIClassificationFolderDTO {
@@ -21,7 +22,8 @@ extension AIClassificationFolderDTO {
             id: folderId,
             name: folderName,
             type: .custom,
-            postCount: postCount
+            postCount: postCount,
+            isAIGenerated: isAIGenerated
         )
     }
 }
