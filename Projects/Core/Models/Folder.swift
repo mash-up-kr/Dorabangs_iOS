@@ -27,6 +27,7 @@ public struct Folder: Hashable {
     public let type: FolderType
     public var postCount: Int
     public var createdAt: String?
+    public var isAIGenerated: Bool?
     // createdAt을 Date로 변환하는 computed property
     public var creationDate: Date? {
         guard let createdAt else { return nil }
@@ -39,13 +40,15 @@ public struct Folder: Hashable {
         name: String,
         type: FolderType,
         postCount: Int,
-        createdAt: String? = nil
+        createdAt: String? = nil,
+        isAIGenerated: Bool? = nil
     ) {
         self.id = id
         self.name = name
         self.type = type
         self.postCount = postCount
         self.createdAt = createdAt
+        self.isAIGenerated = isAIGenerated
     }
 }
 
