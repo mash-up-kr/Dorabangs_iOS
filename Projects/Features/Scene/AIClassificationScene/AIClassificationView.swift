@@ -38,9 +38,6 @@ public struct AIClassificationView: View {
                         .dividerLine(edge: .bottom)
                 }
 
-                AiClassificaionInfoView()
-                    .padding(.horizontal, 0)
-
                 Group {
                     if let store = store.scope(state: \.cards, action: \.cards) {
                         AIClassificationCardView(store: store)
