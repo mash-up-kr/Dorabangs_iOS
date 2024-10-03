@@ -47,7 +47,14 @@ struct AIClassificationCardView: View {
     private func contentScrollView() -> some View {
         List {
             ForEach(store.items.keys.elements, id: \.self) { folderId in
-                if let section = store.sections[folderId], let items = store.items[folderId] {
+                if let section = store.sections[folderId],
+                   let items = store.items[folderId]
+                {
+                    if section.isAIGenerated ?? false {
+                        AiClassificaionInfoView()
+                            .padding(.horizontal, 0)
+                    }
+
                     AIClassificationCardSectionHeaderView(
                         title: section.name,
                         count: section.postCount,
