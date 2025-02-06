@@ -1,5 +1,5 @@
 # Dorabangs_iOS
-D질라고 iOS팀 Repo
+도라방스 iOS팀 Repo
 
 ## 구성원
 <table>
